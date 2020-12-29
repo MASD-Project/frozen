@@ -1,0 +1,833 @@
+#+title: Sprint Backlog 64
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission
+
+Finish implementing stitch and stitcher and create the first
+formatters using it.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-04-27 Mon 14:13]
+
+| Headline                                                        | Time    |       |      |
+|-----------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                    | *46:01* |       |      |
+|-----------------------------------------------------------------+---------+-------+------|
+| Active                                                          |         | 46:01 |      |
+| COMPLETED Sprint and product backlog grooming                   |         |       | 1:39 |
+| COMPLETED Updates to the manual and readme files                |         |       | 0:51 |
+| COMPLETED Create a formatting utilities class                   |         |       | 1:17 |
+| COMPLETED Implement a basic formatter in stitch                 |         |       | 3:02 |
+| COMPLETED Fix build errors in Windows and Linux 32-bit          |         |       | 0:28 |
+| COMPLETED Create a stitch workflow                              |         |       | 2:22 |
+| COMPLETED Add expander that computes output path                |         |       | 1:04 |
+| COMPLETED Add support for dynamic extensions in stitch          |         |       | 3:44 |
+| COMPLETED Refactor =knit= workflows                             |         |       | 2:10 |
+| COMPLETED Use =formatters::file= in legacy formatters           |         |       | 2:28 |
+| COMPLETED Move outputters from knit to formatters model         |         |       | 1:22 |
+| COMPLETED Implement file writing in stitch                      |         |       | 1:38 |
+| COMPLETED Add test coverage to stitch's workflow                |         |       | 0:43 |
+| COMPLETED Get a trivial stitcher to work                        |         |       | 1:32 |
+| COMPLETED Add support for spaces after commas on template types |         |       | 0:29 |
+| COMPLETED Simplify stitch model to use lines rather than blocks |         |       | 1:47 |
+| COMPLETED Consider using Microsoft's T4 terminology for stitch  |         |       | 0:06 |
+| COMPLETED Create a new stitch parser                            |         |       | 7:27 |
+| COMPLETED Add support for inline code in stitch                 |         |       | 2:07 |
+| COMPLETED Tidy-up parser with helper functions and more tests   |         |       | 1:14 |
+| COMPLETED Report line numbers when throwing errors in stitch    |         |       | 0:49 |
+| COMPLETED Code-generating formatters as text templates          |         |       | 0:15 |
+| COMPLETED Move =identifier_parser= to SML                       |         |       | 0:50 |
+| COMPLETED Move namespace formatter to formatters                |         |       | 0:46 |
+| COMPLETED Split =identifier_parser= into utility and SML        |         |       | 0:21 |
+| COMPLETED Add namespace support to stitch templates             |         |       | 0:56 |
+| COMPLETED Create a forward declarations formatter using stitch  |         |       | 4:34 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-04-27 Mon 14:13]
+    CLOCK: [2015-04-26 Sun 18:27]--[2015-04-26 Sun 18:36] =>  0:09
+    CLOCK: [2015-04-26 Sun 11:42]--[2015-04-26 Sun 11:46] =>  0:04
+    CLOCK: [2015-04-26 Sun 10:15]--[2015-04-26 Sun 10:34] =>  0:19
+    CLOCK: [2015-04-21 Tue 15:26]--[2015-04-21 Tue 15:39] =>  0:13
+    CLOCK: [2015-04-20 Mon 22:53]--[2015-04-20 Mon 23:01] =>  0:08
+    CLOCK: [2015-04-18 Sat 06:41]--[2015-04-18 Sat 07:15] =>  0:34
+    CLOCK: [2015-04-15 Wed 16:10]--[2015-04-15 Wed 16:15] =>  0:05
+    CLOCK: [2015-04-13 Mon 07:04]--[2015-04-13 Mon 07:11] =>  0:07
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-04-27 Mon 14:13]
+    CLOCK: [2015-04-26 Sun 10:34]--[2015-04-26 Sun 11:25] =>  0:51
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Create a formatting utilities class                     :spike:
+    CLOSED: [2015-04-13 Mon 19:05]
+    CLOCK: [2015-04-13 Mon 17:04]--[2015-04-13 Mon 18:05] =>  1:01
+    CLOCK: [2015-04-13 Mon 16:48]--[2015-04-13 Mon 17:04] =>  0:16
+
+The stitch formatter needs to make use of basic features such as
+quoting etc. This is a good time to tidy-up the old utilities
+formatter.
+
+*** COMPLETED Implement a basic formatter in stitch                   :story:
+    CLOSED: [2015-04-14 Tue 19:44]
+    CLOCK: [2015-04-14 Tue 19:29]--[2015-04-14 Tue 19:44] =>  0:15
+    CLOCK: [2015-04-14 Tue 19:12]--[2015-04-14 Tue 19:28] =>  0:16
+    CLOCK: [2015-04-14 Tue 17:40]--[2015-04-14 Tue 19:11] =>  1:31
+    CLOCK: [2015-04-13 Mon 18:05]--[2015-04-13 Mon 19:05] =>  1:00
+
+We need to create a formatter in stitch that can implement the trivial
+use cases we have covered with the parser. We must also start creating
+a stitch template for the formatter and perhaps implement the stitch
+output manually just to give stitch a target.
+
+Actually, a stitch template does not make a lot of sense. This is
+because stitch has nothing to add to the output other than what it
+reads from its object model. So the template would contain nothing but
+c++ code, with very little text.
+
+*** COMPLETED Fix build errors in Windows and Linux 32-bit            :story:
+    CLOSED: [2015-04-18 Sat 07:14]
+    CLOCK: [2015-04-13 Mon 15:50]--[2015-04-13 Mon 16:18] =>  0:28
+
+It seems a number of test models are failing in the knitting tests for
+both Windows and Linux 32-bit. Looking at the diffs it seems the
+problems are in the includers. This is likely to be due to the new
+sorting algorithm, that does not take into account cases where the
+sorting criteria is identical all the way to the size of the
+string. This then means its the luck of the draw for these strings.
+
+We need to add further criteria to disambiguate strings.
+
+*** COMPLETED Create a stitch workflow                                :story:
+    CLOSED: [2015-04-18 Sat 07:15]
+    CLOCK: [2015-04-16 Thu 22:10]--[2015-04-16 Thu 22:32] =>  0:22
+    CLOCK: [2015-04-15 Wed 22:25]--[2015-04-15 Wed 22:41] =>  0:16
+    CLOCK: [2015-04-15 Wed 20:13]--[2015-04-15 Wed 21:23] =>  1:10
+    CLOCK: [2015-04-15 Wed 17:26]--[2015-04-15 Wed 18:00] =>  0:34
+
+We need to implement a workflow that reads in the fields, parses the
+template, formats it and writes it to file.
+
+*** COMPLETED Add expander that computes output path                  :story:
+    CLOSED: [2015-04-18 Sat 07:15]
+    CLOCK: [2015-04-17 Fri 21:20]--[2015-04-17 Fri 21:38] =>  0:18
+    CLOCK: [2015-04-16 Thu 07:36]--[2015-04-16 Thu 08:22] =>  0:46
+
+We need to compute the output path and populate it in the file
+generated by the formatter.
+
+*** COMPLETED Add support for dynamic extensions in stitch            :story:
+    CLOSED: [2015-04-18 Sat 07:15]
+    CLOCK: [2015-04-15 Wed 16:00]--[2015-04-15 Wed 16:10] =>  0:10
+    CLOCK: [2015-04-15 Wed 14:42]--[2015-04-15 Wed 15:59] =>  1:17
+    CLOCK: [2015-04-15 Wed 14:26]--[2015-04-15 Wed 14:42] =>  0:16
+    CLOCK: [2015-04-15 Wed 13:29]--[2015-04-15 Wed 14:26] =>  0:57
+    CLOCK: [2015-04-14 Tue 20:33]--[2015-04-14 Tue 20:49] =>  0:16
+    CLOCK: [2015-04-14 Tue 19:44]--[2015-04-14 Tue 20:32] =>  0:48
+
+There are a number of things that would be useful in stitch:
+
+- boilerplate formatters: we could do with licence etc. We need to
+  move this code into =formatters=, into a =cpp= namespace. This
+  includes inclusion.
+- we need a file path field that is computed if the user has passed in
+  the template file path. The expansion performs this computation (so
+  we need expansion).
+- we need include dependencies support. Users add includes and we
+  extract them and pass them over to boilerplate.
+
+*** COMPLETED Refactor =knit= workflows                               :story:
+    CLOSED: [2015-04-19 Sun 22:45]
+    CLOCK: [2015-04-19 Sun 21:52]--[2015-04-19 Sun 22:44] =>  0:52
+    CLOCK: [2015-04-19 Sun 21:02]--[2015-04-19 Sun 21:51] =>  0:49
+    CLOCK: [2015-04-18 Sat 20:58]--[2015-04-18 Sat 21:25] =>  0:27
+    CLOCK: [2015-04-18 Sat 07:16]--[2015-04-18 Sat 07:18] =>  0:02
+
+Create a backend workflow that has activities for each
+backend. Actually create two sub-workflows: sml model workflow and
+backend workflow. Then create a top-level workflow that calls both.
+
+*** COMPLETED Use =formatters::file= in legacy formatters             :story:
+    CLOSED: [2015-04-20 Mon 18:56]
+    CLOCK: [2015-04-20 Mon 17:31]--[2015-04-20 Mon 18:56] =>  1:25
+    CLOCK: [2015-04-20 Mon 15:35]--[2015-04-20 Mon 16:38] =>  1:03
+
+We should make use of formatters file in preparation for using the new
+world formatters.
+
+- remove all of the typedefs in outputters, cpp_formatters, etc.
+- cpp formatters to start creating formatters::file
+- housekeeper to create a map of files if required; actually, add
+  activity that generates the set.
+
+*** COMPLETED Minor refactor to legacy =backend=                      :story:
+    CLOSED: [2015-04-20 Mon 18:57]
+
+We should take this opportunity to make the legacy backend a bit more
+manageable.
+
+- cpp_backend to be split into activities: transform, legacy generate,
+  new world overwrite.
+- rename backend to backend interface
+- pass the model into the generate method of the backend
+
+*** COMPLETED Move outputters from knit to formatters model           :story:
+    CLOSED: [2015-04-20 Mon 22:53]
+    CLOCK: [2015-04-20 Mon 21:55]--[2015-04-20 Mon 22:53] =>  0:58
+    CLOCK: [2015-04-18 Sat 06:22]--[2015-04-18 Sat 06:40] =>  0:45
+    CLOCK: [2015-04-17 Fri 21:38]--[2015-04-17 Fri 21:44] =>  0:06
+
+We need to move outputting to formatters so that it can be reused in
+stitch.
+
+- create and implement the writers in formatters.
+- replace knit::outputters with formatters::writer
+
+*** COMPLETED Implement file writing in stitch                        :story:
+    CLOSED: [2015-04-21 Tue 15:32]
+    CLOCK: [2015-04-21 Tue 14:02]--[2015-04-21 Tue 15:26] =>  1:24
+    CLOCK: [2015-04-20 Mon 23:01]--[2015-04-20 Mon 23:15] =>  0:14
+
+We need to start writing files in stitch by making use of formatter's
+file writers. As part of this we need to get the workflow tests to
+pass.
+
+- we should remember the "last known indentation level" for a
+  scriptlet line and use that for non-scriptlet lines. Actually, this
+  does not work at all as we may not have the last indentation
+  level. Lets leave indentation for later.
+- we need to add diff/rebase support to the stitch test data set.
+
+*** COMPLETED Add test coverage to stitch's workflow                  :story:
+    CLOSED: [2015-04-21 Tue 16:07]
+    CLOCK: [2015-04-21 Tue 16:17]--[2015-04-21 Tue 16:31] =>  0:14
+    CLOCK: [2015-04-21 Tue 15:38]--[2015-04-21 Tue 16:07] =>  0:29
+
+*Final Understanding*
+
+Instead of adding lots of test coverage, we will rely on the fact that
+stitch (and stitcher) will be heavily used within dogen on all use
+cases that we require it to cover. We just need a couple of basic
+tests to prove that it is vaguely working.
+
+*Previous Understanding*
+
+We must make sure we don't start adding lots of pointless workflow
+tests. Tests that are validating the formatter/parser behaviour
+already exist so we don't have to worry about that. Objectives of
+workflow tests are to answer these questions:
+
+- do we write files in to the expected locations?
+- do the files produce valid c++?
+- does the c++ produce the expected template output?
+- does the workflow itself work? i.e. the integration between parser,
+  formatter, etc.
+
+This means we probably just need a single positive test with a
+template that makes use of all available features. We could also add a
+few negative tests:
+
+- template not found.
+- invalid relative directory: tricky one to test as we are supposed to
+  create one.
+- invalid template: no need for lots of variations, just one.
+- empty template: should generate an error. This is because we would
+  not write to the correct directory (due to a lack of relative output
+  path). Also we do not have any use cases for this.
+
+A positive test that is required is running stitch against a directory
+of templates.
+
+*** COMPLETED Get a trivial stitcher to work                          :story:
+    CLOSED: [2015-04-21 Tue 18:04]
+    CLOCK: [2015-04-21 Tue 16:32]--[2015-04-21 Tue 18:04] =>  1:32
+
+Now that we have implemented most of stitch, we should get stitcher up
+and running. All we need is a few command line options, maybe even
+just one - the directory to process or the template to process.
+
+We probably also need version and help.
+
+*** COMPLETED Add support for spaces after commas on template types   :spike:
+    CLOSED: [2015-04-22 Wed 13:37]
+    CLOCK: [2015-04-22 Wed 13:08]--[2015-04-22 Wed 13:37] =>  0:29
+
+Since we are looking at spirit, this may be the time to fix the long
+standing and annoying bug that stops us from having spaces after
+commas when defining a type with template parameters, like so:
+
+: std::unordered_map<std::string,my::type>
+
+We don't really need anything clever, just to support spaces after
+commas:
+
+: std::unordered_map<std::string, my::type>
+
+This will improve readability in diagrams.
+
+*** COMPLETED Simplify stitch model to use lines rather than blocks   :spike:
+    CLOSED: [2015-04-22 Wed 15:25]
+    CLOCK: [2015-04-22 Wed 13:38]--[2015-04-22 Wed 15:25] =>  1:47
+
+It seems we have gone a bit overboard with the number of types in
+stitch. The whole thing can be modeled with just lines and
+segments. Update the model, parser and formatter.
+
+*** COMPLETED Consider using Microsoft's T4 terminology for stitch    :spike:
+    CLOSED: [2015-04-22 Wed 15:42]
+    CLOCK: [2015-04-22 Wed 15:36]--[2015-04-22 Wed 15:42] =>  0:06
+
+We found [[https://msdn.microsoft.com/en-us/library/bb126478.aspx][a page]] documenting the elements of T4. These are:
+
+- *Directives*: Text template directives provide general instructions to
+  the text templating engine about how to generate the transformation
+  code and the output file.
+- *Text blocks*: A text block inserts text directly into the output
+  file. There is no special formatting for text blocks.
+- *Control blocks*: Control blocks are sections of program code that
+  are used to transform the templates. Two types:
+  - *Standard control blocks*: A standard control block is a section
+    of program code that generates part of the output file.
+  - *Expression control blocks*: An expression control block evaluates
+    an expression and converts it to a string.
+
+Actually, in terms of the domain types used in stitch, we are probably
+ok to leave them as they are. A scriptlet is just a control block of
+either kind. If a line contains a single segment, this must be a
+standard control block. If a line contains a mix of text and
+scriptlet, the scriptlet must be an expression control block. We can
+use these terms in the spirit parser, but we don't need to worry about
+changing the domain types. We need to document this in the code
+somewhere.
+
+*** COMPLETED Create a new stitch parser                              :spike:
+    CLOSED: [2015-04-25 Sat 07:24]
+    CLOCK: [2015-04-25 Sat 06:08]--[2015-04-25 Sat 07:17] =>  1:09
+    CLOCK: [2015-04-24 Fri 14:59]--[2015-04-24 Fri 18:04] =>  3:05
+    CLOCK: [2015-04-23 Thu 08:32]--[2015-04-23 Thu 08:39] =>  0:07
+    CLOCK: [2015-04-23 Thu 07:46]--[2015-04-23 Thu 08:32] =>  0:46
+    CLOCK: [2015-04-23 Thu 07:37]--[2015-04-23 Thu 07:45] =>  0:08
+    CLOCK: [2015-04-22 Wed 16:18]--[2015-04-22 Wed 17:51] =>  1:33
+    CLOCK: [2015-04-22 Wed 15:43]--[2015-04-22 Wed 16:17] =>  0:34
+    CLOCK: [2015-04-22 Wed 15:31]--[2015-04-22 Wed 15:36] =>  0:05
+
+*New Understanding*
+
+Improve existing parser by adding expression support.
+
+*Previous Understanding*
+
+Whilst trying to add expression support, it became obvious that our
+simplistic parser will not do: it is a bit complicated to represent
+all the permutations when adding inline. We need to:
+
+- write a parser using spirit
+- simplify the model, removing blocks and adding three types of lines:
+  text, scriptlet and mixed; split to it's own story.
+
+Rules:
+
+- standard control blocks multi-line must have only start and end markers on
+  start and end lines;
+- standard control blocks single line must not have anything else in line;
+- directive block must be single line and not have anything else in
+  line and must be the first line or preceded by another directive
+  block;
+- expression control blocks must start and end on the same line.
+
+State Machine:
+
+#+caption: State machine for parser
+[[https://raw.github.com/kitanda/dogen/master/doc/misc/text_template_state_diagram.jpeg]]
+
+Grammar:
+
+- <#+ or <#=: state transition in builder to control block;
+- eol: push line in builder
+- #>: state transition in builder to end of control block
+- start standard control block
+- start expression control block
+- end control block
+- content: qi::char - qi::eol
+- expression block: start expression control block << content << end
+  control block
+- standard block: start expression control block << *([qi::eol])
+  << *(content << *([qi::eol])) << end control block
+- text block: *([content] << *([qi::eol]))
+- template: *(text block | expression block | standard block)
+
+*Notes on Spirit*
+
+- this is actually also quite tricky to do with spirit.
+- had a look at the mono implementation [[https://github.com/mono/monodevelop/tree/master/main/src/addins/TextTemplating/Mono.TextTemplating/Mono.TextTemplating][here]]. It seems much easier to
+  follow their approach and parse the string. We can copy most of
+  their logic and transpose it to our model and perhaps tidy-up our
+  model a bit when their types are better than ours.
+
+*Notes on Mono*
+
+- after it was all said and done, creating a tokeniser etc was not
+  that much different from just expanding our hack to process
+  expressions. So instead of refactoring the parser we just extended
+  it to support expressions, using an approach similar to that of
+  mono.
+- we also noticed some commonalities between this task and SAX. A
+  story will be raised for this in the backlog.
+
+*** COMPLETED Add support for inline code in stitch                   :story:
+    CLOSED: [2015-04-25 Sat 07:26]
+    CLOCK: [2015-04-23 Thu 20:06]--[2015-04-23 Thu 20:51] =>  0:45
+    CLOCK: [2015-04-21 Tue 20:37]--[2015-04-21 Tue 21:59] =>  1:22
+
+At present we do not support the =<#=xyz#>= and =<#+xyz#>= forms in
+stitch. We need to support these.
+
+This is actually not trivial. We may need to use spirit for this.
+
+*** COMPLETED Tidy-up parser with helper functions and more tests     :story:
+    CLOSED: [2015-04-25 Sat 13:28]
+    CLOCK: [2015-04-25 Sat 12:53]--[2015-04-25 Sat 13:17] =>  0:24
+    CLOCK: [2015-04-25 Sat 07:54]--[2015-04-25 Sat 08:17] =>  0:23
+    CLOCK: [2015-04-25 Sat 07:26]--[2015-04-25 Sat 07:53] =>  0:27
+
+We need to create a few functions to break down the parse method.
+
+Problems:
+
+- we can only handle a single declaration per template. Added fix but
+  still need tests.
+- we do not detect <#= <#= errors.
+- add expressions to workflow tests.
+
+*** COMPLETED Report line numbers when throwing errors in stitch      :story:
+    CLOSED: [2015-04-25 Sat 16:01]
+    CLOCK: [2015-04-25 Sat 15:12]--[2015-04-25 Sat 16:01] =>  0:49
+
+At present we just throw in stitch. In a template with many lines this
+is going to be a nightmare. We need some indication of the line (and
+ideally column) number where it all went wrong.
+
+*** COMPLETED Naming of libraries and binaries                         :epic:
+    CLOSED: [2015-04-26 Sun 11:25]
+
+*New Understanding*
+
+Update manual with the content of this story.
+
+*Previous Understanding*
+
+*Note*: create a document with all of these names and close this story.
+
+We have a common problem with certain combination of utilities and
+libraries; often we end up with a library which should be named after
+the binary. For example, we should really call the "engine" library
+"dogen" as all its missing is the command line interface. In addition
+to this, it seems we are going to have more than one binary in the
+code base. In order to solve this we should adopt a naming strategy
+for both libraries and binaries. One approach is to choose verbs from
+a "theme" such as "weaving" - a lot of these tools are doing things
+that look a bit like weaving - and then use the noun for the library
+and the verb for the binary. Dogen is then a suite of utilities for
+domain generation.
+
+ For example:
+
+- stitch - library that generates formatters
+- stitcher - command line tool for generating formatters
+- knit - library that code generates [done]
+- knitter - command line tool for code generation [done]
+- tailor - tool to generate JSON / SML from Dia diagrams
+- sew - command line tool to generate JSON / SML from Dia
+  diagrams
+- needle: the small library with support for boost and standard
+  library (hashing, test data, etc.)
+- patch: library with code to update a dia Diagram given a C++ code
+  base. Doesn't create new classes - only adds or removes methods in
+  existing classes.
+- patcher: tool that uses the patch library.
+
+All binaries are prefixed with dogen to avoid clashes,
+e.g. =dogen_knitter=.
+
+See the [[http://en.wikipedia.org/wiki/Glossary_of_sewing_terms][Wikipedia glossary of sewing terms]].
+
+*** COMPLETED Code-generating formatters as text templates             :epic:
+    CLOSED: [2015-04-26 Sun 11:42]
+    CLOCK: [2015-04-26 Sun 11:27]--[2015-04-26 Sun 11:42] =>  0:15
+
+*New Understanding*
+
+The core ideas of this epic have been implemented. We need to figure
+out if there are any remaining ideas to mine from here, split them
+into stories and put them in the backlog.
+
+*Previous Understanding*
+
+In the past we have used T4 and generated text templates mixed with
+processing logic written in C#. We never quite considered this
+approach for Dogen mainly because it's really hard to create a
+templating engine. And as we used Dogen as an exercise to get up to
+speed with C++ 11, it didn't make sense to implement significant parts
+of it in C#.
+
+Having said that, implementing file formatters as C++ code is not very
+convenient - for the same reason that implementing file formatters in
+any language is inconvenient: the boilerplate writing code obscures
+the stuff one is writing, making it really difficult to make changes
+without breaking things.
+
+However, the more one thinks about it the more it seems that a simple
+templating engine, designed specifically for the Dogen needs is not
+actually that hard to write (famous last words). It would have to
+support only a very limited subset of "commands" (specified as T4-like
+syntax):
+
+: <#= STRING_EXPRESSION #>
+: <#+ CPP_BLOCK_OF_CODE #>
+
+We could then make use of this in a text file like so:
+
+: class <#= a.name() #> {
+: ...
+: <#+
+:     for (const auto& p : a.properties()) {
+: #>
+:     void <#= p.name() #>() {
+:         return <#= p.name() #>_;
+:     }
+: ...
+: }
+
+A tool would convert this template according to a very simple
+heuristic:
+
+- any line which has no "commands" will be simply streamed to an
+  output stream followed by =<< std::endl;=
+- any line with a =STRING_EXPRESSION= means the result of that
+  expression will be streamed into the output stream (e.g. not
+  quoted);
+- any =CPP_BLOCK_OF_CODE= will be copied verbatim.
+
+According to these rules we have:
+
+: s << "class " << a.name() "{" << std::endl;
+: ...
+:     for (const auto& p : a.properties()) {
+: s << "    void " << p.name() << "{" << std::endl;
+: s << "        return " << p.name() << "_;" << std::endl;
+: s << "    }" << std::endl;
+: ...
+: s << "}" << std::endl;
+
+Indentation will be kept as simple as possible, with the expectation
+that there will be a further pass using clang format. Note that using
+clang to manage indentation will make things a lot slower.
+
+Now of course there is the question of where to put this code in such
+a way that it compiles. What one then needs is a formatter template:
+something which provides a =hpp= and a =cpp= that would be the
+containers of the code generated by expanding the template according
+to the heuristic above. The formatter template would itself be a text
+template, but with one special variable:
+
+: <#= @insert_code #>
+
+For example:
+
+: #include <sstream>
+: #include "A.hpp"
+:
+: void my_func() {
+:     std::ostringstream s;
+:     A a;
+: <#= @insert_code #>
+: }
+
+This variable is then expanded by stitch itself.
+
+Conceivably one could pair the formatter templates into =hpp= and
+=cpp= files. The header file could be entirely static, and the cpp
+file could contain the =insert_code= command.
+
+*Note*: with time, the formatters have grown in complexity, so the
+header files can no longer be static and the implementation files are
+also quite complex. In order to get them to compile by flymake we
+should change the template to have a comment in the insert code:
+
+: //<#= @insert_code #>
+
+The workflow would be as follows: first expand the original text
+template into code; then expand the formatter templates using this
+code. Finally, use clang formatter to indent the code. The end result
+would look like one of our formaters, except with one _very_ long
+format method. There are a few advantages to this approach:
+
+- text templates would be maintained as more or less source code
+  files, so editing them would be much easier;
+- the expanded template would be just like any other source code so
+  hopefully debugging / solving compiler errors should be
+  straightforward - more so than with T4 where one ended up looking at
+  complex generated code in temp directories quite a lot.
+- users can add new templates with very little understanding of the
+  internals of Dogen; we could have an agreed interface (a type from
+  the C++ model) which is passed in to text templates of that "kind"
+  and all they need to do is to use the type in the template. Unless
+  they need something bespoke, nothing else is required.
+- the templates could contain logic to setup the file name and include
+  files but still make use of boilerplate formatter. We could even
+  create some kind of static registration of formatters such that
+  literally the user would have to change no code at all to add a new
+  template other than the template itself.
+- we could propagate dynamic extensions into the C++ model at the
+  formatter level such that users could use it without any changes to
+  the code generation engine.
+- we could derive the location of the output file from the formatter
+  itself, neatly separating groups of formatters. The Dogen formatters
+  could be placed under "core" and then we could have others such as
+  "qt", etc.
+- new templates with use cases we havent foreseen could be done, but
+  if they need more dynamic extensions the user would have to add
+  types to the C++ model.
+
+Start of more recent notes on this:
+
+- =@insert_code= is a really bad idea. First, we will generate two
+  versions of the same CPP file, forcing us to do all sorts of CMake
+  hacks to ignore one and keep the other. Second, we are no longer
+  WYSIWYG - the user doesn't really know what will make it into
+  compilation.
+- stitch should make no attempt to understand or augment the user
+  supplied code. If the user requires the generated code to be a
+  function or a class or anything else, it is the user's
+  responsibility to add that using the appropriate stitch
+  commands. Stitch literally just does two things: it either copies
+  across verbatim or copies across as a streaming line. This solves
+  the problem of passing arbitrary data into a template.
+- users are expected to create two CPP files for each formatter: the
+  formatter file and the stitch template, which gets generated into
+  something like =_stitch.cpp=, e.g. =class_header_formatter.cpp= and
+  =class_header_formatter_stitch.cpp=, generated from
+  =class_header_formatter.stitch=. =class_header_formatter.cpp=
+  includes =class_header_formatter_stitch.cpp= and calls a format
+  function. The generated code is next to the stitch template.
+- we may just need one or two control knobs such as the name of the
+  stream used by stitch (i.e. =s= in the examples above). The user is
+  responsible for defining a variable with that name to make the code
+  compilable. This could be done via =<#@ stream_name "abc #>"=, where
+  =stream_name= is known to stitch.
+- note that stitch knows nothing about CPP, HPP, etc files. It will
+  simply transform according to rules. Users will probably want to
+  manually create a =_stitch.hpp= file where they declare the function
+  (or class, etc); then include the =_stitch.hpp= in a =.cpp= of their
+  choosing and make use of it there, and finally use stitch to create
+  a =_stitch.cpp= file where the real work is done. However this is
+  not a concern of stitch. Users should supply the extension of the
+  transformed file (e.g. <=@ file_extension ".cpp" #>=).
+- stitch processes templates by lines. It either reads the verbatim
+  start command =<#+= in which case it expects nothing on that line
+  and then will continue in verbatim mode until =#>= (any lines in
+  between will be copied to the output verbatim); or the variable
+  definition =<#@ xxx "" #>= where xxx must be known to stitch (these
+  must be the first lines in a template); or its a normal line, with
+  potentially the inline verbatim command <#= which must be closed on
+  the same line with =#>=. These will be streamed out. The state
+  machine is really trivial.
+- the stitch binary should work in a "directory mode"; given a
+  directory, it will look up all files with the well known extension
+  =.stitch=; these it will transform. If the generated file is
+  different for a potentially existing file, it will overwrite
+  it. Each project will have its stitch targets just like dogen. Users
+  will manually trigger stitching as they do with dogen.
+- stitch can still be integrated with dogen. We could use meta-data to
+  link a formatter (well, any class that needs stitch really, but at
+  present just a formatter) with a stitch template. For example, a
+  =class_header_formatter= could have a "is stitchable" flag set to
+  on. This would then mean that dogen would look for a
+  =class_header_formatter.stitch= file in the same directory as the
+  CPP file. It would then use that to create a
+  =class_header_formatter_stitch.cpp= file. It would also
+  ignore/generate a =class_header_formatter_stitch.hpp= file and
+  automatically add it to the inclusion dependencies of
+  =class_header_formatter.cpp=. These are injected into stitch as we
+  instantiate the template since stitch supports meta-data (we do need
+  a way to inject the meta-data from dogen into the meta-data in the
+  template; perhaps a kvp container passed in to the stitch workflow
+  which could then be handed over to the parser). All these files are
+  automatically added to the list of "exceptions" for housekeeping so
+  that they do not get deleted. However, stitch would not know
+  anything at all about any of this; this is all knitter's
+  functionality. The problem is at present we haven't got a good place
+  to perform the stitching as part of knitter's workflows. Perhaps as
+  part of the expansion, we could set a number of stitch fields which
+  would then be picked up by some knit-specific workflow classes.
+- when we have merging support we can actually implement =insert_code=
+  in a good way. We could mark the formatters with meta-data stating
+  they have a method which is a stitch template. That then results in
+  a c++ operation which makes reference to stitch. When converting SML
+  into the CPP model we can add a "content" property to the stitchable
+  operations that contains the expansion of the stitch
+  template. Finally, when inside of the stitch template that is
+  code-generating, we will loop through all of the operations. For the
+  stitched ones, we can then dump the content property. Merge support
+  is required because formatters are always expected to have a
+  component of hand-crafting (include providers etc) and cannot be
+  implemented without it.
+
+End of more recent notes
+
+We could create a totally separate tool for this that would make use
+of existing infrastructure: =stitch=. The tool could be made up of a
+library and a binary - it could be useful outside Dogen.
+
+Inside Dogen, one can imagine a stereotype =Formatter= that requires a
+few dynamic extensions to locate the formatter template and the text
+template, and then internally Dogen can instantiate the =stitch=
+library to generate the files. The stitch invocation could also have
+"variables" used by the formatter template such as say the class name,
+etc.
+
+Use of the variables could be controlled by the same command as for
+inserting code, e.g.
+
+: <#@ some_variable #>
+
+One question is where the text templates and formatter templates
+should be stored. The data directory is a natural fit, but it does not
+make any sense to release the templates as users can't add their own.
+
+Another interesting idea is to generate a model that contains
+formatters, create a dynamic library and then have some kind of
+loading mechanism in Dogen. The interesting thing is that with static
+factories, dogen could make use of this without any code changes at
+all (e.g. loading the library into the process is sufficient to
+trigger registration, and then its up to the dynamic extensions to
+decide whether to use the formatters or not). So a user could create a
+model with formatters, add its own text templates, compile and link it
+and then add it to Dogen and then make use of the new formatters. The
+usual constraints apply such as ABI (ensure one is using the same
+compiler as used to compile Dogen, flags, etc).
+
+In reality stitch has two modes of operation, which we can think of as
+transformation types:
+
+- variable substitution: take a source file, take a dictionary and
+  replace variables with values from dictionary;
+- streamer generation: take a text template and create the output
+  streaming code that would generate it, potentially interspersed with
+  additional C++ processing logic.
+
+In a more general form, this is some kind of graph of transformations,
+where the streamer generation's output becomes a variable in the
+dictionary and the variable substitution transformation simply
+replaces this variable with all of the generated code. Conceptually,
+one can imagine there being other types of transformations, all of
+which result in setting a variable and ultimately there being the
+final variable substitution transformation. Of course, a command
+interface would probably not be suitable to represent this graph of
+transformations, so we will have to flatten it. However, internally
+the stitch library should be implemented like this. We may find other
+useful transformations in the future.
+
+The Dogen interface with the stitch library will also be flat, hard
+coded to these two types of transformations; this is just due to the
+structure of the dynamic extensions, which are not very suitable to
+describe a structure like a graph.
+
+Note: we should consider using [[https://github.com/jamboree/bustache][bustache]] for this.
+
+There is also [[https://www.youtube.com/watch?v%3DhTnoEjqUZjI][boostache]] but I could not find any code in github for
+it.
+
+*** COMPLETED Move =identifier_parser= to SML                         :story:
+    CLOSED: [2015-04-26 Sun 19:08]
+    CLOCK: [2015-04-26 Sun 19:07]--[2015-04-26 Sun 19:26] =>  0:19
+    CLOCK: [2015-04-26 Sun 18:36]--[2015-04-26 Sun 19:07] =>  0:31
+
+We will require parsing identifiers from JSON so we need access to
+identifier parser within SML.
+
+*** COMPLETED Move namespace formatter to formatters                  :story:
+    CLOSED: [2015-04-26 Sun 20:13]
+    CLOCK: [2015-04-26 Sun 19:27]--[2015-04-26 Sun 20:13] =>  0:46
+
+We need to make use of the namespace formatter from stitch so it needs
+to move into =formatters= model.
+
+Tasks:
+
+- create a namespace formatter inspired in =cpp_formatters=, and add a
+  scoped version;
+- update =cpp_formatters= to use it and delete the legacy one;
+- remove skeleton classes from =cpp= model.
+
+*** COMPLETED Split =identifier_parser= into utility and SML          :spike:
+    CLOSED: [2015-04-26 Sun 20:47]
+    CLOCK: [2015-04-26 Sun 20:26]--[2015-04-26 Sun 20:47] =>  0:21
+
+We can't really have a stitch dependency in SML just because of
+=identifier_parser=. In reality, the bits of identifier parser we need
+are quite generic. Move them to utility.
+
+*** COMPLETED Add namespace support to stitch templates               :story:
+    CLOSED: [2015-04-26 Sun 21:32]
+    CLOCK: [2015-04-26 Sun 20:47]--[2015-04-26 Sun 21:32] =>  0:45
+    CLOCK: [2015-04-26 Sun 20:15]--[2015-04-26 Sun 20:26] =>  0:11
+
+At present we are having to manually add the namespaces to the
+templates. It would be nice to pass it in via a declaration and have
+it rendered using namespace formatting (the same as we use for knit).
+
+Tasks:
+
+- move identifier parser to SML
+- move namespaces formatter to =formatters::cpp=
+- add new field for namespaces to stitch
+- use both from within stitch
+
+*** COMPLETED Create a forward declarations formatter using stitch    :story:
+    CLOSED: [2015-04-26 Sun 22:45]
+    CLOCK: [2015-04-26 Sun 22:09]--[2015-04-26 Sun 22:47] =>  0:38
+    CLOCK: [2015-04-26 Sun 21:46]--[2015-04-26 Sun 22:09] =>  0:23
+    CLOCK: [2015-04-26 Sun 16:50]--[2015-04-26 Sun 18:27] =>  1:37
+    CLOCK: [2015-04-26 Sun 12:11]--[2015-04-26 Sun 12:51] =>  0:40
+    CLOCK: [2015-04-26 Sun 11:47]--[2015-04-26 Sun 12:10] =>  0:23
+    CLOCK: [2015-04-26 Sun 08:25]--[2015-04-26 Sun 08:33] =>  0:08
+    CLOCK: [2015-04-25 Sat 20:59]--[2015-04-25 Sat 21:10] =>  0:11
+    CLOCK: [2015-04-25 Sat 20:24]--[2015-04-25 Sat 20:58] =>  0:34
+
+We need to start making use of stitch in dogen. To start off with, we
+will manually run the stitch command against a template to generate
+the =cpp= file and include the header file from the formatter. We also
+need to inject the stitch file name to the list of ignores, probably
+by ignoring =*_stitch.cpp=, =*_stitch.hpp= and =*.stitch=. This should
+avoid clashes with the source code of stitch itself.
+
+*Tasks*:
+
+- transformer to return a list of formattables; objects that have
+  forward declarations need at least two types in c++ for each SML
+  type. We should do this across the board.
+- forward declarations type needs to know if its a class or enum, and
+  if enum the type; as well as name.
+- add method in transformer to create the forward declarations info.
+- ensure forward declarations have header guard populated in
+  expansion.
+- create a forward declarations formatter and register it (add
+  container in registrar, etc.)
+- update formatters workflow to visit forward declarations and  format
+  them.
+- implement the stitcher template for forward declarations.
+- solve the relocation problem and implement serialisation forward
+  declarations. actually, in truth, it is a totally separate forward
+  declarations formatter.
+
+** Deprecated

@@ -1,0 +1,217 @@
+#+title: Sprint Backlog 76
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- wrap things up with yarn refactor and start quilt refactor.
+- get continuous builds working again.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-12-21 Mon 23:38]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *12:03* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 12:03   |       |      |
+| Active                                                                      |         | 12:03 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 1:06 |
+| COMPLETED Create a blog post on pull request driven development             |         |       | 1:20 |
+| COMPLETED Create visitor and exception yarn types                           |         |       | 7:43 |
+| COMPLETED Yarn minor tidy-ups                                               |         |       | 1:17 |
+| POSTPONED Remove =service= stereotype                                       |         |       | 0:18 |
+| POSTPONED Update copyright notices                                          |         |       | 0:19 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-12-21 Mon 23:38]
+    CLOCK: [2015-12-21 Mon 23:11]--[2015-12-21 Mon 23:38] =>  0:27
+    CLOCK: [2015-12-08 Tue 23:36]--[2015-12-08 Tue 23:47] =>  0:11
+    CLOCK: [2015-12-08 Tue 22:46]--[2015-12-08 Tue 22:54] =>  0:08
+    CLOCK: [2015-12-08 Tue 22:07]--[2015-12-08 Tue 22:27] =>  0:20
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Improvements to project layout                          :story:
+    CLOSED: [2015-12-08 Tue 22:23]
+
+*Rationale*: the bits we want to implement of this story have been
+implemented, the rest we won't be implementing.
+
+This story keeps track of general ideas around project layout.
+
+Given all of the ideals floating around (mutli-language needle, model
+groups, etc), there is a general direction in which the projects
+layout seems to be evolving. This story captures that direction.
+
+: / projects
+:   / config -> not the best of names, still needs some thinking.
+:   / dynamic
+:   / sanity
+:   / dia -> whilst we use it for the frontend, this is not frontend specific.
+:   / formatting -> rename of the formatters model. Generic formatting code.
+:   / tack
+    / tack.json
+:   / tack.dia
+:   / tack.xsd -> XML schema support (vision)
+:    / <all other tack importers>
+:   / backend
+:     / common -> current backend model. all code common across backends.
+:     / quilt -> model group for "native models"
+:       / cpp
+:       / csharp (vision)
+:       / java (vision)
+:       / <all other languages>
+:     / pleat -> model group for "cross-language compatible" models
+:       / cpp (vision)
+:       / csharp (vision)
+:       / java (vision)
+:       / <all other languages>
+:   / test_models
+:     / knit -> consider splitting them by tool?
+:       / all_primitives
+:       / <all other knit test models>
+:     / stitch -> consider splitting them by tool?
+:       / seam
+:   / utility -> consider renaming to common? or find a sewing term for this?
+:   / knit
+:   / knitter
+:   / stitch
+:   / stitcher
+
+*Notes*:
+
+- We settled on =common= for models to house shared code; =core= was
+  also considered, but its not always the case that the shared code is
+  "core code".
+- note that when we say =backend=, =frontend= and =middle-end= we are
+  implicitly talking about =knit=. Its not very elegant to have the
+  knit internals so prominent at the top, but its not obvious how else
+  to organise the code.
+- it would be nice to have top-level folders for tools (e.g. =knit=)
+  that would contain both the =knit= library and the =knitter=
+  tool. However we haven't found a good way of structuring the folders
+  that way.
+
+*** COMPLETED Create a blog post on pull request driven development   :story:
+    CLOSED: [2015-12-11 Fri 13:32]
+    CLOCK: [2015-12-11 Fri 12:12]--[2015-12-11 Fri 13:32] =>  1:20
+
+Pen some ideas down on the advantages of the PR process.
+
+*** COMPLETED Create visitor and exception yarn types                 :story:
+    CLOSED: [2015-12-11 Fri 22:29]
+    CLOCK: [2015-12-11 Fri 21:31]--[2015-12-11 Fri 22:29] =>  0:58
+    CLOCK: [2015-12-10 Thu 21:34]--[2015-12-10 Thu 23:20] =>  1:46
+    CLOCK: [2015-12-10 Thu 17:57]--[2015-12-10 Thu 18:37] =>  0:40
+    CLOCK: [2015-12-10 Thu 07:11]--[2015-12-10 Thu 07:51] =>  0:40
+    CLOCK: [2015-12-09 Wed 21:04]--[2015-12-09 Wed 23:38] =>  2:34
+    CLOCK: [2015-12-08 Tue 23:48]--[2015-12-09 Wed 00:13] =>  0:25
+    CLOCK: [2015-12-08 Tue 22:55]--[2015-12-08 Tue 23:35] =>  0:40
+
+We should not have object types for these two cases; these are
+actually full blown entities. For exceptions we should have
+inheritance support but not for visitors. Add only the properties that
+make sense for the type.
+
+- create a new concept to model the ability to have relationships with
+  other elements: relatable?
+- move relationships, is final, is parent, is child, is visitable, is
+  root parent visitable to relatable.
+- move is immutable, is fluent to stateful.
+- remove stateful element.
+- make object a relatable, statuful element.
+- add visitor as an element.
+- add exception as a relatable element. Actually we probably should
+  add it as an element for now and update the inheritance story for
+  exceptions.
+- considered making concept Generalisable, but it becomes quite
+  confusing because refinement is not quite the same thing as
+  inheritance. Cancelled the change in the end.
+
+*** CANCELLED Remove =is_root_parent_visitable=                       :story:
+    CLOSED: [2015-12-08 Tue 22:57]
+
+*Rationale*: this is an optimisation to stop us from having to query
+the container. As such it is legitimate. Same with is visitable.
+
+We should just use the =visits=, =visited_by=, etc relationships. The
+existing flag will break with multiple inheritance.
+
+*** COMPLETED Yarn minor tidy-ups                                     :story:
+    CLOSED: [2015-12-21 Mon 23:37]
+    CLOCK: [2015-12-11 Fri 22:52]--[2015-12-12 Sat 00:09] =>  1:17
+
+Go through all files in yarn and do all the minor tidy-ups we haven't
+yet done:
+
+- remove context, use model references directly
+- add comments: purpose of the class, explanation of algorithms,
+  whether the class is expected to work on a partial or merged model,
+  etc.
+- break long functions.
+
+Classes done:
+
+- all except resolver.
+
+*** POSTPONED Remove =service= stereotype                             :story:
+    CLOSED: [2015-12-21 Mon 23:37]
+    CLOCK: [2015-12-08 Tue 22:27]--[2015-12-08 Tue 22:45] =>  0:18
+
+This really just means non-generatable, or do not generate. We already
+have a stereotype for this. Remove =service= and any other stereotype
+which is not being used such as =value_object= etc.
+
+Actually, non-generatable is not a stereotype really. We should
+instead have some meta-data that can affect generation:
+
+- do not generate: do nothing at all. For references only. If a file
+  exists with this file name, it will be deleted as part of
+  housekeeping.
+- generate blank file if it doesn't exist: we don't even want a
+  template.
+- generate with content if it doesn't exist, do not touch otherwise:
+  what we call services at the moment. Generate a "template" that then
+  gets filled in manually.
+- generate and merge: merge the contents of the generated file with
+  the current contents in the file system. When we support merging.
+- generate and overwrite: generate the file and overwrite whatever
+  exists in the file system.
+
+This could be called "generation policy".
+
+The second behaviour we get for free with services is that we disable
+all facets except for types. A few points:
+
+- we may want to have io, serialisation, etc. This is not possible at
+  present. If a state of a service is made up of supported types, we
+  could even use existing code generation.
+- in order for this to be implemented correctly we need to hook in to
+  the enablement management somehow. In addition, it seems each facet
+  can have its own generation policy. For example we may want to
+  manually create types but automatically generate io.
+- the best way to handle this may be to setup "enablement profiles"
+  that the user can hook up to. For example we could have a "default"
+  profile that enables all facets (or uses facet defaults), a second
+  "service" profile that enables types with partial generation and io
+  with full generation and so on. We probably also need "generation
+  profiles" to go with "enablement profiles".
+
+*** POSTPONED Update copyright notices                                :story:
+    CLOSED: [2015-12-21 Mon 23:37]
+    CLOCK: [2015-12-10 Thu 06:51]--[2015-12-10 Thu 07:10] =>  0:19
+
+We need to update all notices to reflect personal ownership until DDC
+was formed, and then ownership by DDC.
+
+- first update to personal ownership has been done, but we need to
+  test if multiple copyright entries is properly supported.
+
+** Deprecated

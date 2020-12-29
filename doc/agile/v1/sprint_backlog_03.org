@@ -1,0 +1,404 @@
+#+title: Sprint Backlog 03
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Continue work on moving "generic" types from the quilt models into
+  yarn.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-08-01 Tue 20:39]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *30:18* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 30:18   |       |      | 100.0 |
+| Active                                                                      |         | 30:18 |      | 100.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       | 0:19 |   1.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:06 |  10.2 |
+| COMPLETED Create a tagging checklist                                        |         |       | 0:07 |   0.4 |
+| COMPLETED Tidy-up post-processing validation                                |         |       | 3:41 |  12.2 |
+| COMPLETED Allow logging during initialisation                               |         |       | 1:16 |   4.2 |
+| COMPLETED Refactor =yarn.dia=                                               |         |       | 1:39 |   5.4 |
+| COMPLETED Add meta-type support to yarn                                     |         |       | 9:34 |  31.6 |
+| COMPLETED Use the archetype locations repository in yarn                    |         |       | 1:16 |   4.2 |
+| POSTPONED Rename =meta_type= in JSON                                        |         |       | 0:19 |   1.0 |
+| POSTPONED Add canonical archetype support to yarn                           |         |       | 1:11 |   3.9 |
+| POSTPONED Move external module processing into yarn                         |         |       | 0:55 |   3.0 |
+| POSTPONED Create an exogenous model                                         |         |       | 6:55 |  22.8 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-07-17 Mon 20:57]
+    CLOCK: [2017-07-17 Mon 20:38]--[2017-07-17 Mon 20:57] =>  0:19
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.02, "Caminhos de Ferro"
+
+#+begin_src markdown
+![Caminhos de Ferro de Benguela](http://www.angolabelazebelo.com/wp-content/uploads/2017/03/roteiro_comboio-mala_pedro-carreno1-.jpg)
+_Carriage from Caminhos de Ferro de Benguela, the Benguela Railway, Namibe. (C)  Pedro Cardoso._
+
+Overview
+=======
+
+The core objective of this sprint was to refactor yarn to fit the structure of a code generator in the Model Driven Engineering literature, in particular [Model-Driven Software Engineering in Practice](https://www.amazon.co.uk/Model-Driven-Software-Engineering-Practice-Synthesis/dp/1608458822).
+
+With this work, yarn now becomes the core model housing both the meta-model and most of its transformations.
+
+User visible changes
+===============
+There are no user visible changes in this sprint.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/v1/sprint_backlog_02.org).
+
+Next Sprint
+===========
+In the next sprint we'll resume the work on moving kernel-agnostic transformations from the kernels into yarn.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.02_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.02/dogen_1.0.02_amd64-applications.deb)
+- [dogen-1.0.02-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.02/dogen-1.0.02-Darwin-x86_64.dmg)
+- [dogen-1.0.02-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-1.0.02-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/887172610487922688][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6292938732865617920/][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-08-01 Tue 20:39]
+    CLOCK: [2017-07-28 Fri 12:33]--[2017-07-28 Fri 12:37] =>  0:04
+    CLOCK: [2017-07-28 Fri 12:21]--[2017-07-28 Fri 12:32] =>  0:11
+    CLOCK: [2017-07-28 Fri 10:01]--[2017-07-28 Fri 10:33] =>  0:32
+    CLOCK: [2017-07-27 Thu 06:47]--[2017-07-27 Thu 07:32] =>  0:45
+    CLOCK: [2017-07-26 Wed 19:02]--[2017-07-26 Wed 19:18] =>  0:16
+    CLOCK: [2017-07-23 Sun 15:32]--[2017-07-23 Sun 15:45] =>  0:13
+    CLOCK: [2017-07-18 Tue 17:13]--[2017-07-18 Tue 17:47] =>  0:34
+    CLOCK: [2017-07-18 Tue 05:40]--[2017-07-18 Tue 05:58] =>  0:18
+    CLOCK: [2017-07-17 Mon 20:58]--[2017-07-17 Mon 21:05] =>  0:07
+    CLOCK: [2017-07-17 Mon 20:31]--[2017-07-17 Mon 20:37] =>  0:06
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Create a tagging checklist                              :story:
+    CLOSED: [2017-07-18 Tue 06:43]
+    CLOCK: [2017-07-18 Tue 06:36]--[2017-07-18 Tue 06:43] =>  0:07
+
+We now have a number of things that need to be done for the tag of the
+sprint. We should document these to make sure we tag the releases
+correctly.
+
+Checklist:
+
+- make a copy of current sprint and name it current sprint + 1;
+- close current sprint.
+- sign tag with key. Push tag separately so we build the correct
+  windows version.
+- open new sprint, updating CMake version, README and appveyor
+  version. This should all be in one commit.
+- write up release notes, publish them in github.
+- when tag build is finished, announce on gitter, twitter and linked
+  in.
+- update bintray with the correct release notes.
+
+*** COMPLETED Tidy-up post-processing validation                      :story:
+    CLOSED: [2017-07-23 Sun 13:10]
+    CLOCK: [2017-07-23 Sun 13:11]--[2017-07-23 Sun 14:21] =>  1:10
+    CLOCK: [2017-07-23 Sun 12:49]--[2017-07-23 Sun 13:10] =>  0:21
+    CLOCK: [2017-07-23 Sun 12:41]--[2017-07-23 Sun 12:48] =>  0:07
+    CLOCK: [2017-07-23 Sun 12:18]--[2017-07-23 Sun 12:40] =>  0:22
+    CLOCK: [2017-07-23 Sun 11:51]--[2017-07-23 Sun 12:17] =>  0:26
+    CLOCK: [2017-07-23 Sun 11:15]--[2017-07-23 Sun 11:50] =>  0:35
+    CLOCK: [2017-07-20 Thu 07:20]--[2017-07-20 Thu 07:32] =>  0:12
+    CLOCK: [2017-07-20 Thu 06:51]--[2017-07-20 Thu 07:19] =>  0:28
+
+Tasks:
+
+- use the traversal instead of rolling our own loop.
+- validate injected types too.
+- add validation for meta-model types.
+
+*** COMPLETED Allow logging during initialisation                     :story:
+    CLOSED: [2017-07-25 Tue 18:31]
+    CLOCK: [2017-07-25 Tue 17:50]--[2017-07-25 Tue 18:31] =>  0:41
+    CLOCK: [2017-07-25 Tue 08:11]--[2017-07-25 Tue 08:46] =>  0:35
+
+At present we assume the log has not been initialised during
+initialisation. The only reason for this is with unit testing because
+each test initialises the log differently. However, one simple way
+around this is to have a log file for the entire test suite and
+separate log files for each test as we have now. Initialisation
+logging would go in this main file.
+
+This is a bit of a more pressing issue because we now make use of name
+builders during initialisation in order to setup the formatter's
+meta-type.
+
+*** COMPLETED Refactor =yarn.dia=                                     :story:
+    CLOSED: [2017-07-28 Fri 12:05]
+    CLOCK: [2017-07-28 Fri 12:06]--[2017-07-28 Fri 12:20] =>  0:12
+    CLOCK: [2017-07-28 Fri 11:40]--[2017-07-28 Fri 12:05] =>  0:25
+    CLOCK: [2017-07-28 Fri 11:02]--[2017-07-28 Fri 11:39] =>  0:37
+    CLOCK: [2017-07-28 Fri 10:35]--[2017-07-28 Fri 10:58] =>  0:23
+
+There are a number of small issues with =yarn.dia=, which has
+bit-rotted somewhat; address them.
+
+Tasks:
+
+- use remove reducer; use =remove_if= instead.
+
+*** COMPLETED Add meta-type support to yarn                           :story:
+    CLOSED: [2017-07-28 Fri 12:30]
+    CLOCK: [2017-07-26 Wed 21:45]--[2017-07-26 Wed 22:16] =>  0:31
+    CLOCK: [2017-07-25 Tue 23:43]--[2017-07-25 Tue 23:59] =>  0:16
+    CLOCK: [2017-07-25 Tue 23:30]--[2017-07-25 Tue 23:42] =>  0:12
+    CLOCK: [2017-07-25 Tue 23:26]--[2017-07-25 Tue 23:29] =>  0:03
+    CLOCK: [2017-07-25 Tue 23:06]--[2017-07-25 Tue 23:25] =>  0:19
+    CLOCK: [2017-07-25 Tue 22:15]--[2017-07-25 Tue 23:06] =>  0:51
+    CLOCK: [2017-07-25 Tue 08:05]--[2017-07-25 Tue 08:11] =>  0:06
+    CLOCK: [2017-07-23 Sun 18:31]--[2017-07-23 Sun 19:36] =>  1:05
+    CLOCK: [2017-07-23 Sun 18:12]--[2017-07-23 Sun 18:30] =>  0:18
+    CLOCK: [2017-07-23 Sun 17:56]--[2017-07-23 Sun 18:11] =>  0:15
+    CLOCK: [2017-07-23 Sun 17:35]--[2017-07-23 Sun 17:56] =>  0:21
+    CLOCK: [2017-07-23 Sun 15:46]--[2017-07-23 Sun 17:34] =>  1:48
+    CLOCK: [2017-07-20 Thu 06:46]--[2017-07-20 Thu 06:51] =>  0:05
+    CLOCK: [2017-07-19 Wed 21:08]--[2017-07-19 Wed 21:17] =>  0:09
+    CLOCK: [2017-07-19 Wed 20:52]--[2017-07-19 Wed 21:07] =>  0:15
+    CLOCK: [2017-07-19 Wed 20:34]--[2017-07-19 Wed 20:51] =>  0:17
+    CLOCK: [2017-07-19 Wed 20:05]--[2017-07-19 Wed 20:33] =>  0:28
+    CLOCK: [2017-07-19 Wed 19:49]--[2017-07-19 Wed 20:04] =>  0:15
+    CLOCK: [2017-07-19 Wed 19:24]--[2017-07-19 Wed 19:48] =>  0:24
+    CLOCK: [2017-07-19 Wed 18:20]--[2017-07-19 Wed 19:18] =>  0:58
+    CLOCK: [2017-07-18 Tue 19:01]--[2017-07-18 Tue 19:11] =>  0:10
+    CLOCK: [2017-07-18 Tue 18:06]--[2017-07-18 Tue 18:16] =>  0:10
+    CLOCK: [2017-07-18 Tue 17:47]--[2017-07-18 Tue 18:05] =>  0:18
+
+At present we are relying on type indexes to create containers of
+archetype locations. This has worked so far, but it does mean that we
+cannot serialise (and thus code-generate) any type using these
+containers.
+
+We could try to add support for type index serialisation, but this is
+non-trivial because it involves registration of types. This facility
+already exists in the guts of boost serialisation, so it does not make
+sense to roll our own as well; however, it will require quite a bit of
+fiddling to understand the boost serialisation implementation. It may
+even required some form of mapping between the =std::type_index= and
+boost's implementation.
+
+An easier solution to this problem, which is also conceptually
+sensible, is to support meta-modeling locations. Just as we have
+modeling locations - i.e. positions in modeling space - one can
+imagine that there are also positions in meta-modeling space, with
+similar properties (external modules, internal modules and so
+forth). These should by all means be static on meta-model elements
+(e.g. yarn's =object= is located in =dogen::yarn::meta_model= and that
+is the same for all of its instances) but given that code generation
+does not support this pattern, we need to simulate it by having
+instance level copies of the meta-model location. This is expensive
+but its also easy to do, so we'll go with it for now.
+
+Tasks:
+
+- add a new concept: =MetaNameable= with one property: =meta_name=.
+- create a transform to populate all of yarn's meta-types.
+- add a factory in each kernel's fabric to create meta-names for
+  fabric elements.
+- populate model and global module meta-names.
+- add validation rule to ensure meta-model name is not empty. We
+  cannot use the existing validation rules since meta-types will be
+  duplicated.
+- update element construction in fabric to use factory.
+- update formatters to return meta-name.
+- update the type index maps to use the meta-name's id instead.
+- update the archetype location containers that are using the type
+  index to use the meta name's id.
+- remove any references to type index.
+
+Notes:
+
+- actually this cannot be part of pre-processing as we will miss the
+  injected types such as global module, visitor, etc.
+- create a =meta_name_factory= in meta-model which generates names for
+  elements. This can be simply hard-coded on the names,
+  e.g. =make_object_name=, etc.
+- update the frontends to set the meta-name when constructing the
+  elements.
+
+Problems:
+
+- we are using meta-type and meta-name, use just one.
+- c# project id's seem to have weird id's:
+
+: Processing element: <dogen><test_models><all_path_and_directory_settings><dogen.test_models.all_path_and_directory_settings.sln>
+: for archetype: quilt.csharp.visual_studio.solution
+
+*** COMPLETED Use the archetype locations repository in yarn          :story:
+    CLOSED: [2017-07-28 Fri 16:15]
+    CLOCK: [2017-07-28 Fri 16:04]--[2017-07-28 Fri 16:18] =>  0:14
+    CLOCK: [2017-07-28 Fri 15:35]--[2017-07-28 Fri 16:03] =>  0:28
+    CLOCK: [2017-07-28 Fri 13:03]--[2017-07-28 Fri 13:13] =>  0:10
+    CLOCK: [2017-07-28 Fri 12:38]--[2017-07-28 Fri 13:02] =>  0:24
+
+Originally we created a repository for archetype locations, with
+several indices. However, it seems we forgotten about it and are
+passing around various containers of archetype locations. We need to
+remove these and use the repository. We also need to add it to
+context.
+
+We can now have the registrar own the repository, populate it all
+during registration and return it at the start, via the kernel API and
+the archetype location repository factory.
+
+Notes:
+
+- delete all usages of the list of archetype locations, make use of
+  repository instead.
+- add archetype_locations_by_meta_name to repository.
+- kernels should only return
+  =archetype_locations_by_meta_name=. Repository factory should use
+  this to build all containers. Factory should take multiple of
+  these. We should have a builder instead of a factory.
+
+*** POSTPONED Rename =meta_type= in JSON                              :story:
+    CLOSED: [2017-08-01 Tue 20:39]
+    CLOCK: [2017-07-26 Wed 22:17]--[2017-07-26 Wed 22:36] =>  0:19
+
+Now we have meta-names we should use the same terminology for JSON
+documents.
+
+*** POSTPONED Add canonical archetype support to yarn                 :story:
+    CLOSED: [2017-08-01 Tue 20:39]
+    CLOCK: [2017-07-28 Fri 16:19]--[2017-07-28 Fri 16:43] =>  0:24
+    CLOCK: [2017-07-18 Tue 07:28]--[2017-07-18 Tue 07:33] =>  0:05
+    CLOCK: [2017-07-18 Tue 06:45]--[2017-07-18 Tue 07:27] =>  0:42
+
+We need to add a new attribute in context which captures the canonical
+archetypes.
+
+Notes:
+
+- kernel must also return canonical archetype by element type
+  index. Perhaps we should have a struct that aggregates both:
+  archetype locations for meta-type? Or kernel can just return a
+  =std::pair=.
+- at present we have placed the canonical archetype resolution as part
+  of the element properties. However, we do not need to have this at
+  the element level since its a meta-type property and can be
+  determined up-front. However, we do need to resolve a name into a
+  meta-type before we can resolve a meta-type into a concrete
+  archetype.
+- we need to unpick the notion of whether a formatter is "includible"
+  or not from the notion of canonical archetypes. Canonical archetypes
+  is meta-model concept: given a facet and a meta-model type, which
+  archetype represents the "key" definition of the element. It just so
+  happens that this function has a use in identifying the files to
+  include.
+
+Tasks:
+
+- add a map from name id to meta-name id in intermediate model.
+- add a map from meta name id to map of canonical archetype to
+  archetype location.
+
+*** POSTPONED Move external module processing into yarn               :story:
+    CLOSED: [2017-08-01 Tue 20:39]
+    CLOCK: [2017-07-26 Wed 22:37]--[2017-07-26 Wed 23:32] =>  0:55
+
+At present we have a hack in =yarn.dia= whereby we are looking for a
+key =yarn.dia.external_modules= and then using it to populate the
+external module path of all names read on that model, as we traverse
+the graph of dia objects.
+
+The problem is, this functionality is also required on other frontends
+such as JSON. We should use the traditional annotation machinery to
+populate the external modules inside of yarn pre-processing.
+
+One thing to bear in mind is that we need to trash all containers and
+re-insert all elements, because the IDs will change as part of this
+exercise.
+
+*** POSTPONED Create an exogenous model                               :story:
+    CLOSED: [2017-08-01 Tue 20:39]
+    CLOCK: [2017-08-01 Tue 19:03]--[2017-08-01 Tue 20:34] =>  1:31
+    CLOCK: [2017-07-30 Sun 20:28]--[2017-07-30 Sun 20:39] =>  0:11
+    CLOCK: [2017-07-30 Sun 20:09]--[2017-07-30 Sun 20:27] =>  0:18
+    CLOCK: [2017-07-30 Sun 18:57]--[2017-07-30 Sun 19:23] =>  0:26
+    CLOCK: [2017-07-30 Sun 18:53]--[2017-07-30 Sun 18:56] =>  0:03
+    CLOCK: [2017-07-30 Sun 18:38]--[2017-07-30 Sun 18:52] =>  0:14
+    CLOCK: [2017-07-30 Sun 18:20]--[2017-07-30 Sun 18:37] =>  0:17
+    CLOCK: [2017-07-30 Sun 13:25]--[2017-07-30 Sun 13:43] =>  0:18
+    CLOCK: [2017-07-30 Sun 11:05]--[2017-07-30 Sun 11:30] =>  0:25
+    CLOCK: [2017-07-30 Sun 10:12]--[2017-07-30 Sun 11:01] =>  0:49
+    CLOCK: [2017-07-29 Sat 18:16]--[2017-07-29 Sat 18:26] =>  0:10
+    CLOCK: [2017-07-29 Sat 17:31]--[2017-07-29 Sat 18:01] =>  0:30
+    CLOCK: [2017-07-29 Sat 13:45]--[2017-07-29 Sat 14:41] =>  0:56
+    CLOCK: [2017-07-29 Sat 08:46]--[2017-07-29 Sat 09:14] =>  0:28
+    CLOCK: [2017-07-28 Fri 23:21]--[2017-07-28 Fri 23:40] =>  0:19
+
+At present we are allowing the frontends to directly create
+intermediate models. However, this doesn't make a lot of sense: there
+are many properties in the intermediate models which should not be
+touched by the frontends. We should have a specific model that has
+only the properties that can be set by the frontends -
+=exogenous_model=. The exogenous model chain is then responsible for
+converting it into an intermediate model.
+
+Tasks:
+
+- create the exogenous model with the required attributes. Add a root
+  module, remove model name. All containers should be lists of a pair
+  of scribble group to concrete element.
+- move annotations transform to exogenous chain. Add a transform to
+  update element names by reading model modules and external modules.
+- drop scribble groups from intermediate model.
+- add an adaptor to convert from exogenous model to intermediate
+  model.
+- use some kind of reference to figure out where to place the
+  documentation of a module. We can't use the IDs any longer. We could
+  simply remember the list iterators. Since we are only pushing back
+  into the list, the iterators should remain valid. However, for this
+  to work we need to add support to iterators in dogen or manually
+  create the context/repository.
+- Refactor yarn.dia, splitting out the model from the repository and
+  renaming repository to context.
+
+Notes:
+
+- we need a completely different annotations transform. In the new
+  world, scribble updating and annotation updating are done in one go
+  by the updater, who has the annotation group as state. The annotation
+  classes need to be updated to take in just one scribble group rather
+  than a map. The updater needs to be a regular element visitor. The
+  transform runs on the exogenous model.
+- repository in yarn.dia must not rely on qualified names for lookups;
+  instead it must have a pointer to the element, which is known to be
+  owned by the model. To make life easier this could be a shared
+  pointer with a custom deleter.
+
+Steps:
+
+- update scribble group with stereotypes.
+- convert scribble group into annotation group.
+- process element annotation.
+- process attribute annotations, if stateful.
+
+** Deprecated

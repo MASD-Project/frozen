@@ -1,0 +1,823 @@
+#+title: Sprint Backlog 91
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- implement wale;
+- integrate wale and stitch with knit;
+- implement dart.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-11-07 Mon 09:46]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *45:50* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 45:50   |       |      | 100.0 |
+| Active                                                                      |         | 45:50 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 1:23 |   3.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       | 0:22 |   0.8 |
+| COMPLETED Improve bintray support                                           |         |       | 2:26 |   5.3 |
+| COMPLETED Add logo with white background                                    |         |       | 0:14 |   0.5 |
+| COMPLETED Consider renaming =diagrams= to =input_models=                    |         |       | 0:38 |   1.4 |
+| COMPLETED Add kvp support to annotations                                    |         |       | 0:37 |   1.3 |
+| COMPLETED Implement wale                                                    |         |       | 7:00 |  15.3 |
+| COMPLETED Add artefact source properties support                            |         |       | 3:11 |   6.9 |
+| COMPLETED Stitch not writing when template has changed                      |         |       | 0:33 |   1.2 |
+| COMPLETED Implement helper headers using wale                               |         |       | 2:40 |   5.8 |
+| COMPLETED Implement formatter headers using wale                            |         |       | 0:30 |   1.1 |
+| COMPLETED Add profile support to stitch                                     |         |       | 3:48 |   8.3 |
+| COMPLETED Changes to stitch to accommodate wale                             |         |       | 9:34 |  20.9 |
+| COMPLETED Implement formatter helpers implementation using stitch and wale  |         |       | 5:00 |  10.9 |
+| COMPLETED Merge stitch templates with formatters                            |         |       | 3:14 |   7.1 |
+| COMPLETED Fix borked build due to seam errors                               |         |       | 0:12 |   0.4 |
+| COMPLETED Various fixes due to stitch changes                               |         |       | 0:22 |   0.8 |
+| COMPLETED Implement formatter implementation using stitch and wale          |         |       | 1:04 |   2.3 |
+| COMPLETED Move stitching into knit                                          |         |       | 2:13 |   4.8 |
+| COMPLETED Integration of stitch and dogen                                   |         |       | 0:26 |   0.9 |
+| POSTPONED Supply model references via meta-data rather than command line    |         |       | 0:23 |   0.8 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-11-07 Mon 09:17]
+    CLOCK: [2016-11-03 Thu 17:22]--[2016-11-03 Thu 17:31] =>  0:09
+    CLOCK: [2016-10-25 Tue 11:02]--[2016-10-25 Tue 11:13] =>  0:11
+    CLOCK: [2016-10-24 Mon 18:28]--[2016-10-24 Mon 18:33] =>  0:05
+    CLOCK: [2016-10-24 Mon 11:32]--[2016-10-24 Mon 11:46] =>  0:14
+    CLOCK: [2016-10-24 Mon 11:12]--[2016-10-24 Mon 11:31] =>  0:19
+    CLOCK: [2016-10-24 Mon 10:55]--[2016-10-24 Mon 11:11] =>  0:16
+    CLOCK: [2016-10-24 Mon 10:01]--[2016-10-24 Mon 10:10] =>  0:09
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-10-24 Mon 10:24]
+    CLOCK: [2016-10-24 Mon 10:31]--[2016-10-24 Mon 10:39] =>  0:08
+    CLOCK: [2016-10-24 Mon 10:10]--[2016-10-24 Mon 10:24] =>  0:14
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.90.0, "Aida"
+
+#+begin_src markdown
+Overview
+========
+One more sprint of internal refactorings, leading us close to the end result. The focus continued on the ```quilt.cpp``` model.
+
+There were still a number of user visible changes:
+
+- **introduction of profiles**: meaning its no longer necessary to setup each facet's configuration on each diagram; users can create or reuse profiles.
+- **integration of stereotypes with profiles**: it's now possible to annotate a type with a stereotype and, if a profile with the same name exists, dogen will apply the profile to the type.
+- **deprecation of the ```service``` stereotype**: it has been replaced by ```handcrafted```. With this change we now generate class skeletons for hand-crafted code.
+- **mixing of hand-crafted and generated code code is now possible at the element level**: if a hand-crafted type declares a number of attributes and marks the IO facet as overwrittable, dogen will generate IO support (and serialisation and so forth) for this element.
+- **rename of a lot of the meta-data tags**: removed the postfix ```_formatter```.
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_90.org).
+#+end_src
+
+*** COMPLETED Improve bintray support                                 :story:
+    CLOSED: [2016-10-24 Mon 10:31]
+    CLOCK: [2016-10-25 Tue 08:39]--[2016-10-25 Tue 09:15] =>  0:36
+    CLOCK: [2016-10-25 Tue 08:13]--[2016-10-25 Tue 08:38] =>  0:25
+    CLOCK: [2016-10-24 Mon 20:31]--[2016-10-24 Mon 21:21] =>  0:50
+    CLOCK: [2016-10-24 Mon 17:30]--[2016-10-24 Mon 17:59] =>  0:29
+    CLOCK: [2016-10-24 Mon 10:25]--[2016-10-24 Mon 10:31] =>  0:06
+
+As with every end of sprint, try to massage bintray a bit more and see
+if we can fix some of the errors of the previous sprint.
+
+- fixed the path to bintray descriptor.
+
+*** COMPLETED Add logo with white background                          :story:
+    CLOSED: [2016-10-24 Mon 10:54]
+    CLOCK: [2016-10-24 Mon 10:40]--[2016-10-24 Mon 10:54] =>  0:14
+
+Now we started tweeting releases we need a version of the logo that
+has a background.
+
+*** COMPLETED Consider renaming =diagrams= to =input_models=          :story:
+    CLOSED: [2016-10-24 Mon 18:12]
+    CLOCK: [2016-10-24 Mon 18:13]--[2016-10-24 Mon 18:27] =>  0:14
+    CLOCK: [2016-10-24 Mon 18:02]--[2016-10-24 Mon 18:12] =>  0:10
+    CLOCK: [2016-10-24 Mon 16:43]--[2016-10-24 Mon 16:57] =>  0:14
+
+The name "diagrams" is a bit misleading. These are not just diagrams,
+they are specifically Dogen inputs. We need a name that is a bit more
+meaningful. For example, if we start creating models in JSON, it would
+render the directory name meaningless. We should call the directory
+=models=.
+
+In addition, models are really part of projects.
+
+One slight problem: we now have =models= and =test_models= at the same
+level, with very different meanings. We need a way to distinguish code
+generation inputs from generated code. We could call it
+=codegen.models= or =input_models=, in keeping with the conceptual
+model.
+
+Merged stories:
+
+*Consider moving dia diagrams to their own project*
+
+We originally create a diagrams top-level directory for all of the
+diagrams that generate dogen models. However it may make more sense to
+have the diagrams closer to the project they generate; for example a
+folder within the project. The downside of this approach is that we
+now have to make references across projects; we could use relative
+paths for this but the targets will still look verbose.
+
+We decided against this in the end as it's handy having all diagrams
+in one place.
+
+*** COMPLETED Add kvp support to annotations                          :story:
+    CLOSED: [2016-10-26 Wed 10:23]
+    CLOCK: [2016-10-26 Wed 09:45]--[2016-10-26 Wed 10:22] =>  0:37
+
+It would be nice if annotations supported kvps directly such that one
+could declare a field as "kvp" and then just read all kvps in one
+go. At present we only have wale as a use case but this may be useful
+for dogen in general.
+
+*** COMPLETED Implement wale                                          :story:
+    CLOSED: [2016-10-26 Wed 12:03]
+    CLOCK: [2016-10-26 Wed 10:47]--[2016-10-26 Wed 12:03] =>  1:16
+    CLOCK: [2016-10-26 Wed 10:24]--[2016-10-26 Wed 10:46] =>  0:22
+    CLOCK: [2016-10-26 Wed 09:20]--[2016-10-26 Wed 09:43] =>  0:23
+    CLOCK: [2016-10-25 Tue 15:06]--[2016-10-25 Tue 17:06] =>  2:00
+    CLOCK: [2016-10-25 Tue 14:56]--[2016-10-25 Tue 15:05] =>  0:09
+    CLOCK: [2016-10-25 Tue 14:25]--[2016-10-25 Tue 14:55] =>  0:30
+    CLOCK: [2016-10-25 Tue 11:47]--[2016-10-25 Tue 12:24] =>  0:37
+    CLOCK: [2016-10-25 Tue 10:39]--[2016-10-25 Tue 11:01] =>  0:22
+    CLOCK: [2016-10-25 Tue 10:21]--[2016-10-25 Tue 10:38] =>  0:17
+    CLOCK: [2016-10-25 Tue 10:04]--[2016-10-25 Tue 10:21] =>  0:17
+    CLOCK: [2016-10-25 Tue 09:16]--[2016-10-25 Tue 10:03] =>  0:47
+
+- manually create wale templates for header and implementation and do
+  a mental dry-run to ensure it will work. Do also a stitch template
+  manually for this exercise.
+- create project and library. We don't need a binary as there is no
+  use case for it.
+- implement library with a simple formatter that takes in a path to
+  template and a set of kvps. Add the ability to obtain all the keys
+  for a given template.
+
+After manually creating wale templates, it became obvious that the
+integration of stitch with wale is too complicated and adds little
+value. We have two alternatives:
+
+- copy and paste common'ish code into each stitch template. Does not
+  require any engineering effort, but the downside is any API change
+  will scale linearly with the number of formatters.
+- integrate stitch directly with wale. That is, instead of having a
+  high-level integration of the two tools, where stitch is not even
+  aware of wale, we can embed wale directly into stitch
+  templates. This approach requires a lot less engineering effort: a)
+  add kvps for wale into stitch b) instantiate the wale template as
+  part of the stitch template expansion. This provides us with all the
+  benefits of the previous approach with a much lower engineering
+  bill.
+
+A second point is the use of [[https://github.com/DomainDrivenConsulting/bustache][bustache]] vs rolling our own trivial
+mustache-like implementation:
+
+- if we use bustache we can, in the future, start to make use of
+  complex mustache templates. We don't have a use case for this now,
+  but there is no reason to preclude it either.
+- however, with bustache as a third-party dependency we now have to
+  worry about generating OSX and windows binaries for the
+  library. Until we do, the builds will break.
+
+For now, to make life easier we will roll our own. As soon as we have
+a stable windows environment we will move to bustache.
+
+Example changes to stitch template:
+
+: <#@ wale.template="abc" #>
+: <#@ wale.kvp.class_name="a class" #>
+: <#% $(stitch.wale.template_instantiation_result) #>
+
+- add a trivial validator to ensure templates are syntactically
+  correct.
+- add a check to make sure all keys required by the template have been
+  supplied and all keys supplied by the user have been used.
+
+*** COMPLETED Add artefact source properties support                  :story:
+    CLOSED: [2016-10-27 Thu 16:01]
+    CLOCK: [2016-10-27 Thu 15:46]--[2016-10-27 Thu 16:00] =>  0:14
+    CLOCK: [2016-10-27 Thu 14:40]--[2016-10-27 Thu 15:45] =>  1:05
+    CLOCK: [2016-10-27 Thu 11:31]--[2016-10-27 Thu 12:14] =>  0:43
+    CLOCK: [2016-10-27 Thu 08:56]--[2016-10-27 Thu 08:58] =>  0:02
+    CLOCK: [2016-10-27 Thu 07:40]--[2016-10-27 Thu 07:54] =>  0:14
+    CLOCK: [2016-10-26 Wed 22:45]--[2016-10-26 Wed 22:55] =>  0:10
+    CLOCK: [2016-10-26 Wed 22:01]--[2016-10-26 Wed 22:44] =>  0:43
+
+- add properties to artefact properties, with enumeration for source:
+  stock formatter (current), wale formatter, stitch formatter. Other
+  possible types: null formatter, copy formatter.
+- add new expander.
+- hook it in with formattables workflow.
+
+Examples:
+
+: quilt.cpp.serialization.class_header.formatting_style=stock
+: quilt.cpp.serialization.class_header.formatting_input=a/b/c.wale
+
+*** COMPLETED Stitch not writing when template has changed            :story:
+    CLOSED: [2016-10-31 Mon 12:05]
+    CLOCK: [2016-10-31 Mon 11:56]--[2016-10-31 Mon 12:05] =>  0:09
+    CLOCK: [2016-10-31 Mon 11:31]--[2016-10-31 Mon 11:55] =>  0:24
+
+It seems we can change a text template but not get stitch to update
+the cpp file. We must have made a mistake on the binary diffing of the
+files.
+
+It seems this is related to the overwrite changes. We did not set the
+overwrite flag to true within stitch, so its (probably) defaulting to
+false; and since we are now honouring the flag, we don't
+write. Default it to true.
+
+This also highlights how badly named this flag is, since it now
+appears we are forcing an overwrite even when there are no differences
+even though this is not what the flag means at all.
+
+*** COMPLETED Implement helper headers using wale                     :story:
+    CLOSED: [2016-10-31 Mon 13:03]
+    CLOCK: [2016-10-31 Mon 14:07]--[2016-10-31 Mon 14:14] =>  0:07
+    CLOCK: [2016-10-31 Mon 12:43]--[2016-10-31 Mon 13:03] =>  0:20
+    CLOCK: [2016-10-31 Mon 12:39]--[2016-10-31 Mon 12:43] =>  0:04
+    CLOCK: [2016-10-31 Mon 12:29]--[2016-10-31 Mon 12:39] =>  0:10
+    CLOCK: [2016-10-31 Mon 12:13]--[2016-10-31 Mon 12:28] =>  0:15
+    CLOCK: [2016-10-31 Mon 12:06]--[2016-10-31 Mon 12:12] =>  0:06
+    CLOCK: [2016-10-31 Mon 10:45]--[2016-10-31 Mon 11:30] =>  0:45
+    CLOCK: [2016-10-27 Thu 16:01]--[2016-10-27 Thu 16:54] =>  0:53
+
+Tasks:
+
+- add profile for formatter helpers.
+- add classes for all helpers.
+
+*** COMPLETED Implement formatter headers using wale                  :story:
+    CLOSED: [2016-10-31 Mon 14:06]
+    CLOCK: [2016-10-31 Mon 22:33]--[2016-10-31 Mon 22:35] =>  0:02
+    CLOCK: [2016-10-31 Mon 13:38]--[2016-10-31 Mon 14:06] =>  0:28
+
+Tasks:
+
+- add profile for formatters and update diagram to use it.
+
+*** COMPLETED Add profile support to stitch                           :story:
+    CLOSED: [2016-10-31 Mon 22:32]
+    CLOCK: [2016-10-31 Mon 22:26]--[2016-10-31 Mon 22:39] =>  0:13
+    CLOCK: [2016-10-31 Mon 22:24]--[2016-10-31 Mon 22:25] =>  0:01
+    CLOCK: [2016-10-31 Mon 22:22]--[2016-10-31 Mon 22:23] =>  0:01
+    CLOCK: [2016-10-31 Mon 22:16]--[2016-10-31 Mon 22:21] =>  0:05
+    CLOCK: [2016-10-31 Mon 21:54]--[2016-10-31 Mon 22:15] =>  0:21
+    CLOCK: [2016-10-31 Mon 19:30]--[2016-10-31 Mon 21:53] =>  2:23
+    CLOCK: [2016-10-31 Mon 15:34]--[2016-10-31 Mon 15:55] =>  0:21
+    CLOCK: [2016-10-31 Mon 15:24]--[2016-10-31 Mon 15:33] =>  0:09
+    CLOCK: [2016-10-31 Mon 15:09]--[2016-10-31 Mon 15:23] =>  0:14
+
+When we implemented profiles we didn't add them to stitch. Add them
+and remove all duplication from stitch templates.
+
+*** COMPLETED Changes to stitch to accommodate wale                   :story:
+    CLOSED: [2016-11-02 Wed 11:32]
+    CLOCK: [2016-11-02 Wed 10:54]--[2016-11-02 Wed 11:32] =>  0:38
+    CLOCK: [2016-11-02 Wed 10:18]--[2016-11-02 Wed 10:53] =>  0:35
+    CLOCK: [2016-11-02 Wed 09:35]--[2016-11-02 Wed 10:17] =>  0:42
+    CLOCK: [2016-11-01 Tue 19:43]--[2016-11-01 Tue 20:25] =>  0:42
+    CLOCK: [2016-11-01 Tue 19:09]--[2016-11-01 Tue 19:42] =>  0:33
+    CLOCK: [2016-11-01 Tue 16:00]--[2016-11-01 Tue 18:04] =>  2:04
+    CLOCK: [2016-11-01 Tue 15:41]--[2016-11-01 Tue 15:59] =>  0:18
+    CLOCK: [2016-11-01 Tue 14:02]--[2016-11-01 Tue 14:39] =>  0:37
+    CLOCK: [2016-11-01 Tue 12:11]--[2016-11-01 Tue 12:29] =>  0:18
+    CLOCK: [2016-11-01 Tue 11:42]--[2016-11-01 Tue 12:10] =>  0:28
+    CLOCK: [2016-11-01 Tue 09:40]--[2016-11-01 Tue 11:28] =>  1:48
+    CLOCK: [2016-10-31 Mon 22:40]--[2016-10-31 Mon 22:59] =>  0:19
+    CLOCK: [2016-10-25 Tue 11:14]--[2016-10-25 Tue 11:46] =>  0:32
+Tasks:
+
+- add a prefix of =stitch= to stitch's fields.
+- add a method to the workflow that takes in an annotation; we then
+  merge this annotation with the template's annotation. Remaining
+  workflow is the same.
+- add a new block type of variable expansion or internal variable
+  expansion (tbd). Content is the the variable name. Variable must be
+  defined internally or we error. On template formatting we do a
+  look-up for the variable name and replace it.
+
+: <#= $(stitch.wale.template_instantiation_result) #>
+
+- we need to create a map of string to string at the template level
+  called =variables=. When formatting we simply look-up the variable
+  name in the container. With wale, we just need an additional
+  processing step that takes in the annotation and runs it through the
+  wale workflow. If we return a non-empty string, we add it to the
+  variables map.
+- stitch at present assumes the generated file will have a postfix of
+  =_stitch.cpp= or =_stitch.hpp=. Its not clear where the extension is
+  sourced from. In the new world we need the file names to be just
+  =.cpp= or =.hpp=. In practice we do not generate header files so we
+  can keep the current logic in determining the extension.
+- we need to split the "directory use case" from the "file use
+  case". At present there is only one way of using stitch: you point
+  it to a directory and it processes all templates found. In the new
+  integrated world, we want to process a single template at a
+  time. Names: directory workflow and file workflow?
+
+Tasks:
+
+- split out the processing of a single template into its own class,
+  returning an artefact. Add merging of annotations. Implement main
+  stitch workflow in terms of this new class.
+- change quilt.cpp's stitch formatter to receive all of the parameters
+  required by this new class. Move its instantiation to where all the
+  parameters are (probably main workflow). Supply formatter to
+  formatter's workflow.
+- add a method in wale to check if annotations provide wale
+  fields. Add a method in stitch new class to check if wale fields are
+  present, and if so, execute it. Add a map of string to string in
+  text template. Add an entry for wale's output:
+  =stitch.wale.template_instantiation_result=.
+
+Notes:
+
+- Tried to piggy-back variable expansion on expression blocks but this
+  won't work: expression blocks are always "streamed" whereas this is
+  not what we want for wale templates - these should behave more like
+  standard control blocks. It would be nice to support variables in
+  expression blocks, but we don't have a use case for that. This means
+  we have no option but to introduce another type of block. We do not
+  need to support mixed content.
+
+: <#$ stitch.wale.template_instantiation_result #>
+: <#@ stitch.wale.template=artefact_formatter_implementation.wale #>
+
+- we should create a resolver which latches onto a text template and
+  is then able to resolve variable blocks by content. This is then
+  used internally by the formatter. We did consider replacing the
+  blocks with the expanded values but that would break the conceptual
+  model because we would end up with "lines" that had more than one
+  line worth of content.
+
+- stitch wale formatter seems to work as expected. Added:
+
+: #DOGEN quilt.cpp.types.class_implementation.formatting_style=stitch_wale
+
+*** COMPLETED Implement formatter helpers implementation using stitch and wale :story:
+    CLOSED: [2016-11-02 Wed 21:25]
+    CLOCK: [2016-11-02 Wed 21:13]--[2016-11-02 Wed 21:24] =>  0:11
+    CLOCK: [2016-11-02 Wed 21:10]--[2016-11-02 Wed 21:12] =>  0:02
+    CLOCK: [2016-11-02 Wed 21:01]--[2016-11-02 Wed 21:09] =>  0:08
+    CLOCK: [2016-11-02 Wed 20:55]--[2016-11-02 Wed 21:00] =>  0:05
+    CLOCK: [2016-11-02 Wed 20:35]--[2016-11-02 Wed 20:54] =>  0:19
+    CLOCK: [2016-11-02 Wed 17:23]--[2016-11-02 Wed 17:59] =>  0:36
+    CLOCK: [2016-11-02 Wed 16:21]--[2016-11-02 Wed 17:22] =>  1:01
+    CLOCK: [2016-11-02 Wed 14:07]--[2016-11-02 Wed 14:55] =>  0:48
+    CLOCK: [2016-11-02 Wed 13:45]--[2016-11-02 Wed 14:07] =>  0:22
+    CLOCK: [2016-11-02 Wed 12:45]--[2016-11-02 Wed 13:44] =>  0:59
+    CLOCK: [2016-11-02 Wed 11:32]--[2016-11-02 Wed 12:01] =>  0:29
+
+Now we have all the pieces in place, we need to start updating the
+templates one by one to use stitch and wale
+
+: #DOGEN quilt.cpp.types.class_implementation.formatting_style=stitch_wale
+
+*** COMPLETED Merge stitch templates with formatters                  :story:
+    CLOSED: [2016-11-03 Thu 00:14]
+    CLOCK: [2016-11-03 Thu 00:24]--[2016-11-03 Thu 00:45] =>  0:21
+    CLOCK: [2016-11-03 Thu 00:15]--[2016-11-03 Thu 00:23] =>  0:08
+    CLOCK: [2016-11-03 Thu 00:00]--[2016-11-03 Thu 00:14] =>  0:14
+    CLOCK: [2016-11-02 Wed 23:29]--[2016-11-02 Wed 23:59] =>  0:30
+    CLOCK: [2016-11-02 Wed 23:08]--[2016-11-02 Wed 23:29] =>  0:21
+    CLOCK: [2016-11-02 Wed 22:50]--[2016-11-02 Wed 23:08] =>  0:18
+    CLOCK: [2016-11-02 Wed 22:34]--[2016-11-02 Wed 22:49] =>  0:15
+    CLOCK: [2016-11-02 Wed 21:26]--[2016-11-02 Wed 22:33] =>  1:07
+
+As a first step of the wale/stitch transition, we need to merge the
+stitch template with the formatter.
+
+*** COMPLETED Fix borked build due to seam errors                     :story:
+    CLOSED: [2016-11-03 Thu 09:22]
+    CLOCK: [2016-11-03 Thu 09:10]--[2016-11-03 Thu 09:22] =>  0:12
+
+When we changed the stitch postfix we borked the seam tests. We didn't
+notice it locally due to the usual caching of test data.
+
+*** COMPLETED Various fixes due to stitch changes                     :story:
+    CLOSED: [2016-11-03 Thu 09:45]
+    CLOCK: [2016-11-03 Thu 09:23]--[2016-11-03 Thu 09:45] =>  0:22
+
+- we are deleting all helpers. This is because of the helper formatter
+  configuration.
+- fix issues with inserter helper: we skipped the inserter helper as
+  part of the clean up on stitch. However, it is borked now.
+
+*** COMPLETED Implement formatter implementation using stitch and wale :story:
+    CLOSED: [2016-11-03 Thu 11:11]
+    CLOCK: [2016-11-03 Thu 11:07]--[2016-11-03 Thu 11:11] =>  0:04
+    CLOCK: [2016-11-03 Thu 11:01]--[2016-11-03 Thu 11:06] =>  0:05
+    CLOCK: [2016-11-03 Thu 10:53]--[2016-11-03 Thu 11:00] =>  0:07
+    CLOCK: [2016-11-03 Thu 10:48]--[2016-11-03 Thu 10:52] =>  0:04
+    CLOCK: [2016-11-03 Thu 10:43]--[2016-11-03 Thu 10:47] =>  0:04
+    CLOCK: [2016-11-03 Thu 10:38]--[2016-11-03 Thu 10:42] =>  0:04
+    CLOCK: [2016-11-03 Thu 10:01]--[2016-11-03 Thu 10:37] =>  0:36
+
+Now the templates have been merged we can start to look into using
+wale.
+
+*** COMPLETED Move stitching into knit                                :story:
+    CLOSED: [2016-11-03 Thu 16:49]
+    CLOCK: [2016-11-03 Thu 16:10]--[2016-11-03 Thu 16:44] =>  0:34
+    CLOCK: [2016-11-03 Thu 14:50]--[2016-11-03 Thu 14:58] =>  0:08
+    CLOCK: [2016-11-03 Thu 14:01]--[2016-11-03 Thu 14:49] =>  0:48
+    CLOCK: [2016-11-03 Thu 11:12]--[2016-11-03 Thu 11:55] =>  0:43
+
+The idea of internal and external kvps doesn't actually make a lot of
+sense. The problem is that we forgot about the levels of formatter
+indirection: when we are code generating the =class_header_formatter=,
+we use the =class_implementation_formatter=. To recap:
+
+- we instantiate a yarn model into memory. The formatter is a
+  =yarn::object=. This means a =enum_header_formatter= is represented
+  by a =yarn::object=.
+- we then look at a particular facet of that element, say its
+  implementation in types. For this we will use the stock
+  =class_implementation_formatter=.
+- however, we can override this and use the =stitch_formatter=. The
+  stitch formatter will have an associated template, which is "yarn
+  type dependent". In this case, =enum_header_formatter.stitch=.
+- this template makes use of wale and needs the kvps. However, from a
+  knit perspective the yarn element is a =yarn::object= rather than a
+  =yarn::enumeration=.
+
+Thus it is not possible to automatically derive all kvps from the
+meta-model. We should just remove the concept of external kvps and
+rely on internal kvps only. To be clear, this only applies to stitch
+(there are only one set of kvps at the wale level).
+
+In terms of profiles: we can't have a single profile for say artefact
+formatters because we now have four different wale templates:
+
+: find . -iname '*.stitch' -exec grep "stitch.wale.template=" {} \; | sort | uniq
+: <#@ stitch.wale.template=artefact_formatter_implementation.wale #>
+: <#@ stitch.wale.template=artefact_formatter_implementation_header.wale #>
+: <#@ stitch.wale.template=helper_formatter_implementation.wale #>
+: <#@ stitch.wale.template=helper_formatter_implementation_enabled.wale #>
+
+In order to use a profile we would need four different profiles. Since
+its only one field, the work is not worth the effort. In addition, the
+remaining kvps also do not lend themselves to easy profiling:
+
+: <#@ stitch.wale.kvp.archetype.simple_name=class_header #>
+: <#@ stitch.wale.kvp.class.inclusion_support_type=canonical_support #>
+: <#@ stitch.wale.kvp.yarn_element=yarn::object #>
+: <#$ stitch.wale.template_instantiation_result #>
+
+We would end up with a large number of profiles (object headers, enum
+headers and so forth) and it would become even more confusing.
+
+Tasks:
+
+- remove external kvps.
+- setup profiles to use the correct input source with
+  overwrite. Diagram should "just work".
+
+: #DOGEN quilt.cpp.types.class_implementation.formatting_style=stitch_wale
+: #DOGEN quilt.cpp.types.class_implementation.overwrite=true
+
+*Previous Understanding*
+
+Once all templates have been updated with wale, we need to:
+
+- move wale template name into profile
+- setup the dogen knit profiles with the correct input;
+- remove kvps from templates: if we make the external kvps take
+  priorities, we can then do this one template at a time.
+- remove stitch target.
+
+*** COMPLETED Add new formatter types                                 :story:
+    CLOSED: [2016-11-03 Thu 16:54]
+
+- add new kinds of formatters to process wale templates, etc.
+- Each formatter should check for its required data. They can be
+  mainly stubs for now.
+- change the formatters workflow to dispatch to the correct formatter
+  type.
+- implement the new formatters by calling stitch and wale as required.
+- for stitch formatter, inject the stitch template into the
+  housekeeping files so we don't delete it.
+
+*** COMPLETED Integration of stitch and dogen                         :story:
+    CLOSED: [2016-11-03 Thu 17:12]
+    CLOCK: [2016-11-03 Thu 17:13]--[2016-11-03 Thu 17:21] =>  0:08
+    CLOCK: [2016-11-03 Thu 16:54]--[2016-11-03 Thu 17:12] =>  0:18
+
+Tasks:
+
+- create wale templates for formatter header and implementation;
+- go through all formatters and: a) update the stitch template with
+  the code from implementation, adding regions b) change the source
+  type to wale and stitch and deal with the fallout.
+- when all formatters are done, remove regexes for stitch templates.
+
+*Previous Understanding*
+
+Now that we have implemented stitch and proved it works (more or
+less), we need to think how we can make using stitch from dogen
+easier. At present there is not integration at all:
+
+- users need to create regexes to ensure dogen does not trample on
+  stitch files:
+
+:    --ignore-files-matching-regex .*stitch
+:    --ignore-files-matching-regex .*_stitch.hpp
+:    --ignore-files-matching-regex .*_stitch.cpp
+
+- users need to manually create a header file for each stitch
+  template.
+- users need to create stitch targets and run them to ensure the
+  templates have been expanded. This means its possible to get dogen
+  and stitch out of sync (but for now not a big problem).
+
+In the ideal world, when we knit a model it would be nice if it could
+also stitch as required. This could be achieved as follows:
+
+- Create a meta-data tag that tells dogen a type has an associated
+  stitch template with it.
+- Create =cpp= types that represent the stitch header and
+  implementation.
+- Transformer needs to look for the meta-data tag and instantiate the
+  =cpp= types.
+- Create a =cpp= formatter for the header, as per regular
+  formatters. The slight challenge here is that the formatter needs to
+  be instantiable across facets, which we do not support at the
+  moment.
+- Create a cpp formatter for the implementation which instantiates
+  stitch with the template and uses it to create a file. Same
+  challenge as with the header.
+
+Random notes:
+
+- change artefact to have named regions; by default there is only one
+  region, with a name like "global". This is the output of a stock
+  formatter. Regions are stored in a vector and have name and
+  content.
+- in default stitch, the named regions are: 1) boilerplate preamble 2)
+  body. We will then introduce other named regions: inclusion function,
+  formatting function.
+- the wale and stitch artefact formatter will use the named regions as
+  inputs to the wale kvps.
+
+*Previous Understanding*
+
+- stitch can still be integrated with dogen. We could use meta-data to
+  link a formatter (well, any class that needs stitch really, but at
+  present just a formatter) with a stitch template. For example, a
+  =class_header_formatter= could have a "is stitchable" flag set to
+  on. This would then mean that dogen would look for a
+  =class_header_formatter.stitch= file in the same directory as the
+  CPP file. It would then use that to create a
+  =class_header_formatter_stitch.cpp= file. It would also
+  ignore/generate a =class_header_formatter_stitch.hpp= file and
+  automatically add it to the inclusion dependencies of
+  =class_header_formatter.cpp=. These are injected into stitch as we
+  instantiate the template since stitch supports meta-data (we do need
+  a way to inject the meta-data from dogen into the meta-data in the
+  template; perhaps a kvp container passed in to the stitch workflow
+  which could then be handed over to the parser). All these files are
+  automatically added to the list of "exceptions" for housekeeping so
+  that they do not get deleted. However, stitch would not know
+  anything at all about any of this; this is all knitter's
+  functionality. The problem is at present we haven't got a good place
+  to perform the stitching as part of knitter's workflows. Perhaps as
+  part of the expansion, we could set a number of stitch fields which
+  would then be picked up by some knit-specific workflow classes.
+
+*** COMPLETED Generate formatter interfaces                            :epic:
+    CLOSED: [2016-11-03 Thu 17:24]
+
+*Rationale*: completed as part of other stories.
+
+We should create another template language, in addition to stitch:
+"wale". Wale is a very simple language that has templates that just do
+token replacement. The tokens must have a special format:
+={{{TOKEN}}}=. We receive a map of keys to values and do a blind
+replacement to the keys on the wale document.
+
+This links to stitch as follows:
+
+- create a single file implementation of a formatter. It will
+  implement both the provider interface and the appropriate formatter
+  interface. It will call the stitch method to start off with. There
+  are no headers, just cpp. It does the formatter registration.
+- add support in stitch for "named sections": its possible to start a
+  section and assign it a name. A stitch template will have two
+  sections: inclusion provision and formatting.
+- add support in stitch for "wale variables". These are just kvp's
+  defined at the top:
+
+: <#@ wale.variable="formatter_name=abcd" #>
+
+  wale variables and sections are converted into a kvp container for
+  wale input. Examples: facet, formatter name, etc.
+- convert the formatter code into a wale template, adding wale
+  variables as required.
+- update stitch to detect wale usage and to call wale in those
+  cases. This could be done by supplying a wale template:
+
+: <#@ wale.template="abcd.wale" #>
+
+- note that wale could be useful outside of stitch, for example for
+  dart: we could wale-lise utility and then instantiate it for a given
+  project.
+
+*Previous Understanding*
+
+It should be possible to generate some trivial types such as formatter
+interfaces, formatter container, registrar and so on. For this we
+need:
+
+- a mustache type template;
+- a set of fields from yarn types to be exposed to mustache;
+- a list of types to iterate through.
+
+Once we got this we could instantiate the templates. To integrate this
+with knit we would need some way of specifying which types the
+iteration would be over. We could mark a specific type with a given
+stereotype, and then supply say the base class ("all leaf descendants
+of xyz"). Dogen would then locate the descendants and for each call
+the template.
+
+For registrar and container its a bit trickier because we want a
+collection of types in one go.
+
+We also need a way to keep these templates away from the main (user
+visible) code, since they are useful only for dogen.
+
+See also [[https://github.com/cierelabs/boostache/tree/develop][boostache]].
+
+Notes:
+
+- we will need some "special" tags for copyright, includes
+  etc. Includes will be particularly special because we need to
+  augment the include list with additional includes. However, we may
+  not even need to be aware of this.
+
+*Stitch meta-templates*
+
+*Note*: re-read story [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_64.org#code-generating-formatters-as-text-templates][Code-generating formatters as text templates]] as
+some of these ideas were already there. Also: see [[https://github.com/no1msd/mstch][mstch]].
+
+In the quest for defining a single stitch template which then becomes
+a formatter - without any additional infrastructure required at all -
+we hit on an idea: stitch meta-templates. Basically we would have two
+different kinds of inputs to stitch: the template itself and the
+meta-template. Meta-template is a provisional name. The meta-template
+would define the formatter layout:
+
+- class definition, using a stitch variable for the yarn element type
+- registration of the formatter
+- definition of a method for the includes
+- definition of a method for the stitching
+
+These last two would result in the creation of "regions". These
+regions must then be "instantiated" in the template. This could easily
+be achieved with some kind of new element:
+
+: <#% region "includes">
+
+Or some such stitch construct. All lines after this line are part of
+the region "includes" until a new region is defined. The region is
+stitched and then transposed to the place in the meta-template where
+it was defined, for example:
+
+: int f(int a, int b) {
+: <#% region "includes">
+: }
+
+Would result in copying across the region into these brackets. This
+will make defining multiple functions very easy, without having to
+supply command line arguments, etc.
+
+Notes:
+
+- meta-templates are supplied as command line arguments.
+- potential extension: =meta.stitch=
+- stitch should still work on non-meta-template mode.
+- some of these ideas had already been covered on another story but
+  can't find it in backlog. It could be part of the original stitch
+  epic. We need to revisit it to see if it contains additional
+  insights.
+- when an error occurs, it would be great if we could pin point the
+  error to the template or to the meta-template. This is more of a
+  concern when we add clang compilation support.
+
+Further thoughts:
+
+- there are two approaches for this: we could integrate stitch tighter
+  with knit and have it return "chunks" of processed code instead of
+  files. As per story "Integration of stitch and dogen", dogen would
+  then be responsible for writing the header file as per methods
+  defined in the class diagram. Each method would be marked as a
+  region. Meta-data in the class associates a template with the
+  class. Knitter uses stitch to convert the template into regions, and
+  then takes these regions and inserts them into a generated
+  file. This approach is very clever and requires a lot of machinery.
+- the easier approach uses meta-templates. Class diagram associates
+  both meta-template and template with class via meta-data. We could
+  possibly also have a stitch stereotype to make it clearer. Yarn has
+  a stitch class with attributes of these parameters. Dogen
+  instantiates stitch (probably within quilt) with the parameters and
+  generates the file. Actually we probably can't have this in quilt
+  because we still need formatter properties.
+
+*** POSTPONED Supply model references via meta-data rather than command line :story:
+    CLOSED: [2016-11-07 Mon 09:17]
+    CLOCK: [2016-11-03 Thu 17:51]--[2016-11-03 Thu 17:55] =>  0:04
+    CLOCK: [2016-11-03 Thu 17:32]--[2016-11-03 Thu 17:51] =>  0:19
+
+It doesn't make any sense to have model dependencies in the command
+line. After all, the model cannot be interpreted without them. A
+better way to do this would be to split this functionality into two:
+
+- command line supplies "import directories" or "reference
+  directories", that is, directories to search when looking for
+  models. By default the system directory is already in the
+  path. Actually by default we should look into the current directory;
+  this is sufficient for all our current use cases.
+- model supplies "import statements". The problem here is that we need
+  to also supply the file name of the model. We could perhaps omit the
+  extension and then load all files that match (e.g. =.dia=, =.json=,
+  etc). If more than one matches we should error. Actually we should
+  just supply the full filename, as well as keep the current notation
+  for the external project path.
+
+This is also a nice way to avoid loading system models unnecessary;
+users still need to declare the models they depend on, regardless if
+system or user.
+
+Each model should also supply the external module path as meta-data.
+
+This is particularly painful since cross-model inheritance was
+introduced because it means references are now transitive (we need to
+know of the references of any model we reference). Once we add them to
+the model, we should also load referenced models' references so that
+the process is automatic.
+
+In addition to references, we must also be able to supply the external
+module path for the target model via the meta-data.
+
+Notes:
+
+- in order for this to work we need to refactor the pre-merge workflow
+  quite considerably. We need to split out the target model, process
+  that first, then use the annotations to build the descriptors. This
+  probably means we need to merge the descriptor factory with the
+  pre-merge workflow. We should do this refactoring first.
+
+Tasks:
+
+- refactor descriptor factory, merge it with pre-merge workflow.
+- add new references field to workflow
+- add parsing of field as per options
+- add references to all models
+- remove command line option
+
+Merged stories
+
+*External module path and references as meta-data*
+
+It actually does not make a lot of sense to allow users to supply
+external module paths and references as command line options. This is
+because the model will fail to build unless we provide the correct
+ones; these are not configurable items in this sense. The project
+path, etc are - and so should remain command line options.
+
+We need to move these two into the meta-data. This would also mean we
+no longer need to pass in external module paths for references, which
+is much cleaner.
+
+** Deprecated
+*** CANCELLED Add region support to stitch                            :story:
+    CLOSED: [2016-10-25 Tue 11:05]
+
+*Rationale*: This requires too much engineering effort. Decided on a
+simpler approach.
+
+- extend stitch to allow injecting external kvps such as
+  decoration. This can probably be done manually but needs to be
+  investigated.
+- extend stitch to support named regions; the text template will
+  preserve the names after template instantiation.
+- note: regions are a property of the artefact. knit will also have to
+  support regions. Perhaps we should start having well-defined regions
+  such as =decoration.preamble=, =decoration.postamble=, etc.

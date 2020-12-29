@@ -1,0 +1,981 @@
+#+title: Sprint Backlog 17
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Start generating static types to represent features.
+- Update all mappings to become meta-model elements.
+
+* Stories
+
+** Active
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-05-19 Sun 15:24]
+| <75>                                                       |         |       |       |       |
+| Headline                                                   | Time    |       |       |     % |
+|------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                               | *78:29* |       |       | 100.0 |
+|------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                    | 78:29   |       |       | 100.0 |
+| Active                                                     |         | 78:29 |       | 100.0 |
+| Edit release notes for previous sprint                     |         |       |  2:41 |   3.4 |
+| Create a video demo for the previous sprint's features     |         |       |  2:11 |   2.8 |
+| Sprint and product backlog grooming                        |         |       |  2:32 |   3.2 |
+| Defining profiles directly on a target model does not work |         |       |  0:30 |   0.6 |
+| Inner modules need to be qualified                         |         |       |  0:22 |   0.5 |
+| Create namespaces for model elements                       |         |       |  8:59 |  11.4 |
+| Leaves in internal modules are not captured correctly      |         |       |  1:33 |   2.0 |
+| Try to add relational tracing support                      |         |       |  2:51 |   3.6 |
+| Linux and OSX binaries are not stripped                    |         |       |  1:23 |   1.8 |
+| Fix issues with nightly build and CI                       |         |       |  0:05 |   0.1 |
+| Emacs maintenance and exploration work                     |         |       |  0:40 |   0.8 |
+| Initial analysis to code generate feature infrastructure   |         |       |  7:13 |   9.2 |
+| Replace JSON based feature templates with generated code   |         |       | 16:15 |  20.7 |
+| Make a clear separation between dogen and masd             |         |       |  5:17 |   6.7 |
+| Add a method in enumeration that converts it from strings  |         |       |  7:49 |  10.0 |
+| Update palettes and colour script with new elements        |         |       |  1:09 |   1.5 |
+| Mappings as meta-model elements                            |         |       | 13:45 |  17.5 |
+| Code-generate all transform contexts                       |         |       |  0:08 |   0.2 |
+| Update the MASD UML profile to reflect the latest changes  |         |       |  0:05 |   0.1 |
+| Make wale templates meta-model elements                    |         |       |  3:01 |   3.8 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-05-06 Mon 17:51]
+    :LOGBOOK:
+    CLOCK: [2019-05-06 Mon 18:01]--[2019-05-06 Mon 18:12] =>  0:11
+    CLOCK: [2019-05-06 Mon 12:24]--[2019-05-06 Mon 12:31] =>  0:07
+    CLOCK: [2019-05-06 Mon 12:16]--[2019-05-06 Mon 12:23] =>  0:07
+    CLOCK: [2019-05-06 Mon 10:34]--[2019-05-06 Mon 12:15] =>  1:41
+    CLOCK: [2019-05-05 Sun 22:10]--[2019-05-05 Sun 22:45] =>  0:35
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.16, "São Pedro"
+
+#+begin_src markdown
+![Paróquia de São Pedro, Moçamedes](https://2.bp.blogspot.com/-P8MHQArl_fA/VzCYm9epI0I/AAAAAAAAl1g/CPkRiD5ZhGwgcqjTQoxEyRAcQNTHYuz2QCLcB/s1600/Igreja%2BS%2BPedro%2BNamibe.jpg)
+
+_Paróquia de São Pedro, Moçamedes, Namibe. Do [blog de Maria Jardim](http://mossamedes-do-antigamente.blogspot.com/2016/05/a-igreja-de-s-pedro-de-mocamedes-namibe.html)._
+
+# Introduction
+
+This sprint achieved the long standing objective of moving profiles into the meta-model. We've also continued the work on cleaning up models to better align them to [MDE](https://en.wikipedia.org/wiki/Model-driven_engineering) terminology.
+
+# User visible changes
+
+This section covers stories that affect end users. The sprint demo provides a quick demonstration of the user visible changes, whereas the below sections provide more detail.
+
+[![Sprint 1.0.16 Demo](https://img.youtube.com/vi/3XrHSFkdVps/0.jpg)](https://youtu.be/3XrHSFkdVps)
+
+## Profiles as meta-model elements
+
+The key story of the sprint was to move variability profiles into the meta-model. For those less familiar with Dogen's variability profiles, the basic idea is that you can create "canned" sets of configurations and then apply them to modeling elements via UML stereotypes.
+
+We had alread made decorations metamodel elements in [sprint 14](https://github.com/MASD-Project/dogen/releases/tag/v1.0.14); now that we are also treating profiles as a regular meta-model elements,  we have the core features in place to allow users to start defining [SPLs](https://en.wikipedia.org/wiki/Software_product_line). You can create an SPL by creating a shared model containing all of the required configuration such as profiles, decorations etc and then make use of these in the models that make up the product line. As an example, in Dogen we created the ["profiles" model](https://github.com/MASD-Project/dogen/tree/master/projects/masd.dogen.models/dia) ```masd.dogen.profiles.dia```.
+
+![Dogen's Profiles Model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/profiles_model.png)
+
+The name is not exactly ideal as the model can contain more than just profiles, so we are still searching for a more fitting denomination. The fundamental idea is clear, though: to have a central place where all the configuration of the product is stored, and use to create "a language" at the product level, imbued with product specific meaning. For example, one could define profiles such as ```hashable```, ```serialisable``` and so forth and then configure these with specific features. ```hashable``` could be mapped to the ```std::hash``` facet, serialisable to the Boost Serialisation facet and so forth. All of the mapping and naming is defined by the end user. In Dogen we define ```masd::pretty_printable``` as follows (using JSON notation):
+
+```json
+    {
+      "name": "composable::pretty_printable",
+      "parents": [
+        "composable::code_generated"
+      ],
+      "documentation": "The element has the ability to dump itself to a stream.\n",
+      "stereotypes": [
+        "masd::variability::profile_template"
+      ],
+      "tagged_values": {
+        "masd.variability.binding_point": "element",
+        "masd.variability.labels": "masd::pretty_printable"
+      },
+      "attributes": [
+        {
+          "name": "masd.generation.cpp.io.enabled",
+          "type": "",
+          "value": "true",
+          "tagged_values": {
+            "masd.variability.archetype_location.kernel": "masd",
+            "masd.variability.archetype_location.backend": "masd.generation.cpp",
+            "masd.variability.template_kind": "instance"
+          }
+        }
+      ]
+    },
+```
+
+Any modeling element with the stereotype of ```masd::pretty_printable``` will now have the ability to dump itself into a stream via the ```masd.generation.cpp.io``` facet.
+
+There are a couple of caveats to this feature. Firstly, we are yet to find a good domain based name for what are are calling thus far "profiles". The name is somewhat confusing, because Dogen's variability profiles are entirely unrelated to UML profiles. Our search through the literature continues, so in the future it is entirely possible that profiles will be renamed to a more fitting term.
+
+Secondly, this release only adds the _foundational_ infrastructure for SPL. Many domain elements still need to be added to complete the SPL story, such as the concept of a product, build systems, etc. However, these features are already useful enough, and simplified Dogen's internals considerably.
+
+## Removal of "stand-alone" weaving
+
+In the past it was possible to instantiate stitch templates directly from Dogen, using the weaving command, e.g.:
+
+```
+$ masd.dogen.cli weave -t model.dia
+```
+
+However, due to the changes done in variability management, stitch templates are no longer instantiable without going through the entire processing pipeline for models. As such, the feature no longer makes sense, so it was removed.
+
+The long term plan is to remove variability support from stitch templates; once that is in place, we can add weaving once more - though its usefulness in this fashion is somewhat debatable. We shall await for concrete use cases before working on this feature; for now, the story was moved to the bottom of the [product backlog](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#consider-adding-weaving-support-as-a-command).
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see the [sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_16.org).
+
+## Significant Internal Stories
+
+Rather unusually, this sprint was _extremely_ delivery focused, so there were no significant internal stories to speak of.
+
+## Resourcing
+
+Amazingly, over 87% of the total ask was taken by stories directly related to the sprint's mission -  probably a first in Dogen's development history. The remaining 13% of the time was spent as follows. Release related activities for the previous sprint cost around 5%, including activities such editing the release notes and creating the demo. Backlog grooming was shy of 5%, and around 1.3% of the total ask was spent on reading the academic literature on variability. Spikes had a cost of less than 2%, with the nursing of builds taking 0.8% and Emacs related work only 0.4%. Overall, it was an extremely efficient sprint.
+
+![Story Pie Chart](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_16_pie_chart.jpg)
+
+## Planning
+
+The plan is proceeding as expected. At the end of sprint 16, the plan looks like this:
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_16_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_16_resource_allocation_graph.png)
+
+# Next Sprint
+
+The focus on Sprint 17 is to address the other side of variability: the definition of new features. At present we are manually creating features, involving both the creation of the feature definition on its own JSON file and then the source code to implement the reading of the feature from a modeling element. The vision is that the code generator should create code for all of this, off the back of a modeling element (say ```masd::feature_group```). Work has started on this in sprint 16, so hopefully it will be completed in sprint 17.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.16_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.16/dogen_1.0.16_amd64-applications.deb)
+- [dogen-1.0.16-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.16/DOGEN-1.0.16-Darwin-x86_64.dmg)
+- [dogen-1.0.16-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.16-Windows-AMD64.msi)
+
+For all other architectures and/or operative systems, you will need to
+build Dogen from source.
+#+end_src markdown
+
+- [[https://twitter.com/MarcoCraveiro/status/1125447976418193412][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6531213559836270592][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Create a video demo for the previous sprint's features  :story:
+    CLOSED: [2019-05-06 Mon 17:51]
+    :LOGBOOK:
+    CLOCK: [2019-05-06 Mon 17:49]--[2019-05-06 Mon 18:00] =>  0:11
+    CLOCK: [2019-05-06 Mon 15:48]--[2019-05-06 Mon 17:48] =>  2:00
+    :END:
+
+Time spent creating the demo.
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-05-19 Sun 15:23]
+    :LOGBOOK:
+    CLOCK: [2019-05-19 Sun 15:15]--[2019-05-19 Sun 15:23] =>  0:08
+    CLOCK: [2019-05-16 Thu 08:30]--[2019-05-16 Thu 08:44] =>  0:14
+    CLOCK: [2019-05-16 Thu 08:12]--[2019-05-16 Thu 08:21] =>  0:09
+    CLOCK: [2019-05-15 Wed 18:28]--[2019-05-15 Wed 18:36] =>  0:08
+    CLOCK: [2019-05-15 Wed 11:51]--[2019-05-15 Wed 12:02] =>  0:11
+    CLOCK: [2019-05-15 Wed 10:56]--[2019-05-15 Wed 11:07] =>  0:11
+    CLOCK: [2019-05-15 Wed 08:21]--[2019-05-15 Wed 08:26] =>  0:05
+    CLOCK: [2019-05-13 Mon 18:31]--[2019-05-13 Mon 18:47] =>  0:16
+    CLOCK: [2019-05-13 Mon 08:14]--[2019-05-13 Mon 08:18] =>  0:04
+    CLOCK: [2019-05-13 Mon 08:02]--[2019-05-13 Mon 08:07] =>  0:05
+    CLOCK: [2019-05-10 Fri 20:42]--[2019-05-10 Fri 20:48] =>  0:06
+    CLOCK: [2019-05-10 Fri 11:35]--[2019-05-10 Fri 11:45] =>  0:10
+    CLOCK: [2019-05-10 Fri 11:17]--[2019-05-10 Fri 11:34] =>  0:17
+    CLOCK: [2019-05-09 Thu 06:25]--[2019-05-09 Thu 06:34] =>  0:09
+    CLOCK: [2019-05-06 Mon 08:50]--[2019-05-06 Mon 09:09] =>  0:19
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Defining profiles directly on a target model does not work :story:
+    CLOSED: [2019-05-07 Tue 09:55]
+    :LOGBOOK:
+    CLOCK: [2019-05-07 Tue 09:25]--[2019-05-07 Tue 09:55] =>  0:30
+    :END:
+
+We seem to have made some mistake when processing profile templates:
+when we define them directly on a target model we fail with an
+error. The problem is probably to do with the fact that we do not set
+the meta-model information on these new types. We should try something
+similar for all meta-types such as decorations, etc.
+
+*** COMPLETED Inner modules need to be qualified                      :story:
+    CLOSED: [2019-05-07 Tue 14:15]
+    :LOGBOOK:
+    CLOCK: [2019-05-07 Tue 13:53]--[2019-05-07 Tue 14:15] =>  0:22
+    :END:
+
+At present we cannot make a reference to a type in a "inner"
+module. Take type T defined in namespace N. Assume N::M with type
+R. In T we should be able to refer to M::R without any further
+qualification because N contains both T and M. However, at present the
+resolver cannot find M::R unless we specify N::M::R.
+
+*** COMPLETED Create namespaces for model elements                    :story:
+    CLOSED: [2019-05-07 Tue 16:17]
+    :LOGBOOK:
+    CLOCK: [2019-05-09 Thu 05:01]--[2019-05-09 Thu 06:12] =>  1:11
+    CLOCK: [2019-05-08 Wed 19:40]--[2019-05-08 Wed 19:43] =>  0:03
+    CLOCK: [2019-05-08 Wed 19:28]--[2019-05-08 Wed 19:39] =>  0:11
+    CLOCK: [2019-05-08 Wed 18:54]--[2019-05-08 Wed 19:06] =>  0:12
+    CLOCK: [2019-05-08 Wed 18:45]--[2019-05-08 Wed 18:53] =>  0:08
+    CLOCK: [2019-05-08 Wed 17:01]--[2019-05-08 Wed 18:01] =>  1:53
+    CLOCK: [2019-05-08 Wed 13:34]--[2019-05-08 Wed 14:40] =>  1:06
+    CLOCK: [2019-05-08 Wed 09:31]--[2019-05-08 Wed 10:28] =>  0:57
+    CLOCK: [2019-05-07 Tue 15:53]--[2019-05-07 Tue 16:17] =>  0:24
+    CLOCK: [2019-05-07 Tue 15:38]--[2019-05-07 Tue 15:52] =>  0:14
+    CLOCK: [2019-05-07 Tue 14:45]--[2019-05-07 Tue 15:37] =>  0:52
+    CLOCK: [2019-05-07 Tue 14:16]--[2019-05-07 Tue 14:44] =>  0:28
+    CLOCK: [2019-05-07 Tue 13:41]--[2019-05-07 Tue 13:53] =>  0:12
+    CLOCK: [2019-05-07 Tue 09:56]--[2019-05-07 Tue 11:57] =>  2:01
+    :END:
+
+At present we have a flat namespace for all elements in coding. This
+had served us well up to recently, but with the proliferation of
+metamodel elements, it is becoming a bit unwieldy. This will get a lot
+worse once we move the fabric types. Its probably best if we partition
+elements into their own namespaces, such as:
+
+- decoration
+- variability
+- cpp
+- csharp
+- build
+- etc.
+
+Actually we now have only the "core" elements outside a namespace. In
+reality, these are "structural" elements. Create a namespace for them
+as well.
+
+*** COMPLETED Leaves in internal modules are not captured correctly   :story:
+    CLOSED: [2019-05-08 Wed 12:05]
+    :LOGBOOK:
+    CLOCK: [2019-05-08 Wed 11:55]--[2019-05-08 Wed 12:04] =>  0:09
+    CLOCK: [2019-05-08 Wed 10:30]--[2019-05-08 Wed 11:54] =>  1:24
+    :END:
+
+It seems we are not adding leaves to parents if they are located in
+internal modules. It could also be because the generalisation
+relationship comes about via meta-data rather than UML generalisation.
+
+Actually the problem is related to how we were bucketing the leaves
+when generating the visitor: we were splitting them by internal
+modules, resulting in multiple visitors per model. We now bucket them
+by model instead.
+
+*** POSTPONED Try to add relational tracing support                   :story:
+    CLOSED: [2019-05-09 Thu 11:55]
+    :LOGBOOK:
+    CLOCK: [2019-05-09 Thu 11:48]--[2019-05-09 Thu 11:55] =>  0:07
+    CLOCK: [2019-05-09 Thu 09:03]--[2019-05-09 Thu 11:47] =>  2:44
+    :END:
+
+Whenever we bump into a problem we seem to spend a lot of time going
+through the log files and trace files trying to figure out where the
+problem is happening. Have a quick go in trying to implement a
+relational model for tracing to see if we can transfer the bulk of the
+data into a relational format which we can query via SQL.
+
+We've created a basic relational model for tracing. The relational
+part of it seems straightforward (ish); the problem is the integration
+of the tracer with the relational model. At present we rely on the
+fact that all traceable objects have IO enabled; this works because
+the code generator creates the IO facet, which is then used by the
+write method in utility to convert any model type into a
+string. However, we now need to change the approach: we need multiple
+tracing backends:
+
+- file tracer
+- database tracer.
+
+The file tracer is more or less the current tracer. The database
+tracer needs to decompose the objects in existing models into a
+relational representation. In an ideal world, the user would configure
+the tracer to use one of the two backends and the remaining usage
+would be transparent. However, we cannot have an interface for the
+tracer backend that uses template methods because then we'd need
+virtual template functions, it seems.
+
+Another alternative is to make the tracer aware of the model objects
+it is tracing. This is also not ideal because we would create cycles
+int he design.
+
+In effect we need to somehow implement a similar approach to the existing
+tracer: rely on global template functions a-la =operator<<= to
+decompose objects into their relational representations and then
+supply those to the backend. It is not very clear how this would
+work. For now we've postponed this approach as it seems its not going
+to be a quick win.
+
+We should approach this incrementally. Next time we have a bit of
+spare time, we need to generate the model and then create the adapters
+from existing models. Finally we can look at how it will be integrated
+with tracing.
+
+*** POSTPONED Linux and OSX binaries are not stripped                 :story:
+    CLOSED: [2019-05-19 Sun 15:24]
+    :LOGBOOK:
+    CLOCK: [2019-05-09 Thu 16:25]--[2019-05-09 Thu 17:20] =>  0:55
+    CLOCK: [2019-05-09 Thu 15:56]--[2019-05-09 Thu 16:24] =>  0:28
+    :END:
+
+At present our Linux and OSX build is much bigger than our windows
+builds (3.8 MB on Windows vs 31 MB OSX and 15 MB on Linux). The
+problem appears to be that we are not stripping the binaries on Linux.
+
+We tried manually stripping:
+
+:     # strip the binaries in release
+:    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -s")
+:    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
+
+However clang does not support this.
+
+This may be related to the CMake build type of MinRelSize. Try doing a
+build with this and see if the binaries are smaller. Actually this
+does not work. We also tried:
+
+: CMAKE_INSTALL_DO_STRIP
+
+Which seems to have some effect but not exactly the same as a command
+line =strip=. Supposedly this is a install level strip.
+
+The only solution that appears to work is to add a custom command to
+all targets in the build to strip:
+
+: add_custom_command(TARGET ${target} POST_BUILD
+:        COMMAND ${EMBREE_SIGN_FILE} $<TARGET_FILE:${target}>)
+
+However we need to be careful because stripping shared libraries may
+cause problems. Also this is done for every build.
+
+Links:
+
+- [[https://www.technovelty.org/linux/stripping-shared-libraries.html][Stripping shared libraries]]
+- [[https://cmake.org/pipermail/cmake/2012-March/049741.html][make install/strip does not strip static libraries]]
+
+*** COMPLETED Fix issues with nightly build and CI                    :story:
+    CLOSED: [2019-05-19 Sun 15:24]
+    :LOGBOOK:
+    CLOCK: [2019-05-13 Mon 08:08]--[2019-05-13 Mon 08:13] =>  0:05
+    :END:
+
+Time spent fixing build issues with either nightlies and/or CI.
+
+*** COMPLETED Emacs maintenance and exploration work                  :story:
+    CLOSED: [2019-05-19 Sun 15:24]
+    :LOGBOOK:
+    CLOCK: [2019-05-16 Thu 14:52]--[2019-05-16 Thu 15:09] =>  0:17
+    CLOCK: [2019-05-15 Wed 09:42]--[2019-05-15 Wed 09:53] =>  0:11
+    CLOCK: [2019-05-15 Wed 09:02]--[2019-05-15 Wed 09:14] =>  0:12
+    :END:
+
+Any time spent improving emacs, exploring new modes, fixing snags,
+etc.
+
+- add support for indent guides. [[https://github.com/DarthFennec/highlight-indent-guides][highlight-indent-guides]], [[https://stackoverflow.com/questions/1587972/how-to-display-indentation-guides-in-emacs/56144459#56144459][SO question]].
+- treemacs issues: when blank type g to refresh.
+- lsp seems to update with every character we type. It would be nice
+  to update on save only.
+
+*** COMPLETED Initial analysis to code generate feature infrastructure :story:
+    CLOSED: [2019-05-10 Fri 11:19]
+    :LOGBOOK:
+    CLOCK: [2019-05-10 Fri 10:24]--[2019-05-10 Fri 11:16] =>  0:52
+    CLOCK: [2019-05-10 Fri 10:16]--[2019-05-10 Fri 10:23] =>  0:07
+    CLOCK: [2019-05-10 Fri 09:29]--[2019-05-10 Fri 10:15] =>  0:46
+    CLOCK: [2019-05-10 Fri 09:05]--[2019-05-10 Fri 09:29] =>  0:24
+    CLOCK: [2019-05-09 Thu 17:21]--[2019-05-09 Thu 18:14] =>  0:53
+    CLOCK: [2019-05-09 Thu 13:59]--[2019-05-09 Thu 14:25] =>  0:26
+    CLOCK: [2019-05-09 Thu 13:10]--[2019-05-09 Thu 13:45] =>  0:35
+    CLOCK: [2019-05-09 Thu 08:38]--[2019-05-09 Thu 09:02] =>  0:59
+    CLOCK: [2019-05-09 Thu 07:04]--[2019-05-09 Thu 07:06] =>  0:02
+    CLOCK: [2019-05-09 Thu 06:35]--[2019-05-09 Thu 07:03] =>  0:28
+    CLOCK: [2019-05-09 Thu 06:13]--[2019-05-09 Thu 06:24] =>  0:11
+    CLOCK: [2019-05-08 Wed 19:07]--[2019-05-08 Wed 19:27] =>  0:20
+    CLOCK: [2019-05-08 Wed 09:27]--[2019-05-08 Wed 09:31] =>  0:04
+    CLOCK: [2019-05-07 Tue 16:54]--[2019-05-07 Tue 18:01] =>  1:07
+    CLOCK: [2019-05-07 Tue 16:26]--[2019-05-07 Tue 16:53] =>  0:27
+    CLOCK: [2019-05-07 Tue 16:18]--[2019-05-07 Tue 16:25] =>  0:07
+    :END:
+
+Dogen should generate code for the following:
+
+- definition of a feature template, as per the existing data
+  files. The approach should be very similar to what we did with
+  profiles. With this we have features as a meta-model element.
+- a concrete class to represent the feature group.
+- code to read the concrete class out of the dynamic configuration
+  (e.g. a "feature deserialiser" if you like).
+
+Problems:
+
+- we are defining a new binding point rather than binding; this means
+  that the logic for checking the bindings no longer works. For
+  example, we could be creating a new global binding point in a
+  property.
+
+: #DOGEN masd.variability.binding_point=global
+
+Notes:
+
+- create a feature template list with the feature templates defined in
+  the meta-model.
+- find a way to retrieve all of the feature template lists created in
+  each model from engine.
+- find a way to supply the list of lists to the variability subsystem
+  in the feature model production chain.
+- the user creates a feature group. On construction, it will query the
+  feature model for all of its features and setup its feature group.
+- users can then call =read= on a dynamic configuration to create
+  static configurations.
+- variability needs a feature template registrar that keeps track of
+  all the available feature templates. It is supplied into the feature
+  model production chain from the engine.
+- all models that make use of features need a feature template
+  initialiser. It calls the registrar with all the features in that
+  model.
+
+*** COMPLETED Replace JSON based feature templates with generated code :story:
+    CLOSED: [2019-05-13 Mon 10:18]
+    :LOGBOOK:
+    CLOCK: [2019-05-13 Mon 10:15]--[2019-05-13 Mon 10:18] =>  0:03
+    CLOCK: [2019-05-13 Mon 10:11]--[2019-05-13 Mon 10:14] =>  0:03
+    CLOCK: [2019-05-13 Mon 09:54]--[2019-05-13 Mon 10:10] =>  0:16
+    CLOCK: [2019-05-13 Mon 09:33]--[2019-05-13 Mon 09:53] =>  0:20
+    CLOCK: [2019-05-13 Mon 09:22]--[2019-05-13 Mon 09:32] =>  0:10
+    CLOCK: [2019-05-13 Mon 09:11]--[2019-05-13 Mon 09:21] =>  0:10
+    CLOCK: [2019-05-13 Mon 08:53]--[2019-05-13 Mon 09:10] =>  0:17
+    CLOCK: [2019-05-12 Sun 21:27]--[2019-05-12 Sun 21:41] =>  0:14
+    CLOCK: [2019-05-12 Sun 21:16]--[2019-05-12 Sun 21:26] =>  0:10
+    CLOCK: [2019-05-12 Sun 19:09]--[2019-05-12 Sun 19:27] =>  0:18
+    CLOCK: [2019-05-12 Sun 18:59]--[2019-05-12 Sun 19:07] =>  0:08
+    CLOCK: [2019-05-12 Sun 18:50]--[2019-05-12 Sun 18:58] =>  0:08
+    CLOCK: [2019-05-12 Sun 18:38]--[2019-05-12 Sun 18:49] =>  0:11
+    CLOCK: [2019-05-12 Sun 18:30]--[2019-05-12 Sun 18:37] =>  0:07
+    CLOCK: [2019-05-12 Sun 15:43]--[2019-05-12 Sun 15:55] =>  0:12
+    CLOCK: [2019-05-12 Sun 15:37]--[2019-05-12 Sun 15:42] =>  0:05
+    CLOCK: [2019-05-12 Sun 15:30]--[2019-05-12 Sun 15:36] =>  0:06
+    CLOCK: [2019-05-12 Sun 15:24]--[2019-05-12 Sun 15:29] =>  0:05
+    CLOCK: [2019-05-12 Sun 15:00]--[2019-05-12 Sun 15:23] =>  0:23
+    CLOCK: [2019-05-12 Sun 14:52]--[2019-05-12 Sun 14:59] =>  0:07
+    CLOCK: [2019-05-12 Sun 14:41]--[2019-05-12 Sun 14:51] =>  0:10
+    CLOCK: [2019-05-12 Sun 13:37]--[2019-05-12 Sun 13:42] =>  0:05
+    CLOCK: [2019-05-12 Sun 13:21]--[2019-05-12 Sun 13:36] =>  0:15
+    CLOCK: [2019-05-12 Sun 13:00]--[2019-05-12 Sun 13:20] =>  0:20
+    CLOCK: [2019-05-12 Sun 12:56]--[2019-05-12 Sun 12:59] =>  0:03
+    CLOCK: [2019-05-12 Sun 12:52]--[2019-05-12 Sun 12:55] =>  0:03
+    CLOCK: [2019-05-12 Sun 12:40]--[2019-05-12 Sun 12:51] =>  0:11
+    CLOCK: [2019-05-12 Sun 10:27]--[2019-05-12 Sun 10:36] =>  0:09
+    CLOCK: [2019-05-12 Sun 10:05]--[2019-05-12 Sun 10:26] =>  0:21
+    CLOCK: [2019-05-12 Sun 09:25]--[2019-05-12 Sun 09:29] =>  0:04
+    CLOCK: [2019-05-12 Sun 09:05]--[2019-05-12 Sun 09:24] =>  0:19
+    CLOCK: [2019-05-11 Sat 22:32]--[2019-05-11 Sat 22:57] =>  0:25
+    CLOCK: [2019-05-11 Sat 22:21]--[2019-05-11 Sat 22:31] =>  0:10
+    CLOCK: [2019-05-11 Sat 22:06]--[2019-05-11 Sat 22:20] =>  0:14
+    CLOCK: [2019-05-11 Sat 22:02]--[2019-05-11 Sat 22:05] =>  0:03
+    CLOCK: [2019-05-11 Sat 21:57]--[2019-05-11 Sat 22:01] =>  0:04
+    CLOCK: [2019-05-11 Sat 21:54]--[2019-05-11 Sat 21:56] =>  0:02
+    CLOCK: [2019-05-11 Sat 21:45]--[2019-05-11 Sat 21:53] =>  0:08
+    CLOCK: [2019-05-11 Sat 21:40]--[2019-05-11 Sat 21:44] =>  0:04
+    CLOCK: [2019-05-11 Sat 21:29]--[2019-05-11 Sat 21:39] =>  0:10
+    CLOCK: [2019-05-11 Sat 21:18]--[2019-05-11 Sat 21:28] =>  0:10
+    CLOCK: [2019-05-11 Sat 20:54]--[2019-05-11 Sat 21:04] =>  0:10
+    CLOCK: [2019-05-11 Sat 13:25]--[2019-05-11 Sat 13:36] =>  0:11
+    CLOCK: [2019-05-11 Sat 13:14]--[2019-05-11 Sat 13:24] =>  0:10
+    CLOCK: [2019-05-11 Sat 09:01]--[2019-05-11 Sat 09:30] =>  0:29
+    CLOCK: [2019-05-11 Sat 07:08]--[2019-05-11 Sat 07:41] =>  0:33
+    CLOCK: [2019-05-11 Sat 06:52]--[2019-05-11 Sat 07:07] =>  0:15
+    CLOCK: [2019-05-11 Sat 06:42]--[2019-05-11 Sat 06:51] =>  0:09
+    CLOCK: [2019-05-11 Sat 06:10]--[2019-05-11 Sat 06:41] =>  0:31
+    CLOCK: [2019-05-10 Fri 20:38]--[2019-05-10 Fri 20:41] =>  0:03
+    CLOCK: [2019-05-10 Fri 20:17]--[2019-05-10 Fri 20:37] =>  0:20
+    CLOCK: [2019-05-10 Fri 20:06]--[2019-05-10 Fri 20:16] =>  0:10
+    CLOCK: [2019-05-10 Fri 19:51]--[2019-05-10 Fri 20:05] =>  0:14
+    CLOCK: [2019-05-10 Fri 18:59]--[2019-05-10 Fri 19:05] =>  0:06
+    CLOCK: [2019-05-10 Fri 18:28]--[2019-05-10 Fri 18:58] =>  0:30
+    CLOCK: [2019-05-10 Fri 17:47]--[2019-05-10 Fri 18:27] =>  0:40
+    CLOCK: [2019-05-10 Fri 17:32]--[2019-05-10 Fri 17:46] =>  0:14
+    CLOCK: [2019-05-10 Fri 16:35]--[2019-05-10 Fri 17:31] =>  0:56
+    CLOCK: [2019-05-10 Fri 16:10]--[2019-05-10 Fri 16:34] =>  0:24
+    CLOCK: [2019-05-10 Fri 15:23]--[2019-05-10 Fri 16:09] =>  0:46
+    CLOCK: [2019-05-10 Fri 15:08]--[2019-05-10 Fri 15:22] =>  0:14
+    CLOCK: [2019-05-10 Fri 14:47]--[2019-05-10 Fri 15:07] =>  0:20
+    CLOCK: [2019-05-10 Fri 14:21]--[2019-05-10 Fri 14:46] =>  0:25
+    CLOCK: [2019-05-10 Fri 14:06]--[2019-05-10 Fri 14:20] =>  0:14
+    CLOCK: [2019-05-10 Fri 13:40]--[2019-05-10 Fri 14:05] =>  0:25
+    CLOCK: [2019-05-10 Fri 13:27]--[2019-05-10 Fri 13:39] =>  0:12
+    CLOCK: [2019-05-10 Fri 12:55]--[2019-05-10 Fri 13:26] =>  0:31
+    :END:
+
+Tasks:
+
+- rename =feature_template_group_registrar= to
+  =feature_template_initializer=.
+- rename =feature_template_group= to =feature_bundle=. The feature
+  bundle gives rise to: feature templates, feature group, static
+  configuration.
+- create a registrar in variability that keeps track of the feature
+  templates (=feature_template_registrar=?).
+- create a variability type mapper that returns the dynamic type
+  (e.g. from =masd::variability::text= returns the text enumeration)
+  or the C++ type (returns =std::string=).
+- create a static method in the =feature_bundle= that returns a list
+  of feature templates (=make_templates=?).
+- create a static method in the initializer that calls all feature
+  bundles and retrieves the list of all feature templates, and
+  populates the registrar.
+- in engine, call all feature template initializers.
+- update the variability feature model chain to receive the feature
+  registrar as input.
+- update all models to define features in the meta-model.
+- remove all JSON files.
+
+Notes:
+
+- the formatter is a feature. The postfix, enabled etc should be with
+  the formatter itself and it should register the feature. However,
+  the problem is then with the static representation of the
+  configuration. But perhaps this is not needed?
+- why are there multiple decoration related fields? some are
+  =masd.decoration= others are
+  =masd.generation.decoration=. Investigate how they are used.
+- archetype location properties are not useful for instance templates.
+  We should not require them in this case. We could make the location
+  optional on the template.
+
+*** COMPLETED Make a clear separation between dogen and masd          :story:
+    CLOSED: [2019-05-13 Mon 16:32]
+    :LOGBOOK:
+    CLOCK: [2019-05-13 Mon 16:16]--[2019-05-13 Mon 16:28] =>  0:12
+    CLOCK: [2019-05-13 Mon 16:05]--[2019-05-13 Mon 16:15] =>  0:10
+    CLOCK: [2019-05-13 Mon 14:39]--[2019-05-13 Mon 16:04] =>  1:25
+    CLOCK: [2019-05-13 Mon 13:56]--[2019-05-13 Mon 14:38] =>  0:42
+    CLOCK: [2019-05-13 Mon 12:45]--[2019-05-13 Mon 13:55] =>  1:10
+    CLOCK: [2019-05-13 Mon 11:44]--[2019-05-13 Mon 12:05] =>  0:21
+    CLOCK: [2019-05-13 Mon 11:34]--[2019-05-13 Mon 11:37] =>  0:03
+    CLOCK: [2019-05-13 Mon 10:19]--[2019-05-13 Mon 11:33] =>  1:14
+    :END:
+
+At the moment we are confusing Dogen quite a lot with MASD. There
+should be a clear separation between these two:
+
+- MASD provides a theoretical framework, together with a meta-model
+  and a feature model.
+- Dogen is a reference implementation of this framework.
+
+We should not use the prefix =masd= on anything unless it belongs to
+the MASD framework. The question to ask is: "if we had a second
+implementation of MASD, would it have to know about this concept?" If
+the answer is no, then the concept should not be under the MASD
+namespace.
+
+Tasks:
+
+- drop =masd= namespace from all dogen models.
+- drop =masd= namespace from all test models.
+- drop =masd= namespace from all profiles.
+
+*Previous Understanding*
+
+At present we have stereotypes such as =masd::handcrafted::typeable=
+etc. However, the namespace =masd= in this context is not meant to
+imply these are defined inside the MASD public UML profile. In fact,
+should we really call dogen =masd::dogen=?
+
+Whilst dogen is an implementation of MASD, it is not inside the MASD
+namespace - in the sense that things defined in dogen are
+implementation specific. If we has simply =dogen=, we could then
+reserve the =masd= namespace for things that are actually in the MASD
+spec. Similarly for the reference models. The question is whether
+reference implementations should exist under the MASD umbrella or
+not. Say for example a third party implements the MASD spec; we
+wouldn't expect them to place it under the MASD namespace.
+
+In a somewhat similar vein, we have the =masd= model in library. This
+contains elements which are directly usable by end users (licences for
+example) and others which are less so - generation markers are more of
+an example rather than what we expect users to use. Modelines are
+somewhere in between.
+
+*** COMPLETED Add a method in enumeration that converts it from strings :story:
+    CLOSED: [2019-05-14 Tue 19:54]
+    :LOGBOOK:
+    CLOCK: [2019-05-14 Tue 19:45]--[2019-05-14 Tue 19:54] =>  0:09
+    CLOCK: [2019-05-14 Tue 19:24]--[2019-05-14 Tue 19:44] =>  0:20
+    CLOCK: [2019-05-14 Tue 18:42]--[2019-05-14 Tue 18:52] =>  0:10
+    CLOCK: [2019-05-14 Tue 17:46]--[2019-05-14 Tue 18:02] =>  0:16
+    CLOCK: [2019-05-14 Tue 17:13]--[2019-05-14 Tue 17:33] =>  0:20
+    CLOCK: [2019-05-14 Tue 16:01]--[2019-05-14 Tue 17:12] =>  1:11
+    CLOCK: [2019-05-14 Tue 15:16]--[2019-05-14 Tue 16:00] =>  0:44
+    CLOCK: [2019-05-14 Tue 15:02]--[2019-05-14 Tue 15:15] =>  0:13
+    CLOCK: [2019-05-14 Tue 09:25]--[2019-05-14 Tue 12:05] =>  2:40
+    CLOCK: [2019-05-14 Tue 09:21]--[2019-05-14 Tue 09:24] =>  0:03
+    CLOCK: [2019-05-14 Tue 08:40]--[2019-05-14 Tue 09:20] =>  0:40
+    CLOCK: [2019-05-13 Mon 17:21]--[2019-05-13 Mon 18:02] =>  0:41
+    CLOCK: [2019-05-13 Mon 16:29]--[2019-05-13 Mon 16:51] =>  0:22
+    :END:
+
+- =from_simple_string=;
+- =from_qualified_string=.
+
+For symmetry:
+
+- =to_simple_string=;
+- =to_qualified_string=.
+
+Actually we cannot call the method =from_simple_string= as we cannot
+overload based on return types. In addition, with C++ 98 we may also
+have problems overloading based on plain enums - needs
+investigation. The names will have to reflect the enum name
+too. Perhaps:
+
+- =simple_string_to_technical_space=
+- =qualified_string_to_technical_space=
+- =simple_string_to_technical_space=
+- =qualified_string_to_technical_space=
+
+In addition, the conversion to string requires a bit of thinking. We
+don't want to create strings on the heap needlessly, but supporting
+C++98 means we can't just use string view. Besides we don't even know
+how string view will integrated with the existing code.
+
+A slightly better approach may be to rely on lexical cast. We can
+create a new facet specifically for this and specialise it only for
+enums for now. We could try to make no allocations as well using
+=char*= and =strncmp=.
+
+Notes:
+
+- problems with c++ 98 model: tests are running on c++ 17. This is not
+  a huge problem normally, but we now have some header only code which
+  is actually only being validated for c++ 17. We need to remove all
+  autos from the tests plus fix semi-colons, etc.
+- need a way to obtain a qualified name to the enumerator in C++ 98
+  style (e.g. skipping the enumeration).
+
+Links:
+
+- [[http://www.cplusplus.com/reference/cstring/strncmp/][strncmp]]
+- [[https://stackoverflow.com/questions/1250795/very-poor-boostlexical-cast-performance][Very poor boost::lexical_cast performance]]
+
+*** COMPLETED Update palettes and colour script with new elements     :story:
+    CLOSED: [2019-05-16 Thu 11:48]
+    :LOGBOOK:
+    CLOCK: [2019-05-16 Thu 11:42]--[2019-05-16 Thu 11:48] =>  0:06
+    CLOCK: [2019-05-16 Thu 10:57]--[2019-05-16 Thu 11:41] =>  0:44
+    CLOCK: [2019-05-16 Thu 10:37]--[2019-05-16 Thu 10:56] =>  0:19
+    :END:
+
+Our colours model has become really confusing:
+
+- it is located in the test model but it really is trying to
+  demonstrate MASD specific properties.
+- we are including colours for test model specific profiles.
+
+What we really need is to split it:
+
+- a model representing the MASD palette with only MASD-specific
+  stereotypes, which should be part of Dogen and shipped with the
+  package.
+- a model representing the dogen palette.
+- a model representing the test models palette. Note that we have not
+  created a profile for C# yet.
+
+*** COMPLETED Mappings as meta-model elements                         :story:
+    CLOSED: [2019-05-17 Fri 10:20]
+    :LOGBOOK:
+    CLOCK: [2019-05-17 Fri 10:03]--[2019-05-17 Fri 10:20] =>  0:17
+    CLOCK: [2019-05-17 Fri 09:54]--[2019-05-17 Fri 10:02] =>  0:08
+    CLOCK: [2019-05-17 Fri 08:20]--[2019-05-17 Fri 09:53] =>  1:33
+    CLOCK: [2019-05-17 Fri 08:14]--[2019-05-17 Fri 08:19] =>  0:05
+    CLOCK: [2019-05-16 Thu 22:41]--[2019-05-16 Thu 22:48] =>  0:07
+    CLOCK: [2019-05-16 Thu 22:03]--[2019-05-16 Thu 22:40] =>  0:37
+    CLOCK: [2019-05-16 Thu 18:56]--[2019-05-16 Thu 19:46] =>  0:50
+    CLOCK: [2019-05-16 Thu 18:18]--[2019-05-16 Thu 18:26] =>  0:08
+    CLOCK: [2019-05-16 Thu 17:01]--[2019-05-16 Thu 18:02] =>  1:01
+    CLOCK: [2019-05-16 Thu 15:10]--[2019-05-16 Thu 16:59] =>  1:49
+    CLOCK: [2019-05-16 Thu 14:37]--[2019-05-16 Thu 14:51] =>  0:14
+    CLOCK: [2019-05-16 Thu 14:01]--[2019-05-16 Thu 14:06] =>  0:05
+    CLOCK: [2019-05-16 Thu 13:07]--[2019-05-16 Thu 14:00] =>  0:53
+    CLOCK: [2019-05-15 Wed 18:37]--[2019-05-15 Wed 18:45] =>  0:08
+    CLOCK: [2019-05-15 Wed 18:13]--[2019-05-15 Wed 18:27] =>  0:14
+    CLOCK: [2019-05-15 Wed 18:08]--[2019-05-15 Wed 18:12] =>  0:04
+    CLOCK: [2019-05-15 Wed 17:10]--[2019-05-15 Wed 17:56] =>  0:46
+    CLOCK: [2019-05-15 Wed 16:58]--[2019-05-15 Wed 17:09] =>  0:11
+    CLOCK: [2019-05-15 Wed 15:31]--[2019-05-15 Wed 16:41] =>  1:10
+    CLOCK: [2019-05-15 Wed 14:23]--[2019-05-15 Wed 14:33] =>  0:10
+    CLOCK: [2019-05-15 Wed 13:34]--[2019-05-15 Wed 14:13] =>  0:39
+    CLOCK: [2019-05-15 Wed 11:44]--[2019-05-15 Wed 11:50] =>  0:06
+    CLOCK: [2019-05-15 Wed 11:35]--[2019-05-15 Wed 11:43] =>  0:08
+    CLOCK: [2019-05-15 Wed 11:27]--[2019-05-15 Wed 11:34] =>  0:07
+    CLOCK: [2019-05-15 Wed 11:07]--[2019-05-15 Wed 11:26] =>  0:19
+    CLOCK: [2019-05-15 Wed 09:53]--[2019-05-15 Wed 10:55] =>  1:02
+    CLOCK: [2019-05-14 Tue 22:37]--[2019-05-14 Tue 22:40] =>  0:03
+    CLOCK: [2019-05-14 Tue 21:45]--[2019-05-14 Tue 22:36] =>  0:51
+    :END:
+
+Now that we started to see PDMs as a solution for proxy models, the
+logical consequence is that mappings too are meta-model elements. In
+effect, it is a meta-model element that maps two model elements. So
+users can create their own mappings if required and PIMs then become a
+user level option. We can of course provide LAM, both as an example
+and proof of concept but users are free to create their own
+mappings. A few things are needed:
+
+- all mappings must be processed first. This is because when we load
+  models we do the mapping.
+- a model should state if its a PSM or a PIM. If a PSM it must
+  reference one or more mapping models. It must not reference any
+  PSMs.
+- mapping models should have references to PSMs. These are loaded on
+  demand if, after mapping, we find types being referenced (e.g. get a
+  list of all referenced models after mapping, check for their
+  presence in references list and load them).
+
+Actually the right way to achieve this is to have "proxy model
+elements". These cannot be used by themselves; they exist merely to
+signify a mapping point. Then, on the regular models we define the
+mapping (e.g. =std::string= has a mapping to a proxy element in
+LAM). The mapping is not used when you include =std=, only when you
+include =lam= (e.g. when we detect the presence of the proxy
+elements). This means its now very easy to add new mappings (just add
+them to new models). Note also that the technical space of the mapping
+is inferred from the TS of the model with the mapping (e.g. c++ in the
+case of =std=). We need to:
+
+- create a model called LAM.
+- define a new type of meta-model element for the mapping (look for
+  better names).
+- define a new meta-data key for the mapping.
+- create a new mapping transform (post-assembly) that looks for proxy
+  elements and their mappings; it uses those to build the existing
+  mapping structures. The rest of the mapping process remains as is -
+  i.e. the output of this transform should match the hydrator.
+
+Notes:
+
+- defining variability as a mapping model may not be a good
+  idea. First because we need to map things such as =text_collection=
+  to =std::list<std::string= but the mapping system was not designed
+  to do 1-N mappings, just 1-1 mappings. In truth, we should really
+  have a =collection<text>= as a composite type, but refactoring the
+  type system of variability is a fair amount of work and we do not
+  yet have a use case to justify it. Second, we only have a fixed set
+  of mappings for variability types and these are not going to
+  change. If they do, all the client code will break. Similarly, we
+  only need mappings for C++ because that's where we will always use
+  this code. All and all, we just need some special purpose mapping
+  for variability. However, we do not want to fall through the same
+  trap as we did for formatter includes: bypassing the model type
+  system is a bad idea. We need some kind of "soft mapping" for this
+  particular case, that associates a variability type to a name or
+  naem tree (e.g. =text_collection=) and then have that name or name
+  tree go through the usual processing (resolving, etc). Thus we could
+  create two separate concepts for mapping (open and closed, something
+  like this). For variability we just need closed mapping. We can then
+  use the feature template properties plus the mapping to construct an
+  structural object which is owned by the binding. This will be used
+  to create the struct.
+- final approach is to have two separate types. For the extensible
+  mappables, the processing is as follows:
+  - at the engine level, we first adapt the types as usual.
+  - then, we traverse the entire model set looking for objects,
+    primitives or builtins that are mapped. We keep track of their
+    name, TS and action and the target of the mapping. A single
+    container of target to list of destination suffices.
+  - in coding, in the mappings transform, we read the extensible
+    mappings container and create a mapping repository. We need to use
+    the new action enum here.
+- for the fixed mappings:
+  - we can read them in the adapter as usual.
+  - then at the engine level we read the untyped destination.
+  - then the parsing transform creates the name tree.
+  - the merger merges all the mappings.
+  - the resolver transform resolves the name tree.
+  - a feature bundle transform at the post-assembly level creates the
+    inner object. It uses the fixed mappings of the target model to
+    resolve the properties into a name tree.
+  - formatter then expresses it as a struct.
+- at present we are "mapping" agnostic models into concrete TS. This
+  happens because the mapping code always maps, regardless. The net
+  result is that this "mapping" is merely the copying across of
+  elements plus (very significantly) the changing of the model TS from
+  agnostic into a concrete TS. Without this the merger will just
+  ignore the model.
+- mapping happens right before merging. This means that we cannot rely
+  on the mappings being made available to the model currently being
+  mapped as we had assumed. We need to find some way to ensure the
+  mappings are made available to all models. We need to change the
+  assembly, mapping and merge transforms to take in model sets. In the
+  merge transform we need to first locate all the mappings and build
+  the repository, then map all models.
+
+Merged Stories:
+
+*Allow users to choose mapping sets*
+
+At present we load the "default" mappings, which are also the only
+mappings available. It is entirely possible that users will not agree
+with those mappings. If we add a name to the mappings, and provide a
+meta-data tag to choose mappings we can then allow users to provide
+their own and set the meta-data accordingly. Mapper then reads the
+meta-data in the model and uses the requested element map. For this we
+need to name the element maps and we also need to create a "mapping
+set". These can be indexed by name in the mapping repository. Mapper
+chooses the mapping set to use.
+
+In keeping with the idea that profiles are model-level concepts,
+mappings should be too. We should be able to import mappings in a UML
+diagram and override them or define new ones too.
+
+*** COMPLETED LAM types should exist as a model                       :story:
+    CLOSED: [2019-05-17 Fri 10:20]
+
+*Rationale*: implemented as part of moving mappings into the meta-model.
+
+At present we use LAM as a conceptual device: we don't even have a LAM
+model. Users create attributes with LAM types and we map them to
+concrete technical spaces such as C++ and C#. However, this means we
+do not even resolve lam types, nor do we tell users what types are
+available. A better approach would be to create a LAM model with types
+and make the mappings properties of the types themselves. these can
+now be placed under the =masd= namespace: =masd::lannguage_agnostic=,
+=masd::la= or maybe =masd::pim=. This should be done when we place
+mappings in the meta-model.
+
+*** COMPLETED Code-generate all transform contexts                    :story:
+    CLOSED: [2019-05-17 Fri 14:39]
+    :LOGBOOK:
+    CLOCK: [2019-05-17 Fri 14:31]--[2019-05-17 Fri 14:39] =>  0:08
+    :END:
+
+It seems we missed the injection context, still marked as handcrafted.
+
+*** POSTPONED Update the MASD UML profile to reflect the latest changes :story:
+    CLOSED: [2019-05-19 Sun 15:24]
+    :LOGBOOK:
+    CLOCK: [2019-05-13 Mon 11:38]--[2019-05-13 Mon 11:43] =>  0:05
+    :END:
+
+The UML profile is now a fair bit out of date. Take advantage of the
+down time waiting for builds to sync it.
+
+*** POSTPONED Make wale templates meta-model elements                 :story:
+    CLOSED: [2019-05-19 Sun 15:24]
+    :LOGBOOK:
+    CLOCK: [2019-05-17 Fri 19:01]--[2019-05-17 Fri 19:33] =>  0:32
+    CLOCK: [2019-05-17 Fri 15:18]--[2019-05-17 Fri 17:23] =>  2:05
+    CLOCK: [2019-05-17 Fri 14:40]--[2019-05-17 Fri 15:04] =>  0:24
+    :END:
+
+Tasks:
+
+- create a templating namespace in coding. Add a template to it.
+- create a formatter that writes templating elements into a
+  project-level =templates= directory. We need to always have
+  overwrite off for templates (e.g. it only makes sense for them to be
+  handcrafted).
+- references to wale templates now become just templates (in
+  preparation to changing it to a moustache like approach).
+- paths to wale templates are relative to the templates folder.
+
+Notes:
+
+- we called these elements =logic_less_templates= to reflect the idea
+  that wale, mustche etc templates are [[https://en.wikipedia.org/wiki/Mustache_(template_system)][logic-less]]. However, the more
+  important trait here maybe that the templates are "stand alone";
+  that is, these templates are not a facet of an existing modeling
+  element. It is entirely possible to have a logic-less template
+  directly associated with an existing modeling element just like we
+  do with "logic-full" templates (e.g. stitch).
+
+*Move wale templates from the data directory*
+
+At present we have wale templates under the data directory. This is
+not the right location. These are part of a model just like stitch
+templates. There is one slight wrinkle though: if a user attempts to
+create a dogen formatter (say if plugins were supported), then we need
+access to the template from the debian package. So whilst they should
+live in the appropriate model (e.g. =generation.cpp=,
+=generation.csharp=), they also need to be packaged and shipped.
+
+Interestingly, so will all dogen models which are defining annotations
+and profiles. We need to rethink the data directory, separating system
+models from dogen models somehow. In effect, the data directory will
+be, in the future, the system models directory.
+
+So, in conclusion, two use cases for wale templates:
+
+- regular model defines a wale template and makes use of it. Template
+  should be with the model, just like stitch templates. However,
+  unlike stitch, there should be a directory for them.
+- user model wants to define a new formatter. It will make use of
+  dogen profiles and wale templates. These must be in the future data
+  directory somehow.
+
+Actually, the right thing to do is to make wale templates themselves
+model elements:
+
+- we may want to use a wale template in a different model. This is the
+  use case for when users want to create new formatters to add to an
+  existing backend.
+- we don't want to add additional regular expressions to ignore wale
+  templates; we've already seen how this is a bad idea (for example
+  with tests).
+- whilst adding templates to a model element is not ideal if the model
+  element is in dia or JSON, these are really limitations of the
+  injector format rather than of the idea itself. Ideally, we should
+  have an injector format that supports this use case (another use
+  case for developing a =org_uml= injector).
+
+Notes:
+
+- automatically ignore wale templates by looking at the input
+  meta-data.
+- make wale template input path relative to the output directory.
+
+** Deprecated
+*** CANCELLED Consider adding enumerations in dynamic                 :story:
+    CLOSED: [2019-05-10 Fri 11:45]
+
+*Rationale*: we do not want to further complicate the variability
+model. Instead, we shall code generate the conversion into the static
+type via the enumeration "from string" methods.
+
+This story is bound to already exist in backlog so do another
+search. The idea is that we should be able to define a field and all
+of its valid values. For extra bonus points, we should be able to
+assign an enumeration and get the string conversion done
+automatically; for example by having a string to enum code generated,
+and supplying that function as a type parameter into dynamic. Then
+dynamic's field selector would create the instances of the enumeration.
+
+Previous stories:
+
+*Create a domain field definitions*
+
+In addition to default values, it should be possible to supply a list
+of possible values for a field definition - a domain. When processing
+the values we can then check that it is part of the domain and if not
+throw. This is required for the include types and for the family
+types. At present this is only applicable to string fields.
+
+In this sense, =boolean= is just a special case where the list is know
+up front. We should re-implement =boolean= this way. Possibly even add
+synonyms (e.g. =true=, =false=, =0=, =1=)?

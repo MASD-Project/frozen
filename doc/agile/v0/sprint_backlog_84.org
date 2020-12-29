@@ -1,0 +1,873 @@
+#+title: Sprint Backlog 84
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- complete the properties refactoring across all models;
+- finish implementing IO helpers.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-07-19 Tue 20:50]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *36:28* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 36:28   |       |      | 100.0 |
+| Active                                                                      |         | 36:28 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 2:36 |   7.1 |
+| COMPLETED Manual updates and blog posts                                     |         |       | 1:21 |   3.7 |
+| COMPLETED Try to fix tag build issues                                       |         |       | 1:28 |   4.0 |
+| COMPLETED Enable =BUILD_TYPE= on travis                                     |         |       | 1:17 |   3.5 |
+| COMPLETED Add initial support for coveralls                                 |         |       | 0:29 |   1.3 |
+| COMPLETED Simplify local builds on emacs                                    |         |       | 0:20 |   0.9 |
+| COMPLETED Create a debug build for clang in travis                          |         |       | 0:10 |   0.5 |
+| COMPLETED Rename element settings back to aspect settings                   |         |       | 0:50 |   2.3 |
+| COMPLETED Rename bundle to element settings                                 |         |       | 0:27 |   1.2 |
+| COMPLETED Rename bundle in stitch to properties                             |         |       | 0:16 |   0.7 |
+| COMPLETED Refactor general settings                                         |         |       | 5:50 |  16.0 |
+| COMPLETED Rename specs to tests                                             |         |       | 1:24 |   3.8 |
+| COMPLETED Create a IO settings class                                        |         |       | 1:15 |   3.4 |
+| COMPLETED Implement streaming for type in terms of IO settings              |         |       | 1:24 |   3.8 |
+| COMPLETED Usage of rev-list in version causes problems                      |         |       | 0:03 |   0.1 |
+| CANCELLED Consider not running initialisers in a static context             |         |       | 0:10 |   0.5 |
+| COMPLETED Refactor formatter interfaces                                     |         |       | 0:36 |   1.6 |
+| COMPLETED Move formatter helpers into formatter container                   |         |       | 0:13 |   0.6 |
+| COMPLETED Add aliases for commonly used targets                             |         |       | 0:02 |   0.1 |
+| CANCELLED Add a pretty printer for ownership hierarchy                      |         |       | 0:13 |   0.6 |
+| COMPLETED Add formatter id to file and helper formatters                    |         |       | 1:20 |   3.7 |
+| COMPLETED Add IO to formatter container                                     |         |       | 1:19 |   3.6 |
+| COMPLETED Includers formatter id is incorrect                               |         |       | 0:07 |   0.3 |
+| COMPLETED Enable IO helpers for types                                       |         |       | 5:51 |  16.0 |
+| COMPLETED Implement IO helper methods with new helper infrastructure        |         |       | 1:03 |   2.9 |
+| COMPLETED Fix cmake installations problems on windows build                 |         |       | 0:24 |   1.1 |
+| COMPLETED Fix Windows linking errors for debug builds                       |         |       | 0:48 |   2.2 |
+| COMPLETED Windows build fails to find tests                                 |         |       | 0:23 |   1.1 |
+| COMPLETED Document windows failures and get build green                     |         |       | 0:30 |   1.4 |
+| POSTPONED Implement hashing using dynamic helpers                           |         |       | 4:19 |  11.8 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-07-19 Tue 20:50]
+    CLOCK: [2016-07-17 Sun 17:20]--[2016-07-17 Sun 17:30] =>  0:10
+    CLOCK: [2016-07-12 Tue 17:47]--[2016-07-12 Tue 18:37] =>  0:50
+    CLOCK: [2016-07-12 Tue 17:25]--[2016-07-12 Tue 17:46] =>  0:21
+    CLOCK: [2016-07-12 Tue 15:50]--[2016-07-12 Tue 16:10] =>  0:20
+    CLOCK: [2016-07-06 Wed 18:31]--[2016-07-06 Wed 18:35] =>  0:04
+    CLOCK: [2016-07-05 Tue 21:27]--[2016-07-05 Tue 21:47] =>  0:20
+    CLOCK: [2016-07-05 Tue 21:22]--[2016-07-05 Tue 21:26] =>  0:04
+    CLOCK: [2016-07-05 Tue 21:11]--[2016-07-05 Tue 21:21] =>  0:10
+    CLOCK: [2016-07-04 Mon 20:05]--[2016-07-04 Mon 20:22] =>  0:17
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Manual updates and blog posts                           :story:
+    CLOSED: [2016-07-19 Tue 20:50]
+    CLOCK: [2016-07-09 Sat 23:43]--[2016-07-09 Sat 23:56] =>  0:13
+    CLOCK: [2016-07-09 Sat 23:21]--[2016-07-09 Sat 23:40] =>  0:19
+    CLOCK: [2016-07-09 Sat 18:53]--[2016-07-09 Sat 19:05] =>  0:12
+    CLOCK: [2016-07-05 Tue 21:48]--[2016-07-05 Tue 22:25] =>  0:37
+
+Time taken with blog posts and updates to the manual.
+
+*** COMPLETED Try to fix tag build issues                             :story:
+    CLOSED: [2016-07-04 Mon 21:03]
+    CLOCK: [2016-07-04 Mon 21:39]--[2016-07-04 Mon 22:12] =>  0:33
+    CLOCK: [2016-07-04 Mon 21:15]--[2016-07-04 Mon 21:38] =>  0:23
+    CLOCK: [2016-07-04 Mon 20:30]--[2016-07-04 Mon 21:02] =>  0:32
+
+For some reason we are getting failures when building the tag:
+
+: CMake Error at CMakeLists.txt:203 (string):
+:  string sub-command STRIP requires two arguments.
+
+For some reason the git commit count command is failing on a tag. At
+any rate, we do not seem to need the strip, so the easy fix for now is
+to remove it.
+
+Actually, reproducing the commands locally, the error is:
+
+: fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+: Use '--' to separate paths from revisions, like this:
+: 'git <command> [<revision>...] -- [<file>...]'
+
+This is probably related to checking out the branch but requesting
+rev-list from master. We can ask for the current branch's rev-list
+instead:
+
+: git rev-list --count HEAD
+
+We were already doing this for the hash of the top-commit.
+
+*** COMPLETED Enable =BUILD_TYPE= on travis                           :story:
+    CLOSED: [2016-07-05 Tue 21:10]
+    CLOCK: [2016-07-05 Tue 20:17]--[2016-07-05 Tue 20:22] =>  0:05
+    CLOCK: [2016-07-05 Tue 19:04]--[2016-07-05 Tue 20:16] =>  1:12
+
+Using =BUILD_TYPE= seems to disable the stage folder in travis -
+though it works locally. We probably shouldn't use the stage folder
+since its not a CMake idiom.
+
+The other thing to notice is that we do not have a =make_directory=
+for these folders anywhere in the code base. Its not clear how it has
+been working so far.
+
+- generate the folders if they do not exist;
+- remove =WITH_DEBUG=.
+
+*** COMPLETED Add initial support for coveralls                       :story:
+    CLOSED: [2016-07-06 Wed 18:01]
+    CLOCK: [2016-07-06 Wed 18:01]--[2016-07-06 Wed 18:30] =>  0:29
+
+Seems like all we need to do to have code coverage from travis is to
+enable it in the YML file.
+
+Try just copying the code from [[https://github.com/JoakimSoderberg/coveralls-cmake][coveralls-cmake]]
+
+- we are generating far too much output. We need to keep it quieter or
+  we will break travis.
+- we are not filtering out non-project files from initial
+  processing. There must be a gcov option to ignore files.
+
+: Process: /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc-5/Debug/projects/quilt/spec/CMakeFiles/quilt.spec.dir/main.cpp.gcda
+: ------------------------------------------------------------------------------
+: File '../../../../projects/quilt/spec/main.cpp'
+: Lines executed:62.50% of 8
+: Creating '^#^#^#^#projects#quilt#spec#main.cpp.gcov'
+:
+: File '/usr/local/personal/include/boost/smart_ptr/detail/sp_counted_impl.hpp'
+: Lines executed:60.00% of 20
+: Creating '#usr#local#personal#include#boost#smart_ptr#detail#sp_counted_impl.hpp.gcov'
+
+See also:
+
+- [[https://github.com/JoakimSoderberg/coveralls-cmake-example/blob/master/CMakeLists.txt][example use of coveralls-cmake]]
+- [[https://github.com/SpinWaveGenie/SpinWaveGenie/blob/master/libSpinWaveGenie/CMakeLists.txt][SpinWaveGenie's support for Coveralls]]
+
+**** Direct use of Coveralls failed
+
+We had to remove coveralls:
+
+: - coveralls --gcov "$GCOV" --gcov-options '\-lp' -e /usr
+
+This was generating over 10 MB of logging so the build got terminated.
+
+We also add to remove debug builds:
+
+: -DWITH_DEBUG=on -DWITH_PROFILING=on
+
+We were getting a lot of internal compiler errors:
+
+: FAILED: /usr/bin/g++-4.9   -DBOOST_ALL_DYN_LINK -g -O0 -Wall -Wextra -pedantic -Werror -Wno-system-headers -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage -std=c++11 -frtti -fvisibility-inlines-hidden -fvisibility=default -isystem /usr/include/libxml2 -Istage/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/dia/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/dia_to_sml/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/frontend/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/backend/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/sml/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/config/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/cpp/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/cpp_formatters/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/sml_to_cpp/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/formatters/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/utility/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/knit/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/knitter/include -MMD -MT projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o -MF "projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o.d" -o projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o -c /home/travis/build/DomainDrivenConsulting/dogen/projects/sml_to_cpp/src/types/transformer.cpp
+: g++-4.9: internal compiler error: Killed (program cc1plus)
+: Please submit a full bug report,
+: with preprocessed source if appropriate.
+: See <file:///usr/share/doc/gcc-4.9/README.Bugs> for instructions.
+
+Finally note also that we must add coverage _after_ the script
+executes or else we risk doing coverage whilst the build is taking
+place. Hopefully this is the reason for these errors:
+
+: /home/travis/build/DomainDrivenConsulting/output/projects/test_models/class_without_attributes/src/CMakeFiles/class_without_attributes.dir/io/package_1/class_1_io.cpp.gcda:cannot open data file, assuming not executed
+: File '/usr/include/c++/4.9/bits/basic_ios.h'
+: No executable lines
+
+We should read up on the [[http://docs.travis-ci.com/user/build-lifecycle/][life-cycle]] properly.
+
+**** Travis Examples
+
+Seems like all we need to do to have code coverage from travis is to
+enable it in the YML file. We should look into copying it from the
+[[https://github.com/apolukhin/Boost.DLL][Boost.DLL]] [[https://raw.githubusercontent.com/apolukhin/Boost.DLL/master/.travis.yml][example]]. We also need to enable coverage on all builds,
+separately from nightlies. The key parts appear to be these:
+
+:  - ../../../b2 cxxflags="--coverage -std=$CXX_STANDARD" linkflags="--coverage"
+
+and
+
+: after_success:
+:    - find ../../../bin.v2/ -name "*.gcda" -exec cp "{}" ./ \;
+:    - find ../../../bin.v2/ -name "*.gcno" -exec cp "{}" ./ \;
+:    - sudo apt-get install -qq python-yaml lcov
+:    - lcov --directory ./ --base-directory ./ --capture --output-file coverage.info
+:    - lcov --remove coverage.info '/usr*' '*/filesystem*' '*/container*' '*/core/*' '*/exception/*' '*/intrusive/*' '*/smart_ptr/*' '*/move/*' '*/fusion/*' '*/io/*' '*/function/*' '*/iterator/*' '*/preprocessor/*' '*/system/*' '*/boost/test/*' '*/boost/detail/*' '*/utility/*' '*/dll/example/*' '*/dll/test/*' '*/pe_info.hpp' '*/macho_info.hpp' -o coverage.info
+:    - gem install coveralls-lcov
+:    - cd .. && coveralls-lcov test/coverage.info
+
+Another way seems to be using gcov, as per [[https://github.com/fabianschuiki/Maxwell][Maxwell]] [[https://raw.githubusercontent.com/fabianschuiki/Maxwell/master/.travis.yml][travis.yml]]:
+
+: - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; export CXX="g++-4.8" CC="gcc-4.8" GCOV="gcov-4.8"; fi
+:  - sudo pip install cpp-coveralls
+
+and
+
+: script:
+:  - export CTEST_OUTPUT_ON_FAILURE=1
+:  - cmake -DCMAKE_BUILD_TYPE=gcov . && make && make test
+: after_success:
+:  - coveralls --gcov "$GCOV" --gcov-options '\-lp' -e CMakeFiles -E ".*/test/.*" -E ".*/mock/.*" -e maxwell/gen -e language -e thirdparty -e maxwell/ast/nodes -e maxwell/driver/gramdiag.c -e maxwell/driver/Parser.cpp -e maxwell/driver/Parser.hpp -e maxwell/driver/Scanner.cpp -e maxwell/driver/position.hh -e maxwell/driver/stack.hh -e maxwell/driver/location.hh
+
+Yet another way seems to be creating a script to do coverage, as per
+[[https://github.com/BoostGSoC13/boost.afio][boost.afio]] [[https://raw.githubusercontent.com/BoostGSoC13/boost.afio/master/.travis.yml][travis.yml]]. The script is available [[https://raw.githubusercontent.com/BoostGSoC13/boost.afio/master/test/update_coveralls.sh][here]].
+
+Another example from [[https://github.com/boostorg/dll/blob/develop/.travis.yml][Boost.Dll]].
+
+*** COMPLETED Simplify local builds on emacs                          :story:
+    CLOSED: [2016-07-06 Wed 18:32]
+    CLOCK: [2016-07-06 Wed 00:20]--[2016-07-06 Wed 00:40] =>  0:20
+
+With the move to build type, local builds on emacs are getting more
+and more complicated. We need some kind of script. The command line at
+present is rather monstrous:
+
+: export PROJ=~/Development/DomainDrivenConsulting/dogen/ &&
+: export BUILD=Release &&
+: cd ${PROJ}/build/output/gcc-5/${BUILD} &&
+: CMAKE_INCLUDE_PATH=/usr/local/personal/include
+: CMAKE_LIBRARY_PATH=/usr/local/personal/lib
+: CC=gcc-5 CXX=g++-5
+: cmake ${PROJ} -G Ninja -DCMAKE_BUILD_TYPE=${BUILD}
+: -DCMAKE_EXPORT_COMPILE_COMMANDS=TRUE -DWITH_LATEX=FALSE &&
+: ninja -j5
+
+Create a simple bash script with a couple of parameters:
+
+- clang or gcc
+- debug or release
+- cmake dir
+
+Usage:
+
+: COVERALLS=1
+: /home/marco/Development/DomainDrivenConsulting/dogen/build/scripts/build.linux.sh
+: Debug gcc /usr/local/personal
+
+*** COMPLETED Create a debug build for clang in travis                :story:
+    CLOSED: [2016-07-06 Wed 18:59]
+    CLOCK: [2016-07-05 Tue 21:00]--[2016-07-05 Tue 21:10] =>  0:10
+
+In order to enable code coverage we need to have a debug build. For
+this we need to setup travis with a build matrix, with two build types
+for clang (debug and release).
+
+Example YML: [[https://github.com/Microsoft/GSL/blob/master/.travis.yml][GSL]]
+*** COMPLETED Rename element settings back to aspect settings         :story:
+    CLOSED: [2016-07-06 Wed 19:24]
+    CLOCK: [2016-07-06 Wed 19:07]--[2016-07-06 Wed 19:24] =>  0:17
+    CLOCK: [2016-07-06 Wed 18:33]--[2016-07-06 Wed 19:06] =>  0:33
+
+As per design story, we incorrectly added non-aspect attributes to
+this class. Remove them and rename the class.
+
+*** COMPLETED Rename bundle to element settings                       :story:
+    CLOSED: [2016-07-06 Wed 19:48]
+    CLOCK: [2016-07-06 Wed 19:24]--[2016-07-06 Wed 19:51] =>  0:27
+
+As per design story, these are really the settings that belong to the
+element. Rename and deal with the fallout.
+
+*** COMPLETED Rename bundle in stitch to properties                   :story:
+    CLOSED: [2016-07-06 Wed 23:01]
+    CLOCK: [2016-07-06 Wed 22:45]--[2016-07-06 Wed 23:01] =>  0:16
+
+In keeping with the properties/settings refactor, ensure stitch is
+using these terms with the same meanings as everyone else.
+
+*** COMPLETED Refactor general settings                               :story:
+    CLOSED: [2016-07-08 Fri 22:57]
+    CLOCK: [2016-07-08 Fri 21:45]--[2016-07-08 Fri 22:57] =>  1:12
+    CLOCK: [2016-07-07 Thu 20:18]--[2016-07-07 Thu 21:02] =>  0:44
+    CLOCK: [2016-07-07 Thu 07:53]--[2016-07-07 Thu 08:40] =>  0:47
+    CLOCK: [2016-07-06 Wed 00:13]--[2016-07-06 Wed 00:20] =>  0:07
+    CLOCK: [2016-07-06 Wed 00:06]--[2016-07-06 Wed 00:12] =>  0:06
+    CLOCK: [2016-07-05 Tue 23:16]--[2016-07-06 Wed 00:05] =>  0:49
+    CLOCK: [2016-07-05 Tue 22:26]--[2016-07-05 Tue 23:15] =>  0:49
+    CLOCK: [2016-07-04 Mon 22:54]--[2016-07-04 Mon 23:30] =>  0:36
+    CLOCK: [2016-07-04 Mon 22:13]--[2016-07-04 Mon 22:53] =>  0:40
+
+Tasks:
+
+- create a file settings class that reflects dynamic (and nothing
+  more). Create an associated factory, repository etc.
+- rename the existing general settings to file properties. Make the
+  factory use the file settings to produce the properties.
+- move general settings from the bundle into element properties.
+
+*Previous Understanding*
+
+A while ago we came up with this name for the settings of the generic
+formatter model. This is the model with basic infrastructure to be
+reused by the more specialised formatters. However, now that we have
+many (many) settings classes, general settings may not be the most
+appropriate name. We need to look a bit more deeply into the role of
+this class and see if a better name is not available.
+
+We could call it preamble settings because all settings are related to
+the file preamble; annoyingly, we also generate a post-amble from
+it. There doesn't seem to be any good names for the pair (preamble,
+post-amble). In networking this would be called frame markers perhaps.
+
+Now that we are not using =meta_data= any more, perhaps we could
+re-purpose it for this (=meta_data_settings=). In a way, preambles and
+post-ambles are meta-data, as opposed to the real file
+contents. Having said that, one could say the same about any kind of
+comments.
+
+We could also use [[http://www1.appstate.edu/~yaleread/typographichierarchy.pdf][typography terminology]]: headers and footers.
+
+Now that we have subsidiary settings and principal settings do we need
+the rename? We should consider "universal settings" maybe.
+
+In addition, the convention is now that "settings" mean a strongly
+typed representation of =dynamic= data; general "settings" are not
+settings in this sense. However, we do need a class to model settings
+properly (i.e. to mirror dynamic exactly, without any
+transformations).
+
+In truth, =annotation= is probably sufficient - or perhaps
+=annotation_properties=. It could then have an =enabled= property to
+replace =generate_preamble=. This is more accurate due to the
+preamble/postamble setup explained above. In this setup, we'd have
+=annotation_settings= to map to dynamic data, with an annotation
+settings factory which reads these off of dynamic object; then, an
+annotation factory to generate annotations. Finally, we can introduce
+the annotation formatter to generate the portion of boilerplate
+related to just the annotation. Boilerplate formatter collaborates
+with annotation formatter.
+
+More ideas on this: are these not just "file settings"? After all the
+meta-data it contains relates to file-level properties. As =file= is
+an entity defined in =formatters= this fits the bill nicely. We still
+have to deal with the dilemma described above (these "settings" are
+not all directly read out of meta-data). We should then call these
+"file properties". We need to then refactor the code so that there is
+a file settings class that is an exact match of what is read out of
+dynamic and is then used as input to generate the file properties.
+*
+
+*** COMPLETED Rename specs to tests                                   :story:
+    CLOSED: [2016-07-09 Sat 00:09]
+    CLOCK: [2016-07-09 Sat 00:10]--[2016-07-09 Sat 00:23] =>  0:13
+    CLOCK: [2016-07-08 Fri 22:58]--[2016-07-09 Sat 00:09] =>  1:11
+
+We started using the terminology specs to mean specifications because
+our unit tests follow the ideas outlined by Kevlin Henney. However, we
+could easily use tests and still carry most of the meaning without
+confusing every other developer. This would require:
+
+- rename top-level =spec= folder to =tests=
+- rename targets to =_tests=, e.g. =run_sml_tests=
+- rename all test suites to =_tests=
+- update the automatic detection of boost tests to use the new
+  post-fix.
+- we should also use =_tests= on the test suite name so we can do
+  =using XYZ= without name clashes.
+
+*** COMPLETED Create a IO settings class                              :story:
+    CLOSED: [2016-07-11 Mon 22:21]
+    CLOCK: [2016-07-11 Mon 21:22]--[2016-07-11 Mon 21:46] =>  0:24
+    CLOCK: [2016-07-11 Mon 21:14]--[2016-07-11 Mon 21:21] =>  0:07
+    CLOCK: [2016-07-11 Mon 20:45]--[2016-07-11 Mon 21:01] =>  0:16
+    CLOCK: [2016-07-09 Sat 18:51]--[2016-07-09 Sat 18:52] =>  0:01
+    CLOCK: [2016-07-09 Sat 18:13]--[2016-07-09 Sat 18:40] =>  0:27
+
+Add a class to model all of the settings required to produce the io
+invocation, create a repository for it and associated factory and
+finally add the repository to the context.
+
+*** COMPLETED Implement streaming for type in terms of IO settings    :story:
+    CLOSED: [2016-07-11 Mon 23:16]
+    CLOCK: [2016-07-11 Mon 23:10]--[2016-07-11 Mon 23:16] =>  0:06
+    CLOCK: [2016-07-11 Mon 22:22]--[2016-07-11 Mon 23:09] =>  0:47
+    CLOCK: [2016-07-11 Mon 22:16]--[2016-07-11 Mon 22:21] =>  0:05
+    CLOCK: [2016-07-11 Mon 22:00]--[2016-07-11 Mon 22:14] =>  0:14
+    CLOCK: [2016-07-11 Mon 21:47]--[2016-07-11 Mon 21:59] =>  0:12
+
+- rename it o "IO invocation for type". Actually lets use IO for the
+  facet and streaming for the aspect.
+- call it with an ID; look up the corresponding IO settings in the global
+  IO settings container from context.
+- remove all other streaming for type implementations and use the new
+  one in the legacy formatters.
+
+*** COMPLETED Consider adding issues emblem                           :story:
+    CLOSED: [2016-07-12 Tue 17:42]
+
+*Rationale*: Done a few sprints ago.
+
+Boost.DI seems to have a new emblem for issues:
+
+https://github.com/krzysztof-jusiak/di
+
+In the future, this may be useful if users submit issues.
+
+*** COMPLETED Compile dogen in Windows using Visual Studio 2015       :story:
+    CLOSED: [2016-07-12 Tue 18:11]
+
+*Rationale*: Completed in the previous sprint.
+
+*New Understanding*
+
+We now have an [[https://ci.appveyor.com/project/mcraveiro/dogen/history][AppVeyor build for windows]] with Conan support. We just
+need to work through the errors.
+
+*Previous Understanding*
+
+Using our "SoC" resources, we need to setup a Dogen development
+environment on Windows using VS 2015. We need to also create a blog
+post about it.
+
+Issues:
+
+- is polymorphic in instrinsics for microsoft, remove comment. see
+  patch in github.
+- update find boost with MSVC version
+- add string to enum io
+- update exception classes: remove default in base constructor, and
+  add explicit to base and derived as well as by ref.
+
+File with instructions:
+
+0. cd c:\DEVELOPEMENT\output
+1. (only once - as admin) update version of msvc in cmake C:\Program
+  Files (x86)\CMake\share\cmake-3.3\Modules\FindBoost.cmake
+  look for msvc-140 and update it to msvc-150
+2. set CMAKE_INCLUDE_PATH=C:\boost\include;C:\DEVELOPEMENT\libxml2-2.7.8.win32\include
+   set CMAKE_LIBRARY_PATH=C:\boost\lib;C:\DEVELOPEMENT\libxml2-2.7.8.win32\lib
+3. cmake ..\dogen -G "Visual Studio 14 2015" -Wno-dev (CONFIGURATION COMMAND)
+
+if you need to re-run: delete the cache:
+
+del CMakeCache.txt
+
+4. msbuild dogen.sln /t:config
+
+5.msbuild dogen.sln /t:dia /fileLogger   => used to create log for
+  errors- called msbuild.log in output directory
+
+Links:
+
+- [[http://dominoc925.blogspot.co.uk/2013/04/how-i-build-boost-for-64-bit-windows.html][How I build Boost for 64 bit Windows]]
+- [[https://svn.boost.org/trac/boost/ticket/11449][C++11 - is_polymorphic doesn't work with final-ed class in MSVC.]]
+- [[https://github.com/boostorg/type_traits/blob/04a8a9ecc2b02b7334a4b3f0459a5f62b855cc68/include/boost/type_traits/intrinsics.hpp][type_traits/include/boost/type_traits/intrinsics.hpp]]
+- [[http://stackoverflow.com/questions/20800166/cmake-compile-with-mt-instead-of-md][CMake - compile with /MT instead of /MD]]
+- [[http://www.cmake.org/cmake/help/v3.1/manual/cmake-generators.7.html][CMake Generators]]
+- [[http://choorucode.com/2014/06/06/how-to-build-boost-for-visual-studio-2013/][How to build Boost for Visual Studio 2013]]
+
+*** COMPLETED Emblems for appveyor and for version                    :story:
+    CLOSED: [2016-07-12 Tue 18:12]
+
+*Rationale*: We've implemented this already.
+
+The [[https://github.com/no1msd/mstch][mstch]] project seems to have great emblems for appveyor - you can
+actually distinguish it from travis - and also an emblem for the
+current project version. See if we can apply it to Dogen.
+
+*** COMPLETED Create a debug build for clang in travis                :story:
+    CLOSED: [2016-07-12 Tue 18:16]
+
+*Rationale*: Implemented in the previous sprint.
+
+In order to enable code coverage we need to have a debug build. For
+this we need to setup travis with a build matrix, with two build types
+for clang (debug and release).
+
+Example YML: [[https://github.com/Microsoft/GSL/blob/master/.travis.yml][GSL]]
+
+We almost made this work, but now we have a problem: using BUILD_TYPE
+seems to disable the stage folder in travis (though it works
+locally). We probably shouldn't use the stage folder since its not a
+CMake idiom.
+
+This is a requirement for code coverage.
+
+*** COMPLETED Usage of rev-list in version causes problems            :story:
+    CLOSED: [2016-07-12 Tue 23:25]
+    CLOCK: [2016-07-12 Tue 23:22]--[2016-07-12 Tue 23:25] =>  0:03
+
+We have bumped into a number of problems with the versioning scheme
+that keeps track of the current commit in master (see below). Remove
+this scheme.
+
+*Previous Understanding*
+
+Now we are using travis, we have found problems with the way we are
+using the number of git commits to assign versions. The problem stems
+from the git clone command:
+
+:  git clone --depth=50 --branch=master git://github.com/DomainDrivenConsulting/dogen.git DomainDrivenConsulting/dogen
+
+This means we are always at version 50/51:
+
+: -- Product version: 0.56.51
+
+This is in addition to the problems we had with tagging (where we have
+to manually stamp the version) and branching (where we are using the
+number of commits in master rather than the branch). We need a better
+solution than using rev-list for this.
+
+Perhaps we should just abandon the approach of putting the commit
+number in the version; we haven't found a single case where this makes
+life easier. We could only have the major version, then sprint (which
+is reset back to zero for every major version) and then patch-level
+which is used only in cases where we release patches. The key
+requirement here is that, given a build, we should be able to identify
+which commit it comes from. We probably don't want to add it to the
+version / help / etc because this forces spurious rebuilds for no
+reason every time one commits. We could add it to some package file.
+
+Merged Stories:
+
+*Consider tagging the git branch in version*
+
+At present we make use of rev-list to determine the minor
+version. However, this is always off of master, which means that if
+you have a few more commits on your integration branch you will end up
+with a build that lies. We should consider:
+
+- adding the git commit SHA to the build, perhaps comments.
+- adding the branch to the build, perhaps comments.
+- rev-listing the current branch rather than always master.
+
+*Version number relies on latest commit in master*
+
+When trying to build off of a tag, we noticed that the version number
+is always of the latest commit in master. This means that trying to
+generate packages for tag =v0.50.2410= results in packages with a
+version after that like say =v0.50.2415=. We should look at the
+current commit in master rather than the latest one.
+
+The current workaround is to manually sett the minor version just
+before closing the sprint and then reset it back.
+
+*** CANCELLED Consider not running initialisers in a static context   :story:
+    CLOSED: [2016-07-13 Wed 22:35]
+    CLOCK: [2016-07-13 Wed 22:25]--[2016-07-13 Wed 22:35] =>  0:10
+
+*Rationale*: Since the objective of this exercise is just to log
+registered types, we can just implement some IO for this.
+
+There is no particular reason to trigger initialisation in a static
+context. See what happens if we move it to normal execution. This
+means we can log registrations.
+
+Actually we are initialising in a regular function, but we are doing
+it before logging is available. Try reordering this.
+
+This is not so easy for the tests: each test has its own log file and
+so the log initialisation is done on a test by test basis; however,
+static state can only be initialised once. We could have a flag ("do
+not log"?) and pass that through to the initialisers, but then things
+start to get a bit too messy.
+
+*** COMPLETED Refactor formatter interfaces                           :story:
+    CLOSED: [2016-07-13 Wed 23:19]
+    CLOCK: [2016-07-13 Wed 22:43]--[2016-07-13 Wed 23:19] =>  0:36
+
+There are two kinds of formatters:
+
+- file formatters: generate a whole file.
+- helper formatters: generate the helper aspect.
+
+Rename the interfaces accordingly and update diagram.
+
+*** COMPLETED Move formatter helpers into formatter container         :story:
+    CLOSED: [2016-07-13 Wed 23:29]
+    CLOCK: [2016-07-13 Wed 23:20]--[2016-07-13 Wed 23:29] =>  0:09
+    CLOCK: [2016-07-13 Wed 22:37]--[2016-07-13 Wed 22:41] =>  0:04
+
+For some reason we placed them directly under the registrar. Move them
+to the container.
+
+*** COMPLETED Add aliases for commonly used targets                   :story:
+    CLOSED: [2016-07-14 Thu 20:51]
+    CLOCK: [2016-07-14 Thu 20:49]--[2016-07-14 Thu 20:51] =>  0:02
+
+We could probably do with aliases such as:
+
+- run_all_tests: rat
+- knit_and_stitch: kas
+- knit_all: ka
+- stitch_all: sa
+
+*** CANCELLED Add a pretty printer for ownership hierarchy            :story:
+    CLOSED: [2016-07-14 Thu 21:05]
+    CLOCK: [2016-07-14 Thu 20:52]--[2016-07-14 Thu 21:05] =>  0:13
+
+*Rationale*: Brown-paper-bag revert, forgot formatter name is already
+fully qualified.
+
+We need a standard way of converting the ownership hierarchy into a
+string representation. Add a simple pretty printer for it.
+
+*** COMPLETED Add formatter id to file and helper formatters          :story:
+    CLOSED: [2016-07-14 Thu 22:27]
+    CLOCK: [2016-07-14 Thu 21:51]--[2016-07-14 Thu 22:27] =>  0:36
+    CLOCK: [2016-07-14 Thu 21:06]--[2016-07-14 Thu 21:50] =>  0:44
+
+We need to be able to identify formatters for logging purposes.
+
+*** COMPLETED Add IO to formatter container                           :story:
+    CLOSED: [2016-07-14 Thu 23:07]
+    CLOCK: [2016-07-14 Thu 22:46]--[2016-07-14 Thu 23:12] =>  0:26
+    CLOCK: [2016-07-14 Thu 22:27]--[2016-07-14 Thu 22:45] =>  0:18
+    CLOCK: [2016-07-14 Thu 20:32]--[2016-07-14 Thu 20:49] =>  0:17
+    CLOCK: [2016-07-13 Wed 23:31]--[2016-07-13 Wed 23:49] =>  0:18
+
+We need some kind of JSON dump of the formatter container telling us
+what types have been registered.
+
+- create a utility method to generate a formatter name from ownership
+  hierarchy.
+- same for helper formatters, but taking owners into account.
+- add method in file formatter / helper formatter for name, generated
+  using utility.
+- use these methods in new container IO code.
+
+*** COMPLETED Includers formatter id is incorrect                     :story:
+    CLOSED: [2016-07-15 Fri 20:33]
+    CLOCK: [2016-07-15 Fri 19:33]--[2016-07-15 Fri 19:40] =>  0:07
+
+At present the id of the includers formatter is:
+
+:  "includers_formatters": [
+:    "quilt.cpp.serialization.includers_formatter",
+:    "quilt.cpp.serialization.includers_formatter",
+:    "quilt.cpp.serialization.includers_formatter",
+:    "quilt.cpp.serialization.includers_formatter",
+:    "quilt.cpp.serialization.includers_formatter",
+:    "quilt.cpp.serialization.includers_formatter"
+:  ],
+
+We need somehow know what facet it was registered again. Also, why is
+the default facet hard-coded to =serialization=.
+
+Id was using a static string incorrectly.
+
+*** COMPLETED Enable IO helpers for types                             :story:
+    CLOSED: [2016-07-15 Fri 20:35]
+    CLOCK: [2016-07-15 Fri 19:41]--[2016-07-15 Fri 20:35] =>  0:54
+    CLOCK: [2016-07-14 Thu 23:13]--[2016-07-14 Thu 23:16] =>  0:03
+    CLOCK: [2016-07-13 Wed 22:11]--[2016-07-13 Wed 22:24] =>  0:13
+    CLOCK: [2016-07-13 Wed 21:43]--[2016-07-13 Wed 22:11] =>  0:28
+    CLOCK: [2016-07-13 Wed 18:46]--[2016-07-13 Wed 19:15] =>  0:29
+    CLOCK: [2016-07-13 Wed 18:25]--[2016-07-13 Wed 18:45] =>  0:17
+    CLOCK: [2016-07-13 Wed 07:51]--[2016-07-13 Wed 08:39] =>  0:48
+    CLOCK: [2016-07-12 Tue 22:23]--[2016-07-12 Tue 23:21] =>  0:58
+    CLOCK: [2016-07-12 Tue 22:04]--[2016-07-12 Tue 22:22] =>  0:18
+    CLOCK: [2016-07-12 Tue 20:58]--[2016-07-12 Tue 21:40] =>  0:42
+    CLOCK: [2016-07-12 Tue 13:14]--[2016-07-12 Tue 13:30] =>  0:16
+    CLOCK: [2016-07-12 Tue 07:53]--[2016-07-12 Tue 08:05] =>  0:12
+    CLOCK: [2016-07-12 Tue 07:42]--[2016-07-12 Tue 07:52] =>  0:10
+
+Originally we did a quick hack to allow us to wrap things up with
+types: we used both the legacy helper methods infrastructure (for IO)
+and the new helper methods infrastructure (for types). This was
+required to allow us to implement the basic infrastructure in IO. Now
+we need to remove the legacy aspect of the IO helper methods usage in
+types.
+
+- implement is enabled on all IO formatters
+- register all IO formatters against both IO and types
+- remove calls to legacy helper methods
+- problem: how do we know if we are in inheritance from assistant? In
+  the future we can add a flag into the =yarn::object=; when we are
+  consuming yarn types in formatters, this flag is passed in to the
+  enabled method. For now we can check the class info and compute in
+  inheritance. Actually we can add the flag now and propagate it to
+  class info so that in future the changes are smaller.
+- helpers should not know of their owning formatters - this should be
+  done as part of registration.
+- helper's id is facet + helper name.
+
+*** COMPLETED Implement IO helper methods with new helper infrastructure :story:
+    CLOSED: [2016-07-15 Fri 21:14]
+    CLOCK: [2016-07-15 Fri 21:18]--[2016-07-15 Fri 21:24] =>  0:06
+    CLOCK: [2016-07-15 Fri 20:35]--[2016-07-15 Fri 21:17] =>  0:42
+    CLOCK: [2016-07-12 Tue 07:26]--[2016-07-12 Tue 07:41] =>  0:15
+
+Problems:
+
+- we do not have a "streaming for type" function in assistant. We need
+  to figure out how to obtain this data from the helper.
+- we do not have a name tree so we do not know what the key and value
+  names are for associative containers. We probably need to add the
+  name tree to the helper descriptor.
+- =string_conversion_method= cannot be implemented as is;we need it
+  for all properties, not just in the context of helpers. This seems
+  to imply we need a way to access this information directly from the
+  property. It will need some thinking.
+
+*** COMPLETED Fix cmake installations problems on windows build       :story:
+    CLOSED: [2016-07-16 Sat 23:49]
+    CLOCK: [2016-07-16 Sat 23:30]--[2016-07-16 Sat 23:54] =>  0:24
+
+For some random reason CMake stopped working on appveyor with the
+following error:
+
+: cinst cmake
+: Installing the following packages:
+: cmake
+: By installing you accept licenses for the packages.
+: cmake.install v3.5.2
+: Downloading cmake.install 32 bit
+:   from 'http://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi'
+: Hashes match.
+: Installing cmake.install...
+: [ERROR] Running msiexec with /i "C:\Users\appveyor\AppData\Local\Temp\1\chocola
+: tey\cmake.install\3.5.2\cmake.installInstall.msi" /quiet /qn /norestart  was
+: not successful. Exit code was '1603' Error Message:
+: .
+: At C:\ProgramData\chocolatey\helpers\functions\Start-ChocolateyProcessAsAdmin.p
+: s1:92 char:5
+: +     throw $errorMessage
+: +     ~~~~~~~~~~~~~~~~~~~
+:     + CategoryInfo          : OperationStopped: ([ERROR] Running...or Message:
+: .:String) [], RuntimeException
+:     + FullyQualifiedErrorId : [ERROR] Running msiexec with /i "C:\Users\appvey
+:    or\AppData\Local\Temp\1\chocolatey\cmake.install\3.5.2\cmake.installInstal
+:   l.msi" /quiet /qn /norestart  was not successful. Exit code was '1603' Err
+:  or Message:
+: .
+: The install of cmake.install was NOT successful.
+
+Tried a number of changes but was not able to get this to install. The
+strange thing is that we don't seem to have changed anything:
+
+: Installing the following packages:
+: cmake
+: By installing you accept licenses for the packages.
+: cmake.install v3.5.2
+: Downloading cmake.install 32 bit
+:   from 'http://cmake.org/files/v3.5/cmake-3.5.2-win32-x86.msi'
+: Hashes match.
+: Installing cmake.install...
+: cmake.install has been installed.
+: The install of cmake.install was successful.
+: cmake v3.5.2
+:  The install of cmake was successful.
+: Chocolatey installed 2/2 package(s). 0 package(s) failed.
+:  See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+: choco upgrade cmake -y
+: upgrading the following packages:
+: cmake
+: By upgrading you accept licenses for the packages.
+: cmake v3.5.2 is the latest version available based on your source(s).
+: Chocolatey upgraded 0/1 package(s). 0 package(s) failed.
+: See the log for details (C:\ProgramData\chocolatey\logs\chocolatey.log).
+: cmake --version
+: cmake version 3.5.2
+: CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+To just get things going again, downgraded back to CMake 3.4.
+
+*** COMPLETED Fix Windows build timeout                               :story:
+    CLOSED: [2016-07-17 Sun 00:37]
+
+*Rationale*: This was fixed by reducing git's clone depth to 5. Build
+times of quilt are now down to 15 mins, faster than travis. We don't
+need to modify the code just yet.
+
+At present the windows build is taking over 1h and its only building
+the knitter target. We need to think of ways to reduce the build
+time. Things to try:
+
+- remove all of the hashing etc for the types we don't need to hash.
+- get rid of the warnings for boost.
+
+*** COMPLETED Fix Windows linking errors for debug builds             :story:
+    CLOSED: [2016-07-17 Sun 01:32]
+    CLOCK: [2016-07-17 Sun 01:33]--[2016-07-17 Sun 01:50] =>  0:17
+    CLOCK: [2016-07-17 Sun 01:01]--[2016-07-17 Sun 01:32] =>  0:31
+
+We've enabled the windows debug build in appveyor, but this resulted
+ina lot of linking errors such as this one:
+
+: libboost_serialization-vc140-mt-1_60.lib(binary_iarchive.obj) : error LNK2038:
+:   mismatch detected for '_ITERATOR_DEBUG_LEVEL': value '0' doesn't match value '2'
+:   in equality_tests.obj [C:\projects\dogen\build\output\projects\dia\tests\dia.tests.vcxproj]
+
+According to SO, this is related to [[http://stackoverflow.com/questions/7668200/error-lnk2038-mismatch-detected-for-iterator-debug-level-value-0-doesnt][mixing Debug and Release
+libraries]]. The reason why this is happening is because Conan does not
+automatically use the correct run-time ([[http://conanio.readthedocs.io/en/latest/examples/boost.html][per docs]]):
+
+: $ conan install .. -s compiler="Visual Studio" -s compiler.version=12 -s arch=x86 -s build_type=Debug -s compiler.runtime=MDd
+: $ cmake .. -G "Visual Studio 12"
+: $ cmake --build . --config Debug
+: In the case above, it is important to specify the runtime MDd to be compatible with the Debug version we are requesting.
+
+Basically we need to add =-s compiler.runtime=MDd= for debug builds.
+
+*** COMPLETED Windows build fails to find tests                       :story:
+    CLOSED: [2016-07-17 Sun 08:53]
+    CLOCK: [2016-07-17 Sun 08:30]--[2016-07-17 Sun 08:53] =>  0:23
+
+Appveyor now works for debug and release build targets, but fails when
+running the tests:
+
+: [00:26:57]   'C:\projects\dogen\build\output\stage\bin\dogen.yarn.tests'
+: is not recognized as an internal or external command,
+: [00:26:57]   operable program or batch file.
+
+This is probably because we are missing the =.exe= extension. Try
+using CMake's =TARGET_FILE= instead as explained here:
+
+[[http://cmake.3232098.n2.nabble.com/How-to-get-target-binary-name-td7580456.html][How to get target binary name?]]
+
+*** COMPLETED Document windows failures and get build green           :story:
+    CLOSED: [2016-07-17 Sun 17:29]
+    CLOCK: [2016-07-17 Sun 16:50]--[2016-07-17 Sun 17:20] =>  0:25
+
+We need to grab all errors from appeyor and capture them into epics
+so we can address them in the future. We also need to get the build
+green again by whatever means; if the build is red we won't notice any
+regressions.
+
+*** POSTPONED Implement hashing using dynamic helpers                 :story:
+    CLOSED: [2016-07-19 Tue 20:50]
+    CLOCK: [2016-07-17 Sun 21:31]--[2016-07-17 Sun 22:24] =>  0:53
+    CLOCK: [2016-07-17 Sun 19:14]--[2016-07-17 Sun 19:30] =>  0:16
+    CLOCK: [2016-07-17 Sun 18:34]--[2016-07-17 Sun 19:13] =>  0:39
+    CLOCK: [2016-07-17 Sun 18:12]--[2016-07-17 Sun 18:33] =>  0:21
+    CLOCK: [2016-07-17 Sun 17:31]--[2016-07-17 Sun 18:11] =>  0:40
+    CLOCK: [2016-07-17 Sun 00:39]--[2016-07-17 Sun 01:00] =>  0:47
+    CLOCK: [2016-07-17 Sun 00:13]--[2016-07-17 Sun 00:39] =>  0:26
+    CLOCK: [2016-07-16 Sat 23:55]--[2016-07-17 Sun 00:12] =>  0:17
+    CLOCK: [2016-07-15 Fri 22:06]--[2016-07-15 Fri 22:23] =>  0:17
+    CLOCK: [2016-07-15 Fri 21:25]--[2016-07-15 Fri 21:34] =>  0:09
+
+Update formatters in hash to use new helpers.
+
+- =requires_hashing_helper_method=: is there a hashing helper for type
+  t? We can tell if the type requires helpers, but this is across all
+  facets, so we don't know if this is for hashing or not. But for a
+  given family, the helpers register against a owning formatter. If a
+  type exists for that owning formatter then a helper is required. We
+  could add an attribute to properties that is computed based on this.
+
+** Deprecated
+
+*** CANCELLED Write next interesting instalment in blog               :story:
+    CLOSED: [2016-07-12 Tue 17:33]
+
+*Rationale*: Not much of a point of having "interesting" related
+stories in backlog.
+
+We have a number of links backlogged and we need to offload them in an
+"interesting..." post.
+*** CANCELLED Create a ebook and dead-tree book for the manual        :story:
+    CLOSED: [2016-07-12 Tue 18:07]
+
+*Rationale*: this story does not add any value. We need to write the
+manual and then worry about this.
+
+We should probably start by creating a simple ebook first and then
+explore the dead-tree options such as [[http://www.lulu.com][Lulu]]. We should also see what
+Luigi did for [[https://leanpub.com/implementingquantlib/][QuantLib]].

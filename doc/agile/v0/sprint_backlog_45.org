@@ -1,0 +1,97 @@
+#+title: Sprint Backlog 45
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 45.
+
+The *Mission Statement* for this sprint remains the same: to tidy-up
+the =cpp= model, and by implication, the =cpp_formatters= model. We
+want to end up with a small number of top-level classes providing what
+each formatter needs, and modeling much of the meta-data as first
+class types. We also want to make use of all the services provided by
+the =formatters= model.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:06]
+
+| Headline                                             | Time   |      |      |
+|------------------------------------------------------+--------+------+------|
+| *Total time*                                         | *8:23* |      |      |
+|------------------------------------------------------+--------+------+------|
+| Development Stories Implemented                      |        | 8:23 |      |
+| COMPLETED Sprint and product backlog grooming        |        |      | 0:27 |
+| COMPLETED Updates to the manual and readme files     |        |      | 0:25 |
+| COMPLETED Fix Debian packages to use system boost    |        |      | 1:12 |
+| COMPLETED Integral: test with rspec                  |        |      | 0:12 |
+| COMPLETED Clean up Lorenz development setup          |        |      | 0:33 |
+| COMPLETED Integral: re-implement bash script in ruby |        |      | 5:34 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-03-03 Mon 07:58]
+    CLOCK: [2014-03-03 Mon 07:51]--[2014-03-03 Mon 07:57] =>  0:06
+    CLOCK: [2014-02-18 Tue 08:05]--[2014-02-18 Tue 08:22] =>  0:17
+    CLOCK: [2014-02-18 Tue 08:01]--[2014-02-18 Tue 08:05] =>  0:04
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-03-03 Mon 07:56]
+    CLOCK: [2014-02-28 Fri 19:39]--[2014-02-28 Fri 19:51] =>  0:12
+    CLOCK: [2014-02-28 Fri 19:11]--[2014-02-28 Fri 19:24] =>  0:13
+
+Use build downtime to update the manual and / or readme file.
+
+*** COMPLETED Fix Debian packages to use system boost                 :story:
+    CLOSED: [2014-02-19 Wed 09:52]
+    CLOCK: [2014-02-19 Wed 07:52]--[2014-02-19 Wed 08:36] =>  0:44
+    CLOCK: [2014-02-18 Tue 18:16]--[2014-02-18 Tue 18:25] =>  0:09
+    CLOCK: [2014-02-18 Tue 08:23]--[2014-02-18 Tue 08:42] =>  0:19
+
+We started this on the previous iteration but left the packages in an
+uninstallable state.
+
+*** COMPLETED Integral: test with rspec                               :story:
+    CLOSED: [2014-02-21 Fri 07:56]
+    CLOCK: [2014-02-20 Thu 20:48]--[2014-02-20 Thu 21:00] =>  0:12
+
+We started by using minitest for unit testing, but it seems rspec is
+more widely used.
+
+*** COMPLETED Clean up Lorenz development setup                       :story:
+    CLOSED: [2014-03-03 Mon 07:54]
+    CLOCK: [2014-02-20 Thu 20:15]--[2014-02-20 Thu 20:48] =>  0:33
+
+We need to move to the new ddc repos.
+
+*** COMPLETED Integral: re-implement bash script in ruby              :story:
+    CLOSED: [2014-03-03 Mon 07:54]
+    CLOCK: [2014-03-01 Sat 23:26]--[2014-03-02 Sun 00:36] =>  1:10
+    CLOCK: [2014-02-27 Thu 07:52]--[2014-02-27 Thu 08:38] =>  0:46
+    CLOCK: [2014-02-26 Wed 07:55]--[2014-02-26 Wed 08:39] =>  0:44
+    CLOCK: [2014-02-25 Tue 07:52]--[2014-02-25 Tue 08:39] =>  0:47
+    CLOCK: [2014-02-24 Mon 07:58]--[2014-02-24 Mon 08:03] =>  0:05
+    CLOCK: [2014-02-21 Fri 07:56]--[2014-02-21 Fri 08:40] =>  0:44
+    CLOCK: [2014-02-20 Thu 21:40]--[2014-02-20 Thu 22:19] =>  0:39
+    CLOCK: [2014-02-20 Thu 21:01]--[2014-02-20 Thu 21:40] =>  0:39
+
+*New understanding*:
+
+actually, it makes more sense to investigate
+systemd for linux as it provides all the basic services we need for
+this (stop, start, restart, containerisation).
+
+*Old understanding*:
+
+We started looking into this but didn't finish. We should just use
+ruby for all scripts. Investigate how hard it is to create a
+start/stop script in Ruby rather than bash.
+
+- RUBY_PLATFORM: identify the operative system.
+
+** Deprecated Development Stories

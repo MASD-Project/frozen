@@ -1,0 +1,723 @@
+#+title: Sprint Backlog 69
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- Finish implementing all formatters using the new cpp architecture.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-07-06 Mon 15:06]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *44:23* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 44:23   |       |      |
+| Active                                                                      |         | 44:23 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:07 |
+| COMPLETED Create a short presentation on Dogen                              |         |       | 6:37 |
+| COMPLETED Add support for opaque settings factories                         |         |       | 1:40 |
+| COMPLETED Refactor opaque settings production                               |         |       | 1:04 |
+| COMPLETED Implement class header formatter in odb                           |         |       | 1:29 |
+| COMPLETED Fix borked windows build                                          |         |       | 0:10 |
+| COMPLETED Handling of "singleton" formatters                                |         |       | 2:07 |
+| COMPLETED Split formatters into per instance and singleton                  |         |       | 1:10 |
+| COMPLETED Implement all missing interfaces and hook them in to workflow     |         |       | 1:22 |
+| COMPLETED Path settings factory makes use of command line options           |         |       | 0:29 |
+| COMPLETED Solve the problem of "relocatable" formatters                     |         |       | 1:36 |
+| COMPLETED Create a formattables factory                                     |         |       | 7:29 |
+| COMPLETED Refactor formatting assistants                                    |         |       | 0:31 |
+| COMPLETED Implement odb options formatter in odb                            |         |       | 5:46 |
+| COMPLETED Implement serialisation registrar header formatter                |         |       | 2:01 |
+| POSTPONED Thoughts on cpp refactoring                                       |         |       | 2:32 |
+| POSTPONED Thoughts on simplifying the formattables generation               |         |       | 2:43 |
+| POSTPONED Implement serialisation registrar implementation formatter        |         |       | 2:30 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-07-06 Mon 15:05]
+    CLOCK: [2015-07-01 Wed 14:48]--[2015-07-01 Wed 16:16] =>  1:28
+    CLOCK: [2015-06-30 Tue 14:31]--[2015-06-30 Tue 14:39] =>  0:08
+    CLOCK: [2015-06-26 Fri 14:10]--[2015-06-26 Fri 15:09] =>  0:59
+    CLOCK: [2015-06-24 Wed 16:24]--[2015-06-24 Wed 16:34] =>  0:10
+    CLOCK: [2015-06-22 Mon 14:01]--[2015-06-22 Mon 14:23] =>  0:22
+
+Updates to sprint and product backlog.
+
+- Backlog reviewed up to "In next major release".
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-07-06 Mon 15:05]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Create a short presentation on Dogen                    :story:
+    CLOSED: [2015-06-23 Tue 16:28]
+    CLOCK: [2015-06-29 Mon 15:01]--[2015-06-29 Mon 16:10] =>  1:09
+    CLOCK: [2015-06-29 Mon 14:44]--[2015-06-29 Mon 14:57] =>  0:13
+    CLOCK: [2015-06-29 Mon 14:32]--[2015-06-29 Mon 14:43] =>  0:11
+    CLOCK: [2015-06-29 Mon 14:01]--[2015-06-29 Mon 14:32] =>  0:31
+    CLOCK: [2015-06-23 Tue 15:30]--[2015-06-23 Tue 16:20] =>  0:50
+    CLOCK: [2015-06-22 Mon 15:33]--[2015-06-22 Mon 18:10] =>  2:37
+    CLOCK: [2015-06-22 Mon 15:25]--[2015-06-22 Mon 15:32] =>  0:07
+    CLOCK: [2015-06-22 Mon 15:14]--[2015-06-22 Mon 15:24] =>  0:10
+    CLOCK: [2015-06-22 Mon 14:24]--[2015-06-22 Mon 15:13] =>  0:49
+
+We need to create an introductory presentation on dogen.
+We should use LaTex and [[http://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf][Beamer]] for it.
+
+Tasks:
+
+- create a skeleton for the presentation
+- add a target on cmake
+
+*** COMPLETED Add support for opaque settings factories               :story:
+    CLOSED: [2015-06-23 Tue 21:40]
+    CLOCK: [2015-06-23 Tue 20:41]--[2015-06-23 Tue 21:40] =>  0:59
+    CLOCK: [2015-06-23 Tue 19:58]--[2015-06-23 Tue 20:22] =>  0:24
+    CLOCK: [2015-06-23 Tue 17:37]--[2015-06-23 Tue 17:54] =>  0:17
+
+We have started adding opaque settings, but it seems we did not finish
+it. This is required for odb support.
+
+*** COMPLETED Refactor opaque settings production                     :story:
+    CLOSED: [2015-06-23 Tue 22:53]
+    CLOCK: [2015-06-23 Tue 22:20]--[2015-06-23 Tue 22:51] =>  0:31
+    CLOCK: [2015-06-23 Tue 21:46]--[2015-06-23 Tue 22:19] =>  0:33
+
+We need to be able to use the same code to generate opaque settings
+for both the bundle and the settings in properties. We need to move
+across the code in the bundle factory into some kind of stand alone
+class that can be used from the factory and the transformer.
+
+*** COMPLETED Implement class header formatter in odb                 :story:
+    CLOSED: [2015-06-23 Tue 22:56]
+    CLOCK: [2015-06-23 Tue 23:05]--[2015-06-23 Tue 23:09] =>  0:04
+    CLOCK: [2015-06-23 Tue 22:57]--[2015-06-23 Tue 23:04] =>  0:07
+    CLOCK: [2015-06-23 Tue 22:53]--[2015-06-23 Tue 22:56] =>  0:03
+    CLOCK: [2015-06-23 Tue 16:21]--[2015-06-23 Tue 17:36] =>  1:15
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Solved problems:
+
+- spurious newline after pragmas
+- no support for opaque factories
+- no opaque settings for properties
+
+*** COMPLETED Fix borked windows build                                :story:
+    CLOSED: [2015-06-24 Wed 14:15]
+    CLOCK: [2015-06-24 Wed 13:33]--[2015-06-24 Wed 13:43] =>  0:10
+
+Build borked with the following errors:
+
+: file included from /.../source/projects/cpp/src/types/settings/initializer.cpp:22:0:
+:  /.../source/projects/cpp/include/dogen/cpp/types/settings/odb_settings_factory.hpp:37:7: error: looser throw specifier for 'virtual dogen::cpp::settings::odb_settings_factory::~odb_settings_factory()'
+
+And
+
+:  /.../source/projects/cpp/include/dogen/cpp/types/settings/opaque_settings_factory_interface.hpp:45:13: error:   overriding 'virtual dogen::cpp::settings::opaque_settings_factory_interface::~opaque_settings_factory_interface() noexcept (true)'
+
+*** COMPLETED Handling of "singleton" formatters                      :story:
+    CLOSED: [2015-06-24 Wed 16:35]
+    CLOCK: [2015-06-24 Wed 15:50]--[2015-06-24 Wed 16:23] =>  0:33
+    CLOCK: [2015-06-24 Wed 14:15]--[2015-06-24 Wed 15:49] =>  1:34
+
+Handling of special file names:
+
+- at present we assume that all file names are constructed from the
+  formatter properties and the qname. This is not correct. Some file
+  names are "special" such as CMakeLists etc. These "special" file
+  names seem to have two requirements: a) an hard-coded file name b)
+  occasionally, to be stored at project directory, source directory,
+  or (by default) at facet directory. This could easily be handled
+  with two new fields: =file_name= and =file_location=. These use
+  formatter template expansion.
+- however, we have a problem: some file names such as registrar need
+  the facet postfix. Others such as =options.odb= do not. Still others
+  like =CMakeLists.txt= don't have a facet at all (and thus do not
+  need prefixes). By sheer luck it seems that all files that use
+  prefixes are inside of facet folders and all files that do not need
+  prefixes are outside facet folders.
+- an additional requirement is that not all formatters are driven by
+  qnames; there are a set of formatters that are driven by formatter
+  names. These "singleton" formatters are the ones that need file
+  names and location. A new field could be added: =instantiation_type=
+  with values =singleton= or =per_instance=. We should then create
+  instance path settings and singleton path settings. Path derivatives
+  factory could then have a "make singleton path derivatives".
+- actually these are all static properties of the formatters; it makes
+  no sense to configure them in the meta-data because they cannot be
+  changed.
+
+In conclusion, we need:
+
+- formatter instantiation type: singleton, per instance.
+- file name: if singleton must be supplied, must be blank otherwise.
+- location: project, source, facet. if per instance, must be facet.
+
+Another way of looking at the problem is that in some cases, SML does
+not drive the generation of the formattables. In those cases, the
+formattables are actually hard-coded (or at least partially hard-coded
+as we need some inputs such as model name, etc). Since we are already
+hard-coding the formattables generation, it makes sense to also
+hard-code the paths. However, we still need to make sure we
+distinguish between per instance formatters from singleton formatters
+or else we risk generating instances for the singleton formatters.
+
+With this approach, we need:
+
+- formatter instantiation type: singleton, per instance. This allows
+  us to filter out singleton formatters from the instance formatters
+  pipeline. We could even segregate them in the formatter registrar
+  (all singleton formatters?).
+- a transformer-like class to create the singleton formattables. Path
+  generation is done in this class, with the assistance of path
+  settings. This could just be called =factory=. Given a model, it
+  returns all of the "singleton" formattables.
+
+*** COMPLETED Split formatters into per instance and singleton        :story:
+    CLOSED: [2015-06-25 Thu 13:25]
+    CLOCK: [2015-06-24 Wed 17:37]--[2015-06-24 Wed 17:48] =>  0:11
+    CLOCK: [2015-06-24 Wed 17:21]--[2015-06-24 Wed 17:36] =>  0:15
+    CLOCK: [2015-06-24 Wed 16:36]--[2015-06-24 Wed 17:20] =>  0:36
+
+One slight problem of splitting the formatters based on cardinality is
+that it is not the "formatter cardinality" we are talking about; after
+all, a formatter always takes one formattable and produces a
+file. This is more subtle: the cardinality of the formattables
+associated with the formatter. What we really need is a conept to
+distinguish between these kinds of formattables. For now lets call
+these "internal" and "external" formatters until a better name reveals
+itself.
+
+This is obviously still an inadequate solution (what if we create an
+internal class info?) but it'll have to do.
+
+- add an enum at the formattables base class level and the formatter
+  interface level.
+- split formatters into internal and external in container.
+- change path settings factory to receive a forward list of formatters
+  instead of a formatter container.
+- change path derivatives workflow to pass in the external container.
+
+*** COMPLETED Implement all missing interfaces and hook them in to workflow :story:
+    CLOSED: [2015-06-26 Fri 16:39]
+    CLOCK: [2015-06-26 Fri 15:17]--[2015-06-26 Fri 16:39] =>  1:22
+
+We should have interfaces for all formattables, even those for which
+we have no formatters yet. We should also check the formatters
+container and see if there are any available formatters for a given
+type and if none are, log that at warning level.
+
+*** COMPLETED Path settings factory makes use of command line options :story:
+    CLOSED: [2015-06-26 Fri 17:33]
+    CLOCK: [2015-06-26 Fri 17:04]--[2015-06-26 Fri 17:33] =>  0:29
+
+We want to make the settings subsystem rely only on the
+meta-data. However we incorrectly added the command line options to
+the path settings factory. We need to remove this and pass the command
+line options to the path derivatives factory in formattables.
+
+*** COMPLETED Solve the problem of "relocatable" formatters           :story:
+    CLOSED: [2015-06-29 Mon 20:27]
+    CLOCK: [2015-06-29 Mon 19:58]--[2015-06-29 Mon 20:27] =>  0:29
+    CLOCK: [2015-06-29 Mon 17:55]--[2015-06-29 Mon 19:02] =>  1:07
+
+There may be cases where a formatter is the same for all facets, but
+we still need to have it instantiated for every facet. At present that
+is not possible because formatters have hard-coded ownership
+hierarchies. In addition, there is the potential for inclusion
+dependencies generation which is also facet specific.
+
+This could be solved by instantiating the formatter in the initializer
+of every facet, and supplying the facet name to the constructor; the
+ownership hierarchy would then use this facet name. This would mean
+that the same formatter would be registered for every facet.
+
+We don't yet have a use case for this. It was thought to be needed for
+forward declarations but at present we only need them for types. It is
+probably needed in order to integrate knit and stitch.
+
+Actually this is needed for the includers.
+
+*** COMPLETED Create a formattables factory                           :story:
+    CLOSED: [2015-06-30 Tue 15:28]
+    CLOCK: [2015-06-30 Tue 15:12]--[2015-06-30 Tue 15:28] =>  0:16
+    CLOCK: [2015-06-30 Tue 14:47]--[2015-06-30 Tue 15:12] =>  0:25
+    CLOCK: [2015-06-30 Tue 14:40]--[2015-06-30 Tue 14:46] =>  0:06
+    CLOCK: [2015-06-30 Tue 13:56]--[2015-06-30 Tue 14:30] =>  0:34
+    CLOCK: [2015-06-29 Mon 20:28]--[2015-06-29 Mon 20:42] =>  0:14
+    CLOCK: [2015-06-29 Mon 17:01]--[2015-06-29 Mon 17:54] =>  0:53
+    CLOCK: [2015-06-27 Sat 17:34]--[2015-06-27 Sat 18:10] =>  0:36
+    CLOCK: [2015-06-27 Sat 16:39]--[2015-06-27 Sat 17:33] =>  0:54
+    CLOCK: [2015-06-27 Sat 14:41]--[2015-06-27 Sat 16:38] =>  1:57
+    CLOCK: [2015-06-26 Fri 17:33]--[2015-06-26 Fri 17:51] =>  0:18
+    CLOCK: [2015-06-26 Fri 16:40]--[2015-06-26 Fri 17:03] =>  0:23
+    CLOCK: [2015-06-25 Thu 16:45]--[2015-06-25 Thu 17:28] =>  0:43
+    CLOCK: [2015-06-25 Thu 13:20]--[2015-06-25 Thu 13:30] =>  0:10
+
+Create a class responsible for instantiating all of the "singleton"
+formatters:
+
+- all includers
+- serialisation registrar
+- odb options
+- all cmakelists
+
+This class will be hooked into the formattables workflow. It will
+hard-code the path and file names for these formattables (but take
+into account things such as prefixes, etc).
+
+Notes:
+
+- registrar info is still an entity and as such needs settings,
+  formatter properties, etc. This means its not so easy to construct
+  it from factory. Perhaps the separation we have is more between
+  "entity" and "non-entity" formattables rather than internal and
+  external. Having said that, for the registrar to go through the same
+  pipeline as the SML types we will have to create a qname
+  etc. Perhaps what would be really needed is a way to inject C++
+  specific types in SML. Transformer would somehow recognise this
+  objects and create the correct formattables for it. This sounds too
+  complicated (and circular). However, somehow we need to
+  short-circuit the path derivatives, properties, etc generation and
+  inject a C++ specific type. Actually, of all the things that we
+  provide for "regular" SML types, all we need is enablement and file
+  path. We can easily generate these from the factory.
+- we need to somehow be able to create the path derivatives for a
+  single path settings. We need to generate file names for all files
+  in the factory and this requires path derivatives.
+- the generation of the includes for the includers cannot be done from
+  the providers. This is because it will be missing the includes for
+  internal types such as serialisation registrar. Other than that we
+  could do it from the provider; the only ugly part of the API is that
+  we'd be receiving an SML object for no reason.
+- in an ideal world we would like to inject the qnames for the
+  internal types into the formatter properties generation. Not
+  everything is qname dependent, but what is should be
+  common. However the problem we have is that not all qnames support
+  all formatters.
+
+*** COMPLETED Refactor formatting assistants                          :story:
+    CLOSED: [2015-06-30 Tue 17:17]
+    CLOCK: [2015-06-30 Tue 16:46]--[2015-06-30 Tue 17:17] =>  0:31
+
+- create an abstract base class for common functionality and move it
+  across from existing assistants;
+- create a trivial assistant that is a concrete version of abc.
+
+*** COMPLETED Create the opaque settings activity                     :story:
+    CLOSED: [2015-07-01 Wed 15:24]
+
+We need to add support for opaque settings. This should be as easy as
+adding a method in the formatter to register/return the opaque
+settings factory and then supplying the settings workflow with all of
+these factories.
+
+*** COMPLETED Implement odb options formatter in odb                  :story:
+    CLOSED: [2015-07-02 Thu 08:20]
+    CLOCK: [2015-07-02 Thu 08:03]--[2015-07-02 Thu 08:20] =>  0:17
+    CLOCK: [2015-07-01 Wed 21:58]--[2015-07-01 Wed 22:27] =>  0:29
+    CLOCK: [2015-07-01 Wed 20:55]--[2015-07-01 Wed 21:57] =>  1:02
+    CLOCK: [2015-07-01 Wed 19:31]--[2015-07-01 Wed 19:52] =>  0:21
+    CLOCK: [2015-07-01 Wed 17:52]--[2015-07-01 Wed 17:55] =>  0:03
+    CLOCK: [2015-07-01 Wed 17:22]--[2015-07-01 Wed 17:51] =>  0:26
+    CLOCK: [2015-07-01 Wed 16:17]--[2015-07-01 Wed 17:21] =>  1:04
+    CLOCK: [2015-06-30 Tue 18:31]--[2015-06-30 Tue 18:45] =>  0:14
+    CLOCK: [2015-06-30 Tue 17:45]--[2015-06-30 Tue 18:15] =>  0:30
+    CLOCK: [2015-06-30 Tue 17:31]--[2015-06-30 Tue 17:44] =>  0:13
+    CLOCK: [2015-06-30 Tue 17:18]--[2015-06-30 Tue 17:30] =>  0:12
+    CLOCK: [2015-06-30 Tue 15:53]--[2015-06-30 Tue 16:45] =>  0:52
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Problems solved:
+
+- incorrect path when using split project.
+- generate the correct general settings for odb/cmake.
+- we need to obtain the general settings to generate boilerplate. We
+  should copy it from the root object. We then need to manually setup
+  the boilerplate in the template. We need to create the general
+  settings in the factory. The factory needs access to the root
+  object.
+- push general settings factory generation into workflow and pass it
+  down to bundle factory.
+- fix spurious spacing in cmake/odb licences (legacy).
+- split annotation formatting from boilerplate.
+- add boilerplate to legacy formatter.
+- we have two of these at the moment, one at the top-level and another
+  one inside odb. Remove the odb one.
+
+*** COMPLETED Implement serialisation registrar header formatter      :story:
+    CLOSED: [2015-07-03 Fri 22:48]
+    CLOCK: [2015-07-03 Fri 22:41]--[2015-07-03 Fri 22:48] =>  0:07
+    CLOCK: [2015-07-03 Fri 22:29]--[2015-07-03 Fri 22:40] =>  0:11
+    CLOCK: [2015-07-03 Fri 22:21]--[2015-07-03 Fri 22:29] =>  0:08
+    CLOCK: [2015-07-03 Fri 21:40]--[2015-07-03 Fri 22:20] =>  0:40
+    CLOCK: [2015-07-02 Thu 20:46]--[2015-07-02 Thu 21:15] =>  0:29
+    CLOCK: [2015-07-02 Thu 08:21]--[2015-07-02 Thu 08:47] =>  0:26
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Problems:
+
+- sort remaining diffs.
+
+Problems solved:
+
+- add include guards and pragma once to legacy header.
+- we are not generating the formatting propeties for these internal
+  formatters. For now we need to manually inject the formatter
+  properties; this will be handled properly with the archetype
+  refactor. Actually the problem is just with the implementation.
+
+*** POSTPONED Thoughts on cpp refactoring                             :story:
+    CLOSED: [2015-07-06 Mon 15:06]
+    CLOCK: [2015-07-03 Fri 17:37]--[2015-07-03 Fri 17:48] =>  0:11
+    CLOCK: [2015-06-25 Thu 17:29]--[2015-06-25 Thu 17:54] =>  0:25
+    CLOCK: [2015-06-25 Thu 16:18]--[2015-06-25 Thu 16:44] =>  0:26
+    CLOCK: [2015-06-25 Thu 15:32]--[2015-06-25 Thu 16:17] =>  0:45
+    CLOCK: [2015-06-25 Thu 13:30]--[2015-06-25 Thu 14:15] =>  0:45
+
+We haven't quite arrived at the ideal configuration for the cpp
+model. We are close, but not there yet. The problem we have at the
+moment is that the formatters drive a lot of the work in
+formattables, resulting in a circular dependency. This is happening
+because we are missing some entities. This story is just a random set
+of thoughts in this space, trying to clear up the terminology across
+the board.
+
+*Random thoughts*
+
+What is probably needed is to have facets, aspects and "file kinds" as
+top-level concepts rather than just strings with which we label
+formatters. In addition, we need a good name for "file kinds". This is
+a meta-concept, something akin to a file template. The formatter
+produces a physical representation of that meta-concept. As part of
+the formatter registration, we can also register this meta-concept
+(provided it relies on an existing formattable). And in effect, these
+are the pieces of the puzzle:
+
+- you define a "file kind".
+- a facet and a model are groupings of "file kinds". These happen to
+  be hierarchical groupings. There are others: header and
+  implementation, or class header formatter. Those are
+  non-hierarchical.
+- you bind a transformer to a SML type to generate a formattable.
+- a formattable is associated with one or more "file kinds" or better
+  yet a file kind is associated with a formattable. It is also
+  associated with formatting properties and settings. It is those
+  tuples that we pass to the formatters.
+- you bind a formatter to a "file" and process the associated
+  formattable.
+
+Perhaps we can call these "file kinds" file archetypes or just
+archetypes.
+
+What can be said about an archetype:
+
+- conceptual notion of something we want to generate.
+- one SML entity can map to zero or many archetypes. Concept at
+  present maps to zero. Object maps to many.
+- a representation of the archetype as source code is done by the
+  formatter. It uses a template to help it generate that
+  representation.
+- a given archetype maps to one and only one SML entity.
+- a given archetype maps to one and only one CPP entity.
+- archetypes can be grouped in many ways. One way is facets and
+  models.
+- archetypes have definitions: name of the archetype, what groups it
+  belongs to.
+- archetypes have associated data: formattables, settings,
+  properties. This is an entity and needs a name.
+- formatters work on one and only one archetype.
+- archetypes have qualified names; this is (mostly) what we called
+  ownership hierarchy. Qualified names can be represented as separate
+  fields or using the dot notation.
+- archetypes have labels: this is what we called groups.
+- dynamic is a model designed to augment SML with some archetype
+  data. This is not true in the dia case. Check all fields to see if
+  it is true everywhere else.
+- an aspect is a property of one or more archetypes; it is a knob that
+  affects the generation of the source code representation.
+- an archetype instance belongs to an archetype.
+- we should remove the concept of "integrated facets". It just happens
+  that a facet such as types may have aspects that enable features
+  similar to aspects in other facets. There may be rules that
+  determine that when certain aspects are enabled, certain facets must
+  be switched off because they are incompatible.
+- facet is a good name for grouping archetypes, but model isn't. We
+  need a better name for a set of facets. Aspect is also a good
+  name. In addition, a model group is also a bad name. A "model" is a
+  cohesive group of archetypes that are meant to be used together. A
+  "model group" is a cohesive group of models that provide the same
+  conceptual representations in different programming languages. Maybe
+  we should use a more "random" name such as: pod. Then perhaps a
+  model group could become a "pod family": a family of related pods. A
+  given model can be represented by one pod family or another - they
+  are mutually exclusive. Of course, from a command line perspective,
+  its better to think of "modes". Each mode corresponds to choosing
+  one "pod family" over another. This does not map very cleanly.
+- archetypes have an associated programming language - a grammar.
+- a facet may exist in more than one programming language and an
+  aspect too.
+- pods are programming language specific.
+- formattables are kind of like an archetype friendly representation
+  of the domain types. We need a good name for this.
+- internal and external now make slightly more sense, at least once we
+  got a good name for formatters. We still need a good name for it
+  though. If the archetype instance is generated because of the
+  presence of the domain type, it is external. If the archetype has no
+  sensitivity to domain types (but may have sensitivity to other
+  things such as options) it is internal. The naming around this is
+  not totally clear.
+- internal formatters may not be allowed to be disabled. For example,
+  if serialisation is on, registrar must be generated. With
+  CMakeLists, we may want do disable them altogether.
+- in the thrift story in the backlog we mention the existence of
+  mutually exclusive groups of facets. We should also come up with a
+  name for these.
+- archetype may not quite be the right name. See [[http://www.pearsonhighered.com/samplechapter/032111230X.pdf][Archetypes and
+  archetype patterns]]. See also:
+  - [[http://www.step-10.com/SoftwareDesign/ModellingInColour/ColourCoding.html][Class Archetypes, UML and Colour]]
+  - [[http://www.step-10.com/SoftwareDesign/ModellingInColour/index.html][Peter Coad's 'Modeling in Color']]
+  - [[http://www.step-10.com/Books/JMCUBook.html][Java Modeling in Color with UML]]
+- the process of mapping domain types to archetypes could be called
+  "expansion" because its a one to many relationship in most cases.
+- its not quite correct to call CPP types "formattables". The
+  archetype has to have an ordered container of inputs to the
+  formatter. This is sort of the "payload" for formatting; the
+  archetype is a container of such entities. Taking into account the
+  cases where more than one type is placed in the same file, this
+  would result in the includes being merged. Or perhaps these things
+  are really formattables, but then we need a way to distinguish
+  between "top-level formatters" that generate archetypes from
+  "partial" formatters that can be combined.
+- with "facet specific types" we go one level deeper: it should be
+  possible to add an enumeration definition to say test data. This
+  would mean that archetypes and facets are not quite so aligned as we
+  first thought. Potentially, one should be able to ask for say a
+  formattable at facet X in an artchetype at facet Y.
+- One way to look at it is as follows: there is the modeling
+  dimension, in which we have an entity, say entity =A=; and there is
+  the implementation dimension, in which =a= can be represented by
+  =A1, A2, ..., An= archetypes. In effect, the implementation
+  dimension has multiple dimensions, one for each pod (and of course
+  the pod families would be an extra dimension and so on). Actually,
+  we probably have 3 steps: the modeling dimension, the translation of
+  that into a language-specific representation and then finally the
+  archetype dimension.
+- a good name for the top-level container of archetypes is
+  "kernel". This was inspired (loosely) in some ideas from EMF. So
+  we'd have say the "quilt kernel", with support for multiple
+  programming languages such as cpp, java etc. We we'd have the "pleat
+  kernel" and so forth. Each kernel has a set of languages and the
+  languages have archetypes. Archetypes have a collection of
+  properties such as the formattables they need, the formatters and so
+  on. The job of a model such as =quilt::cpp= is to implement this
+  binding.
+- dynamic fields can be owned by archetypes or by other types of
+  owners (e.g. dia). We should have a way of expressing this
+  ownership.
+- we haven't used the word "feature" anywhere yet (properly; we
+  mentioned it in the manual and so on, but not given it any good
+  meaning).
+- we created a split between "internal" and "external" formatters, but
+  its interesting to notice that we have "internal" formatters that
+  are "regular" formatters - in that we need to create a qname for
+  them and the formatter properties will work correctly; whereas some
+  others are "irregular" formatters - they have strange filenames that
+  cannot be generated without some fiddling. Actually, ODB options is
+  the main problematic one. If we could place it in a sensible
+  location we could probably get rid of irregular formatters
+  altogether.
+
+*** POSTPONED Thoughts on simplifying the formattables generation     :story:
+    CLOSED: [2015-07-06 Mon 15:06]
+    CLOCK: [2015-07-05 Sun 22:51]--[2015-07-05 Sun 23:11] =>  0:20
+    CLOCK: [2015-07-03 Fri 17:16]--[2015-07-03 Fri 17:37] =>  0:21
+    CLOCK: [2015-07-03 Fri 15:13]--[2015-07-03 Fri 17:15] =>  2:02
+
+We have a problem in the way which we are doing the formattables:
+because we are doing model traversals for each of the factories, we
+cannot easily introduce a set of manually generated qnames such as the
+registrar and includers. However, if we started off the main workflow
+by creating a structure like so:
+
+- qname
+- optional entity (new base class in SML); if null we need to create
+  extensions as an empty object.
+
+We then need a list of these that get passed in to all repository
+factories. These use a visitor of entity to resolve to a type (where
+required).
+
+We can inject types to this list that have a qname but no entity. For
+these we generate some parts of the formatter properties. Actually, we
+still need to generate inclusion lists even when there is no
+entity. Perhaps we need to create a new method in the provider that
+does not take an SML entity but still generates the inclusion list.
+
+Actually this should all be done in SML. We should have zero qname
+look-ups coming out of SML, just follow references. This story is a
+variation of the split between "partial" models and "full" models.
+
+Well not everything should be done in SML. We still need to create a
+structure with the properties above, but that is done by iterating
+through a list in the SML model.
+
+This work is dependent on [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#split-a-fully-formed-model-from-partial-models][this]] story.
+
+One slight problem with this approach: sometimes we need to preserve
+some relationships in the newly generated objects. For registrar we
+need to preserve the model leaves. For the includers / master headers
+we need to express somehow the inclusion relationship at the formatter
+level. The latter is definitely a special case because it is a pure
+C++ concept: include files cannot be modeled in SML. However,
+registrar is slightly different because we still need to compute the
+includes based on the leaves. This means that the above approach will
+not provide a clean solution, unless we synthesise an SML object when
+providing the includes. And of course we need to be careful taking
+that route or else we will end up generating the object across all
+facets.
+
+It is important not to confuse formatters with archetypes. A formatter
+(or at least, a "top-level formatter"; those that generate files) is
+in a sense a "category" of archetypes. In other words, for a given
+formatter many archetypes will be generated. This may mean that the
+"archetype" is not a very good choice because it may imply some kind
+of meta-class-ness. In a sense, we are dealing with arch-entities
+("entity" being SML's base class for all modeled domain types). So
+fundamentally, the correct workflow is vaguely like this:
+
+- we create a model for some problem domain. We represent this model
+  in SML. All objects are identifiable by a qname.
+- we apply a transformation of this model into something which is
+  closer to the programming language that we wish to generate; these
+  we choose to call formattables.
+- we may also inject some formattables which do not have a mapping to
+  the original domain objects. These have synthetic qnames.
+- we apply a function that takes the qname, the SML entity, the
+  formattable and generates an archetype skeleton. To start off with,
+  this is made up of only a file name and a top-level formatter. The
+  structure exists in memory as a map of qnames to formatter names to
+  archetypes.
+- we then fill in the blanks: compute includes, enablement, etc. The
+  final blank that needs to be filled in is the generation of the
+  file, which is done by applying a formatter to a number of the
+  archetype properties.
+
+Another point of interest is that we may be able to move some of the
+archetype processing to common code. For example, file name
+generation, enablement, and so on are not language specific. However,
+we need to have a representation of the archetype which is specific to
+a model (e.g. =quilt::cpp= say) because not all properties will be
+common. We could, possibly, have an archetype base class, which then
+would imply a formatter's base class and so on - but then we hit the
+visitor across models problem.
+
+In this approach we do have an advantage which is we can parallelise a
+lot of work across each stage in the "pipeline". For instance we can
+run transformation from SML to formattables in parallel. We could
+conceivably even have futures for each of the archetype
+properties. None of this is a concern for the foreseable future, of
+course.
+
+*** POSTPONED Implement serialisation registrar implementation formatter :story:
+    CLOSED: [2015-07-06 Mon 15:06]
+    CLOCK: [2015-07-04 Sat 22:12]--[2015-07-04 Sat 23:18] =>  1:06
+    CLOCK: [2015-07-04 Sat 21:40]--[2015-07-04 Sat 22:11] =>  0:31
+    CLOCK: [2015-07-04 Sat 21:24]--[2015-07-04 Sat 21:30] =>  0:06
+    CLOCK: [2015-07-04 Sat 20:36]--[2015-07-04 Sat 21:23] =>  0:47
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Problems:
+
+- includes for leaves are missing. We need to somehow get the include
+  generation to work for registrar and also the aspect settings
+  generation.
+
+Problems solved:
+
+- no newline at the end of the file.
+- missing includes. Factory not populating includes either.
+- eos check is not yielding expected result.
+
+** Deprecated
+*** CANCELLED Investigate integration of =boost::log= with =boost::test= :story:
+    CLOSED: [2015-06-30 Tue 14:36]
+
+*Rationale*: This will not be a problem with catch.
+
+At present whenever there is a test failure, we get a compiler-style
+error in the console, which is great for emacs integration - its easy
+to go to the source code that generated the failure. However, we do
+not write it to the log file of the test. Its very difficult to
+understand the log file without the context of the =boost::test=
+failures. Due to this we end up manually logging before doing boost
+test assertions - a lot of duplicated effort. What would be ideal is
+if =boost::test= logged to _both_ the console and to our log
+file. There is a file output for boost log, but its not configurable
+enough to accept a =boost::log= stream. We should send an email to
+mailing list asking for help.
+
+Also we need to duplicate the test name and the log file name. But
+since we will be moving to catch maybe we shouldn't spent too long in
+this.
+*** CANCELLED Remove =cpp_formatters::formatting_error=               :story:
+    CLOSED: [2015-07-01 Wed 15:25]
+
+*Rationale*: The whole model will be removed when done with current refactor.
+
+Use the =formatters::formating_error= instead.
+*** CANCELLED Delete key implementation formatter                     :story:
+    CLOSED: [2015-07-01 Wed 15:32]
+
+*Rationale*: The whole model will be removed when done with current refactor.
+
+It doesn't seem like there is any good reason to treat the keys in a
+special way so try to remove this.
+
+*** CANCELLED Consider creating internal and external fields          :story:
+    CLOSED: [2015-07-01 Wed 15:34]
+
+*Rationale*: Dynamic fields are now by definition external fields.
+
+At present any dynamic field is automatically exposed to the outside
+world, allowing users to set them. This is not always ideal; for
+example, the file path should not be settable. Perhaps field
+definitions should have a "internal" or "external" property that stops
+users from being able to override certain fields.
+
+*** CANCELLED Add tests for all permutations of the domain formatter  :story:
+    CLOSED: [2015-07-01 Wed 15:44]
+
+*Rationale*: Story has bit-rotted (we don't have domain formatters any
+more) but also, its too ambitious. We can't add tests for all
+permutations of all formatters.
+
+_All_ may be too strong a word as there quite a few. We need good
+coverage around the combinations one can do within the domain
+formatter.
+*** CANCELLED Implement flymake from the EDE project                  :story:
+    CLOSED: [2015-07-01 Wed 16:12]
+
+*Rationale*: Not required with flycheck.
+
+This move of directories highlighted the fragility of the current
+flymake hack: every time the top-level directory changes we need to
+update =cunene=. Ideally what we want is to have a top-level file -
+most ideally =dogen.ede= with some lisp code that would setup the
+dogen paths for flymake. Users would only need to load this up to use it.

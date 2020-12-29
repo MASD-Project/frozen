@@ -1,0 +1,482 @@
+#+title: Sprint Backlog 29
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 29.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:03]
+
+| Headline                                                           | Time    |       |       |
+|--------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                       | *50:03* |       |       |
+|--------------------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                                    |         | 50:03 |       |
+| COMPLETED Sprint and product backlog grooming                      |         |       |  0:53 |
+| COMPLETED Make design by contract methods consistent in dia to sml |         |       |  0:52 |
+| COMPLETED Split resolver from merger                               |         |       |  3:18 |
+| COMPLETED Property container should be a list not a vector         |         |       |  0:18 |
+| COMPLETED Implement concepts in SML                                |         |       |  9:24 |
+| COMPLETED Design the inheritance tree of DDD classes in SML        |         |       |  2:16 |
+| COMPLETED Add concept properties in order of inheritance           |         |       |  0:18 |
+| COMPLETED Ensure extractor takes concepts into account             |         |       |  0:22 |
+| COMPLETED Descendents modeling different concepts from base break  |         |       |  2:20 |
+| COMPLETED Model should model appropriate concepts                  |         |       |  2:15 |
+| COMPLETED Remove meta types enumeration                            |         |       |  0:58 |
+| COMPLETED Visitor as an injected system type                       |         |       |  1:50 |
+| COMPLETED Update SML to make use of concepts                       |         |       | 24:32 |
+| CANCELLED Create a =key_extractor= service                         |         |       |  0:27 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2013-06-30 Sun 22:10]
+    CLOCK: [2013-06-23 Sun 20:50]--[2013-06-23 Sun 21:11] =>  0:21
+    CLOCK: [2013-06-22 Sat 17:06]--[2013-06-22 Sat 17:14] =>  0:08
+    CLOCK: [2013-06-17 Mon 08:07]--[2013-06-17 Mon 08:20] =>  0:13
+    CLOCK: [2013-06-17 Mon 07:56]--[2013-06-17 Mon 08:07] =>  0:11
+
+*** COMPLETED Make design by contract methods consistent in dia to sml :spike:
+    CLOSED: [2013-06-22 Sat 17:11]
+    CLOCK: [2013-06-22 Sat 14:40]--[2013-06-22 Sat 15:32] =>  0:52
+
+- use require as the name for enforcing preconditions
+- make sure preconditions can always be tested from the outside world
+- add tests around preconditions
+- rename =graph_builder= to =grapher=, no need for two words.
+
+*** COMPLETED Split resolver from merger                              :spike:
+    CLOSED: [2013-06-23 Sun 01:02]
+    CLOCK: [2013-06-22 Sat 23:20]--[2013-06-23 Sun 01:02] =>  1:42
+    CLOCK: [2013-06-22 Sat 22:50]--[2013-06-22 Sat 23:20] =>  0:30
+    CLOCK: [2013-06-22 Sat 19:26]--[2013-06-22 Sat 20:30] =>  1:04
+    CLOCK: [2013-05-08 Wed 07:59]--[2013-05-08 Wed 08:01] =>  0:02
+
+At present merger is doing to distinct things: merges multiple models
+into one and resolves partially formed qnames into full qnames. The
+resolution part should really be the responsibility of a
+class: =resolver=.
+
+As we need to update resolution rules for concepts, we need to pickup
+this story.
+
+*** COMPLETED Property container should be a list not a vector        :spike:
+    CLOSED: [2013-06-23 Sun 22:51]
+    CLOCK: [2013-06-23 Sun 22:40]--[2013-06-23 Sun 22:51] =>  0:11
+    CLOCK: [2013-06-23 Sun 22:20]--[2013-06-23 Sun 22:27] =>  0:07
+
+For some reason we made this container a vector, but in reality we
+never really use random access and we do a lot of push backs to it.
+
+*** COMPLETED Implement concepts in SML                               :story:
+    CLOSED: [2013-06-24 Mon 18:39]
+     CLOCK: [2013-06-22 Sat 12:26]--[2013-06-22 Sat 12:59] =>  0:33
+
+In S28 we added the initial support for concepts to SML. We now need
+to start making use of them.
+
+**** COMPLETED Add support for multiple inheritance in graph builder   :task:
+     CLOSED: [2013-06-22 Sat 13:58]
+     CLOCK: [2013-06-22 Sat 14:07]--[2013-06-22 Sat 14:40] =>  0:33
+     CLOCK: [2013-06-22 Sat 13:58]--[2013-06-22 Sat 14:07] =>  0:09
+     CLOCK: [2013-06-22 Sat 13:04]--[2013-06-22 Sat 13:58] =>  0:54
+     CLOCK: [2013-06-22 Sat 12:07]--[2013-06-22 Sat 12:26] =>  0:19
+
+- graph builder to allow building graph with multiple
+  inheritance. we're still a DAG so this should not be a problem.
+- context to have a list of parents rather than just one parent.
+- transformer to throw when transforming pod if it has more than one
+  parent.
+
+**** COMPLETED Add support for concepts to the dia to sml transformer  :task:
+     CLOSED: [2013-06-23 Sun 22:05]
+     CLOCK: [2013-06-23 Sun 21:38]--[2013-06-23 Sun 22:05] =>  0:27
+     CLOCK: [2013-06-23 Sun 21:22]--[2013-06-23 Sun 21:38] =>  0:16
+     CLOCK: [2013-06-23 Sun 21:11]--[2013-06-23 Sun 21:22] =>  0:11
+     CLOCK: [2013-06-23 Sun 19:10]--[2013-06-23 Sun 20:50] =>  1:40
+     CLOCK: [2013-06-23 Sun 08:24]--[2013-06-23 Sun 08:50] =>  0:26
+     CLOCK: [2013-06-22 Sat 19:15]--[2013-06-22 Sat 19:26] =>  0:11
+     CLOCK: [2013-06-22 Sat 18:54]--[2013-06-22 Sat 19:08] =>  0:14
+     CLOCK: [2013-06-22 Sat 17:53]--[2013-06-22 Sat 18:52] =>  0:59
+     CLOCK: [2013-06-22 Sat 17:16]--[2013-06-22 Sat 17:33] =>  0:17
+
+- add meta-type of concept.
+- pod to have a list of modeled concepts.
+- push unknown stereotypes into a list in object profile
+  when transforming pod
+- convert this list into qnames that belong to current model and have
+  a meta type of concept
+- merger to check that all such concepts exist in model.
+
+**** COMPLETED Copy properties from concept when transforming a pod    :task:
+     CLOSED: [2013-06-23 Sun 23:14]
+     CLOCK: [2013-06-23 Sun 22:54]--[2013-06-23 Sun 23:14] =>  0:20
+     CLOCK: [2013-06-23 Sun 22:07]--[2013-06-23 Sun 22:19] =>  0:12
+
+- in CPP model's transformer, traverse concepts and add properties.
+
+**** COMPLETED Add test to stereotypes model                           :task:
+     CLOSED: [2013-06-24 Mon 18:39]
+     CLOCK: [2013-06-24 Mon 22:18]--[2013-06-24 Mon 22:24] =>  0:06
+     CLOCK: [2013-06-24 Mon 18:10]--[2013-06-24 Mon 18:39] =>  0:29
+     CLOCK: [2013-06-24 Mon 17:58]--[2013-06-24 Mon 18:02] =>  0:04
+     CLOCK: [2013-06-24 Mon 09:03]--[2013-06-24 Mon 09:06] =>  0:03
+     CLOCK: [2013-06-24 Mon 08:29]--[2013-06-24 Mon 08:39] =>  0:10
+     CLOCK: [2013-06-24 Mon 08:02]--[2013-06-24 Mon 08:29] =>  0:27
+     CLOCK: [2013-06-24 Mon 07:36]--[2013-06-24 Mon 07:45] =>  0:09
+     CLOCK: [2013-06-23 Sun 23:22]--[2013-06-23 Sun 23:37] =>  0:15
+
+- stand-alone concept
+- concept with single-inheritance
+- concept with multiple-inheritance
+- model more than one concept
+
+*** COMPLETED Design the inheritance tree of DDD classes in SML       :story:
+    CLOSED: [2013-06-24 Mon 22:32]
+
+In S28 as part of "Improve modeling of domain driven concepts in SML",
+we have started making SML look a lot more like a model of
+DDD. However, a number of limitations became apparent in terms of the
+inheritance tree:
+
+- value objects had too many attributes to model primitives and
+  enumerations properly
+- typed_element was too broad for a root of the object based parts of
+  the tree
+
+A better approach is to create base classes that are less well-defined
+and a larger number of derived classes. This is the objective of this
+story.
+
+**** COMPLETED List of SML concepts                                    :note:
+     CLOSED: [2013-06-20 Thu 08:08]
+     CLOCK: [2013-06-26 Wed 20:40]--[2013-06-26 Wed 20:54] =>  0:14
+     CLOCK: [2013-06-24 Mon 22:29]--[2013-06-24 Mon 22:31] =>  0:02
+     CLOCK: [2013-06-24 Mon 22:12]--[2013-06-24 Mon 22:18] =>  0:06
+     CLOCK: [2013-06-24 Mon 20:01]--[2013-06-24 Mon 20:30] =>  0:29
+     CLOCK: [2013-06-20 Thu 08:00]--[2013-06-20 Thu 08:15] =>  0:15
+
+- =Nameable=: type has can be uniquely identified by its qualified name.
+- =Documentable=: type can be documented.
+- =Parameterisable=: type supports pass-through parameters
+  (implementation specific parameters).
+- =Generatable=: type has properties related to code generation.
+- =Element=: A unit of modeling that can be code generated. Refinement
+  of =Nameable=, =Documentable=, =Parameterisable= and
+  =Generatable=. Modeled by value types such as =sml::enumeration= and
+  =sml::primitive=; modeled by =sml::model= and =sml::module=.
+- =Stateful=: type has properties.
+- =Operatable=: type has methods (operations).
+- =Object=: refinement of =Element=, =Stateful= and
+  =Operatable=. Modeled by =sml::abstract_entity=,
+  =sml::value_object=, =sml::service=, =sml::factory=,
+  =sml::repository= and =sml::concept=. Note that concepts are
+  generatable because, depending on the programming language, they may
+  have expression in code. For example in C++ one could generate
+  concept checking code. Also, from this rarefied meta-meta-world,
+  they are Objects in the sense that they model the Object concept;
+  this is counter intuitive because they are not objects in spirit.
+
+**** COMPLETED Why is the current design wrong?                        :task:
+     CLOSED: [2013-06-24 Mon 22:31]
+     CLOCK: [2013-06-20 Thu 08:24]--[2013-06-20 Thu 08:38] =>  0:14
+     CLOCK: [2013-06-20 Thu 07:46]--[2013-06-20 Thu 08:00] =>  0:14
+     CLOCK: [2013-06-18 Tue 18:13]--[2013-06-18 Tue 18:19] =>  0:06
+     CLOCK: [2013-06-18 Tue 08:16]--[2013-06-18 Tue 08:24] =>  0:08
+     CLOCK: [2013-06-18 Tue 07:48]--[2013-06-18 Tue 08:16] =>  0:28
+
+There is a great deal of confusion when choosing between concepts and
+inheritance. Both provide a way to factor out similar characteristics
+(behaviour and state) and to reuse them. Inheritance is to be used
+when:
+
+- the thing modeled by the base class naturally exists in the domain
+  as a type and is recognisable by domain experts;
+- the base class should be used by other types in the domain on its
+  own - e.g. its not there just to provide functionality or behaviour
+  and is otherwise never used in the domain; the only exception is
+  when we need to comply with MEC-33.
+- there is a strong is-a relationship between parent and children; one
+  should be able to look at the inheritance tree and see consistent
+  ontological work rather than a hodgepodge of unrelated classes.
+
+Concepts are to be used when types have similar characteristics but
+the packaging of those characteristics is not obviously attributable
+to a common ancestor. In this case one needs to package the
+characteristics in cohesive units and give names that reflect
+them.
+
+In this light we can see a lot of modeling errors, that explain the
+current confusion:
+
+- model element: basic unit of modeling. this is not a type as there
+  is no such thing as a model element in terms of the domain. no other
+  domain type will refer to it directly.
+- typed element: this is too broad as a base type; for instance it
+  provides attributes that make no sense in the context of a primitive
+  or an enumeration.
+
+What we need is a an inheritance tree that reflects a fundamental type
+hierarchy (prefix =abstract_= used when there is a need for MEC-33
+compliance):
+
+- =concept=, =module=, =type=: totally unrelated entities at the
+  inheritance level. Models of GeneratableElement concept. =type= as a
+  base class is justified because we may have some code which can
+  process types generically. For instance, the model could have a
+  container of =type=.
+- =primitive=, =enumeration=, =abstract_object= derive from =type=.
+- =object= derives from =abstract_object= and has a =object_types=
+  enum: =value=, =service=, =factory= or =repository=. Has an optional
+  =version= property.
+- =abstract_entity= derives from =abstract_object=, and provides a set
+  of properties that make its identity function.
+- =entity= and =keyed_entity= descend from =abstract_entity=.
+
+*** COMPLETED Add concept properties in order of inheritance          :spike:
+     CLOSED: [2013-06-24 Mon 22:46]
+     CLOCK: [2013-06-24 Mon 22:38]--[2013-06-24 Mon 22:56] =>  0:18
+
+At present we are adding properties in reverse order of inheritance,
+which makes the generated code look confusing. Add them in the same
+order as inheritance.
+
+*** COMPLETED Ensure extractor takes concepts into account            :spike:
+    CLOSED: [2013-06-24 Mon 23:18]
+    CLOCK: [2013-06-24 Mon 23:12]--[2013-06-24 Mon 23:18] =>  0:06
+    CLOCK: [2013-06-24 Mon 22:56]--[2013-06-24 Mon 23:12] =>  0:16
+
+When we implemented concepts we only used ints as property values so
+we didn't notice that the inclusion management was not being done
+properly. Update extractor to take properties obtained via concepts
+into account.
+
+*** COMPLETED Descendents modeling different concepts from base break :spike:
+    CLOSED: [2013-06-26 Wed 08:31]
+    CLOCK: [2013-06-26 Wed 08:29]--[2013-06-26 Wed 08:31] =>  0:02
+    CLOCK: [2013-06-26 Wed 07:45]--[2013-06-26 Wed 08:19] =>  0:34
+    CLOCK: [2013-06-26 Wed 07:35]--[2013-06-26 Wed 07:45] =>  0:10
+    CLOCK: [2013-06-25 Tue 22:41]--[2013-06-26 Wed 00:15] =>  1:34
+
+The current concepts implementation does not support the scenario
+where the base models a concept say A, and a descendent models a
+refinement of A, say B. We just duplicate the properties when in
+reality we need to exclude the intersections.
+
+We should just expand the refinements container at inception to all of
+the qnames for all the concepts, excluding all the concepts found in
+the inheritance path of a class.
+
+*** COMPLETED Model should model appropriate concepts                 :story:
+    CLOSED: [2013-06-29 Sat 22:24]
+    CLOCK: [2013-06-29 Sat 20:28]--[2013-06-29 Sat 22:24] =>  1:56
+    CLOCK: [2013-06-26 Wed 22:04]--[2013-06-26 Wed 22:23] =>  0:19
+
+NOTE 1: model name cannot be a qname because then qnames would have to
+have a qname for the model name for consistency. Instead, we modeled
+other suitable concepts; story was rename to reflect this.
+
+NOTE 2: actually, we do the exact same thing for modules so we should
+continue with this logic.
+
+We already have most of the qname properties in the model anyway, so
+might as well just use a qname.
+
+*** COMPLETED Remove meta types enumeration                           :spike:
+    CLOSED: [2013-06-30 Sun 14:26]
+    CLOCK: [2013-06-30 Sun 14:18]--[2013-06-30 Sun 14:26] =>  0:08
+    CLOCK: [2013-06-30 Sun 14:00]--[2013-06-30 Sun 14:18] =>  0:18
+    CLOCK: [2013-06-30 Sun 13:28]--[2013-06-30 Sun 14:00] =>  0:32
+
+This is largely historical and we're not even sure why we have it, so
+try removing it.
+
+*** COMPLETED Visitor as an injected system type                      :story:
+    CLOSED: [2013-06-30 Sun 21:41]
+    CLOCK: [2013-06-30 Sun 21:26]--[2013-06-30 Sun 21:41] =>  0:15
+    CLOCK: [2013-06-30 Sun 20:09]--[2013-06-30 Sun 21:00] =>  0:51
+    CLOCK: [2013-06-30 Sun 20:05]--[2013-06-30 Sun 20:09] =>  0:04
+    CLOCK: [2013-06-30 Sun 20:02]--[2013-06-30 Sun 20:05] =>  0:03
+    CLOCK: [2013-06-30 Sun 19:56]--[2013-06-30 Sun 20:02] =>  0:06
+    CLOCK: [2013-06-30 Sun 19:25]--[2013-06-30 Sun 19:56] =>  0:31
+
+The current implementation of visitor relies on creating a view model
+without a corresponding type. In reality we should do as we did for
+keys and create a category type of visitor. This is really a SML
+concept, not a backend specific concept.
+
+*** COMPLETED Update SML to make use of concepts                      :story:
+    CLOSED: [2013-06-30 Sun 22:10]
+
+In S28 as part of "Break down SML into concepts at the design level"
+we have defined all of the main concepts that SML types should be
+using. Attempt to make use of these to simplify the model.
+
+**** COMPLETED Implement modules in terms of concepts                  :task:
+     CLOSED: [2013-06-24 Mon 23:29]
+     CLOCK: [2013-06-24 Mon 23:19]--[2013-06-24 Mon 23:29] =>  0:10
+     CLOCK: [2013-06-24 Mon 22:55]--[2013-06-24 Mon 23:01] =>  0:06
+
+**** COMPLETED Implement concepts in terms of concepts                 :task:
+     CLOSED: [2013-06-24 Mon 23:42]
+     CLOCK: [2013-06-24 Mon 23:30]--[2013-06-24 Mon 23:42] =>  0:12
+
+**** COMPLETED Revert back to a primitive class but now based on concepts :task:
+     CLOSED: [2013-06-25 Tue 08:50]
+     CLOCK: [2013-06-25 Tue 08:31]--[2013-06-25 Tue 08:35] =>  0:04
+     CLOCK: [2013-06-25 Tue 07:53]--[2013-06-25 Tue 08:17] =>  0:24
+     CLOCK: [2013-06-25 Tue 07:48]--[2013-06-25 Tue 07:53] =>  0:05
+     CLOCK: [2013-06-25 Tue 07:39]--[2013-06-25 Tue 07:44] =>  0:08
+     CLOCK: [2013-06-24 Mon 23:42]--[2013-06-25 Tue 00:04] =>  0:22
+
+- create primitive class
+- update model to use primitives
+- update primitive model to generate primitives
+- update C++ transformer
+- remove primitive from value types
+
+**** COMPLETED Revert back to an enumeration class but now based on concepts :task:
+     CLOSED: [2013-06-25 Tue 22:09]
+     CLOCK: [2013-06-25 Tue 21:27]--[2013-06-25 Tue 22:09] =>  0:42
+     CLOCK: [2013-06-25 Tue 18:49]--[2013-06-25 Tue 19:00] =>  0:11
+     CLOCK: [2013-06-25 Tue 18:34]--[2013-06-25 Tue 18:49] =>  0:15
+     CLOCK: [2013-06-25 Tue 18:16]--[2013-06-25 Tue 18:24] =>  0:08
+
+- create enumeration and enumerator classes
+- update model to use enumeration
+- update C++ transformer
+- remove enumeration from value types
+
+**** COMPLETED Add support for value objects                           :task:
+     CLOSED: [2013-06-26 Wed 18:01]
+     CLOCK: [2013-06-25 Tue 22:28]--[2013-06-25 Tue 22:40] =>  0:12
+     CLOCK: [2013-06-25 Tue 22:09]--[2013-06-25 Tue 22:28] =>  0:19
+
+**** COMPLETED Implement exceptions in terms of value objects          :task:
+     CLOSED: [2013-06-26 Wed 19:41]
+     CLOCK: [2013-06-26 Wed 18:01]--[2013-06-26 Wed 18:07] =>  0:06
+
+**** IMPLEMENTATION Convert pods into entities, values or services     :task:
+     CLOCK: [2013-06-30 Sun 19:24]--[2013-06-30 Sun 19:25] =>  0:01
+     CLOCK: [2013-06-30 Sun 18:52]--[2013-06-30 Sun 19:24] =>  0:32
+     CLOCK: [2013-06-30 Sun 16:53]--[2013-06-30 Sun 18:42] =>  1:49
+     CLOCK: [2013-06-30 Sun 16:05]--[2013-06-30 Sun 16:53] =>  0:48
+     CLOCK: [2013-06-30 Sun 14:05]--[2013-06-30 Sun 16:05] =>  2:00
+     CLOCK: [2013-06-30 Sun 10:29]--[2013-06-30 Sun 13:28] =>  2:59
+     CLOCK: [2013-06-30 Sun 00:31]--[2013-06-30 Sun 01:29] =>  0:58
+     CLOCK: [2013-06-29 Sat 22:24]--[2013-06-30 Sun 00:31] =>  2:07
+     CLOCK: [2013-06-29 Sat 20:10]--[2013-06-29 Sat 20:27] =>  0:17
+     CLOCK: [2013-06-29 Sat 15:32]--[2013-06-29 Sat 18:45] =>  3:13
+     CLOCK: [2013-06-29 Sat 14:35]--[2013-06-29 Sat 15:10] =>  0:35
+     CLOCK: [2013-06-29 Sat 14:33]--[2013-06-29 Sat 14:35] =>  0:02
+     CLOCK: [2013-06-28 Fri 21:54]--[2013-06-28 Fri 23:40] =>  1:46
+     CLOCK: [2013-06-28 Fri 21:15]--[2013-06-28 Fri 21:54] =>  0:39
+     CLOCK: [2013-06-28 Fri 17:56]--[2013-06-28 Fri 18:05] =>  0:09
+     CLOCK: [2013-06-28 Fri 08:27]--[2013-06-28 Fri 08:33] =>  0:06
+     CLOCK: [2013-06-28 Fri 07:49]--[2013-06-28 Fri 08:16] =>  0:27
+     CLOCK: [2013-06-28 Fri 07:33]--[2013-06-28 Fri 07:44] =>  0:43
+     CLOCK: [2013-06-27 Thu 08:25]--[2013-06-27 Thu 08:35] =>  0:10
+     CLOCK: [2013-06-27 Thu 07:50]--[2013-06-27 Thu 08:19] =>  0:29
+     CLOCK: [2013-06-27 Thu 07:36]--[2013-06-27 Thu 07:43] =>  0:07
+     CLOCK: [2013-06-26 Wed 22:46]--[2013-06-27 Thu 00:10] =>  1:24
+     CLOCK: [2013-06-26 Wed 22:23]--[2013-06-26 Wed 22:45] =>  0:22
+
+*** CANCELLED Create a =key_extractor= service                        :story:
+    CLOSED: [2013-06-30 Sun 22:10]
+    CLOCK: [2013-06-30 Sun 21:43]--[2013-06-30 Sun 22:10] =>  0:27
+
+Continuing from Sprint 26.
+
+We need a way to automatically extract a key for a =keyed_entity=.
+The right solution is to create a service to represent this
+concept.
+
+Injector creates objects for these just like it does with keys; the
+C++ transformer intercepts them and generates the correct view models.
+
+*** CANCELLED Add content to the introduction in manual               :story:
+    CLOSED: [2013-06-30 Sun 21:49]
+*** CANCELLED Rename implementation specific parameters               :story:
+    CLOSED: [2013-06-30 Sun 21:50]
+
+These should really be called back end specific parameters at the SML
+level. At the dia level, if a parameter is passed in which has a
+representation at the SML level it should simply be converted to this
+representation instead of being added to the KVP.
+
+Actually, these are more like generic parameters:
+
+- at the dia level they are used to fill in gaps in dia (e.g. packages
+  and diagrams do not have comments)
+- at the SML level, they are used to add information which does not
+  make sense for it to be in dia: is property key.
+- at the backend level, they are used to provide information which
+  does not make sense to live in SML: for example the ODB parameters.
+
+Also, when the string table support has been added, we need to create
+a string table with all valid values for the parameter keys.
+
+Name choices:
+
+- opaque parameters
+- untyped parameters
+
+*** CANCELLED Use explicit casting for versioned to unversioned conversions :story:
+    CLOSED: [2013-06-30 Sun 21:50]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+*** CANCELLED Consider not creating unversioned keys for single property :story:
+    CLOSED: [2013-06-30 Sun 21:49]
+
+If a key is made up of a single property, its a bit nonsensical to
+create an unversioned key. We should only generate the versioned
+key. However, it does make life easier. Wait for real world use cases
+to decide.
+
+*** CANCELLED Rename nested qname to composite qname                  :story:
+    CLOSED: [2013-06-30 Sun 21:44]
+
+New understanding:
+
+This story requires further analysis. Blindly following the composite
+pattern was tried but it resulted in a lot of inconsistencies because
+we then had to follow MEC-33 and create =abstract_qname=; however, the
+nested qname does not really behave like a composite qname; its more
+like the difference between a type in isolation and a type
+instantiated as an argument of a function. For example, whilst the
+type in isolation may have unknown template parameters, presumably, as
+an argument of a function these have been instantiated with real
+types.
+
+Previous understanding:
+
+We should just follow the composite pattern in the naming.
+
+*** CANCELLED Injection framework
+    CLOSED: [2013-06-30 Sun 21:49]
+
+We need a more generic way of handling system types injection into
+models. This is because there is a number of things that can be
+derived from the existing model types:
+
+- keys
+- diff support
+- reflection
+- cache code
+- etc.
+
+So we need to:
+
+- make injector a composite of injectors that do the real work such as
+  =key_injector=. internally =injector= just delegates the work to
+  these classes.
+- injector decides which internal injectors to use based on options
+  passed in.
+- in the IoC spirit, we should probably create a =injector_interface=.
+
+** Deprecated Development Stories

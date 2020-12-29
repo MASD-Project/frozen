@@ -1,0 +1,238 @@
+#+title: Sprint Backlog 22
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 22.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2012-12-17 Mon 08:05]
+
+| Headline                                                    | Time    |       |      |
+|-------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                | *23:43* |       |      |
+|-------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                             |         | 23:43 |      |
+| COMPLETED Outputting of floating point numbers rounded      |         |       | 1:00 |
+| COMPLETED Vector of double still has floating point issues  |         |       | 0:20 |
+| COMPLETED Ignore UML realisation relationship in Dia        |         |       | 0:42 |
+| IMPLEMENTATION Clocking of agile and build overhead         |         |       | 7:51 |
+| COMPLETED Remove unnecessary translation units for services |         |       | 3:29 |
+| COMPLETED Add PFH libraries to packages                     |         |       | 6:47 |
+| COMPLETED Generate forward declarations for services        |         |       | 0:15 |
+| COMPLETED Add support for boost variant                     |         |       | 3:19 |
+#+end:
+
+*** COMPLETED Outputting of floating point numbers rounded            :spike:
+    CLOCK: [2012-12-03 Mon 12:07]--[2012-12-03 Mon 13:07] =>  1:00
+
+As reported by JS, numbers coming out of our time series in creris are
+incorrectly rounded. This is to do with the default stream settings we
+are using when dumping time points. Fix dogen such that we have decent
+floating point defaults - if not perfect. This is just a quick hack
+for now.
+
+*** COMPLETED Move system model factories into SML                    :story:
+
+We do not have any generator dependencies in the system model
+factories so they can safely be moved into SML.
+
+*** COMPLETED Vector of double still has floating point issues        :spike:
+    CLOCK: [2012-12-06 Thu 14:15]--[2012-12-06 Thu 14:35] =>  0:20
+
+As reported by JS the previous fix done to time series stopped working
+once we refactored the class. This is because dogen is not handling
+=std::vector<double>= correctly. Fix the handling of nested names such
+that a =bool= or floating point number at any level causes the stream
+to format correctly.
+
+*** COMPLETED Ignore UML realisation relationship in Dia              :spike:
+    CLOSED: [2012-12-08 Sat 18:42]
+    CLOCK: [2012-12-08 Sat 18:00]--[2012-12-08 Sat 18:42] =>  0:42
+
+Treat UML realisation as we treat aggregation - that is allow it to
+exist in the diagram without doing any processing to it.
+
+*** COMPLETED Clocking of agile and build overhead                    :story:
+    CLOSED: [2012-12-08 Sat 18:42]
+
+This story keeps track of the time spent on stand-up meetings, other
+process meetings and the time taken with build checking and fixes, as
+well as any hardware/software spike we may have.
+
+**** COMPLETED Build checking and stand-up on 2012-12-03
+    CLOCK: [2012-12-03 Mon 06:20]--[2012-12-03 Mon 07:00] =>  0:40
+
+Stand up and build checking.
+
+**** COMPLETED Pascal has a corrupted file system                     :spike:
+     CLOCK: [2012-12-03 Mon 11:00]--[2012-12-03 Mon 12:00] =>  1:00
+
+Seems like the forced reboot of pascal over the weekend corrupted the
+=E:\= drive. Run a chkdsk on the drive, reboot the box and restart all agents.
+
+**** COMPLETED Lorenz second monitor became primary                   :spike:
+     CLOCK: [2012-12-03 Mon 07:52]--[2012-12-03 Mon 09:05] =>  1:13
+
+With the setup of =bell=, the new test machine, it seems the monitors
+on lorenz stop behaving. The primary monitor became what was the
+secondary monitor. Get everything back to normal.
+
+**** COMPLETED Grooming of sprint backlogs across all products         :task:
+     CLOCK: [2012-12-03 Mon 13:07]--[2012-12-03 Mon 13:20] =>  0:13
+
+**** COMPLETED Setup new sound card on lorenz                         :story:
+    CLOCK: [2012-12-03 Mon 07:00]--[2012-12-03 Mon 07:17] =>  0:17
+
+Try a new sound card on lorenz to see if we can improve demo sound quality.
+
+**** COMPLETED Build checking and stand-up on 2012-12-04
+    CLOCK: [2012-12-03 Mon 06:20]--[2012-12-03 Mon 06:50] =>  0:30
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-05
+     CLOCK: [2012-12-05 Wed 06:20]--[2012-12-05 Wed 06:58] =>  0:38
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-07
+     CLOCK: [2012-12-07 Fri 06:20]--[2012-12-07 Fri 07:00] =>  0:40
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-10
+     CLOCK: [2012-12-10 Mon 06:20]--[2012-12-10 Mon 07:10] =>  0:50
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-11
+     CLOCK: [2012-12-11 Tue 06:20]--[2012-12-11 Tue 07:00] =>  0:40
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-12
+     CLOCK: [2012-12-12 Wed 06:20]--[2012-12-12 Wed 06:50] =>  0:30
+
+Stand up and build checking.
+
+**** COMPLETED Build checking and stand-up on 2012-12-13
+     CLOCK: [2012-12-13 Wed 06:20]--[2012-12-13 Wed 07:00] =>  0:40
+
+Stand up and build checking.
+
+*** COMPLETED Remove unnecessary translation units for services       :spike:
+    CLOSED: [2012-12-10 Mon 12:08]
+    CLOCK: [2012-12-10 Mon 08:40]--[2012-12-10 Mon 12:09] =>  3:26
+
+At present we are generating all facets for services; however, after
+we've spent a lot of time implementing services in Creris, we can
+conclude that for now there will be no need for hashing,
+serialisation, IO or test data for services. And yet we are paying the
+build cost of these empty translation units for no reason. For now, do
+not generate any facet other than the domain facet for services.
+
+*** COMPLETED Add PFH libraries to packages                           :story:
+    CLOCK: [2012-12-11 Tue 14:53]--[2012-12-11 Tue 15:36] =>  0:43
+    CLOCK: [2012-12-11 Tue 12:55]--[2012-12-11 Tue 14:07] =>  1:12
+    CLOCK: [2012-12-11 Tue 11:38]--[2012-12-11 Tue 12:55] =>  1:17
+    CLOCK: [2012-12-11 Tue 10:40]--[2012-12-11 Tue 11:05] =>  0:25
+    CLOCK: [2012-12-11 Tue 09:59]--[2012-12-11 Tue 10:40] =>  0:41
+    CLOCK: [2012-12-11 Tue 09:18]--[2012-12-11 Tue 09:59] =>  0:41
+    CLOCK: [2012-12-11 Tue 07:30]--[2012-12-11 Tue 09:18] =>  1:48
+
+At present our packages on windows and OSX don't run because we are
+missing all of the boost, etc dependencies which are not present on
+the OS. On linux is luck of the draw, it may or may nor run. We should
+just add the dependencies to our packages.
+
+We can do this by simply reading the =PFH_LOCATION= from the
+environment and then doing an =install= command with files pointing to
+the PFH.
+
+http://www.cmake.org/pipermail/cmake/2009-July/030770.html
+
+For windows we need (according to dependency walker):
+
+- LIBBOOST_PROGRAM_OPTIONS-MGW47-MT-1_49.DLL
+- LIBBOOST_FILESYSTEM-MGW47-MT-1_49.DLL
+- LIBBOOST_THREAD-MGW47-MT-1_49.DLL
+- LIBBOOST_SERIALIZATION-MGW47-MT-1_49.DLL
+- LIBBOOST_SYSTEM-MGW47-MT-1_49.DLL
+- e:\gtkmm\bin\LIBXML2-2.DLL
+- LIBGCC_S_DW2-1.DLL
+- LIBSTDC++-6.DLL
+
+*** COMPLETED Generate forward declarations for services              :story:
+    CLOSED: [2012-12-11 Tue 15:45]
+    CLOCK: [2012-12-11 Tue 15:30]--[2012-12-11 Tue 15:45] =>  0:15
+
+Whilst we cannot generate any code for services, there is no reason
+why the forward declarations are not managed the same way as for other
+types. Look into what changes dogen needs for this as it would be a
+time saver.
+
+*** COMPLETED Using boost macro to throw exception                    :story:
+    CLOSED: [2012-12-12 Wed 13:53]
+
+There were some advantages to using =BOOST_THROW_EXCEPTION=, can't quite
+remember why. We need to figure out if we should replace our usages of
+=throw= with this macro. Implemented by RP.
+
+*** COMPLETED Add support for boost variant                           :spike:
+    CLOSED: [2012-12-12 Wed 13:53]
+    CLOCK: [2012-12-12 Wed 10:34]--[2012-12-12 Wed 13:53] =>  3:19
+
+In order to be able to code generate the dia model we need support for
+boost variant. One possible implementation:
+
+- create a new stereotype: variant. works very much like enumeration,
+  except attributes in class are a list of types
+- create a formatter etc for variants
+- add support for default variant visitor. this could be fairly
+  generic so we could also use it as part of the visitor patter for
+  class hierarchies
+
+*** COMPLETED Rename =domain= facet to =types=                        :story:
+    CLOSED: [2012-12-13 Thu 07:56]
+
+When we implemented entity, service, value - inspired on the
+terminology defined by Eric Evans - we renamed the =domain= folder to
+=types=. This was because domain really means domain model - e.g. the
+entirety of the model. As part of that rename we should have also
+renamed the =facet_types= enum for the =domain= facet, but it got
+missed out.
+
+Implemented by RP.
+
+*** COMPLETED Create helpers for primitive and std model              :story:
+    CLOSED: [2012-12-13 Thu 08:08]
+
+We are using literals and ad-hoc constants to describe types from the
+special models (boost, std and primitives). The boost model has been
+factored out into a boost_model_helper, we need to do the same with
+the others and go across the code base and remove all these direct
+references.
+
+*** COMPLETED Dogen driver errors look scary                          :spike:
+    CLOSED: [2012-12-13 Thu 09:44]
+
+At present we are outputting the boost diagnostic information to the
+console for all errors in the driver. This means starting dogen with
+no parameters looks like so:
+
+: /opt/kitanda/dogen-0.0.734/bin$ ./dogen_driver-0.0.734.sh
+: dogen/projects/driver/src/program_options_parser.cpp(364): Throw in function void dogen::driver::program_options_parser::throw_missing_target() const
+: Dynamic exception type: boost::exception_detail::clone_impl<dogen::driver::parser_validation_error>
+: std::exception::what: Mandatory parameter target is missing. Try `dogen --help' for more information.
+:
+: Use --help option to see usage instructions.
+
+The exception information is not useful and will cause confusion to
+new users.
+
+** Deprecated Development Stories

@@ -1,0 +1,471 @@
+#+title: Sprint Backlog 56
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+#+tags: { refactor(r) bug(b) feature(f) vision(v) }
+#+tags: { meta_data(m) tests(a) packaging(q) media(h) build(u) validation(x) diagrams(w) frontend(c) backend(g) }
+#+tags: dia(y) sml(l) cpp(k) config(o) formatters(d)
+
+* Stories
+
+This file contains all stories that were closed during sprint 56.
+
+The *Mission Statement* for this sprint is to finish implementing the
+C++ model workflow skeleton, moving across all of the formatting code
+for the class formatter.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-12-01 Mon 07:57]
+
+| Headline                                                          | Time    |       |      |
+|-------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                      | *19:30* |       |      |
+|-------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                   |         | 19:30 |      |
+| COMPLETED Sprint and product backlog grooming                     |         |       | 1:30 |
+| COMPLETED Implement path spec details builder for class header    |         |       | 1:55 |
+| COMPLETED Create a compact form of qname io                       |         |       | 2:29 |
+| COMPLETED Organise include builders by formatter id               |         |       | 0:51 |
+| COMPLETED Rename =identifier_name_builder= to =name_builder=      |         |       | 0:04 |
+| COMPLETED Ensure relative path works correctly end to end         |         |       | 1:46 |
+| COMPLETED Add dogen to travis                                     |         |       | 2:28 |
+| COMPLETED Analysis on how to best represent settings              |         |       | 2:19 |
+| COMPLETED Rename bundle to global settings                        |         |       | 0:58 |
+| COMPLETED Rename path spec details to file settings               |         |       | 0:29 |
+| COMPLETED Determine the correct name for formatter settings       |         |       | 0:38 |
+| COMPLETED Create the formatter settings                           |         |       | 0:47 |
+| COMPLETED Remove header validation from build                     |         |       | 1:15 |
+| COMPLETED Fix travis build                                        |         |       | 1:56 |
+| POSTPONED Implement include generation for class header formatter |         |       | 0:05 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-12-01 Mon 07:55]
+    CLOCK: [2014-11-28 Fri 18:15]--[2014-11-28 Fri 18:22] =>  0:07
+    CLOCK: [2014-11-28 Fri 08:10]--[2014-11-28 Fri 08:19] =>  0:09
+    CLOCK: [2014-11-27 Thu 07:51]--[2014-11-27 Thu 08:38] =>  0:47
+    CLOCK: [2014-11-25 Tue 08:39]--[2014-11-25 Tue 08:42] =>  0:03
+    CLOCK: [2014-11-23 Sun 19:40]--[2014-11-23 Sun 19:51] =>  0:11
+    CLOCK: [2014-11-20 Thu 08:04]--[2014-11-20 Thu 08:09] =>  0:05
+    CLOCK: [2014-11-17 Mon 07:45]--[2014-11-17 Mon 07:53] =>  0:08
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Implement path spec details builder for class header     :task:
+    CLOSED: [2014-11-20 Thu 08:04]
+    CLOCK: [2014-11-20 Thu 07:53]--[2014-11-20 Thu 08:04] =>  0:11
+    CLOCK: [2014-11-19 Wed 19:39]--[2014-11-19 Wed 19:49] =>  0:10
+    CLOCK: [2014-11-19 Wed 17:54]--[2014-11-19 Wed 18:21] =>  0:27
+    CLOCK: [2014-11-17 Mon 17:54]--[2014-11-17 Mon 18:41] =>  0:47
+    CLOCK: [2014-11-17 Mon 07:53]--[2014-11-17 Mon 08:13] =>  0:20
+
+We need to implement the interface for path spec details builder.
+
+*** COMPLETED Create a compact form of qname io                       :story:
+    CLOSED: [2014-11-21 Fri 20:34]
+    CLOCK: [2014-11-21 Fri 20:22]--[2014-11-21 Fri 20:40] =>  0:18
+    CLOCK: [2014-11-21 Fri 19:58]--[2014-11-21 Fri 20:13] =>  0:15
+    CLOCK: [2014-11-21 Fri 08:56]--[2014-11-21 Fri 09:08] =>  0:12
+    CLOCK: [2014-11-21 Fri 07:52]--[2014-11-21 Fri 08:35] =>  0:43
+    CLOCK: [2014-11-20 Thu 17:37]--[2014-11-20 Thu 18:25] =>  0:48
+    CLOCK: [2014-11-20 Thu 08:22]--[2014-11-20 Thu 08:35] =>  0:13
+
+#+begin_quote
+*Story*: As a dogen developer and user, I want to quickly identify an
+instance of an SML type that is causing problems.
+#+end_quote
+
+At present we are using the JSON-based qname IO to dump qnames to the
+log. For exceptions we use the simple name. There are downsides to
+both of these approaches. With JSON we have a lot of moving parts that
+obscure the vital information. With the simple name we miss all the
+context for the type.
+
+What we really need is a second type of IO for qnames that is
+compacted to the absolute minimum. For example we could use dots to
+concatenate all of the qname properties: =a.b.c=.
+
+This will make the log files a lot smaller as well. Before:
+
+: 2014-11-06 19:50:35.253844 [DEBUG] [sml.json_hydrator] Type has no containing module:  { "__type__": "dogen::sml::qname", "model_name": "", "external_module_path": [ ] , "module_path": [ ] , "simple_name": "long double" }
+
+After:
+
+: 2014-11-06 19:50:35.253844 [DEBUG] [sml.json_hydrator] Type has no containing module:  "long double"
+
+We should add an SML utility function that does this work. We should
+then do a grep for all instances of qname IO includes and for each,
+replace it with the new utility function.
+
+Finally we should raise a vision jira to make this either an extension
+method (if these are supported in C++-17) or a manually generated
+method on qname when we have a merging code generator.
+
+*** COMPLETED Organise include builders by formatter id       :task:refactor:
+    CLOSED: [2014-11-23 Sun 00:19]
+    CLOCK: [2014-11-22 Sat 23:28]--[2014-11-23 Sun 00:19] =>  0:51
+
+We need to create a map of include builders interface by formatter id
+in order to make path spec details generation slightly more sensible.
+
+*** COMPLETED Rename =identifier_name_builder= to =name_builder= :task:refactor:
+    CLOSED: [2014-11-23 Sun 00:30]
+    CLOCK: [2014-11-23 Sun 00:26]--[2014-11-23 Sun 00:30] =>  0:04
+
+We now build identifier names as well as file names so the class name
+is no longer right. Make it more generic.
+
+*** COMPLETED Ensure relative path works correctly end to end          :task:
+    CLOSED: [2014-11-23 Sun 00:48]
+    CLOCK: [2014-11-23 Sun 00:30]--[2014-11-23 Sun 00:48] =>  0:18
+    CLOCK: [2014-11-22 Sat 22:50]--[2014-11-22 Sat 23:27] =>  0:37
+    CLOCK: [2014-11-22 Sat 21:53]--[2014-11-22 Sat 22:31] =>  0:38
+    CLOCK: [2014-11-20 Thu 08:09]--[2014-11-20 Thu 08:22] =>  0:13
+
+Now that we have finished generating the path spec details, we should
+start making use of its properties. We first start with the relative
+path. We need to make sure the file name, header guards, etc are being
+generated correctly, end to end.
+
+*** COMPLETED Add dogen to travis                                :task:build:
+    CLOSED: [2014-11-23 Sun 17:24]
+    CLOCK: [2014-11-29 Sat 23:46]--[2014-11-30 Sun 00:04] =>  0:18
+    CLOCK: [2014-11-23 Sun 18:18]--[2014-11-23 Sun 18:32] =>  0:14
+    CLOCK: [2014-11-23 Sun 18:06]--[2014-11-23 Sun 18:18] =>  0:12
+    CLOCK: [2014-11-23 Sun 17:25]--[2014-11-23 Sun 18:06] =>  0:41
+    CLOCK: [2014-11-23 Sun 17:00]--[2014-11-23 Sun 17:24] =>  0:24
+    CLOCK: [2014-11-23 Sun 16:20]--[2014-11-23 Sun 16:59] =>  0:39
+
+We're not doing a very good job of managing the CI support in
+CDash. We are now down to a single build agent on OSX. We should add
+the project to travis and stop managing the agents.
+
+- https://travis-ci.org/
+- [[http://computer-vision-talks.com/articles/2014-02-23-using-travis-ci/][Using Travis-CI for continuous testing your projects]]
+
+It is also a good time to add the "markers" to the readme page. For an
+example see:
+
+https://raw.githubusercontent.com/flycheck/flycheck/master/README.rst
+
+*** COMPLETED Analysis on how to best represent settings      :task:refactor:
+    CLOSED: [2014-11-24 Mon 18:34]
+    CLOCK: [2014-11-25 Tue 08:17]--[2014-11-25 Tue 08:39] =>  0:22
+    CLOCK: [2014-11-25 Tue 08:10]--[2014-11-25 Tue 08:17] =>  0:07
+    CLOCK: [2014-11-25 Tue 07:51]--[2014-11-25 Tue 08:10] =>  0:19
+    CLOCK: [2014-11-24 Mon 17:52]--[2014-11-24 Mon 18:34] =>  0:42
+    CLOCK: [2014-11-24 Mon 07:51]--[2014-11-24 Mon 08:40] =>  0:49
+
+We created a single bundle for a given facet. However, in practice,
+formatters need to access other facets in order to determine what to
+enable / disable. This is related to cross facet interference, already
+in the backlog.
+
+In addition we also need to create formatter settings with two
+properties: additional postfix and enabled. The additional postfix
+allows uses to override the default postfix for the formatter. Enabled
+allows users to disable specific formatters. These settings are
+expected to be configured at the model module level.
+
+*Random Thoughts*:
+
+- what we called settings bundle are in reality the project settings
+  and as a consequence, bundler becomes the project settings factory.
+- project settings are all "global" and thus read from the model
+  module.
+- project settings are missing the formatter settings.
+- project settings must have settings by formatter id and settings by
+  facet id. The alternative was discussed of only having settings by
+  formatter id but it was deemed that the two lookups (facet id and
+  formatter id) are preferable to duplicating the data for each
+  formatter. This could be analysed in the future with data.
+- what we have called path spec details are in reality type-level
+  formatter settings. Some of these could be overrides to the project
+  level formatter settings. This is a difficult class to name. We
+  rather arbitrarily choose formatter properties.
+- actually we could have both project settings and some kind of
+  aggregation structure like settings bundle. The latter is the input
+  of the format function, thus avoiding all look-ups. Perhaps project
+  settings for formatter. Which raises the question of why do it in
+  two ways, if no one is going to use the clever structure of project
+  settings. It would be more sensible for project settings to just be
+  a holder of an unordered map of string (formatter id) to settings
+  bundle.
+- local vs global settings: in reality what we have is more like the
+  "global settings", i.e. those that apply to the entire project, and
+  the "local settings" those that are either applicable to a pair
+  (formatter, type). Interestingly, the local settings are also the
+  perfect place to put a) the formatter-specific settings such as the
+  ODB pragmas; we could perhaps call these "opaque settings"? b) the
+  formatter settings overrides c) the "properties" such as includes
+  and relative path.
+- perhaps create formatter settings at the global level with enabled
+  and additional postfix; and file settings at the local level with
+  relative path and includes. Both local and global settings can
+  contain opaque settings. Formatters can then provide an optional
+  opaque settings factory which returns opaque settings if any are
+  found, or defaults, or nothing - as required.
+- actually calling the local/global settings factories "factories" is
+  slightly misleading as they are more like sub-workflows. They rely
+  on lots of other objects with complex behaviours, rather than just
+  value objects (with possibly complex data structures).
+- the local settings "factory" must generate the formatter settings
+  overrides before it generates the file settings; it must supply the
+  overridden formatter settings to the formatter.
+- we should consider creating a file name builder interface. Similar
+  to what we did with include builder interface, this would mean that
+  the local settings factory will only be coupled to the file name
+  builder rather than the whole formatter, which it needs not know
+  about.
+- for the cases where we have "integrated" functionality - at this
+  point integrated IO only in types, but conceivably integrated
+  hashing in the future - we need to ensure that the original facet
+  is not also enabled (e.g. IO). This means the validation of the
+  opaque settings can only be done within the formatter itself. We
+  probably need to have a "opaque settings validator" that is passed
+  in to a settings validator.
+
+*Final Understanding*
+
+- rename settings bundle to global settings and bundler to global
+  settings factory. Factory returns a map of formatter id to global
+  settings.
+- add formatter settings with enable and postfix. add it to global
+  settings. create a formatter settings factory. it takes a list of
+  formatter id's and uses these to look-up formatter traits in
+  meta-data to generate formatter settings. use factory in global
+  settings factory.
+- transformer and workflow to use new map of global settings rather
+  than facet container.
+- rename path spec details to file settings.
+- create an empty opaque settings class. Create a opaque settings
+  factory interface class. Formatter interface to return an optional
+  opaque settings factory interface.
+- create a local settings class that is made up of file settings,
+  opaque settings and formatter settings. Entity to have a container
+  of local settings (map of formatter id to local settings).
+- create a local settings factory that takes on the work from workflow
+  in generating the file settings. It also takes on a container of
+  opaque settings factory by formatter id to generate the opaque
+  settings. Finally, it uses the formatter settings factory for the
+  overrides. These should be optional. If populated, they should take
+  on the global settings as defaults so that we don't have to worry
+  about global settings for formatters any more. This means the local
+  settings factory must have access to the global settings.
+- when formatting, cast opaque settings (if available) and throw if
+  cast fails. For formatters without opaque settings, throw if any
+  supplied.
+- create a settings class that has a map of formatter id to global
+  settings. It could also have a map of c++ entity name (produced with
+  name builder to include namespaces). to formatter id to local
+  settings. With this we can now move the settings away from entity
+  because we no longer require the qname.
+
+*** COMPLETED Rename bundle to global settings                :task:refactor:
+    CLOSED: [2014-11-28 Fri 07:54]
+    CLOCK: [2014-11-27 Thu 22:23]--[2014-11-27 Thu 22:31] =>  0:08
+    CLOCK: [2014-11-27 Thu 19:11]--[2014-11-27 Thu 19:39] =>  0:28
+    CLOCK: [2014-11-27 Thu 18:51]--[2014-11-27 Thu 19:02] =>  0:22
+    CLOCK: [2014-11-27 Thu 08:19]--[2014-11-27 Thu 08:30] =>  0:11
+
+- rename settings bundle to global settings
+- rename bundler to global settings factory or workflow. This class
+  will return a map of formatter id to global settings.
+
+*** COMPLETED Rename path spec details to file settings                :task:
+    CLOSED: [2014-11-28 Fri 08:20]
+    CLOCK: [2014-11-28 Fri 07:51]--[2014-11-28 Fri 08:20] =>  0:29
+
+Rename path spec details to file settings and all associated
+references (mainly workflow methods)
+
+*** COMPLETED Determine the correct name for formatter settings        :task:
+    CLOSED: [2014-11-28 Fri 18:45]
+    CLOCK: [2014-11-28 Fri 18:33]--[2014-11-28 Fri 18:45] =>  0:12
+    CLOCK: [2014-11-28 Fri 18:22]--[2014-11-28 Fri 18:27] =>  0:05
+    CLOCK: [2014-11-28 Fri 08:31]--[2014-11-28 Fri 08:40] =>  0:09
+    CLOCK: [2014-11-28 Fri 08:19]--[2014-11-28 Fri 08:31] =>  0:12
+
+*Random Thoughts*
+
+Firstly, one could argue that all settings are formatter settings
+because they have all been created to allow us to switch formatter
+behaviour. Therefore the name "formatter settings" is already
+incorrect. Having said that, since the enabled flag is part of
+formatter settings the naming makes some vague sense.
+
+Ignoring this for a moment, our design showed that there are two kinds
+of formatter settings: those that are understood by the entirety of
+the C++ model and those that are only understood by the formatter
+itself. Thus we should choose a pair of names that reflect this
+relationship:
+
+- internal and external: but the external formatter settings are not
+  very external.
+- generalised and specialised: the names reflect what is happening but
+  sound overly verbose: =generalised_formatter_settings=. We can't use
+  =general= because we already have =general_settings= and besides the
+  name general formatter settings would be even more vague and
+  meaningless.
+- common and additional: do not sound like a very sensible pair.
+- private and public: perhaps confusing due to the overloading of c++
+  terminology?
+
+Alternatively, we can consider not pairing the names. The main
+settings are called formatter settings and the other settings could be
+called:
+
+- additional formatter settings: in addition to the existing formatter
+  settings
+- opaque formatter settings: because you cannot see their contents
+- extended formatter settings: an extension to the basic formatter
+  settings
+- formatter specific settings: whilst it conveys the notion that the
+  settings are only meaningful for a given formatter, the name just
+  causes confusion - aren't formatter settings specific to a formatter
+  too?
+
+*Final Understanding*
+
+The names to use are:
+
+- formatter settings for the main settings for the formatter
+- opaque formatter settings for the formatter specific settings
+
+*** COMPLETED Create the formatter settings                            :task:
+    CLOSED: [2014-11-29 Sat 17:10]
+    CLOCK: [2014-11-29 Sat 16:33]--[2014-11-29 Sat 17:10] =>  0:37
+    CLOCK: [2014-11-28 Fri 18:45]--[2014-11-28 Fri 18:55] =>  0:10
+
+- add common formatter settings with enable and postfix. add it to
+  global settings.
+- create a common formatter settings factory. it takes a list of
+  formatter id's and uses these to look-up formatter traits in
+  meta-data to generate formatter settings.
+- use common formatter settings factory in global settings factory.
+
+*** COMPLETED Fix Ninja build                                    :task:build:
+    CLOSED: [2014-11-30 Sun 00:13]
+
+*New Understanding*
+
+With the removal of header validation this is no longer a problem.
+
+*Previous Understanding*
+
+When compiling with [[http://martine.github.io/ninja/][Ninja]], we get a strange compilation error in
+header validation. This is because there are too many object files in
+the archiver command line:
+
+: Argument list too long
+: ninja: build stopped: subcommand failed.
+
+We need to look at the CMake source to try to understand why this
+happens, as it appears someone has already did a fix for large command
+lines. See [[https://github.com/martine/ninja/issues/53][this]] issue and [[http://webcache.googleusercontent.com/search?q%3Dcache:_7Sj_3WKZIQJ:www.itk.org/Bug/bug_relationship_graph.php%253Fbug_id%253D13385%2526graph%253Ddependency%2B&cd%3D2&hl%3Den&ct%3Dclnk&gl%3Duk][this]] bug report.
+
+For notes on how to use Ninja from CMake see [[http://www.kitware.com/blog/home/post/434][this]] article.
+
+This is not related to the version of CMake we're using in the PFH
+(2.8.8 instead of the debian unstable 2.8.12.1), as running with the
+later did not fix the problem.
+
+The correct solution for this appears to be to create targets that
+check syntax only rather than generate object files, link static
+libraries, etc. Google has made some changes to CMake to support
+targets such as syntax only. We need to investigate how to use them
+since this would most likely fix the Ninja build and would decrease
+compile times for header validation.
+
+See also [[http://public.kitware.com/pipermail/cmake-developers/2011-January/000998.html][this post]] for a more generic discussion on how to run these
+sort of tools in CMake.
+
+*Note*: this is still a problem even after splitting header validation
+into two.
+
+*** COMPLETED Remove header validation from build                :task:build:
+    CLOSED: [2014-11-30 Sun 00:20]
+    CLOCK: [2014-11-30 Sun 00:14]--[2014-11-30 Sun 00:20] =>  0:06
+    CLOCK: [2014-11-30 Sun 00:05]--[2014-11-30 Sun 00:14] =>  0:09
+    CLOCK: [2014-11-29 Sat 23:01]--[2014-11-29 Sat 23:46] =>  0:45
+    CLOCK: [2014-01-14 Tue 07:11]--[2014-01-14 Tue 07:26] =>  0:15
+
+*New Understanding*
+
+Actually, header validation is overkill:
+
+- it picks up incorrect header guards; this is a relatively infrequent
+  event these days and yet we are paying for it with slow compilations
+  for every build;
+- it is blocking travis package generation which is important;
+- it is blocking ninja usage which is important.
+
+We should just remove header validation altogether. If we do find it
+useful in the future we could always recover it from git history.
+
+*Old Understanding*
+
+One way of solving the ninja problems may be to stop creating a static
+library for header validation. We did it simply because it was easier
+but there is no real reason for it. We may be able to save a bit on
+archiving, and as an added bonus, it may fix the issues we're having
+with ninja.
+
+Links:
+
+- [[http://cmake.3232098.n2.nabble.com/adding-extra-target-to-CMakeLists-txt-td4550492.html][Adding extra target to CMakeLists.txt]]. This didn't help; most of the
+  work is related to linting which is a source file based rather than
+  header file.
+- See [[http://www.cmake.org/cmake/help/v3.0/release/3.0.0.html][CMake 3.0]] INTERFACES too. Actually this does not help because it
+  cannot be used with source files.
+
+*** COMPLETED Fix travis build                                         :task:
+    CLOSED: [2014-11-30 Sun 20:48]
+    CLOCK: [2014-11-30 Sun 20:40]--[2014-11-30 Sun 20:51] =>  0:11
+    CLOCK: [2014-11-30 Sun 16:01]--[2014-11-30 Sun 17:46] =>  1:45
+
+We seem to have borked the travis build since this commit:
+
+https://travis-ci.org/DomainDrivenConsulting/dogen/builds/42514577
+
+We need to manually bisect since then to figure out what caused it.
+
+The root cause of this problem is the usage of static variables from
+within multiple translation units. For now we did not apply the
+remaining patch to class header formatter:
+
+: static logger
+: lg(logger_factory(dogen::cpp::formatters::types::traits::types_formatter_id));
+
+and
+
+: std::string class_header_formatter::formatter_id() const {
+: -    return ::formatter_id;
+: +    return traits::types_formatter_id;
+: }
+
+Traits should really be static methods in a class rather than static
+variables.
+
+*** POSTPONED Implement include generation for class header formatter  :task:
+    CLOSED: [2014-12-01 Mon 07:57]
+    CLOCK: [2014-11-23 Sun 00:52]--[2014-11-23 Sun 00:57] =>  0:05
+
+Now that we have finished generating the path spec details, we need to
+make sure includes generation works as expected. Add both formatter
+level includes as well as model level includes.
+
+We also need to deal with:
+
+- exposing formatter id as a static property so we can create
+  dependencies between formatters;
+- includes overrides via meta-data, so we can start using STL, Boost
+  etc classes.
+- includes of STL, Boost etc that are formatter level dependencies -
+  this needs to be handled via traits.
+
+** Deprecated Development Stories
+
+Stories that do not make sense any longer.

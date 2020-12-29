@@ -1,0 +1,577 @@
+#+title: Sprint Backlog 50
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 50.
+
+The *Mission Statement* for this sprint is to get dogen development up
+and running again, after a long break. In terms of objectives we want
+to get a clear picture once and for all around meta-data and
+formatters.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-09-07 Sun 22:08]
+
+| Headline                                                 | Time    |       |      |
+|----------------------------------------------------------+---------+-------+------|
+| *Total time*                                             | *35:13* |       |      |
+|----------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                          |         | 35:13 |      |
+| COMPLETED Sprint and product backlog grooming            |         |       | 2:25 |
+| COMPLETED Updates to the manual and readme files         |         |       | 2:07 |
+| COMPLETED Publish the extreme incrementalism blog post   |         |       | 5:02 |
+| CANCELLED Merge entity with file info                    |         |       | 2:52 |
+| CANCELLED Refactor types header formatter                |         |       | 1:07 |
+| COMPLETED Update instructions in manual for Postgres     |         |       | 0:50 |
+| COMPLETED Tidy-up test model folder structure            |         |       | 6:01 |
+| COMPLETED Review where we are with the last refactoring  |         |       | 0:21 |
+| COMPLETED Check that dogen builds on C++-14              |         |       | 0:10 |
+| COMPLETED Add a build number to dogen                    |         |       | 0:07 |
+| COMPLETED Analyse formatters architecture                |         |       | 0:39 |
+| COMPLETED Redefine terminology around facets in manual   |         |       | 4:17 |
+| COMPLETED Make model =qname= look like a regular =qname= |         |       | 0:28 |
+| COMPLETED Ensure we convey model information as a module |         |       | 7:30 |
+| POSTPONED Remove unnecessary properties from model       |         |       | 0:17 |
+| POSTPONED Refactor meta-data processing in SML           |         |       | 1:00 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-09-07 Sun 22:06]
+    CLOCK: [2014-09-07 Sun 02:06]--[2014-09-07 Sun 02:10] =>  0:04
+    CLOCK: [2014-09-05 Fri 18:16]--[2014-09-05 Fri 18:38] =>  0:22
+    CLOCK: [2014-09-05 Fri 18:04]--[2014-09-05 Fri 18:16] =>  0:12
+    CLOCK: [2014-09-05 Fri 08:29]--[2014-09-05 Fri 08:43] =>  0:14
+    CLOCK: [2014-09-01 Mon 22:57]--[2014-09-01 Mon 23:04] =>  0:07
+    CLOCK: [2014-08-26 Tue 07:51]--[2014-08-26 Tue 08:02] =>  0:11
+    CLOCK: [2014-08-23 Sat 11:31]--[2014-08-23 Sat 11:56] =>  0:25
+    CLOCK: [2014-08-23 Sat 10:56]--[2014-08-23 Sat 11:07] =>  0:11
+    CLOCK: [2014-08-22 Fri 12:39]--[2014-08-22 Fri 12:49] =>  0:10
+    CLOCK: [2014-08-22 Fri 12:10]--[2014-08-22 Fri 12:39] =>  0:29
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-09-07 Sun 22:06]
+    CLOCK: [2014-08-31 Sun 09:58]--[2014-08-31 Sun 11:27] =>  1:29
+    CLOCK: [2014-08-24 Sun 19:40]--[2014-08-24 Sun 19:47] =>  0:07
+    CLOCK: [2014-08-24 Sun 19:00]--[2014-08-24 Sun 19:31] =>  0:31
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Publish the extreme incrementalism blog post            :story:
+    CLOSED: [2014-09-07 Sun 22:04]
+    CLOCK: [2014-09-07 Sun 19:55]--[2014-09-07 Sun 22:04] =>  2:09
+    CLOCK: [2014-09-07 Sun 18:43]--[2014-09-07 Sun 19:54] =>  1:11
+    CLOCK: [2014-09-07 Sun 12:22]--[2014-09-07 Sun 13:17] =>  0:55
+    CLOCK: [2014-09-07 Sun 11:52]--[2014-09-07 Sun 12:19] =>  0:27
+    CLOCK: [2014-09-07 Sun 09:15]--[2014-09-07 Sun 09:35] =>  0:20
+
+This blog post was almost completed so we need to finish it up and
+publish it. We should also rename it since we don't really discuss
+extreme incrementalism that much.
+
+*** CANCELLED Merge entity with file info                             :story:
+    CLOSED: [2014-09-01 Mon 22:57]
+    CLOCK: [2014-08-27 Wed 07:51]--[2014-08-27 Wed 08:46] =>  0:55
+    CLOCK: [2014-08-26 Tue 18:08]--[2014-08-26 Tue 18:55] =>  0:47
+    CLOCK: [2014-08-26 Tue 08:02]--[2014-08-26 Tue 08:34] =>  0:32
+    CLOCK: [2014-08-25 Mon 13:32]--[2014-08-25 Mon 14:10] =>  0:38
+
+*Rationale*: This story doesn't make sense any more in light of the
+the latest architecture.
+
+As part of the formatters refactoring, we need a single top-level
+entity against which we can create formatter interfaces. In order to
+achieve that, we need to remove the file info composition.
+
+We have reached the usual limitations:
+
+- if we merge file info with class info, etc. we now have to take a
+  instance of a type with half of the fields un-populated, make copies
+  of it and populate each copy with the correct values. This is very
+  smelly.
+- if we continue using composition via inheritance, we can no longer
+  distinguish the file formatter interfaces
+  (e.g. =class_formatter_interface= and so on).
+
+We have two options to solve this:
+
+- make file info a template class with the Entity as a
+  concept. Instantiate it with each of the infos (=class_info=,
+  etc.). This means we can now use the type system again in the
+  interfaces.
+- create a loser aggregation of the file details with the infos. For
+  example, we could have a map with a key of (facet, aspect, file type)
+  and a value of file info. Each info is associated with one such map
+  at the project level. The formatter interface then takes the file
+  details and the info as two separate parameters.
+
+Having said all of that, we have now completed the vicious circle:
+
+- we need to process includes during SML to C++ transformation because
+  that is where the relationships with objects are available.
+- however, include processing is dependent on the formatter so we
+  can't do this until we know about the formatters.
+- we can't add all the information required to process includes to the
+  cpp model because it would make it a super-set of SML, putting its
+  need in question (again).
+
+What we really need is a way to transport some formatter knowledge
+into the SML to C++ transformation. For example, we could create some
+kind of =rule= that takes as an input a triplet and a set of SML types
+and returns:
+
+- the file name
+- the path to dependent files including forward declarations, etc.
+
+Rules need to be hooked up in a graph of dependencies. For example:
+
+- =types.forward_declaration.header_file=: no dependencies.
+- =types.main.header_file=: depends on
+  =types.forward_declaration.header_file=.
+- =types.main.implementation_file=: depends on
+  =types.main.header_file=.
+- ...
+
+All of the formatters would have to be covered by this:
+
+: types.main.header_file
+: types.main.implementation_file
+: types.forward_declaration.header_file
+: types.includers.header_file
+: ...
+: boost_serialization.main.header_file
+: boost_serialization.main.implementation_file
+: ...
+
+The rules could be hooked up to populate various tags:
+
+: types.forward_declaration.header_file.file_name
+: types.forward_declaration.header_file.relative_file_path
+: types.forward_declaration.header_file.includes.system
+: types.forward_declaration.header_file.includes.user
+
+These could be then transporter to the C++ model as a type:
+
+: std::unordered_map<string, file_info>
+
+Where the string is the triplet, and file info is made up of the above
+file properties.
+
+Note that in this approach, the content descriptor is encapsulated in
+the triplet (facet, aspect, file type) and the type itself
+(=class_info=, etc). The latter is effectively the content type.
+
+Of course the rule processing could be part of SML proper. Formatters
+would dynamically register against a singleton in SML. The SML model
+would then run through all the rules and populate meta-data. Each
+model would simply just consume it.
+
+*** CANCELLED Refactor types header formatter                         :story:
+    CLOSED: [2014-09-01 Mon 22:58]
+    CLOCK: [2014-08-25 Mon 12:01]--[2014-08-25 Mon 12:40] =>  0:39
+    CLOCK: [2014-08-25 Mon 11:56]--[2014-08-25 Mon 11:57] =>  0:01
+    CLOCK: [2014-08-25 Mon 11:35]--[2014-08-25 Mon 11:43] =>  0:08
+
+*Rationale*: This story doesn't make sense any more in light of the
+the latest architecture.
+
+Make the main types header formatters look like the =om= types
+formatter. This model was deleted around commit 10157ad.
+
+This is still not quite right. We need to drive the formatting from
+two things:
+
+- user options
+- available formatters
+
+**** CANCELLED Tidy-up =types_main_header_file_formatter=              :task:
+     CLOSED: [2014-09-01 Mon 22:58]
+     CLOCK: [2014-08-25 Mon 11:57]--[2014-08-25 Mon 12:16] =>  0:19
+
+Make use of the new settings available in the =config= model.
+
+*** COMPLETED Update instructions in manual for Postgres              :story:
+    CLOSED: [2014-08-22 Fri 12:39]
+    CLOCK: [2014-08-22 Fri 11:20]--[2014-08-22 Fri 12:10] =>  0:50
+
+After debian's upgrade of Postgres to 9.4 we need to do a fresh setup
+of the RDBMS. It seems its not quite as easy as expected. Update the
+manual to make this easier in the future.
+
+- Create a new cluster for 9.4 as it seems debian doesn't do it any
+  more:
+
+: pg_createcluster 9.4 main
+
+- Remove old clusters:
+
+: pg_dropcluster 9.3 main
+: pg_dropcluster 9.1 main
+: pg_dropcluster 9.0 main
+
+- Create user =build= and databases as usual.
+
+*** COMPLETED Fix doxygen warnings                                    :story:
+    CLOSED: [2014-08-22 Fri 13:02]
+
+We are getting a few annoying warnings when generating the docs:
+
+: Warning: Tag `XML_SCHEMA' at line 213 of file `/home/marco/Development/DomainDrivenConsulting/output/dogen/clang-3.5/stage/doxygen/dogen.doxy' has become obsolete.
+:          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+: Warning: Tag `XML_DTD' at line 214 of file `/home/marco/Development/DomainDrivenConsulting/output/dogen/clang-3.5/stage/doxygen/dogen.doxy' has become obsolete.
+:          To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+
+Remove these tags as we are not using them.
+
+*** COMPLETED Tidy-up test model folder structure                     :story:
+    CLOSED: [2014-08-23 Sat 10:12]
+    CLOCK: [2014-08-22 Fri 12:49]--[2014-08-22 Fri 12:53] =>  0:04
+
+Create a single top-level directory to house the test models:
+=test_models=. At present its difficult to understand the code
+structure due to the proliferation of test models.
+
+Originally we had spec'd a very elaborate tree structure for this
+directory but since we only support C++-11 at present, lets just
+create a single folder. We can worry about cleverer organisation
+later.
+
+**** COMPLETED Old understanding                                       :note:
+     CLOSED: [2014-08-22 Fri 12:53]
+
+Split from story Tidy-up test models:
+
+We should take this opportunity to reorganise the test model folders,
+perhaps with a structure similar to this (in projects):
+
+: test_models
+:     |----> cpp_03                 [language, variant]
+:              |----> enumeration   [model with tests]
+:               ...
+:     |----> cpp_11
+:              |----> enumeration
+:               ...
+:     |----> csharp
+:      ...
+
+All the tests in sanitizer would then be moved into each individual
+model. This would allow compiling the tests on C++ 03 and C++ 11. We
+would also have to move this flag from the generic C++ section to each
+individual library/binary makefile.
+
+Note: actually, this cannot be done. The reason why we created the
+sanitizer in the first place was because the diffs wouldn't work if
+the specs were placed in the test models (e.g. the generated code
+would not contain the specs and thus be different). We will probably
+need a 03 sanitizer, an 11 sanitizer, etc.
+
+See also story Add C++-03 mode.
+
+**** COMPLETED Add section in manual for test models                   :task:
+     CLOSED: [2014-08-22 Fri 13:40]
+     CLOCK: [2014-08-22 Fri 13:06]--[2014-08-22 Fri 13:40] =>  0:34
+
+We should really describe the purpose of the test models in the
+manual. Create a section on test models covering all of the existing
+models and explaining the legacy issues.
+
+Added [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/manual/manual.org#test-models][Test Models]].
+
+**** COMPLETED Update all models to generate on the =test_models= namespace :task:
+     CLOSED: [2014-08-22 Fri 20:19]
+     CLOCK: [2014-08-22 Fri 20:13]--[2014-08-22 Fri 20:19] =>  0:06
+     CLOCK: [2014-08-22 Fri 18:20]--[2014-08-22 Fri 19:13] =>  0:53
+     CLOCK: [2014-08-22 Fri 14:21]--[2014-08-22 Fri 17:51] =>  3:30
+
+We first must move the models to the correct namespace before we can
+move them physically. We need to fix all of the compilation errors.
+
+**** COMPLETED Create =test_models= folder and move all test code to it :task:
+     CLOSED: [2014-08-22 Fri 20:19]
+     CLOCK: [2014-08-22 Fri 12:53]--[2014-08-22 Fri 13:05] =>  0:12
+
+Create the folder and move code manually.
+
+**** COMPLETED Fix code generation to generate on new folder           :task:
+     CLOSED: [2014-08-22 Fri 20:19]
+
+Ensure dogen is generating the test models in the right place.
+
+**** COMPLETED Fix unit tests                                          :task:
+     CLOSED: [2014-08-22 Fri 20:19]
+
+Ensure all CMake code that relies on the path to the test models still
+works.
+
+**** COMPLETED Fix commented out code                                  :task:
+     CLOSED: [2014-08-23 Sat 10:12]
+     CLOCK: [2014-08-23 Sat 09:30]--[2014-08-23 Sat 10:12] =>  0:42
+
+In order to break the task down, we ended up having to comment out
+some tests. Fix these.
+
+*** COMPLETED Review where we are with the last refactoring           :story:
+    CLOSED: [2014-08-23 Sat 12:00]
+    CLOCK: [2014-08-23 Sat 11:09]--[2014-08-23 Sat 11:30] =>  0:21
+
+After the long hiatus its not very clear where we left the
+formatters refactoring. We need to go through the last changes and see
+what is left to be done.
+
+Current state:
+
+- refactoring of the domain class declaration into the types main
+  header formatter done.
+- still not using the boilerplate formatting code though.
+- still using the cpp formatters utility rather than the
+  formatters. Same with indenter and formatting error.
+
+*** COMPLETED Check that dogen builds on C++-14                       :story:
+    CLOSED: [2014-08-23 Sat 12:27]
+    CLOCK: [2014-08-23 Sat 12:00]--[2014-08-23 Sat 12:10] =>  0:10
+
+We should try to build dogen using clang on c++ 14 mode and see if we
+get any errors.
+
+Code compiled without any changes, other than flags:
+
+: diff --git a/projects/CMakeLists.txt b/projects/CMakeLists.txt
+: index 592d023..5a39206 100644
+: --- a/projects/CMakeLists.txt
+: +++ b/projects/CMakeLists.txt
+: @@ -110,7 +110,7 @@ endif()
+:  if (WIN32)
+:      set(other_flags "-std=gnu++11")
+:  else()
+: -    set(other_flags "-std=c++11")
+: +    set(other_flags "-std=c++1y")
+:  endif()
+:  set(other_flags "${other_flags} -frtti -fvisibility-inlines-hidden")
+:  set(other_flags "${other_flags} -fvisibility=default")
+
+*** COMPLETED Add a build number to dogen                             :story:
+    CLOSED: [2014-08-24 Sun 19:39]
+    CLOCK: [2014-08-24 Sun 19:32]--[2014-08-24 Sun 19:39] =>  0:07
+
+We should create a UUID based build number for dogen so we can
+distinguish between different builds.
+
+This does mean we now always rebuild because the build number keeps on
+changing. We should try this approach for a bit and see how well it
+works.
+
+*** COMPLETED Analyse formatters architecture                         :story:
+    CLOSED: [2014-08-25 Mon 13:24]
+    CLOCK: [2014-08-25 Mon 12:44]--[2014-08-25 Mon 13:23] =>  0:39
+
+At present we do a lot of formatter related decisions during the SML
+to C++ conversion. In reality, we should allow the formatters model to
+do these.
+
+- move generation of includer files into SML to C++
+  transformation. its in workflow at the moment.
+- every formatter model needs to have a formatter registrar on the
+  basis of type.
+- we need to create interfaces for each of the formatters,
+  e.g. =visitor_formatter=, etc. each of these takes in formatter
+  settings and the type to format. they return an optional file
+  (e.g. nothing to do given the settings). or we could have a "can
+  format" method that needs to be called first.
+- there is a registration function that the formatters use to
+  register with the registrar.
+- cpp model will no longer use composition for file infos, but just
+  plain inheritance.
+- main workflow in cpp formatters simply goes through every type,
+  dispatches it to a concrete type, then loops through all the
+  registered formatters for that type. If a file is generated, it is
+  added to the file list.
+- sample names: =types_class_main_header_file_formatter=,
+  =types_enumeration_main_header_file_formatter=, etc.
+- cpp projects should be split on type again. this way we avoid type
+  dispatching, visitors etc.
+- file name and includes must be computed using a pair of strings:
+  (facet, aspect). these are supplied at run time via the registration
+  of the formatters. Each entity in the C++ model also has these pair
+  of strings. Formatters register against an interface
+  (=class_formatter_interface= say) using this pair. Formatting is
+  just a case of looking for the right formatter for triplet (type,
+  facet, aspect). includes are computed dynamically using a key that
+  contains the pair (feature, aspect).
+
+These changes are very hard to do incrementally, so we will have to
+work off of a patch until we get it all to work.
+
+*** COMPLETED Redefine terminology around facets in manual            :story:
+    CLOSED: [2014-09-04 Thu 23:29]
+    CLOCK: [2014-09-04 Thu 22:45]--[2014-09-04 Thu 23:29] =>  0:44
+    CLOCK: [2014-09-04 Thu 21:50]--[2014-09-04 Thu 22:44] =>  0:54
+    CLOCK: [2014-09-04 Thu 21:34]--[2014-09-04 Thu 21:49] =>  0:15
+    CLOCK: [2014-09-03 Wed 07:57]--[2014-09-03 Wed 08:37] =>  0:40
+    CLOCK: [2014-09-02 Tue 23:07]--[2014-09-02 Tue 23:49] =>  0:42
+    CLOCK: [2014-09-01 Mon 22:40]--[2014-09-01 Mon 22:57] =>  0:17
+    CLOCK: [2014-08-28 Thu 17:53]--[2014-08-28 Thu 18:38] =>  0:45
+
+As part of the analysis on formatters architecture we have concluded
+yet again that the right thing to do is to work with the meta-data for
+all things related to the formatters, including includes. We now need
+to add these concepts to the vocabulary in the manual to make sure the
+language is clear before we start looking into the implementation.
+
+*** COMPLETED Make model =qname= look like a regular =qname=          :spike:
+    CLOSED: [2014-09-06 Sat 17:12]
+    CLOCK: [2014-09-06 Sat 16:44]--[2014-09-06 Sat 17:12] =>  0:28
+
+Whilst trying to create a module for the model, it was noticed that
+the qualified name of the model is a bit special: it has a model name
+but no module path and no simple_name. Ideally it should have a simple
+name that is equal to the model name. However, if we did that blindly
+it would result in duplication of the name at the formatting level.
+
+We need to change the formatters to cope with a model qualified name
+that has both a model name and a simple name, with equal values.
+
+*** COMPLETED Ensure we convey model information as a module          :story:
+    CLOSED: [2014-09-07 Sun 01:04]
+
+At present we have a number of hacks to deal with the fact that the
+model is also a module. We should try to generate a module to
+represent the model and perform all of the code generation for the
+model from its module.
+
+**** COMPLETED Ensure regular module members are populated             :task:
+     CLOSED: [2014-09-05 Fri 23:53]
+     CLOCK: [2014-09-05 Fri 23:03]--[2014-09-05 Fri 23:53] =>  0:50
+
+We added a way of tracking what a module contains but we never did
+populate it. Without this the graph will not work.
+
+**** COMPLETED Add tests to ensure module members are being populated correctly :task:
+     CLOSED: [2014-09-07 Sun 01:04]
+     CLOCK: [2014-09-06 Sun 23:55]--[2014-09-07 Sun 01:04] =>  1:09
+     CLOCK: [2014-09-06 Sat 22:56]--[2014-09-06 Sat 23:20] =>  0:24
+
+We started populating the module members but forgot to ensure they
+were populated correctly. We need simple tests to ensure all objects
+are where we expect as we will rely on this for the graph.
+
+**** COMPLETED Check to see if we are generating a module for the model :task:
+     CLOSED: [2014-09-05 Fri 23:55]
+    CLOCK: [2014-09-05 Fri 22:38]--[2014-09-05 Fri 23:03] =>  0:25
+
+We were under the impression that a module was already being generated
+for the model but it may not be the case. Locate this code.
+
+**** COMPLETED Generate a module for model                            :task:
+     CLOSED: [2014-09-06 Sat 20:25]
+     CLOCK: [2014-09-06 Sat 18:29]--[2014-09-06 Sat 20:25] =>  1:56
+     CLOCK: [2014-09-06 Sat 17:41]--[2014-09-06 Sat 18:14] =>  0:31
+     CLOCK: [2014-09-06 Sat 17:27]--[2014-09-06 Sat 17:41] =>  0:14
+     CLOCK: [2014-09-06 Sat 17:12]--[2014-09-06 Sat 17:25] =>  0:13
+     CLOCK: [2014-09-06 Sat 15:36]--[2014-09-06 Sat 16:39] =>  1:03
+     CLOCK: [2014-09-06 Sat 00:44]--[2014-09-06 Sat 00:57] =>  0:13
+     CLOCK: [2014-09-06 Sat 00:36]--[2014-09-06 Sat 00:43] =>  0:07
+     CLOCK: [2014-09-05 Fri 23:55]--[2014-09-06 Sat 00:18] =>  0:23
+
+Since we are not generating a module for model, generate one and
+ensure members get populated accordingly.
+
+In order to do this, we must make sure the model qname looks like a
+regular qname. The problem we have at the moment is that we do not
+have the model name in the module path (it is blank) resulting in
+special handling.
+
+*** POSTPONED Remove unnecessary properties from model                :story:
+    CLOSED: [2014-09-07 Sun 22:07]
+     CLOCK: [2014-09-06 Sat 00:29]--[2014-09-06 Sat 00:35] =>  0:06
+     CLOCK: [2014-09-06 Sat 00:18]--[2014-09-06 Sat 00:29] =>  0:11
+
+The model should be just dumb container of types. We have a few legacy
+properties left behind from the days where the model was also used in
+the transformation process. Remove all the concepts from the model
+(=Element= etc) and deal with the fall out. This is required in order
+to simplify the graph in tagger.
+
+*** POSTPONED Refactor meta-data processing in SML                    :story:
+    CLOSED: [2014-09-07 Sun 22:07]
+
+We need to create a simple interface that takes a ptree and a model
+and updates the tags on the ptree. We also need a way to register
+against the meta-data tagger.
+
+**** COMPLETED Investigate names for the new interface and existing class :task:
+     CLOSED: [2014-09-07 Sun 01:45]
+     CLOCK: [2014-09-07 Sun 01:43]--[2014-09-07 Sun 01:45] =>  0:02
+     CLOCK: [2014-09-07 Sun 01:04]--[2014-09-07 Sun 01:42] =>  0:38
+
+The name =meta_data_tagger= is very suitable for the interface. Also,
+since the "tagger" won't be doing any tagging but coordinating those
+that do the actual work, we should rename it to something more
+sensible. The job of this chap is to take the current state of the
+meta-data and do whatever is required to it ensure it is
+complete. Internally it will collaborate with those that do the actual
+work.
+
+Options investigated:
+
+| Name                   | Comments                                                                   |
+|------------------------+----------------------------------------------------------------------------|
+| meta_data_manager      | a bit too generic                                                          |
+| meta_data_cataloguer   | term related to meta-data, but we won't be doing any cataloguing           |
+| meta_data_orchestrator | there is an element of orchestration but should we tell everyone about it? |
+| meta_data_processor    | we are processing the meta-data...                                         |
+
+Final decision: the class in SML will be renamed to
+=meta_data_processor= and the new interface will be called
+=meta_data_populator=. Rationale:
+
+- tagger is a bit too focused in tags, which is just a flat way of
+  describing the tree.
+- we are augmenting the meta-data - i.e. there may have been a
+  preexisting state; our job is to ensure that regardless of what was
+  there, when we finish the data is in a consistent state with all the
+  missing blanks filled in.
+- the individual classes will be populating the meta-data. this is
+  generic enough that covers copying data across, etc.
+
+**** POSTPONED Rename tagger to processor                              :task:
+     CLOSED: [2014-09-08 Mon 08:33]
+     CLOCK: [2014-09-07 Sun 01:46]--[2014-09-07 Sun 02:06] =>  0:20
+
+As per analysis story, we need to rename =meta_data_tagger= to
+=meta_data_processor=. May be a good time to remove all the existing
+tagging code. We need to re-add it later on in the right places.
+
+**** POSTPONED Design and implement the interface                      :task:
+     CLOSED: [2014-09-08 Mon 08:33]
+
+- add interface to model;
+- add some tests to make sure the interface is usable.
+
+*interface*
+
+: name: meta_data_populator_interface
+: identity: string
+: dependencies: list of string
+: populate(const model, const parent module, concept)
+: populate(const model, const parent module, module)
+: populate(const model, const parent module, type)
+
+** Deprecated Development Stories
+*** CANCELLED Delete tag related infrastructure from =sml=            :story:
+    CLOSED: [2014-09-05 Fri 18:34]
+
+*Rationale*: no longer applicable after refactor.
+
+With the exception of tag writer, we don't really need any tagging in
+SML. That means:
+
+- no meta data tagger
+- no writer
+- no meta data error
+- no meta data sub-workflow

@@ -1,0 +1,2262 @@
+#+title: Sprint Backlog 26
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Sprint Goals
+
+- finish PMM generation.
+- implement locator and dependencies via PMM.
+- move physical elements and transforms from logical and text models
+  to physical model.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-07-12 Sun 16:37]
+| <75>                                                                       |         |       |       |       |
+| Headline                                                                   | Time    |       |       |     % |
+|----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                               | *95:03* |       |       | 100.0 |
+|----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                    | 95:03   |       |       | 100.0 |
+| Active                                                                     |         | 95:03 |       | 100.0 |
+| Edit release notes for previous sprint                                     |         |       |  8:00 |   8.4 |
+| Create a demo and presentation for previous sprint                         |         |       |  1:11 |   1.2 |
+| Sprint and product backlog grooming                                        |         |       |  5:49 |   6.1 |
+| Build nursing                                                              |         |       |  1:17 |   1.4 |
+| Merge kernel with physical meta-model                                      |         |       |  1:31 |   1.6 |
+| Convert =wale_template_reference= to meta-data                             |         |       |  0:37 |   0.6 |
+| Create an emacs mode for wale                                              |         |       |  0:14 |   0.2 |
+| Create a TS agnostic representation of inclusion                           |         |       |  3:04 |   3.2 |
+| Analysis on reducing the number of required wale keys                      |         |       |  1:11 |   1.2 |
+| Use PMM to compute =meta_name_indices=                                     |         |       |  3:03 |   3.2 |
+| Split archetype factory from transform                                     |         |       | 10:57 |  11.5 |
+| Paper: Using Aspects to Model Product Line Variability                     |         |       |  1:11 |   1.2 |
+| Remove traits for archetypes                                               |         |       |  0:44 |   0.8 |
+| Analysis on solving relationship problems                                  |         |       |  4:45 |   5.0 |
+| Archetype kind and postfix as parts of a larger pattern                    |         |       |  0:36 |   0.6 |
+| Paper: A flexible code generator for MOF-based modeling languages          |         |       |  1:08 |   1.2 |
+| Add labels to archetypes                                                   |         |       |  2:22 |   2.5 |
+| Add support for CSV values in variability                                  |         |       |  0:56 |   1.0 |
+| Add hash map of artefacts in physical model                                |         |       |  2:59 |   3.1 |
+| Analysis on archetype relations for stitch templates                       |         |       |  2:07 |   2.2 |
+| Move templating aspects of archetype into a generator type                 |         |       |  0:56 |   1.0 |
+| Split physical relation properties                                         |         |       |  0:29 |   0.5 |
+| Rename archetype generator                                                 |         |       |  0:19 |   0.3 |
+| Paper: A Comparison of Generative Approaches: XVCL and GenVoca             |         |       |  1:20 |   1.4 |
+| Paper: An evaluation of the Graphical Modeling Framework GMF               |         |       |  1:12 |   1.3 |
+| Problems starting clangd                                                   |         |       |  1:25 |   1.5 |
+| Add relations between archetypes in the PMM                                |         |       | 13:50 |  14.6 |
+| Create an archetype repository in physical model                           |         |       | 13:17 |  14.0 |
+| Analysis on implementing containment with configuration                    |         |       |  1:52 |   2.0 |
+| Improve org-mode converter                                                 |         |       |  5:35 |   5.9 |
+| Features as transformations: A generative approach to software development |         |       |  1:06 |   1.2 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2020-06-03 Wed 21:35]
+    :LOGBOOK:
+    CLOCK: [2020-07-10 Fri 22:00]--[2020-07-10 Fri 22:18] =>  0:18
+    CLOCK: [2020-06-05 Fri 11:45]--[2020-06-05 Fri 12:00] =>  0:15
+    CLOCK: [2020-06-05 Fri 11:29]--[2020-06-05 Fri 11:44] =>  0:15
+    CLOCK: [2020-06-05 Fri 10:50]--[2020-06-05 Fri 11:05] =>  0:15
+    CLOCK: [2020-06-03 Wed 21:12]--[2020-06-03 Wed 21:34] =>  0:22
+    CLOCK: [2020-06-02 Tue 23:47]--[2020-06-02 Tue 23:55] =>  0:08
+    CLOCK: [2020-06-02 Tue 21:37]--[2020-06-02 Tue 23:39] =>  2:02
+    CLOCK: [2020-06-02 Tue 21:06]--[2020-06-02 Tue 21:36] =>  0:30
+    CLOCK: [2020-06-02 Tue 19:35]--[2020-06-02 Tue 20:56] =>  1:21
+    CLOCK: [2020-06-01 Mon 20:01]--[2020-06-01 Mon 22:35] =>  2:34
+    :END:
+
+Add github release notes for previous sprint.
+
+Release Announcements:
+
+- [[https://twitter.com/MarcoCraveiro/status/1268840152090267649][twitter]]
+- [[https://www.linkedin.com/posts/marco-craveiro-31558919_masd-projectdogen-activity-6674605622907949056-3fJa][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+Next sprint:
+
+- Name: Rio de Bentiaba.
+- Foto: https://prazerdeconhecer.files.wordpress.com/2015/09/img_1128.jpg
+- Credit: https://prazerdeconhecer.wordpress.com/2015/09/16/benguela-post/
+- o viajante
+
+**** Dogen v1.0.25, "Foz do Cunene"
+
+#+caption: Foz do Cunene
+https://prazerdeconhecer.files.wordpress.com/2015/11/img_2152.jpg
+
+/River mouth of the Cunene River, Angola. (C) 2015 [[https://prazerdeconhecer.wordpress.com/2015/11/14/parque-ionafoz-do-cunene-parte-vi][O Viajante]]/
+
+***** Introduction
+
+Another month, another Dogen sprint. And what a sprint it was! A
+veritable /hard slog/, in which we dragged ourselves through miles in
+the muddy terrain of the physical meta-model, one small step at a
+time. Our stiff upper lips were sternly tested, and never more so than
+at the very end of the sprint; we /almost/ managed to connect the
+dots, plug in the shiny new code-generated physical model, and replace
+the existing hand-crafted code. /Almost/. It was very close, but,
+alas, the end-of-sprint bell rung just as we were applying the
+finishing touches, meaning that, after a marathon, we found ourselves
+a few yards short of the sprint goal. Nonetheless, it was by all
+accounts an extremely successful sprint. And, as part of the numerous
+activities around the physical meta-model, we somehow managed to also
+do some user facing fixes too, so there are goodies in pretty much any
+direction you choose to look at.
+
+Lets have a gander and see how it all went down.
+
+***** User visible changes
+
+This section covers stories that affect end users, with the video
+providing a quick demonstration of the new features, and the sections
+below describing them in more detail.
+
+#+caption: Sprint 1.0.25 Demo
+[[https://youtu.be/nRGHIA2Chxc][https://img.youtube.com/vi/nRGHIA2Chxc/0.jpg]]
+
+/Video 1: Sprint 25 Demo./
+
+****** Profiles do not support collection types
+
+A long-ish standing bug in the variability subsystem has been the lack
+of support for /collections/ in profiles. Now, if you need to remind
+yourself what exactly profiles are, the [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.16][release notes of sprint 16]]
+contain a bit of context which may be helpful before you
+proceed. These notes can also be further supplemented by [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.22][those of
+sprint 22]] though, to be fair, the latter describe rather more advanced
+uses of the feature. At any rate, profiles are used /extensively/
+throughout Dogen, and on the main, they have worked surprisingly
+well. But collections had escaped its remit thus far.
+
+The problem with collections is perhaps best illustrated by means of
+an example. Prior to this release, if you looked at a random model in
+Dogen, you would likely find the following:
+
+#+begin_example
+#DOGEN ignore_files_matching_regex=.*/test/.*
+#DOGEN ignore_files_matching_regex=.*/tests/.*
+...
+#+end_example
+
+This little incantation makes sure we don't delete hand-crafted test
+files. The meta-data key =ignore_files_matching_regex= is of type
+=text_collection=, and this feature is used by the
+=remove_files_transform= in the physical model to filter files before
+we decide to delete them. Of course, you will then say: "this smells
+like a hack to me! Why aren't the manual test files instances of
+/model elements/ themselves?" And, of course, you'd be right to say
+so, for they should indeed be modeled; there is even a [[https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#create-a-manual-tests-stereotype-with-profiles][backlogged
+story]] with words to that effect, but we just haven't got round to it
+yet. Only so many hours in the day, and all that. But back to the case
+in point, it has been mildly painful to have to duplicate cases such
+as the above across models because of the lack of support for
+collections in variability's profiles. As we didn't have many of
+these, it was deemed a low priority ticket and we got on with life.
+
+With the physical meta-model work, things took a turn for the worse;
+suddenly there were a _whole lot_ of wale KVPs lying around all over
+the place:
+
+#+begin_example
+#DOGEN masd.wale.kvp.class.simple_name=primitive_header_transform
+#DOGEN masd.wale.kvp.archetype.simple_name=primitive_header
+#+end_example
+
+Here, the collection =masd.wale.kvp= is a KVP (e.g. =key_value_pair=
+in variability terms). If you multiply this by the 80-odd M2T
+transforms we have scattered over C++ and C#, the magnitude of the
+problem becomes apparent. So we had no option but get our hands dirty
+and fix the variability subsystem. Turns out the fix was not trivial
+at all, and required a lot of heavy lifting but by the end of it we
+addressed it for both cases of collections; it is now possible to add
+/any/ element of the variability subsystem to a profile and it will
+work. However, its worthwhile considering what the semantics of the
+merging mean after this change. Up to now we only had to deal with
+scalars, so the approach for the merge was very simple:
+
+- if an entry existed in the model element, it took priority -
+  regardless of existing on a bindable profile or not;
+- if an entry existed in the profile but not in the modeling element,
+  we just used the profile entry.
+
+Because these were scalars we could simply take one of the two, =lhs=
+or =rhs=. With collections, following this logic is not entirely
+ideal. This is because we really want the merge to, well, /merge/ the
+two collections together rather than replacing values. For example, in
+the KVP use case, we define KVPs in a hierarchy of profiles and then
+possibly further overload them at the element level (Figure 1). Where
+the same key exists in both =lhs= and =rhs=, we can apply the existing
+logic for scalars and take one of the two, with the element having
+precedence. This is what we have chosen to implement this sprint.
+
+#+caption: Profiles
+https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/profiles_kvp_collections.png
+
+/Figure 1: Profiles used to model the KVPs for M2T transforms./
+
+This very simple merging strategy has worked for all our use cases,
+but of course there is the potential of surprising behaviour; for
+example, you may think the model element will take priority over the
+profile, given that this is the behaviour for scalars. Surprising
+behaviour is never ideal, so in the future we may need to add some
+kind of knob to allow configuring the merge strategy. We'll cross that
+bridge when we have a use case.
+
+****** Extend tracing to M2T transforms
+
+Tracing is one of those parts of Dogen which we are never quite sure
+whether to consider it a "user facing" part of the application or
+not. It is available to end users, of course, but what they may want
+to do with it is not exactly clear, given it dumps internal
+information about Dogen's transforms. At any rate, thus far we have
+been considering it as part of the external interface and we shall
+continue to do so. If you need to remind yourself how to use the
+tracing subsystem, the [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.24][release notes of the previous sprint]] had a
+quick refresher so its worth having a look at those.
+
+To the topic in question then. With this release, the volume of
+tracing data has increased /considerably/. This is a side-effect of
+normalising "formatters" into regular M2T transforms. Since they are
+now just like any other transform, it therefore follows they're
+expected to also hook into the tracing subsystem; as a result, we now
+have 80-odd new transforms, producing large volumes of tracing
+data. Mind you, these new traces are very useful, because its now
+possible to very quickly see the state of the modeling element prior
+to text generation, as well as the text output coming out of each
+specific M2T transform. Nonetheless, the incrase in tracing data had
+consequences; we are now generating /so/ many files that we found
+ourselves having to bump the transform counter from 3 digits to 5
+digits, as this small snippet of the =tree= command for a tracing
+directory amply demonstrates:
+
+#+begin_example
+...
+│   │   │   ├── 00007-text.transforms.local_enablement_transform-dogen.cli-9eefc7d8-af4d-4e79-9c1f-488abee46095-input.json
+│   │   │   ├── 00008-text.transforms.local_enablement_transform-dogen.cli-9eefc7d8-af4d-4e79-9c1f-488abee46095-output.json
+│   │   │   ├── 00009-text.transforms.formatting_transform-dogen.cli-2c8723e1-c6f7-4d67-974c-94f561ac7313-input.json
+│   │   │   ├── 00010-text.transforms.formatting_transform-dogen.cli-2c8723e1-c6f7-4d67-974c-94f561ac7313-output.json
+│   │   │   ├── 00011-text.transforms.model_to_text_chain
+│   │   │   │   ├── 00000-text.transforms.model_to_text_chain-dogen.cli-bdcefca5-4bbc-4a53-b622-e89d19192ed3-input.json
+│   │   │   │   ├── 00001-text.cpp.model_to_text_cpp_chain
+│   │   │   │   │   ├── 00000-text.cpp.transforms.types.namespace_header_transform-dogen.cli-0cc558f3-9399-43ae-8b22-3da0f4a489b3-input.json
+│   │   │   │   │   ├── 00001-text.cpp.transforms.types.namespace_header_transform-dogen.cli-0cc558f3-9399-43ae-8b22-3da0f4a489b3-output.json
+│   │   │   │   │   ├── 00002-text.cpp.transforms.io.class_implementation_transform-dogen.cli.conversion_configuration-8192a9ca-45bb-47e8-8ac3-a80bbca497f2-input.json
+│   │   │   │   │   ├── 00003-text.cpp.transforms.io.class_implementation_transform-dogen.cli.conversion_configuration-8192a9ca-45bb-47e8-8ac3-a80bbca497f2-output.json
+│   │   │   │   │   ├── 00004-text.cpp.transforms.io.class_header_transform-dogen.cli.conversion_configuration-b5ee3a60-bded-4a1a-8678-196fbe3d67ec-input.json
+│   │   │   │   │   ├── 00005-text.cpp.transforms.io.class_header_transform-dogen.cli.conversion_configuration-b5ee3a60-bded-4a1a-8678-196fbe3d67ec-output.json
+│   │   │   │   │   ├── 00006-text.cpp.transforms.types.class_forward_declarations_transform-dogen.cli.conversion_configuration-60cfdc22-5ada-4cff-99f4-5a2725a98161-input.json
+│   │   │   │   │   ├── 00007-text.cpp.transforms.types.class_forward_declarations_transform-dogen.cli.conversion_configuration-60cfdc22-5ada-4cff-99f4-5a2725a98161-output.json
+│   │   │   │   │   ├── 00008-text.cpp.transforms.types.class_implementation_transform-dogen.cli.conversion_configuration-d47900c5-faeb-49b7-8ae2-c3a0d5f32f9a-input.json
+...
+#+end_example
+
+In fact, we started to generate so much tracing data that it became
+obvious we needed some simple way to filter it. Which is where the
+next story comes in.
+
+****** Add "scoped tracing" via regexes
+
+With this release we've added a new option to the tracing subsystem:
+=tracing-filter-regex=. It is described as follows in the help text:
+
+#+begin_example
+Tracing:
+...
+  --tracing-filter-regex arg     One or more regular expressions for the
+                                 transform ID, used to filter the tracing
+                                 output.
+#+end_example
+
+The idea is that when we trace we tend to look for the output of
+specific transforms or groups of transforms, and so it may make sense
+to filter out the output to speed up generation. For example, to
+narrow tracing to the M2T chain, one could use:
+
+#+begin_example
+--tracing-filter-regex ".*text.transforms.model_to_text_chain.*"
+#+end_example
+
+This would result in 34 tracing files being generated rather than the
+550 odd for a for trace of the =dogen.cli= model.
+
+****** Handling of container names is incorrect
+
+The logical model has many model elements which can contain other
+modeling elements. The most obvious case is, of course, =module=,
+which maps to a UML package in the logical dimension and to
+=namespace= in the physical dimension for many technical
+spaces. However, there are others, such as =modeline_group= for
+decorations, as well as the new physical elements such as =backend=
+and =facet=. Turns out we had a bug in the mapping of these containers
+from the logical dimension to the physical dimension, probably for the
+longest time, and we didn't even notice it. Let's have a look at say
+[[https://github.com/MASD-Project/dogen/blob/5dbcc6d5fdbb4f47f70769fa0ea7140e09fa8075/projects/dogen.orchestration/include/dogen.orchestration/types/transforms/transforms.hpp][transforms.hpp]] in =dogen.orchestration/types/transforms/=:
+
+#+begin_src c++
+...
+#ifndef DOGEN_ORCHESTRATION_TYPES_TRANSFORMS_TRANSFORMS_HPP
+#define DOGEN_ORCHESTRATION_TYPES_TRANSFORMS_TRANSFORMS_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#pragma once
+#endif
+
+/**
+ * @brief Top-level transforms for Dogen. These are
+ * the entry points to all transformations.
+ */
+namespace dogen::orchestration {
+...
+#+end_src
+
+As you can see, whilst the file is located in the right directory, and
+the header guard also makes the correct reference to the =transforms=
+namespace, the documentation is placed against =dogen::orchestration=
+rather than =dogen::orchestration::transforms=, as we intended. Since
+thus far this was mainly used for documentation purposes, the bug
+remained unnoticed. This sprint however saw the generation of
+containers for the physical meta-model (e..g =backend= and =facet=),
+meaning that the bug now resulted in very obvious compilation
+errors. We had to do some major surgery into how containers are
+processed in the logical model, but in the end, we got the desired
+result:
+
+#+begin_src c++
+...
+#ifndef DOGEN_ORCHESTRATION_TYPES_TRANSFORMS_TRANSFORMS_HPP
+#define DOGEN_ORCHESTRATION_TYPES_TRANSFORMS_TRANSFORMS_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+#pragma once
+#endif
+
+/**
+ * @brief Top-level transforms for Dogen. These are
+ * the entry points to all transformations.
+ */
+namespace dogen::orchestration::transforms {
+...
+#+end_src
+
+It may appear to be a lot of pain for only a few characters worth of a
+change, but there is nonetheless something quite satisfying to the OCD
+amongst us.
+
+****** Update stitch mode for emacs
+
+Many moons ago we used to have a fairly usable emacs mode for stitch
+templates based on [[https://github.com/polymode/polymode][poly-mode]]. However, poly-mode moved on, as did
+emacs, but our stitch mode stayed still, so the code bit-rotted a fair
+bit and eventually stopped working altogether. With this sprint we
+took the time to update [[https://github.com/MASD-Project/dogen/blob/master/projects/dogen.templating/lisp/poly-stitch.el][the code]] to comply with the latest poly-mode
+API. As it turns out, the changes were minimal so we probably should
+have done it before instead of struggling on with plain text template
+editing.
+
+#+caption: Emacs stitch mode
+https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/emacs_stitch_mode.png
+
+/Figure 2: Emacs with the refurbished stitch mode./
+
+We did run into one or two minor difficulties when creating the mode -
+narrated on [[https://github.com/polymode/polymode/issues/268][#268: Creation of a poly-mode for a T4-like language]], but
+overall it was really not too bad. In fact, the experience was so
+pleasant that we are now considering writing a quick mode for wale
+templates as well.
+
+****** Create archetypes for all physical elements
+
+As with many stories this sprint, this one is hard to pin down as
+"user facing" or "internal". We decided to go for user facing, given
+that users can make use of this functionality, though at present it
+does not make huge sense to do so. The long and short of it is that
+all formatters have now been updated to use the shiny new logical
+model elements that model the physical meta-model entities. This
+includes =archetypes= and =facets=. Figure 3 shows the current state
+of the =text.cpp= model.
+
+#+caption M2T transforms in text.cpp
+https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_text_cpp_physical_elements.png
+
+/Figure 3: M2T transforms in =text.cpp= model./
+
+This means that, in theory, users could create their own backends by
+declaring instances of these meta-model elements - hence why it's
+deemed to be "user facing". In practice, we are still some ways until
+that'll work out of the box, and it will remain that way whilst we're
+bogged down in the never ending "generation refactor". Nevertheless,
+this change was certainly a key step on the long road to towards
+achieving our ultimate aims. For instance, it's now possible to create
+a new M2T transform by just adding a new model element with the right
+annotations and the generated code will take care of /almost/ all the
+necessary hooks into the generation framework. The /almost/ is due to
+running out of time, but hopefully these shortcomings will be
+addressed early next sprint.
+
+***** Development Matters
+
+In this section we cover topics that are mainly of interest if you
+follow Dogen development, such as details on internal stories that
+consumed significant resources, important events, etc. As usual, for
+all the gory details of the work carried out this sprint, see the
+[[https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_25.org][sprint log]].
+
+****** Ephemerides
+
+This sprint had the highest commit count of all Dogen sprints, by some
+margin; it had 41.6% more commits than the second highest sprint
+(Table 1).
+
+| Sprint  | Name                       | Timestamp           | Number of commits |
+|---------+----------------------------+---------------------+-------------------|
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.25][v1.0.25]] | "Foz do Cunene"            | 2020-05-31 21:48:14 |               449 |
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.21][v1.0.21]] | "Nossa Senhora do Rosario" | 2020-02-16 23:38:34 |               317 |
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.11][v1.0.11]] | "Mocamedes"                | 2019-02-26 15:39:23 |               311 |
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.22][v1.0.22]] | "Cine Teatro Namibe"       | 2020-03-16 08:47:10 |               307 |
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.16][v1.0.16]] | "Sao Pedro"                | 2019-05-05 21:11:28 |               282 |
+| [[https://github.com/MASD-Project/dogen/releases/tag/v1.0.24][v1.0.24]] | "Imbondeiro no Iona"       | 2020-05-03 19:20:17 |               276 |
+
+/Table 1: Top 6 sprints by commit count./
+
+Interestingly, it was not particularly impressive from a =diff stat=
+perspective, when compared to some other mammoth sprints of the past:
+
+#+begin_example
+v1.0.06..v1.0.07:  9646 files changed, 598792 insertions(+), 624000 deletions(-)
+v1.0.09..v1.0.10:  7026 files changed, 418481 insertions(+), 448958 deletions(-)
+v1.0.16..v1.0.17:  6682 files changed, 525036 insertions(+), 468646 deletions(-)
+...
+v1.0.24..v1.0.25:  701 files changed, 62257 insertions(+), 34251 deletions(-)
+#+end_example
+
+This is easily explained by the fact that we did a lot of changes to
+the same fixed number of files (the M2T transforms).
+
+****** Milestones
+
+No milestones where reached this sprint.
+
+****** Significant Internal Stories
+
+This sprint had a healthy story count (32), and a fairly decent
+distribution of effort. Still, two stories dominated the picture, and
+were the cause for most other stories, so we'll focus on those and
+refer to the smaller ones in their context.
+
+******* Promote all formatters to archetypes
+
+At 21.6% of the ask, promoting all formatters to M2T transforms was
+the key story this sprint. Impressive though it might be, this bulgy
+number does not paint even half of the picture, because, as we shall
+see, the implementation of this one story splintered into a
+never-ending number of smaller stories. But lets start at the
+beginning. To recap, the overall objective has been to make what we
+have called thus far "formatters" /first class citizens/ in the
+modeling world; to make them look like regular transforms. More
+specifically, like /Model-to-Text transforms/, given that is precisely
+what they had been doing: to take model elements and convert them into
+a textual representation. So far so good.
+
+Then, the troubles begin:
+
+- as we've already mentioned at every opportunity, we have /a lot/ of
+  formatters; we intentionally kept the count down - i.e. we are not
+  adding any new formatters until the architecture stabilises - but of
+  course the ones we have are the "minimum viable number" needed in
+  order for Dogen to generate itself (not quite, but close). And 80 is
+  no small number.
+- the formatters use stitch templates, which makes changing them a lot
+  more complicated than changing code - remember that the formatter is
+  a generator, and the stitch template is the generator for the
+  generator. Its very easy to lose track of where we are in these many
+  abstraction layers, and make a change in the wrong place.
+- the stitch templates are now modeling elements, carried within Dia's
+  XML. This means we need to unpack them from the model, edit them,
+  and pack them back in the model. Clearly, we have reached the
+  limitations of Dia, and of course, we have a good solution for this
+  in the works, but for now it is what it is; not quick.
+- unhelpfully, formatters tend to come in all shapes and sizes, and
+  whilst there is commonality, there are also a lot of
+  differences. Much of the work was finding real commonalities,
+  abstracting them (perhaps into profiles) and regenerating.
+
+In effect, this task was one gigantic, never ending
+rinse-and-repeat. We could not make too many changes in one go, lest
+we broke the world and then spent ages trying to figure out where, so
+we had to do a number of very small passes over the total formatter
+count until we reached the end result. Incidentally, that is why the
+commit count is so high.
+
+As if all of this was not enough, matters were made even more
+challenging because, every so often, we'd try to do something
+"simple" - only to bump into some key limitation in the Dogen
+architecture. We then had to solve the limitation and resume
+work. This was the case for the following stories:
+
+- *Profiles do not support collection types*: we started to simplify
+  archetypes and then discovered this limitation. /Story covered in
+  detail in the user-facing stories section above./
+- *Extend tracing to M2T transforms*: well, since M2T transforms are
+  /transforms/, they should also trace. This took us on yet another
+  lovely detour. /Story covered in detail in the user-facing stories
+  section above./
+- *Add "scoped tracing" via regexes*: Suddenly tracing was taking far
+  too long - the hundreds of new trace files could possibly have
+  something to do with it, perhaps. So to make it responsive again, we
+  added filtering. /Story covered in detail in the user-facing stories
+  section above./
+- *Analysis on templating and logical model*: In the past we thought
+  it would be really clever to expand wale templates from within
+  stitch templates. It was not, as it turns out; we just coupled the
+  two rather independent templating systems for no good reason. In
+  addition, this made stitch much more complicated than it needs to
+  be. In reality, what we really want is a simple interface where we
+  can supply a set of KVPs plus a template as a string and obtain the
+  result of the template instantiation. The analysis work pointed out
+  a way out of this mess.
+- *Split wale out of stitch templates*: After the analysis came the
+  action. With this story we decoupled stitch from wale, and started
+  the clean up. However, since we are still making use of stitch
+  outside of the physical meta-model elements, we could not complete
+  the tidy-up. It must wait until we remove the formatter helpers.
+- *=templating= should not depend on =physical=**: A second story that
+  fell out of the templating analysis; we had a few dependencies
+  between the physical and templating models, purely because we wanted
+  templates to generate artefacts. With this story we removed this
+  dependency and took one more step towards making the templating
+  subsystem independent of files and other models.
+- *Move decoration transform into logical model*: In the previous
+  sprint we successfully moved the stitch and wale template expansions
+  to the logical model workflow. However, the work was not complete
+  because we were missing the decoration elements for the
+  template. With this sprint, we relocated decoration handling into
+  the logical model and completed the template expansion work.
+- *Resolve references to wale templates in logical model*: Now that we
+  can have an archetype pointing to a logical element representing a
+  wale template, we need to also make sure the element is really
+  there. Since we already had a resolver to do just that, we extended
+  it to cater for these new meta-model elements.
+- *Update stitch mode for emacs*: We had to edit a lot of stitch
+  templates in order to reshape formatters, and it was very annoying
+  to have to do that in plain text. A nice mode to show which parts of
+  the file are template and which parts are real code made our life
+  much easier. /Story covered in detail in the user-facing stories
+  section above./
+- *Ensure stitch templates result in valid JSON*: converting some
+  stitch templates into JSON was resulting in invalid JSON due to
+  incorrect escaping. We had to quickly get our hands dirty in the
+  JSON injector to ensure the escaping was done correctly.
+
+All and all, this story was directly or indirectly responsible for the
+majority of the work this sprint, so as you can imagine, we were
+ecstatic to see the back of it.
+
+******* Create a PMM chain in physical model
+
+Alas, our troubles were not exactly at an end. The main reason why we
+were on the hole of the previous story was because we have been trying
+to create a representation of the physical-meta model (PMM); this is
+the overarching "arch" of the story, if you pardon me the pun. And
+once we managed to get those pesky M2T transforms out of the way, we
+then had to contend ourselves with this little crazy critter. Where
+the previous story was challenging mainly due to its boredom, this
+story provided challenges for a whole different reason: to generate an
+instance of a meta-model by code-generating it as you are changing the
+generator's generator is not exactly the easiest of things to follow.
+
+The gist of what we were trying to achieve is very easy to explain, of
+course; since Dogen knows at compile time the geometry of physical
+space, and since that geometry is a function of the logical elements
+that represent the physical meta-model entities, it should therefore
+be possible to ask Dogen to create an instance of this model via
+code-generation. This is greatly advantageous, clearly, because it
+means you can simply add a new modeling element of a physical
+meta-type (say an =archetype= or a =facet=), rebuild Dogen and -
+lo-and-behold - the code generator is now ready to start generating
+instances of this meta-type.
+
+As always, there was a wide gulf between theory and practice, and we
+spent the back end of the sprint desperately swimming across it. As
+with the previous story, we ended up having to address a number of
+other problems in order to get on with the task at hand. These were:
+
+- *Create a bootstrapping chain for context*: Now that the physical
+  meta-model is a real model, we need to generate it via transform
+  chains rather than quick hacks as we had done in the past. Sadly,
+  all the code around context generation was designed for the context
+  to be created prior to the real transformations taking place. You
+  must bear in mind that the physical meta-model is part of the
+  transform context presented to almost all transforms as they
+  execute; however, since the physical meta-model is also a model, we
+  now have a "bootstrapping" stage that builds the first model which
+  is needed for all other models to be created. With this change we
+  cleaned up all the code around this bootstrapping phase, making it
+  compliant with MDE.
+- *Handling of container names is incorrect*: As soon as we started
+  generating backends and facets we couldn't help but notice that they
+  were placed in the wrong namespace, and so were all containers. A
+  fix had to be done before we could proceed. /Story covered in detail
+  in the user-facing stories section above./
+- *Facet and backend files are in the wrong folder*: a story related
+  to the previous one; not only where the namespaces wrong but the
+  files were also incorrect too. Fixing the previous problem addressed
+  both issues.
+- *Add template related attributes to physical elements*: We first
+  thought it would be a great idea to carry the stitch and wale
+  templates all the way into the physical meta-model representation;
+  we were half-way through the implementation when we realised that
+  this story made no sense at all. This is because the stitch
+  templates are only present when we are generating models for the
+  archetypes (e.g. =text.cpp= and =text.csharp=). On all other cases,
+  we will have the physical meta-model (it is baked in into the
+  binary, after all) but no way of obtaining the text of the
+  templates. This was a classical case of trying to have too much
+  symmetry. The story was then aborted.
+- *Fix =static_archetype= method in archetypes*: A number of fixes was
+  done into the "static/virtual" pattern we use to return physical
+  meta-model elements. This was mainly a tidy-up to ensure we use
+  =const= by reference consistently, instead of making spurious
+  copies.
+
+******* MDE Paper of the Week (PofW)
+
+This sprint we spent around 5.2% of the total ask reading four MDE
+papers. As usual, we published a video on youtube with the review of
+each paper. The following papers were read:
+
+- [[https://www.youtube.com/watch?v=ItzFJ166CF8][MDE PotW 05: An EMF like UML generator for C++]]: Jäger, Sven, et
+  al. "An EMF-like UML generator for C++." 2016 4th International
+  Conference on Model-Driven Engineering and Software Development
+  (MODELSWARD). IEEE, 2016. [[https://www.scitepress.org/Papers/2016/57448/57448.pdf][PDF]].
+- [[https://www.youtube.com/watch?v=Xvh0BX47BkA][MDE PotW 06: An Abstraction for Reusable MDD Components]]: Kulkarni,
+  Vinay, and Sreedhar Reddy. "An abstraction for reusable MDD
+  components: model-based generation of model-based code generators."
+  Proceedings of the 7th international conference on Generative
+  programming and component
+  engineering. 2008. [[https://dl.acm.org/doi/pdf/10.1145/1449913.1449940][PDF]].
+- [[https://www.youtube.com/watch?v=Ri7sYv20wlE][MDE PotW 07: Architecture Centric Model Driven Web Engineering]]:
+  Escott, Eban, et al. "Architecture-centric model-driven web
+  engineering." 2011 18th Asia-Pacific Software Engineering
+  Conference. IEEE, 2011. [[http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.244.6866&rep=rep1&type=pdf][PDF]].
+- [[https://www.youtube.com/watch?v=C74Mgqp2E6c][MDE PotW 08: A UML Profile for Feature Diagrams]]: Possompès, Thibaut,
+  et al. "A UML Proﬁle for Feature Diagrams: Initiating a Model Driven
+  Engineering Approach for Software Product Lines." Journée Lignes de
+  Produits. 2010. [[https://hal-lirmm.ccsd.cnrs.fr/lirmm-00542800/document][PDF]].
+
+All the papers provided interesting insights, and we need to transform
+these into actionable stories. The full set of reviews that we've done
+so far can be accessed via the playlist [[https://www.youtube.com/playlist?list=PLwfrwe216gF0wbLBkiOmpCpdaeAU66634][MASD - MDE Paper of the Week]].
+
+#+caption MDE PotW 05
+[[https://youtu.be/ItzFJ166CF8][https://img.youtube.com/vi/ItzFJ166CF8/0.jpg]]
+
+/Video 2: MDE PotW 05: An EMF like UML generator for C++./
+
+****** Resourcing
+
+As we've already mentioned, this sprint was particularly remarkable
+due to its high number of commits. Overall, we appear to be
+experiencing an upward trend on this department, as Figure 4
+attests. Make of that what you will, of course, since more commits do
+not equal more work; perhaps we are getting better at [[https://sethrobertson.github.io/GitBestPractices/#commit][committing early
+and committing often]], as one should. More significantly, it was good
+to see the work spread out over a large number of stories rather than
+the bulkier ones we'd experienced for the last couple of sprints; and
+the stories that were indeed bulky - at 21.6% and 12% (described
+above) - were also /coherent/, rather than a hodgepodge of disparate
+tasks gather together under the same heading due to tiredness.
+
+#+caption Commit counts
+https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/commit_counts_up_to_sprint_25.png
+
+/Figure 4: Commit counts from sprints 13 to 25./
+
+We saw 79.9% of the total ask allocated to core work, which is always
+pleasing. Of the remaining 20%, just over 5% was allocated to MDE
+papers, and 13% went to process. The bulk of process was, again,
+release notes. At 7.3%, it seems we are still spending too much time
+on writing the release notes, but we don't seem to find a way to
+reduce this cost. It may be that its natural limit is around 6-7%; any
+less and perhaps we will start to lose the depth of coverage we're
+getting at present. Besides, we find it to be an important part of the
+agile process, because we have no other way to perform /post-mortem/
+analysis of sprints; and it is a much more rigorous form of
+self-inspection. Maybe we just need to pay its dues and move on.
+
+The remaining non-core activities were as usual related to nursing
+nightly builds, a pleasant 0.9% of the ask, and also a 1% spent
+dealing with the fall out of a borked =dist-upgrade= on our main
+development box. On the plus side, after that was sorted, we managed
+to move to the development version of clang (v11), meaning clangd is
+even more responsive than usual.
+
+All and all, it was a very good sprint from the resourcing front.
+
+#+caption Sprint 25 stories
+https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_25_pie_chart.jpg
+
+/Figure 5: Cost of stories for sprint 25./
+
+****** Roadmap
+
+Other than being moved forward by a month, our "oracular" road map
+suffered only one significant alteration from the previous sprint: we
+doubled the sprint sizes to close to a month, which seems wise given
+we have settled on that cadence for a few sprints now. According to
+the oracle, we have at least one more sprint to finish the generation
+refactor - though, if the current sprint is anything to go by, that
+may be a wildly optimistic assessment.
+
+As you were, it seems.
+
+#+caption Project Plan
+https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_25_project_plan.png
+
+#+caption Resource Allocation Graph
+https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_25_resource_allocation_graph.png
+
+***** Binaries
+
+You can download binaries from either [[https://bintray.com/masd-project/main/dogen/1.0.25][Bintray]] or GitHub, as per
+Table 2. All binaries are 64-bit. For all other architectures and/or
+operative systems, you will need to build Dogen from source. Source
+downloads are available in [[https://github.com/MASD-Project/dogen/archive/v1.0.25.zip][zip]] or [[https://github.com/MASD-Project/dogen/archive/v1.0.25.tar.gz][tar.gz]] format.
+
+| Operative System    | Format | BinTray                             | GitHub                              |
+|---------------------+--------+-------------------------------------+-------------------------------------|
+| Linux Debian/Ubuntu | Deb    | [[https://dl.bintray.com/masd-project/main/1.0.25/dogen_1.0.25_amd64-applications.deb][dogen_1.0.25_amd64-applications.deb]] | [[https://github.com/MASD-Project/dogen/releases/download/v1.0.25/dogen_1.0.25_amd64-applications.deb][dogen_1.0.25_amd64-applications.deb]] |
+| OSX                 | DMG    | [[https://dl.bintray.com/masd-project/main/1.0.25/DOGEN-1.0.25-Darwin-x86_64.dmg][DOGEN-1.0.25-Darwin-x86_64.dmg]]      | [[https://github.com/MASD-Project/dogen/releases/download/v1.0.25/DOGEN-1.0.25-Darwin-x86_64.dmg][DOGEN-1.0.25-Darwin-x86_64.dmg]]      |
+| Windows             | MSI    | [[https://dl.bintray.com/masd-project/main/DOGEN-1.0.25-Windows-AMD64.msi][DOGEN-1.0.25-Windows-AMD64.msi]]      | [[https://github.com/MASD-Project/dogen/releases/download/v1.0.25/DOGEN-1.0.25-Windows-AMD64.msi][DOGEN-1.0.25-Windows-AMD64.msi]]      |
+
+/Table 1: Binary packages for Dogen./
+
+*Note:* The OSX and Linux binaries are not stripped at present and so
+are larger than they should be. We have [[https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped][an outstanding story]] to
+address this issue, but sadly CMake does not make this a trivial
+undertaking.
+
+***** Next Sprint
+
+The sprint goals for the next sprint are as follows:
+
+- finish PMM generation.
+- implement locator and dependencies via PMM.
+- move physical elements and transforms from logical and text models
+  to physical model.
+
+That's all for this release. Happy Modeling!
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2020-06-05 Fri 10:23]
+    :LOGBOOK:
+    CLOCK: [2020-06-05 Fri 10:39]--[2020-06-05 Fri 10:49] =>  0:10
+    CLOCK: [2020-06-05 Fri 09:47]--[2020-06-05 Fri 10:23] =>  0:36
+    CLOCK: [2020-06-03 Wed 21:35]--[2020-06-03 Wed 22:00] =>  0:25
+    :END:
+
+Time spent creating the demo and presentation.
+
+**** Presentation
+
+(defvar org-present-text-scale 6)
+
+***** Dogen v1.0.25, "Foz do Cunene"
+
+    Marco Craveiro
+    Domain Driven Development
+    Released on 31st June 2020
+
+***** Profiles do not support collection types
+
+    - add support for text collections
+    - add support for KVPs
+
+***** Extend tracing to M2T transforms
+
+    - updates to stitch templates:
+
+    #+begin_src c++
+void backend_class_header_transform::apply(const context& ctx, const logical::entities::element& e,
+    physical::entities::artefact& a) const {
+    tracing::scoped_transform_tracer stp(lg, "backend class header transform",
+        transform_id, e.name().qualified().dot(), *ctx.tracer(), e);
+    assistant ast(ctx, e, archetype().meta_name(), true/*requires_header_guard*/, a);
+    #+end_src
+
+    - demonstrate the new tracing files
+
+***** Add "scoped tracing" via regexes
+
+    - regenerate tracing with regex.
+
+***** Handling of container names is incorrect
+
+    - show files in github from previous release.
+
+***** Update stitch mode for emacs
+
+    - show stitch mode in emacs.
+
+***** Create archetypes for all physical elements
+
+    - show =text.cpp= model.
+
+***** Discuss internal stories
+
+    - update formatters to M2T transforms.
+    - generate PMM.
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2020-07-12 Sun 15:32]
+    :LOGBOOK:
+    CLOCK: [2020-07-10 Fri 10:10]--[2020-07-10 Fri 10:34] =>  0:24
+    CLOCK: [2020-07-07 Tue 21:20]--[2020-07-07 Tue 21:28] =>  0:08
+    CLOCK: [2020-07-05 Sun 15:30]--[2020-07-05 Sun 15:47] =>  0:17
+    CLOCK: [2020-07-04 Sat 11:30]--[2020-07-04 Sat 11:55] =>  0:25
+    CLOCK: [2020-06-25 Thu 08:02]--[2020-06-25 Thu 08:30] =>  0:28
+    CLOCK: [2020-06-21 Sun 16:01]--[2020-06-21 Sun 16:05] =>  0:04
+    CLOCK: [2020-06-21 Sun 14:52]--[2020-06-21 Sun 16:00] =>  1:08
+    CLOCK: [2020-06-21 Sun 11:00]--[2020-06-21 Sun 11:12] =>  0:12
+    CLOCK: [2020-06-19 Fri 17:54]--[2020-06-19 Fri 17:56] =>  0:02
+    CLOCK: [2020-06-19 Fri 11:23]--[2020-06-19 Fri 11:42] =>  0:19
+    CLOCK: [2020-06-16 Tue 22:37]--[2020-06-16 Tue 22:47] =>  0:10
+    CLOCK: [2020-06-13 Sat 19:44]--[2020-06-13 Sat 19:46] =>  0:02
+    CLOCK: [2020-06-09 Tue 21:44]--[2020-06-09 Tue 21:54] =>  0:10
+    CLOCK: [2020-06-08 Mon 21:55]--[2020-06-08 Mon 22:11] =>  0:16
+    CLOCK: [2020-06-07 Sun 16:37]--[2020-06-07 Sun 16:39] =>  0:02
+    CLOCK: [2020-06-07 Sun 16:28]--[2020-06-07 Sun 16:36] =>  0:08
+    CLOCK: [2020-06-07 Sun 11:15]--[2020-06-07 Sun 11:36] =>  0:21
+    CLOCK: [2020-06-06 Sat 19:24]--[2020-06-06 Sat 19:29] =>  0:05
+    CLOCK: [2020-06-06 Sat 18:01]--[2020-06-06 Sat 18:22] =>  0:21
+    CLOCK: [2020-06-05 Fri 11:06]--[2020-06-05 Fri 11:19] =>  0:13
+    CLOCK: [2020-06-05 Fri 10:24]--[2020-06-05 Fri 10:38] =>  0:14
+    CLOCK: [2020-06-04 Thu 23:12]--[2020-06-04 Thu 23:26] =>  0:14
+    CLOCK: [2020-06-02 Tue 23:40]--[2020-06-02 Tue 23:46] =>  0:06
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Build nursing                                           :story:
+    CLOSED: [2020-07-12 Sun 15:32]
+    :LOGBOOK:
+    CLOCK: [2020-07-12 Sun 10:49]--[2020-07-12 Sun 11:02] =>  0:13
+    CLOCK: [2020-07-12 Sun 08:46]--[2020-07-12 Sun 08:56] =>  0:10
+    CLOCK: [2020-07-11 Sat 13:33]--[2020-07-11 Sat 14:16] =>  0:43
+    CLOCK: [2020-06-05 Fri 12:01]--[2020-06-05 Fri 12:12] =>  0:11
+    :END:
+
+Time spent fixing issues with nightly and continuous builds, daily
+checks etc.
+
+- max builds reached.
+- borked build for some strange reason: GCC 9 Debug
+
+: [1272/1282] Building CXX object projects/dogen.text.csharp/src/CMakeFiles/dogen.text.csharp.lib.dir/types/transforms/visual_studio/solution_transform.cpp.o
+: [1273/1282] Building CXX object projects/dogen.text.csharp/src/CMakeFiles/dogen.text.csharp.lib.dir/types/transforms/visual_studio/visual_studio_factory.cpp.o
+: [1274/1282] Building CXX object projects/dogen.text.csharp/src/CMakeFiles/dogen.text.csharp.lib.dir/types/transforms/visual_studio/visual_studio_transform.cpp.o
+: [1275/1282] Building CXX object projects/dogen.text.csharp/src/CMakeFiles/dogen.text.csharp.lib.dir/types/transforms/workflow.cpp.o
+: [1276/1282] Linking CXX static library stage/bin/libdogen.text.csharp.a
+: [1277/1282] Linking CXX static library stage/bin/libdogen.orchestration.a
+: [1278/1282] Linking CXX static library stage/bin/libdogen.cli.a
+: [1279/1282] Linking CXX executable stage/bin/dogen.orchestration.tests
+: [1280/1282] Linking CXX executable stage/bin/dogen.cli
+: FAILED: : && /usr/lib/ccache/g++-9  -Wall -Wextra -Wconversion -Wno-maybe-uninitialized -pedantic -Werror -Wno-system-headers -Woverloaded-virtual -Wwrite-strings  -frtti -fvisibility-inlines-hidden -fvisibility=hidden -fprofile-abs-path -fprofile-arcs -ftest-coverage -g  -Wl,-fuse-ld=gold projects/dogen.orchestration/tests/CMakeFiles/dogen.orchestration.tests.dir/byproduct_generation_tests.cpp.o projects/dogen.orchestration/tests/CMakeFiles/dogen.orchestration.tests.dir/code_generation_chain_tests.cpp.o projects/dogen.orchestration/tests/CMakeFiles/dogen.orchestration.tests.dir/main.cpp.o projects/dogen.orchestration/tests/CMakeFiles/dogen.orchestration.tests.dir/physical_model_production_chain_tests.cpp.o  -o stage/bin/dogen.orchestration.tests  stage/bin/libdogen.orchestration.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libxml2.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/liblzmad.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libz.a -lm /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_system.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_serialization.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_date_time.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_log.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_thread.a -lpthread /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_filesystem.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_program_options.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_unit_test_framework.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_regex.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_chrono.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_atomic.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_log_setup.a -lpthread -lrt stage/bin/libdogen.injection.org_mode.a stage/bin/libdogen.injection.json.a stage/bin/libdogen.injection.dia.a -lrt stage/bin/libdogen.dia.a stage/bin/libdogen.injection.a stage/bin/libdogen.text.cpp.a stage/bin/libdogen.text.csharp.a stage/bin/libdogen.text.a stage/bin/libdogen.logical.a stage/bin/libdogen.templating.a stage/bin/libdogen.logical.a stage/bin/libdogen.templating.a stage/bin/libdogen.physical.a stage/bin/libdogen.variability.a stage/bin/libdogen.physical.a stage/bin/libdogen.variability.a stage/bin/libdogen.tracing.a stage/bin/libdogen.a stage/bin/libdogen.utility.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libxml2.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/liblzmad.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libz.a -lm /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_system.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_serialization.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_date_time.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_log.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_thread.a -lpthread /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_filesystem.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_program_options.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_unit_test_framework.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_regex.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_chrono.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_atomic.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_log_setup.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libz.a /tmp/vcpkg-export/installed/x64-linux/debug/lib/libboost_serialization.a && :
+: ../../../../projects/dogen.logical/src/types/transforms/pre_assembly_chain.cpp:128: error: undefined reference to 'dogen::logical::transforms::dynamic_stereotypes_transform::apply(dogen::logical::transforms::context const&, dogen::logical::entities::input_model_set&)'
+
+  Seems to have gone away.
+- Tests failing on debug.
+- add env variable for verbose ctest builds.
+- add retry logic for git.
+
+*** COMPLETED Move decorations to their "final" resting place         :story:
+    CLOSED: [2020-06-05 Fri 11:15]
+
+*Rationale*: this was done in the previous sprint.
+
+At present we are handling decorations in the generation model but
+these are really logical concerns. The main reason why is because we
+are not expanding the decoration across physical space, but instead we
+expand them depending on the used technical spaces. However, since the
+technical spaces are obtained from the formatters, there is an
+argument to say that archetypes should have an associated technical
+space. We need to decouple these concepts in order to figure out where
+they belong.
+
+*** COMPLETED Merge kernel with physical meta-model                   :story:
+    CLOSED: [2020-06-05 Fri 15:36]
+    :LOGBOOK:
+    CLOCK: [2020-06-05 Fri 14:08]--[2020-06-05 Fri 15:36] =>  1:28
+    CLOCK: [2020-06-05 Fri 14:04]--[2020-06-05 Fri 14:07] =>  0:03
+    :END:
+
+We made a slight modeling error: kernels are actually the PMM
+themselves. That is, it does not make sense for a PMM to contain one
+or more kernels, because:
+
+- we only have one kernel at present.
+- in the future, when we have more than one kernel, we should have
+  multiple physical models.
+- a given component should target only one kernel. This is a
+  conjecture, given we don't have a second kernel to compare notes
+  against but seems like a sensible one.
+
+Due to all this we should just merge kernel into the meta-model. This
+should tidy-up a number of hacks we did around kernel handling.
+
+*** COMPLETED Convert =wale_template_reference= to meta-data          :story:
+    CLOSED: [2020-06-05 Fri 21:51]
+    :LOGBOOK:
+    CLOCK: [2020-06-05 Fri 21:31]--[2020-06-05 Fri 21:51] =>  0:20
+    CLOCK: [2020-06-05 Fri 17:22]--[2020-06-05 Fri 17:39] =>  0:17
+    :END:
+
+Its not clear why we implemented this as an attribute, but now we have
+lots of duplication. We could easily use profiles to avoid this
+duplication if only it was meta-data. Convert it into meta-data,
+remove all attributes from all M2T transforms and update profiles.
+
+*** COMPLETED Create an emacs mode for wale                           :story:
+    CLOSED: [2020-06-06 Sat 13:08]
+    :LOGBOOK:
+    CLOCK: [2020-06-06 Sat 12:53]--[2020-06-06 Sat 13:07] =>  0:14
+    :END:
+
+We should just copy and paste the stitch mode for this. Actually,
+since wale is just a cut down vesion of mustache, we can just make
+use of a mustache mode.
+
+Attempt at a mode:
+
+#+begin_src emacs-lisp
+(require 'polymode)
+
+(define-hostmode poly-wale-hostmode :mode 'fundamental-mode)
+
+(define-innermode poly-wale-variable-innermode
+  :mode 'conf-mode
+  :head-matcher "{{"
+  :tail-matcher "}}"
+  :head-mode 'host
+  :tail-mode 'host)
+
+(define-polymode wale-mode
+  :hostmode 'poly-wale-hostmode
+  :innermodes '(poly-wale-variable-innermode))
+
+;; (add-to-list 'auto-mode-alist '("\\.wale" . wale-mode))
+#+end_src
+
+Links:
+
+- https://github.com/mustache/emacs
+
+*** COMPLETED Create a TS agnostic representation of inclusion        :story:
+    CLOSED: [2020-06-07 Sun 12:24]
+    :LOGBOOK:
+    CLOCK: [2020-06-07 Sun 12:17]--[2020-06-07 Sun 12:23] =>  0:06
+    CLOCK: [2020-06-07 Sun 11:46]--[2020-06-07 Sun 12:16] =>  0:30
+    CLOCK: [2020-06-07 Sun 11:37]--[2020-06-07 Sun 11:46] =>  0:09
+    CLOCK: [2020-06-06 Sat 12:06]--[2020-06-06 Sat 12:53] =>  0:47
+    CLOCK: [2020-06-05 Fri 16:38]--[2020-06-05 Fri 17:21] =>  0:43
+    CLOCK: [2020-06-05 Fri 15:37]--[2020-06-05 Fri 16:26] =>  0:49
+    :END:
+
+At present in the C++ model, archetypes are declaring their
+=inclusion_support_types=. This is an enum that allows us to figure
+out if an archetype can be included or not:
+
+- none: not designed to be included (cpp, cmake, etc).
+- regular: regular header file.
+- canonical: header file which is the default inclusion for a given
+  facet for a given meta-type.
+
+We need to generalise this into a technical space agnostic
+representation and place it on the physical model.
+
+As per story in previous sprint, we can extend the notion of
+"references" we already use for models. Meta-model archetypes have a
+status with regards to referability (referencing status?):
+
+- not referable.
+- referable.
+- referable, default for the facet.
+
+When we assemble the PMM we need to check that for all facets there is
+a default archetype. We could create a map in the facet that maps
+logical model elements to archetypes.
+
+*** COMPLETED Analysis on reducing the number of required wale keys   :story:
+    CLOSED: [2020-06-07 Sun 12:25]
+    :LOGBOOK:
+    CLOCK: [2020-06-06 Sat 18:50]--[2020-06-06 Sat 19:23] =>  0:33
+    CLOCK: [2020-06-06 Sat 13:25]--[2020-06-06 Sat 13:33] =>  0:08
+    CLOCK: [2020-06-06 Sat 12:54]--[2020-06-06 Sat 13:24] =>  0:30
+    :END:
+
+We have a number of keys that can be derived:
+
+- the meta-name factory is fixed for all transforms.
+- the class simple name can be derived from the archetype name or even
+  from the class name itself.
+
+Actually, there is something much more profound going on here which we
+missed completely due to the complexity of generating generators. In
+reality, there are two "moments" of generation:
+
+- there is the archetype generation. This involves the expansion of
+  the mustache template (which we called wale thus far), and the
+  expansion of the stitch template.
+- then there is the generation of the target logical model
+  element. This happens when the code generated by the first moment
+  executes against a user model.
+
+In the first moment, we have complete access to the archetype within
+the logical model. At present, we have ignored this and instead
+bypassed the logical model representation and supplied the inputs to
+the mustache expansion directly; these are the wale keys:
+
+: #DOGEN masd.wale.kvp.class.simple_name=archetype_class_header_transform
+: #DOGEN masd.wale.kvp.archetype.simple_name=archetype_class_header
+: #DOGEN masd.wale.kvp.meta_element=physical_archetype
+: #DOGEN masd.wale.kvp.containing_namespace=text.cpp.transforms.types
+
+However if we look at these very carefully, all of this information is
+already present in the logical model representation of an archetype
+(by definition really). And we can use meta-data to give the archetype
+all of the required data:
+
+: #DOGEN masd.physical.logical_meta_element_id=dogen.logical.entities.physical_archetype
+
+So in reality all we need to do is to have a pass in the wale template
+expansion which populates the KVP using data from the logical
+element. All inputs should be supplied as regular meta-data and they
+should be modeled correctly in the logical model.
+
+Notes:
+
+- we will not be able to model the legacy keys such as
+  =masd.wale.kvp.locator_function=. These can be left as is.
+- the logical meta-name should be resolved. However since we need to
+  replace this with stereotypes, we can ignore this for now.
+- in fact, we have found a much deeper truth. Archetypes have been
+  projected into the physical dimension incorrectly; we have merged
+  the notion of a transform with the notion of a factory. In reality,
+  if we take a step back, the logical representation of an archetype
+  is projected into the physical dimension in two distinct ways:
+
+  - as a factory of physical elements;
+  - as a transform.
+
+  We conflated these two things into the formatter and this is the
+  source of all confusion. In fact the fact that the wale template was
+  common across (almost) all archetypes was already an indication of
+  this duplication of efforts. In reality, we should have had two
+  distinct M2T transforms for each of these projects. Then, there
+  would only be one stitch template for all archetypes for the factory
+  projection. Also the factory projects does not need the
+  static/virtual stuff - we can simply create a factory that,
+  every time it is called, creates a new PMM. It will only be called
+  once, from the bootstrapping chain.
+- this also means that the archetype for the factory will take on the
+  majority of the work we are doing with wale keys at present. In
+  order to cater for legacy, we may still need some additional
+  properties:
+
+: #DOGEN masd.wale.kvp.locator_function=make_full_path_for_odb_options
+
+  We should add these to the logical archetype just for now and
+  deprecate it once the clean up is complete.
+- this is a much cleaner approach. Even the postfixes =_transform= and
+  =_factory= are cleanly handled as we already do for things such as
+  forward declarations. It also means there is a lot less hackery when
+  obtaining the parameters for what are at present the wale keys and
+  in the future will be just the state of the logical archetype.
+- the exact same projects will apply to most logical representations
+  of physical elements (=backend=, =facet=, =archetype=). Some however
+  will not require all; =archetype_kind= and =part= just need the
+  factory projection.
+
+Merged stories:
+
+*Remove =class.simple_name= variable*
+
+In the past we thought it was a good idea to separate the archetype
+name (e.g. ={{archetype.simple_name}}=) from the class name
+(e.g. =class.simple_name=). This was done so that the templates would
+be more "flexible" and more explicit. However, it turns out we don't
+want flexibility; we want structural consistency. That is to say we
+want all classes to be name exactly =[ARCHETYPE_NAME]_transform=. So
+we should enforce this by deducing these parameters from the logical
+model element and other wale template parameters.
+
+*** COMPLETED Use PMM to compute =meta_name_indices=                  :story:
+    CLOSED: [2020-06-07 Sun 16:15]
+    :LOGBOOK:
+    CLOCK: [2020-06-07 Sun 16:16]--[2020-06-07 Sun 16:27] =>  0:11
+    CLOCK: [2020-06-07 Sun 14:19]--[2020-06-07 Sun 16:15] =>  1:56
+    CLOCK: [2020-06-07 Sun 12:24]--[2020-06-07 Sun 12:55] =>  0:31
+    CLOCK: [2020-06-05 Fri 13:39]--[2020-06-05 Fri 14:04] =>  0:25
+    :END:
+
+Now that we have assembled most of PMM, we should be able to use it to
+compute the =meta_name_indices=.
+
+- it does not make a lot of sense to have more than one kernel. Merge
+  it with PMM.
+- handle inclusion support in physical meta-model.
+
+Once this is done, we need to delete all of the infrastructure that
+was created to compute this data:
+
+- registrar stuff
+- methods in the M2T transform related to PMM
+- helpers.
+
+*** COMPLETED Split archetype factory from transform                  :story:
+    CLOSED: [2020-06-13 Sat 19:43]
+    :LOGBOOK:
+    CLOCK: [2020-06-13 Sat 19:23]--[2020-06-13 Sat 19:43] =>  0:20
+    CLOCK: [2020-06-13 Sat 17:25]--[2020-06-13 Sat 19:22] =>  1:57
+    CLOCK: [2020-06-13 Sat 00:01]--[2020-06-13 Sat 00:29] =>  0:28
+    CLOCK: [2020-06-12 Fri 23:15]--[2020-06-13 Sat 00:00] =>  0:45
+    CLOCK: [2020-06-12 Fri 21:31]--[2020-06-12 Fri 23:14] =>  1:43
+    CLOCK: [2020-06-12 Fri 14:26]--[2020-06-12 Fri 18:40] =>  4:14
+    CLOCK: [2020-06-12 Fri 11:50]--[2020-06-12 Fri 13:05] =>  1:15
+    CLOCK: [2020-06-10 Wed 21:56]--[2020-06-10 Wed 22:11] =>  0:15
+    :END:
+
+As per analysis story, we need to create two different archetypes for
+archetype:
+
+- transform
+- factory
+
+We can start by creating factory and moving it all across, then
+deleting the aspects of factory from the existing transform. However,
+the only slight snag is that there may be users of the =archetype=
+method in the transform interface. We need to figure out who is using
+it outside of bootstrapping. We won't be able to delete the existing
+factory code in the interface until this is done. Perhaps we should
+first move to the new PMM generation and then do this clean up.
+
+Notes:
+
+- need to create archetypes for all factories in traits for now. These
+  will not be needed at the end of the factory work because we will
+  use the meta-model element to generate the archetype factory.
+- need to make sure the factories are not also facet defaults in
+  references.
+- in the end we will have to rename the archetypes of the physical
+  entities to have the postfix "_transform". This includes parts and
+  kinds. We should do that when we have moved over to the factory.
+- implement archetype in transform in terms of the factory. Add
+  includes to each transform of the factory and update wustache
+  template.
+- update all references to traits to call the transform instead. Then
+  we can remove traits.
+
+*** COMPLETED Paper: Using Aspects to Model Product Line Variability  :story:
+    CLOSED: [2020-06-14 Sun 21:44]
+    :LOGBOOK:
+    CLOCK: [2020-06-14 Sun 17:01]--[2020-06-14 Sun 18:12] =>  1:11
+    :END:
+
+- Paper: Groher, Iris, and Markus Voelter. "Using Aspects to Model
+  Product Line Variability." SPLC (2). 2008.
+- https://pdfs.semanticscholar.org/4c77/0315cd8151f6c162ac2f99ecc62225f4c94e.pdf?_ga=2.246561604.1739388568.1592151663-6190553.1592151663
+
+*** CANCELLED Remove traits for archetypes                            :story:
+    CLOSED: [2020-06-19 Fri 17:54]
+    :LOGBOOK:
+    CLOCK: [2020-06-19 Fri 11:18]--[2020-06-19 Fri 11:22] =>  0:04
+    CLOCK: [2020-06-14 Sun 16:59]--[2020-06-14 Sun 17:07] =>  0:08
+    CLOCK: [2020-06-14 Sun 00:02]--[2020-06-14 Sun 00:34] =>  0:32
+    :END:
+
+At this point all traits should now be covered either by features or
+by the physical model. We need to go through all archetypes and
+whenever we find a reference to a trait, we need to include the header
+for that archetype and call the =archetype()= method. We also need to
+add support to facets for canonical archetypes. Once all of this is
+done we need to remove traits and see what breaks.
+
+Actually this story is much more complex than anticipated. We could do
+a quick hack to remove traits, but it would then be removed by the
+larger refactor. So might as well cancel this effort and focus on the
+refactor.
+
+*** CANCELLED Model =inclusion_support_types= in the physical model   :story:
+    CLOSED: [2020-06-19 Fri 17:56]
+
+*Rationale*: we need to address this when we refactor dependencies.
+
+At present we have a quick hack on =text.cpp= to model the inclusion
+of archetypes. In order to migrate the PMM to the new architecture, we
+need to bring this concept across. We had envisioned that this work
+would have been done when dealing with dependencies, but since we
+cannot progress with the PMM work, we need to at least address this
+aspect. The crux of it is: dependencies are functions of logical
+meta-types to logical meta-types. However, they also have a physical
+component.
+
+Most of the work is already done, we just need to remove the legacy
+stuff (enum, interface methods) and see what breaks.
+
+Actually we are still making use of it in the directive parts:
+
+: File: dogen.text.cpp/src/types/formattables/directive_group_repository_factory.cpp
+:  79  27         using transforms::inclusion_support_types;
+:  80  30         static const auto ns(inclusion_support_types::not_supported);
+: 172  23     using transforms::inclusion_support_types;
+: 173  26     static const auto ns(inclusion_support_types::not_supported);
+: 260  31     const auto cs(transforms::inclusion_support_types::canonical_support);
+
+
+Notes:
+
+- an archetype may not be able to participate on dependency
+  relationships at all. Or it may be able to participate in
+  relationships but just as a regular archetype. Finally, it may be a
+  "canonical" archetype; that is, when we have a dependency against a
+  facet, the canonical archetype for that logical meta-type gets
+  picked up.
+- canonical archetypes exist mainly because we ended up with cases
+  where there are more than one archetype that can be depended on for
+  a given logical meta-type (e.g. forward declarations). In this
+  cases, we need to disambiguate a reference.
+- actually, aren't dependencies just "references"? Perhaps we can
+  reuse terminology from references.
+- in C# we are mapping dependencies to using statements. This means we
+  extract the namespaces of each dependency and then use the "unique"
+  of all namespaces. However, we may end up in a situation where there
+  are name clashes. For example, if we had a reference to =A::a= and
+  =B::a=, this would cause problems.
+
+*** COMPLETED Analysis on solving relationship problems               :story:
+    CLOSED: [2020-06-19 Fri 17:53]
+    :LOGBOOK:
+    CLOCK: [2020-06-21 Sun 11:13]--[2020-06-21 Sun 12:50] =>  1:37
+    CLOCK: [2020-06-19 Fri 16:12]--[2020-06-19 Fri 17:53] =>  1:41
+    CLOCK: [2020-06-19 Fri 15:03]--[2020-06-19 Fri 16:11] =>  1:08
+    CLOCK: [2020-06-19 Fri 12:35]--[2020-06-19 Fri 12:54] =>  0:19
+    :END:
+
+At present when you have a reference to a model element in the logical
+dimension, its not always obvious to what it should resolve to in the
+physical dimension:
+
+- in the simplest case, because you do not know the type of the
+  element you have no way of knowing its physical counterpart. This is
+  the case with object's plain associations. These can map to
+  enumerations, exceptions, etc. For this we use canonical references,
+  which point to a facet and resolve to one physical archetype.
+- in the more complex case, this may happen outside of type
+  definitions. For example, say you want to have a pointer to an
+  element. This implies you need to include the forward declaration
+  header rather than the class definition header. At present, this is
+  hard-coded to find class definitions:
+
+:    const auto fwd_arch(traits::class_forward_declarations_archetype_qn());
+:    builder.add(o.opaque_associations(), fwd_arch);
+
+  This has worked thus far because almost all of the use cases are of
+  classes pointing to classes. But it would fail say if we had a
+  pointer to a visitor.
+
+In general, what we are trying to say is that the resolution maps a
+function "association" in logical space to another function
+"association" in physical space. There are many functions of type
+"association". The physical space function requires additional
+arguments:
+
+- the tag (e.g. "type definition", "forward declaration");
+- the facet;
+- the logical element.
+
+or:
+
+- the archetype; and
+- the logical element.
+
+The resolution function can resolve a tag and a facet into an archetype.
+
+There is a second, more complex case: where we need to have a physical
+level relationship of logical elements because some features are
+enabled. For example, if IO is enabled we need to include =<iosfwd>=
+in types. This could be a different kind of relationship -
+conditional? It should only allow inspecting facet state.
+
+These cases could be called:
+
+- derived (implied? projected?) physical relations
+- independent (explicit?) physical relations. actually static, because
+  these are known at meta-model time.
+
+Projected relations are projected by the relation type. During the
+archetype factory, we can resolve all of the projections into
+archetypes. During the dependency building process we can reuse what
+was resolved. Relation types:
+
+- parent
+- child
+- transparent_associations
+- opaque_associations
+- associative_container_keys
+- visitation
+- serialisation
+
+The logical model will contain the tags associated with the
+archetypes, as well as their tagging requirements across each
+association type the archetype is interested in. The generated code
+will populate the physical entities with these values. During the PMM
+bootstrapping we will resolve all tags to concrete archetypes. Each
+archetype will have a simple string property for each
+relationship. Its either populated with a well-known value (=unused=)
+or with a valid archetype. Builder will check that it is not
+=unused=. If it is it will throw ("you said it was unused by you are
+trying to use it"). With this we can now generate a graph of
+dependencies between archetypes, across specific relations. This means
+we can easily throw when some invalid request is made - ask for IO but
+types is disabled.
+
+Actually a better approach is to declare an enum for the relation
+types and then have a container such as an array with optional to the
+type. This could contain:
+
+- archetype
+- tags: list of string.
+
+The builder can then take the optional and do the right thing. Tags
+are used to populate the archetype during PMM bootstrap. Physical
+model reads a KVP of relation to CSV and creates the list. The list of
+tags must resolve to a unique archetype, else we throw. All archetypes
+are tagged with facets.
+
+Actually maybe we can code generate a method in archetype that takes
+the enum and returns the archetype. If the optional is empty it
+throws.
+
+Slight problem: we need to map the logical model entity to the
+archetype. The problem is that we need to view this as a multi-step
+process:
+
+1. during PMM construction, at best, all we can do is associate an
+   archetype with a set of tags - i.e. what is it tagged with; and
+   associate an archetype with a set of relations and tags - i.e. for
+   each association, what tags should it use to find the
+   archetypes. We can then locate all archetypes that match those tags
+   (for example: =masd.cpp.types.type_definition=). We can also
+   validate that for each logical model entity there is one and only
+   one archetype. However, of course we will always resolve into a
+   vector of archetypes because we do not have the context of a
+   specific logical element. The most useful data structure is
+   probably (logical model meta-type, relation) -> archetype. However,
+   this is not useful when building because all we have is the
+   name. We can also keep track of explicit relations but more work is
+   needed.
+2. during PM construction, we can, for each logical element, get its
+   meta-type, and use the map created in the PMM to resolve it to a
+   pair of (id, association) -> archetype. The physical model then
+   keeps this map for each artefact.
+3. a second transform then kicks in and generates all of the paths for
+   physical model elements: relative, absolute, dependency path etc.
+4. a third transform then populates each artefact with a set of
+   relationships. We probably don't even care about relation types in
+   the artefact. We just need to go through each type, find its
+   associations, resolve each one to a meta-type, then resolve them to
+   an archetype, then retrieve the archetype and get the
+   dependencies. Then add the dependencies to the archetype.
+
+The slight problem is that steps 2-4 must happen during the LM to PM
+transform. We need this chain to exist inside orchestration. Also, we
+cannot really resolve just one problem in isolation; dependency
+generation, directives, etc are all coupled in one big problem. We
+need to address all of these in one go. On the plus side, we can
+create a new path/old path set of fields for the new generation of
+path and dependencies and diff them until they match.
+
+Static relations can be just a list of IDs and tags. These must also
+be resolved as part of this process.
+
+There are a few cases that can be solved using tags/labels. For this
+we can apply a solution similar to [[https://cloud.google.com/compute/docs/labeling-resources][GCP labels]]:
+
+#+begin_quote
+Labels are a lightweight way to group together resources that are
+related or associated with each other. For example, a common practice
+is to label resources that are intended for production, staging, or
+development separately, so you can easily search for resources that
+belong to each development stage when necessary. Your labels might say
+vmrole:webserver, environment:production, location:west, and so
+on. You always add labels as key/value pairs:
+
+{
+ "labels": {
+    "vmrole": "webserver",
+    "environment": "production",
+    "location": "west",...
+    }
+}
+#+end_quote
+
+Use cases:
+
+- extension (what we have artefact kind for at present).
+- postfix. We could address both facet and archetype postfix in one
+  go.
+- archetype resolution: forward declarations, type definition.
+
+The implementation could be as follows:
+
+- in the logical meta-model we add an element of type label. You can
+  instantiate it by supplying a name (the class name) and a value. The
+  value is meta-data. Example: key: =standard_dogen_header_file=,
+  value: =hpp=.
+- the element class is extended to have labels. This is just a list of
+  string.
+
+Actually this is a mistake. We have already solved this problem,
+multiple times: its the same thing as we did for modelines, licences
+etc. We could have a non-typed solution such as labels, but then we
+have no validation on the shape of the data. Instead, we decided to
+create meta-model elements to model each data type, and to bind them
+using configuration. We need to take a similar approach. The only
+slight problem is on how we do the binding between the different types
+of archetypes and these elements containing configuration. We can take
+modelines as an example. For this we have many modelines such as
+=cpp=, =cs=, =cmake=, etc. At present these modelines bind to
+archetypes with massive hackery. First we assumed we needed one modeline
+per technical space. Then, in =decoration_transform=, we forced all
+elements to have decorations generated for all technical spaces even
+though they may only need a few. The third and final act of this
+tragedy is that the assistant then chooses the appropriate decoration
+based on the technical space. This is known up front because each M2T
+is associated with only one TS. To make matters worse, we default the
+TS in the assistant:
+
+:        const logical::entities::technical_space ts =
+:        logical::entities::technical_space::cpp);
+
+There is a degree of cleverness as to how modelines bind to
+configurations: they are grouped into modeline groups; each modeline
+is associated with a TS (which makes sense). Users then associate
+their decorations to modelines either locally or globally. If users
+want to associate a group of files to a modeline, they can create a
+profile and make those model elements use that configuration. This
+solves a lot of problems.
+
+Part of this machinery can be deployed to solve extensions and
+postfixes. We could also have decoration element groups with different
+kinds of extensions (and associated to technical spaces). The only
+snag is that we still need to distinguish between different "types" of
+archetypes in a TS to find the right extension. These types are at
+present fairly arbitrary:
+
+- C++ TS: dogen header, implementation; odb header, implementation
+- CMake TS: file
+- C# TS: file
+
+And so on. By default, if nothing else is specified we could also bind
+by TS. However, to cope with the peculiarity of C++ TS we will have
+more than one element binding to it. In this cases we do need
+labels. However, we just need archetypes to have labels (logical and
+physical). Labels are CSV of KVP (e.g. =extension:odb=). And to round
+up matters, we could also address parts in this way. A =part= becomes
+a decoration element which gives rise to a physical representation. It
+needs only two parameters:
+
+- model_modules_path_contribution: in folder, as directories.
+- facet_path_contribution: in folder, as directory
+
+Then we could have a tag at the archetype level which maps to the
+part. The only snag is that we now allow variability here. Users can
+make new parts, assign archetypes to new parts etc. This is not
+desirable as it will most likely result in borked components. The only
+option we want users to have is whether to use public headers or
+not. So perhaps we should allow for decoration elements for the part
+but they must be bound to existing parts. Also, the project part can't
+really be configured. In fact if we think about it, the problem is we
+haven't modeled products correctly. If we had:
+
+- family
+- product
+- component: parallel hierarchy: facets.
+- part
+- archetype
+
+Then we could say that an archetype is associated with either a
+product, a component, a part or a facet in a part. Note: it must be a
+facet in a part. Parts can have a decoration - as probably all other
+elements can as well. These are archetype properties which are not
+configurable. If the user disables public headers, we need to somehow
+redirect all archetypes that are in the public headers part to go
+somewhere else.
+
+Since we have a working solution for post-fixes as it stands we should
+just leave it as it is until there is a significant problem with
+it. For now we need to make sure all forward declarations are
+annotated correctly with the postfix. Path generation code will use
+existing postfix and directory name infrastructure, unchanged. We will
+focus only on solving the canonical header problems via
+tags. Archetype kinds become tags. For certain kinds (type definition,
+forward declaration) There can only be one archetype per logical model
+element. We use it to resolve names. Archetypes will be associated
+with an owner, which can be any of the valid building blocks above
+(family, etc). Users can create extensions as decorations. Users
+choose an extension group to associate to a model. Where there are
+more than one archetype per TS for a given extension, users must
+provide tags. The tag must bind to the tag provided in the extension
+decoration.
+
+*** COMPLETED Archetype kind and postfix as parts of a larger pattern :story:
+    CLOSED: [2020-06-21 Sun 14:53]
+    :LOGBOOK:
+    CLOCK: [2020-06-12 Fri 13:41]--[2020-06-12 Fri 13:42] =>  0:01
+    CLOCK: [2020-06-12 Fri 13:06]--[2020-06-12 Fri 13:41] =>  0:35
+    :END:
+
+At present we have introduced the concept of "archetype kind" to deal
+with the fact that some artefacts have the extension "cpp" and others
+"hpp" and so on. We also have the concept of a "postfix" which deals
+with cases where there are more than one projection from logical space
+into physical space for the same kind. For example, =object= is
+projected to both class header and class header forward
+declaration. Without the postfix we would generate the same file name
+for both. At present, postfixes have defaults, handled by default
+variability overrides:
+
+: #DOGEN masd.variability.default_value_override.forward_declarations="fwd"
+
+The key =forward_declarations= is matched against the expanded key for
+the feature. If it ends with this string, it will have the default
+override. This is non-obvious. Finally, we also have the concept of
+"parts". This is not yet implemented, but the gist of it is that
+archetypes are grouped into "parts" such as =src=, =include= and so
+on.
+
+If we take a step back, what is happening here that we have been
+creating ad-hoc solutions for the problem that the function mapping
+logical model elements to physical elements may return a set with many
+elements. We need a way to generate unique IDs for each of these
+elements, and that ID is mapped to a file name. The driver for the
+mapping must be the archetype. Users may be able to override some
+aspects of this mapping (as they can do with extensions and postfixes
+at present). One possibility is to generalise these notions into
+"archetype tags". Tags can have one of three effects:
+
+- add a postfix;
+- add an extension;
+- add a directory.
+
+An archetype can have many tags. Only one tag can have an extension
+and only one tag can have a directory. All other tags are concatenated
+together with =_=. Tags can have an associated feature that enables
+overrides. This can be done globally or locally.
+
+Another way to look at this is that we have different types of tags:
+
+- directory tags: what we call parts. Facets have one of
+  these. Archetypes inherit them.
+- extension tags: archetypes have one of these.
+- postfix tags: archetypes have zero or many of these. Facets can have
+  one of these. Facet tags are inherited by archetypes.
+
+Users can override the values of postfix tags either locally or
+globally.
+
+Notes:
+
+- there is also a lot of hackery regarding the model element name; we
+  are adding "_factory", "_transform", etc all over the place. It
+  would be nicer somehow if the projection took care of this. Not all
+  tags contribute to the physical element name though (fwd for example
+  should not change the forward declaration), but presumably we could
+  use the original logical name for those cases.
+- actually appending "_transform" in the names was a more serious
+  mistake than it appeared. What we did was to effectively change the
+  archetype names because they are now defined by the modeling
+  element. In reality, the archetype name must not have the word
+  transform, /unless/ it represents a projection of a physical element
+  (e.g. the archetype's archetype). The physical elements are special
+  because they define the projectors themselves and we need two
+  projectors for each of them: one for transform and one for
+  factory. All other elements must be named after the archetype
+  (e.g. =class_header= not =class_header_transform=) and then the
+  projection will generate the two representations
+  (e.g. =class_header_factory= and =class_header_transform=). The
+  problem is that we need to bootstrap this state. This is not easy
+  due to the recursive nature of the framework. If we change the names
+  of the elements so that they do not have "_transform", we will
+  generate files without "_transform". These will then generate the
+  correct factories but the incorrect transforms. However, if we add a
+  postfix default override that checks for "_transform" and postixes
+  it with "_transform" then we should generate the same files. This is
+  very subtle: the postfix is matching against the archetype name of
+  the archetype transform's transform. Note also that this means we
+  will generate archetypes with names such as "_transform_transform"
+  and this is by design: these are the archetypes representing the
+  transforms of the transforms.
+
+*** COMPLETED Inject backend, facets and archetypes into PMM          :story:
+    CLOSED: [2020-06-21 Sun 16:06]
+
+*Rationale*: this was achieved as part of the factory / transform
+split in the PMM.
+
+At present we only have artefacts in the PMM. We need to inject all
+other missing elements. We also need to create a transform which
+builds the PMM. Finally while we're at it we should add enablement
+properties and associated transform.
+
+Notes:
+
+- we should also change template instantiation code to use the PMM.
+- once we have a flag, we can detect disabled backends before any work
+  is carried out. The cost should be very close to zero. We don't need
+  to do any checks for this afterwards.
+- we need to add a list of archetypes that each archetype depends
+  on. We need to update the formatters to return archetypes rather
+  than names and have the dependencies there.
+
+Merged stories:
+
+*Implement archetype locations from physical meta-model*
+
+We need to use the new physical meta-model to obtain information about
+the layout of physical space, replacing the archetype locations.
+
+Tasks:
+
+- make the existing backend interface return the layout of physical
+  space.
+- create a transform that populates all of the data structures needed
+  by the current code base (archetype locations).
+- replace the existing archetype locations with a physical meta-model.
+- remove all the archetype locations data structures.
+
+Notes:
+
+- template instantiation domains should be a part of the physical
+  meta-model. Create a transform to compute these. *done*
+- remove Locatable from Element? *done*
+
+Merged stories:
+
+*Clean-up archetype locations modeling*
+
+We now have a large number of containers with different aspects of
+archetype locations data. We need to look through all of the usages of
+archetype locations and see if we can make the data structures a bit
+more sensible. For example, we should use archetype location id's
+where possible and only use the full type where required.
+
+Notes:
+
+- formatters could return id's?
+- add an ID to archetype location; create a builder like name builder
+  and populate ID as part of the build process.
+
+*Implement the physical meta-model*
+
+We need to replace the existing classes around archetype locations
+with the new meta-model types.
+
+Notes:
+
+- formatters should add their data to a registrar that lives in the
+  physical model rather than expose it via an interface.
+
+*** COMPLETED Paper: A flexible code generator for MOF-based modeling languages :story:
+    CLOSED: [2020-06-21 Sun 17:14]
+    :LOGBOOK:
+    CLOCK: [2020-06-21 Sun 16:06]--[2020-06-21 Sun 17:14] =>  1:08
+    :END:
+
+- Paper: Bichler, Lutz. "A flexible code generator for MOF-based
+  modeling languages." 2nd OOPSLA Workshop on Generative Techniques in
+  the context of Model Driven Architecture. 2003.
+- Link: https://s23m.com/oopsla2003/bichler.pdf
+
+*** COMPLETED Add labels to archetypes                                :story:
+    CLOSED: [2020-06-23 Tue 23:48]
+    :LOGBOOK:
+    CLOCK: [2020-06-23 Tue 22:34]--[2020-06-23 Tue 23:48] =>  1:14
+    CLOCK: [2020-06-22 Mon 22:45]--[2020-06-22 Mon 23:53] =>  1:08
+    :END:
+
+We need to be able to label archetypes when we define them.
+
+- add feature for labels.
+- add labels concept in physical model.
+- update transform to read labels from meta-data and populate logical model.
+- update templates to generate the labels.
+
+Label keys:
+
+- roles: type declaration, forward declaration.
+- groups: dogen, dogen.standard_cpp_header,
+  dogen.standard_cpp_implementation, header.
+
+*** COMPLETED Add support for CSV values in variability               :story:
+    CLOSED: [2020-06-27 Sat 22:30]
+    :LOGBOOK:
+    CLOCK: [2020-07-04 Sat 14:49]--[2020-07-04 Sat 15:20] =>  0:31
+    CLOCK: [2020-06-27 Sat 21:53]--[2020-06-27 Sat 22:15] =>  0:22
+    CLOCK: [2020-06-27 Sat 21:13]--[2020-06-27 Sat 21:16] =>  0:03
+    :END:
+
+It would be nice to get CSV values out of variability without having
+to do any additional work. We just need to add a type for this and
+associated scaffolding.
+
+Actually we made a mistake: we need collections of CSV values rather
+than just one entry.
+
+*** COMPLETED Add hash map of artefacts in physical model             :story:
+    CLOSED: [2020-07-05 Sun 15:38]
+    :LOGBOOK:
+    CLOCK: [2020-07-05 Sun 00:20]--[2020-07-05 Sun 01:55] =>  1:35
+    CLOCK: [2020-07-04 Sat 16:52]--[2020-07-04 Sat 18:16] =>  1:24
+    :END:
+
+At present we have only a list of artefacts. This is not sufficient
+for the relationship look-ups. Make it the same as the formattables
+model.
+
+Notes:
+
+- create a special point in logical space for orphan physical
+  elements: =masd.orphanage=. Remove =orphan_artefacts=. Actually this
+  will not work because we are orphans on both the logical and
+  physical dimensions.
+- if we update all types to use the new container, the code should
+  work as is.
+
+*** COMPLETED Analysis on archetype relations for stitch templates    :story:
+    CLOSED: [2020-07-05 Sun 16:38]
+    :LOGBOOK:
+    CLOCK: [2020-07-05 Sun 16:39]--[2020-07-05 Sun 16:43] =>  0:04
+    CLOCK: [2020-07-05 Sun 16:16]--[2020-07-05 Sun 16:38] =>  0:22
+    CLOCK: [2020-07-05 Sun 15:48]--[2020-07-05 Sun 16:15] =>  0:27
+    CLOCK: [2020-07-04 Sat 22:05]--[2020-07-04 Sat 22:15] =>  0:10
+    CLOCK: [2020-07-04 Sat 21:00]--[2020-07-04 Sat 22:04] =>  1:04
+    :END:
+
+Originally we thought the include files belonged in the stitch
+templates. However, this is a modeling error. By doing so we are
+bypassing the type system in the logical-physical model. This means
+for example that you can reference a physical element that is disabled
+and you won't know until compilation. The right thing to do is to
+declare relations for archetypes as well. The problem is that because
+we are dealing with archetypes, it is a bit confusing. In truth, we
+have "two levels" of relations (these are parallel to the notion of
+"generation moments which we have not yet explored properly):
+
+- relations of the archetype as a "generator generator", that is a
+  generator that makes generators. These are hidden in the stitch
+  template:
+
+: <#@ masd.stitch.inclusion_dependency="dogen.utility/types/io/shared_ptr_io.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.utility/types/log/logger.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.tracing/types/scoped_tracer.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.logical/io/entities/element_io.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.physical/io/entities/artefact_io.hpp" #>
+: <#@ masd.stitch.inclusion_dependency=<boost/throw_exception.hpp> #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/formatting_error.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.utility/types/log/logger.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.utility/types/formatters/sequence_formatter.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.physical/types/helpers/meta_name_factory.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.logical/types/entities/physical/archetype.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.logical/types/helpers/meta_name_factory.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/assistant.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/types/archetype_class_implementation_factory_transform.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/types/archetype_class_implementation_factory_factory.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/traits.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/types/traits.hpp" #>
+
+- relations of the archetype we are going to generate. These are
+  declared in the meta-data:
+
+: #DOGEN masd.physical.variable_relation=self,archetype:masd.cpp.types.class_header
+: #DOGEN masd.physical.variable_relation=transparent,role:type_declaration
+: #DOGEN masd.physical.constant_relation=dogen.physical.helpers.meta_name_builder,archetype:masd.cpp.types.class_header
+: #DOGEN masd.physical.constant_relation=dogen.utility.log.logger,archetype:masd.cpp.types.class_header
+: #DOGEN masd.physical.constant_relation=dogen.text.transforms.transformation_error,archetype:masd.cpp.types.class_header
+
+Because we need to distinguish between these, we can't just declare
+the relations at the meta-data level. Also, archetype relations are
+always constant relations against a fixed archetype. One possibility,
+which is a bit of a hack, but has some merits, is to have meta-data at
+the archetype level and meta-data at the template level,
+e.g. =stitch_template_content=. In a very real sense, these are the
+meta-relations and the relations but we are trying to avoid the word
+meta because the type system is already very confusing. However, we
+may have to make an exception here. The concepts are correct, its just
+that these names are terrible. The overall approach is as follows:
+
+- make the stitch template a proper attribute (or at any rate
+  something with configuration). Remainder of the comment is the
+  stitch template.
+- create a "meta-relation" in the archetype which has only constant
+  relations. Populate these during the physical entities transform
+  with the attribute meta-data, as we do with the class meta-data. The
+  only difference is we populate the "meta-relations".
+- during logical to physical projection, anything on the
+  "meta-relations" container is resolved (in the same way as constant
+  relations are) and the result is used to populate the artefact
+  instance.
+
+Similarly, we should not have anything on the template related to:
+
+- namespaces
+- boilerplate
+- decoration
+
+For example:
+
+: <#@ masd.stitch.containing_namespaces=dogen::text::cpp::transforms::types #>
+
+The archetype's archetype transform must handle all of this. The
+stitch template is merely a variable on the meta-type. This finally
+allows us to remove variability from templating.
+
+The wale expansion does stay within the stitch template though.
+
+Actually if we take one step further, then there are constant and
+variable relations:
+
+- constant relations are: logging, scoped tracing, etc. These can even
+  be declared in the stitch template of the archetype's
+  archetype. Note that we avoided using stitch here because it was all
+  becoming a bit too confusing, but perhaps this can now be
+  revisited. The stitch template would now have:
+  - declare the logger.
+  - perform the boilerplate parts.
+  - output the instantiated stitch template.
+- variable relations are as already described.
+
+This also means that there are now three generational moments:
+
+- the generation of the generator generator generator. This is when
+  the archetype's archetype is generated.
+- the generation of the generator generator. This is when the
+  archetype's archetype executes against a specific archetype (other
+  than archetype itself). This is what we have doing since almost the
+  beginning.
+- the generation of regular instances.
+
+A much simpler way to visualise this is as follows:
+
+- within the logical model *only*, archetypes have associated
+  generators. These generators contain a set o properties (wale,
+  stitch, etc). The archetype portion of the meta-type is a
+  representation of the physical model. The generator portion is
+  concerned only with the templating aspects.
+
+*** COMPLETED Move templating aspects of archetype into a generator type :story:
+    CLOSED: [2020-07-05 Sun 17:39]
+    :LOGBOOK:
+    CLOCK: [2020-07-05 Sun 16:43]--[2020-07-05 Sun 17:39] =>  0:56
+    :END:
+
+It should have all of the wale and stitch properties, the stitch
+template and should also support configuration. Name:
+=archetype_generator=?
+
+Notes:
+
+- add relations to the new type.
+- update all code to point to new type.
+- to start of with we will support both the old world where the stitch
+  templates have the includes and the new world (at least for a few
+  select types so we can test this approach).
+
+*** COMPLETED Split physical relation properties                      :story:
+    CLOSED: [2020-07-05 Sun 18:08]
+    :LOGBOOK:
+    CLOCK: [2020-07-05 Sun 18:09]--[2020-07-05 Sun 18:10] =>  0:01
+    CLOCK: [2020-07-05 Sun 17:40]--[2020-07-05 Sun 18:08] =>  0:28
+    :END:
+
+At present we have bundled all physical properties. It seems though
+that the relation properties belong on a different feature set.
+
+*** COMPLETED Rename archetype generator                              :story:
+    CLOSED: [2020-07-06 Mon 21:43]
+    :LOGBOOK:
+    CLOCK: [2020-07-06 Mon 21:24]--[2020-07-06 Mon 21:43] =>  0:19
+    :END:
+
+This causes the nightly to break because we already use that name on
+test data. We could rename it to templates since it has properties for
+the templates.
+
+*** COMPLETED Paper: A Comparison of Generative Approaches: XVCL and GenVoca :story:
+    CLOSED: [2020-07-06 Mon 23:37]
+    :LOGBOOK:
+    CLOCK: [2020-07-06 Mon 22:05]--[2020-07-06 Mon 23:25] =>  1:20
+    :END:
+
+- Paper: Blair, James, and Don Batory. "A Comparison of Generative
+  Approaches: XVCL and GenVoca." Technical report, The University of
+  Texas at Austin, Department of Computer Sciences (2004).
+- Link: http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.457.1399&rep=rep1&type=pdf
+
+*** COMPLETED Paper: An evaluation of the Graphical Modeling Framework GMF :story:
+    CLOSED: [2020-07-07 Tue 22:42]
+    :LOGBOOK:
+    CLOCK: [2020-07-07 Tue 21:29]--[2020-07-07 Tue 22:41] =>  1:12
+    :END:
+
+- Paper: Seehusen, Fredrik, and Ketil Stølen. "An evaluation of the
+  graphical modeling framework (gmf) based on the development of the
+  coras tool." International Conference on Theory and Practice of
+  Model Transformations. Springer, Berlin, Heidelberg, 2011.
+- Link: http://hjem.ifi.uio.no/ketils/kst/Articles/2011.ICMT.pdf
+
+*** COMPLETED Problems starting clangd                                :story:
+    CLOSED: [2020-07-10 Fri 11:57]
+    :LOGBOOK:
+    CLOCK: [2020-07-10 Fri 15:02]--[2020-07-10 Fri 15:37] =>  0:35
+    CLOCK: [2020-07-10 Fri 11:05]--[2020-07-10 Fri 11:55] =>  0:50
+    :END:
+
+For some reason clangd is failing to start on emacs. We haven't
+experienced this before.
+
+It seems with the LSP update, many functions we were using on our
+config have been removed or deprecated, causing weird errors. These
+have been removed and it seems all is working well again.
+
+Spent some time configuring the new LSP windows we didn't use before
+(errors list and symbols list).
+
+*** COMPLETED Add relations between archetypes in the PMM             :story:
+    CLOSED: [2020-07-10 Fri 17:22]
+    :LOGBOOK:
+    CLOCK: [2020-07-10 Fri 15:38]--[2020-07-10 Fri 17:22] =>  1:44
+    CLOCK: [2020-07-10 Fri 11:56]--[2020-07-10 Fri 12:49] =>  0:53
+    CLOCK: [2020-07-10 Fri 10:55]--[2020-07-10 Fri 11:04] =>  0:09
+    CLOCK: [2020-07-06 Mon 21:44]--[2020-07-06 Mon 22:04] =>  0:20
+    CLOCK: [2020-07-05 Sun 19:23]--[2020-07-05 Sun 19:29] =>  0:06
+    CLOCK: [2020-07-04 Sat 15:22]--[2020-07-04 Sat 16:51] =>  1:29
+    CLOCK: [2020-07-04 Sat 13:56]--[2020-07-04 Sat 14:49] =>  0:53
+    CLOCK: [2020-07-04 Sat 12:35]--[2020-07-04 Sat 13:02] =>  0:27
+    CLOCK: [2020-06-27 Sat 22:20]--[2020-06-27 Sat 23:48] =>  1:28
+    CLOCK: [2020-06-27 Sat 20:59]--[2020-06-27 Sat 21:12] =>  0:13
+    CLOCK: [2020-06-27 Sat 20:41]--[2020-06-27 Sat 20:58] =>  0:17
+    CLOCK: [2020-06-27 Sat 11:27]--[2020-06-27 Sat 13:18] =>  1:51
+    CLOCK: [2020-06-27 Sat 00:10]--[2020-06-27 Sat 00:13] =>  0:03
+    CLOCK: [2020-06-26 Fri 23:56]--[2020-06-27 Sat 00:09] =>  0:13
+    CLOCK: [2020-06-26 Fri 21:47]--[2020-06-26 Fri 21:54] =>  0:07
+    CLOCK: [2020-06-26 Fri 20:00]--[2020-06-26 Fri 20:17] =>  0:17
+    CLOCK: [2020-06-26 Fri 18:02]--[2020-06-26 Fri 19:34] =>  1:32
+    CLOCK: [2020-06-26 Fri 17:02]--[2020-06-26 Fri 17:33] =>  0:31
+    CLOCK: [2020-06-26 Fri 13:03]--[2020-06-26 Fri 13:17] =>  0:14
+    CLOCK: [2020-06-26 Fri 11:55]--[2020-06-26 Fri 12:44] =>  0:49
+    CLOCK: [2020-06-26 Fri 11:40]--[2020-06-26 Fri 11:54] =>  0:14
+    :END:
+
+*Rationale*: this story has progressed as much as possible in
+isolation. We now need to join the dots together and move all related
+transforms into the physical model.
+
+We need to add a new enum in the physical model: =relation_type=.
+
+- parent
+- child
+- transparent_associations
+- opaque_associations
+- associative_container_keys
+- visitation
+- self: header for implementation, serialisation forward declaration, etc.
+
+Then we need to be able to add to each archetype a KVP of relation to
+either an archetype or to a label. If its a label it must have the
+label syntax: =role:type_definition=. Otherwise its assumed to be an
+archetype. We could probably use the prefix =archetype:= for the
+archetype direct mapping. There must be a way to distinguish between a
+projected physical relation and an explicit physical relation.
+
+We have a slight problem: relations are relative to the meta-type
+element. The above are mainly for object. We have different ones for
+each meta-type. If we made the key a string, and a precondition that
+the relation name must match the attribute name, we could solve this
+problem. Actually it doesn't make a lot of difference; at the end of
+the day we will still require a dispatch of the form:
+
+- for every entry in the KVP for our current archetype:
+  1. locate the attribute that matches the key (for example =parent=);
+  2. get the name and the archetype and convert it into a dependency.
+  3. store that in the artefact.
+
+Step 1 will always require some kind of mapping, and it will not be
+code generated. Enum is fine, we should just throw if a relation is
+not supported by a given meta-type. We will add more relations as we
+go through the different meta-types. Actually, there are two types of
+relations: variable and constant. Variable because they need an
+argument of the model type. Constant because they are fixed to a model
+type. The physical model could have two containers to represent
+this, or a single container with a relation that has a type. If the
+type is constant we need to supply the logical model element id.
+
+For fixed relations we need:
+
+- logical model element id;
+- archetype or label.
+
+For variable relations we need:
+
+- relation type;
+- archetype or label.
+
+We need to remove =facet_default= from referencing status. It should
+just be referable or non-referable. We could use a boolean for
+this. If a type is non-referable, we should throw when it is part of a
+relationship.
+
+Tasks:
+
+- add relations to all archetypes.
+- generate code that creates the PMM with the new relations.
+- create a transform that resolves all label URNs into archetype
+  URNs. Actually, this can only be done in the context of a logical
+  manifold and therefore requires the physical instance.
+- populate the artefact's archetype.
+- create a transform that takes the archetypes relations and populates
+  the artefact's relations with LPPs.
+- change physical model to be indexed by LPP.
+- add new field to artefact for the concrete relation in terms of file
+  names.
+
+At this point we need to stop because the file names are not being
+populated correctly.
+
+Actually because this task is so complicated, and because we are bound
+to make serious modeling errors, it makes more sense to try to do a
+bit of each task to try to get things to work end to end. They won't
+actually work, of course, until all is done, but it should at least
+give us a feel for the problems before we spend ages changing lots of
+M2Ts.
+
+Notes:
+
+- rename =meta_name_group=; this is the archetype name set, a similar
+  manifold to the artefact set.
+- rename =formatter_names_by_backend_name=. Actually, we could not
+  find any evidence of it being used so removed it.
+- we can keep =meta_name_indices= since we are collecting different
+  kinds of meta-names.
+- add postfix of =archetype_names_= to make container names clearer in
+  the manifold.
+
+*** COMPLETED Create an archetype repository in physical model        :story:
+    CLOSED: [2020-07-12 Sun 15:31]
+    :LOGBOOK:
+    CLOCK: [2020-07-12 Sun 14:41]--[2020-07-12 Sun 15:31] =>  0:50
+    CLOCK: [2020-07-12 Sun 11:03]--[2020-07-12 Sun 13:47] =>  2:44
+    CLOCK: [2020-07-12 Sun 02:11]--[2020-07-12 Sun 02:14] =>  0:03
+    CLOCK: [2020-07-11 Sat 23:59]--[2020-07-12 Sun 02:10] =>  2:11
+    CLOCK: [2020-07-11 Sat 22:21]--[2020-07-11 Sat 22:56] =>  0:35
+    CLOCK: [2020-07-11 Sat 21:10]--[2020-07-11 Sat 21:25] =>  0:15
+    CLOCK: [2020-07-11 Sat 19:21]--[2020-07-11 Sat 20:01] =>  0:40
+    CLOCK: [2020-07-11 Sat 17:30]--[2020-07-11 Sat 18:17] =>  0:47
+    CLOCK: [2020-07-11 Sat 14:17]--[2020-07-11 Sat 17:29] =>  3:12
+    CLOCK: [2020-07-10 Fri 23:00]--[2020-07-10 Fri 23:17] =>  0:17
+    CLOCK: [2020-07-10 Fri 22:57]--[2020-07-10 Fri 22:59] =>  0:02
+    CLOCK: [2020-07-10 Fri 21:35]--[2020-07-10 Fri 21:50] =>  0:15
+    CLOCK: [2020-07-10 Fri 18:33]--[2020-07-10 Fri 18:59] =>  0:26
+    CLOCK: [2020-07-10 Fri 17:23]--[2020-07-10 Fri 18:23] =>  1:14
+    :END:
+
+We need to now move all physical properties from logical and text
+models into the physical model, create a set of transforms to process
+the physical model in this intermediate stage, and then pass it over
+to the text model for text generation. In order to make things easier,
+we need to do a simple "lift and shift" job from all entities and
+transforms, as much as possible. We can refactor these after they land
+in their resting place. What we must do instead is to move as much as
+possible as quickly as possible before we lose track of the
+relationships.
+
+Notes:
+
+- change =logical_model_to_text_model_transform= to a chain.
+- create a factory that makes archetype repositories from a text
+  model.
+- run the archetype repository chain from the
+  =logical_model_to_text_model_chain=.
+- =artefact_properties_transform= is not required in the new
+  world. Its role at present is to perform a projection into the
+  physical manifold represented by each logical coordinate. We don't
+  require this because the artefact set already has that expansion.
+- add generability status to logical model.
+- remove enablement_flags from meta-model.
+- extraction properties transform has not been moved across.
+
+*** COMPLETED Analysis on implementing containment with configuration :story:
+    CLOSED: [2020-07-12 Sun 15:31]
+    :LOGBOOK:
+    CLOCK: [2020-06-26 Fri 23:42]--[2020-06-26 Fri 23:48] =>  0:06
+    CLOCK: [2020-06-26 Fri 23:10]--[2020-06-26 Fri 23:42] =>  0:32
+    CLOCK: [2020-06-26 Fri 21:55]--[2020-06-26 Fri 23:09] =>  1:14
+    :END:
+
+At present, we have implemented enablement by using the "global and
+local" approach. This is the same as we did for decorations. The idea
+is that the root module contains the "global" configuration, and
+elements can "locally" override it where necessary. Most of the time,
+the global configuration is sufficient, but occasionally overrides are
+necessary. This works well for decoration because there are
+computations that are needed, and it would not be a good idea to have
+to do this for each element. However, this is not ideal for
+enablement. To understand why we need to remember that enablement at
+present is (probably) not implemented correctly. For a correct
+implementation, we need to take into account the root module of each
+referenced model - not of the target model - and then compute the
+local / element enablement relative to that global configuration. This
+would have been evident if we had PDMs because their enablement
+profiles are so distinct from a typical Dogen model. At any rate, we
+could solve this issue by computing enablement in the pre-assembly
+chain of the logical model; this would give us access to the correct
+root modules. But once we do that, then one starts to question if the
+entire enablement should not be handled in the logical model as well,
+and then the nice bounded context we have between logical and physical
+domains starts to erode very quickly. At present its very clear: once
+we start projecting from the logical space into the logical-physical
+space then we exited the logical domain.
+
+There is an alternative to this but unfortunately it requires breaking
+with the "global and local" approach. We could instead use the
+variability subsystem to encapsulate the same information. At present
+we do not allow individual elements to set enablement for kernel and
+facet. We could loosen this requirement and allow elements to set
+facet enablement. We could then set these in profiles. The final step
+is to have some kind of mechanism to propagate the stereotypes from
+containing elements. This could be done at injection level, once
+containment is handled correctly. We could have a setting "default
+stereotypes" or some such. It is applied to all containing
+elements. We need to separate these inside injection. All types that
+are contained by a container with "default stereotypes" inherit
+these. Then variability processing just processes the default
+stereotypes first and then the rest. We need to make sure we handle
+nested containment correctly though.
+
+Once this is in place, we can then perform "flat" enablement
+processing; we only need to look at the current model element. This
+may all sound very strange conceptually, because its no longer
+possible to switch off a facet globally. Instead, we change the
+profile, which as a consequence, then changes each and every
+element. Its also possible to change a facet "locally" but the effect
+is only to change the current element. A lot of these operations
+become semantically very strange, so some conceptual justification is
+required. But the end result is that we can process elements in
+isolation and we no longer need to worry about where they come
+from. So with this we can do the whole of enablement within the
+physical model.
+
+The good thing about this approach is that we can try it side by side
+with the existing approach as they shouldn't clash. We just need to
+create separate profiles.
+
+Once we got everything in the physical model, we can then use the
+meta-relations and the relations (given in terms of logical-physical
+points or LPPs) and create an acyclic graph with them. We need to also
+introduce a bitmap as follows:
+
+- archetype enabled or disabled.
+- archetype overwrite enabled or disabled.
+- supported: false for PDMs that don't support certain archetypes.
+- applicable: false if the archetype does not match the logical model
+  meta-element.
+- same for facet.
+- for backend just enabled or disabled.
+
+These are the observed flags, as read out of the meta-data. We then
+have the computed flag which needs to record:
+
+- enabled or disabled.
+- resolution failure: true if a dependency was not in the expected
+  state.
+- need to record if the failure can be resolved or not.
+
+With the relations in LPPs we can then build a DAG and compute the
+flags.
+
+Links:
+
+- [[https://www.uml-diagrams.org/stereotype.html][UML Stereotype]]
+- [[https://en.wikipedia.org/wiki/Stereotype_(UML)][Wikipedia - Stereotype (UML)]]
+
+*** COMPLETED Improve org-mode converter                              :story:
+    CLOSED: [2020-07-12 Sun 15:31]
+    :LOGBOOK:
+    CLOCK: [2020-07-10 Fri 10:35]--[2020-07-10 Fri 10:55] =>  0:20
+    CLOCK: [2020-06-26 Fri 10:00]--[2020-06-26 Fri 11:16] =>  1:16
+    CLOCK: [2020-06-25 Thu 23:00]--[2020-06-25 Thu 23:18] =>  0:18
+    CLOCK: [2020-06-25 Thu 22:31]--[2020-06-25 Thu 22:59] =>  0:28
+    CLOCK: [2020-06-24 Wed 06:39]--[2020-06-24 Wed 08:00] =>  1:21
+    CLOCK: [2020-06-21 Sun 21:51]--[2020-06-21 Sun 23:26] =>  1:35
+    CLOCK: [2020-06-21 Sun 19:28]--[2020-06-21 Sun 19:45] =>  0:17
+    :END:
+
+Work on the org-mode converter on the side to bring it closer to a
+usable state.
+
+Notes:
+
+- consider splitting documentation from model elements. This would
+  allow us to have sections etc in the documentation, whilst at the
+  same time also having a nested structure to describe model
+  structure.
+- need to group model elements by containing element. Need to remove
+  containing element from name.
+- logical model element type should be in =#+tags=. Need spaces to
+  align it properly.
+- consider allowing documentation using org-mode syntax. This would
+  then be converted when we generate the model.
+- preserve the dia object ID and the dia container ID (child
+  node). With this we can recreate the containment relationships.
+- we should aim to make our org models compliant to org-mode
+  syntax. This means we should avoid introducing our own drawers
+  and have different ways of representing meta-data. Instead, we will
+  use the regular meta-data subsystem for all the data transported in
+  a model which cannot be extracted from its structure. The injector
+  transforms then need to check if the data is coming from meta-data
+  or from the properties themselves and throw when an attribute is
+  defined in both places. There are not that many new keys required.
+- we should add a flag "is container". If set and there are no
+  stereotype attributes for the meta-model element, the default is
+  module. If not set, the default is object. This property is conveyed
+  through the meta-data.
+- add simple and qualified name to injection.
+- add =CUSTOM_ID= with a UUID.
+- reduce size of code font and add colouring for latex.
+- add operations to injection.
+- we should try to make the most of the org-mode native concepts. For
+  example, this means we could also support model references as org
+  mode references using =file:projects.org= notation. Models could
+  have a section with all the links that is specific to org mode. This
+  means that from the product file we could have links to all org
+  files in a project.
+
+*** COMPLETED Features as transformations: A generative approach to software development
+    CLOSED: [2020-07-12 Sun 16:37]
+    :LOGBOOK:
+    CLOCK: [2020-07-12 Sun 15:31]--[2020-07-12 Sun 16:37] =>  1:06
+    :END:
+
+- Paper: Vranić, Valentino, and Roman Táborský. "Features as
+  transformations: A generative approach to software development."
+  Computer Science and Information Systems 13.3 (2016): 759-778.
+- Link: https://pdfs.semanticscholar.org/7f20/ee0ef94ba20161611c2ae184e6040f9d2fe1.pdf?_ga=2.47007141.386256099.1594564659-1149343892.1591869910
+
+** Deprecated

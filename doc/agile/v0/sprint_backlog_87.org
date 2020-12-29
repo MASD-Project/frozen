@@ -1,0 +1,880 @@
+#+title: Sprint Backlog 87
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- finish working on remaining formattables.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-09-12 Mon 08:34]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *59:32* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 59:32   |       |      | 100.0 |
+| Active                                                                      |         | 59:32 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 1:27 |   2.4 |
+| COMPLETED Move readme to markdown                                           |         |       | 0:49 |   1.4 |
+| COMPLETED Use =element= base class in  =update_element=                     |         |       | 0:29 |   0.8 |
+| COMPLETED Move file instantiation code into yarn                            |         |       | 2:22 |   4.0 |
+| COMPLETED Yarn naming tidy-up                                               |         |       | 4:19 |   7.3 |
+| COMPLETED Generalisation tidy-up                                            |         |       | 5:07 |   8.6 |
+| COMPLETED Create an indexer for resolution data                             |         |       | 1:38 |   2.7 |
+| COMPLETED First chat with IS about current state of dogen                   |         |       | 1:57 |   3.3 |
+| COMPLETED Extend name builder with required functionality                   |         |       | 1:28 |   2.5 |
+| COMPLETED Consider adding support for inheritance via meta-data             |         |       | 4:55 |   8.3 |
+| CANCELLED Pick-up Boost 1.61 from Debian Testing                            |         |       | 1:23 |   2.3 |
+| COMPLETED Allow cross model inheritance                                     |         |       | 1:09 |   1.9 |
+| COMPLETED Add support for visitor inheritance                               |         |       | 7:27 |  12.5 |
+| COMPLETED Move visitor =accept= methods to cpp file                         |         |       | 0:41 |   1.1 |
+| COMPLETED Analysis work on implementing remaining yarn types                |         |       | 0:52 |   1.5 |
+| COMPLETED Split injector into separate classes                              |         |       | 0:56 |   1.6 |
+| COMPLETED Add injector interface and registrar                              |         |       | 1:02 |   1.7 |
+| COMPLETED Analysis: supporting multiple elements for one id                 |         |       | 1:12 |   2.0 |
+| COMPLETED Add language-specific element injection                           |         |       | 0:41 |   1.1 |
+| COMPLETED Implement includers in fabric                                     |         |       | 6:10 |  10.4 |
+| COMPLETED Quilt's formatter names are incorrect                             |         |       | 0:41 |   1.1 |
+| COMPLETED Implement registrar in fabric                                     |         |       | 3:27 |   5.8 |
+| COMPLETED Move injection to intermediate model                              |         |       | 1:30 |   2.5 |
+| COMPLETED Use a list in model rather than a map                             |         |       | 1:38 |   2.7 |
+| COMPLETED Track down =quilt.cpp= generation bug                             |         |       | 3:35 |   6.0 |
+| COMPLETED Introduce the notion of composite elements                        |         |       | 0:54 |   1.5 |
+| COMPLETED Implement forward declarations in fabric                          |         |       | 1:43 |   2.9 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-09-12 Mon 08:29]
+    CLOCK: [2016-09-11 Sun 23:03]--[2016-09-11 Sun 23:05] =>  0:02
+    CLOCK: [2016-09-11 Sun 09:31]--[2016-09-11 Sun 09:41] =>  0:10
+    CLOCK: [2016-09-11 Sun 09:12]--[2016-09-11 Sun 09:30] =>  0:18
+    CLOCK: [2016-09-08 Thu 21:39]--[2016-09-08 Thu 21:41] =>  0:02
+    CLOCK: [2016-09-08 Thu 21:23]--[2016-09-08 Thu 21:26] =>  0:03
+    CLOCK: [2016-09-05 Mon 22:00]--[2016-09-05 Mon 22:33] =>  0:33
+    CLOCK: [2016-09-01 Thu 18:01]--[2016-09-01 Thu 18:20] =>  0:19
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Move readme to markdown                                 :story:
+    CLOSED: [2016-09-01 Thu 18:53]
+    CLOCK: [2016-09-01 Thu 21:02]--[2016-09-01 Thu 21:13] =>  0:11
+    CLOCK: [2016-09-01 Thu 18:54]--[2016-09-01 Thu 19:01] =>  0:07
+    CLOCK: [2016-09-01 Thu 18:45]--[2016-09-01 Thu 18:53] =>  0:08
+    CLOCK: [2016-09-01 Thu 18:21]--[2016-09-01 Thu 18:44] =>  0:23
+
+We are reaching the limits of what we can do with org-mode for the
+README file. We should just bite the bullet and move to markdown.
+
+*** COMPLETED Use =element= base class in  =update_element=           :story:
+    CLOSED: [2016-09-02 Fri 08:34]
+    CLOCK: [2016-09-02 Fri 08:05]--[2016-09-02 Fri 08:34] =>  0:29
+
+In =yarn.dia=:
+
+- update element should make use of the element base class.
+- merge to value object with to service.
+
+*** COMPLETED Move file instantiation code into yarn                  :story:
+    CLOSED: [2016-09-02 Fri 12:35]
+    CLOCK: [2016-09-02 Fri 12:12]--[2016-09-02 Fri 12:35] =>  0:23
+    CLOCK: [2016-09-02 Fri 12:01]--[2016-09-02 Fri 12:11] =>  0:10
+    CLOCK: [2016-09-02 Fri 11:01]--[2016-09-02 Fri 12:00] =>  0:59
+    CLOCK: [2016-09-02 Fri 09:32]--[2016-09-02 Fri 09:47] =>  0:15
+    CLOCK: [2016-09-02 Fri 08:35]--[2016-09-02 Fri 09:10] =>  0:35
+
+At present =knit::workflow= handles the generation of the input
+descriptors. We should create a class in =yarn= that takes a set of
+directories and file paths and does the instantiation. We should then
+make use of this class in the yarn workflow. All the code is under
+=obtain_input_descriptors_activity=. It must be trivial to figure out
+where we are in the pipeline by looking at the log file.
+
+*** COMPLETED Yarn naming tidy-up                                     :story:
+    CLOSED: [2016-09-02 Fri 17:11]
+    CLOCK: [2016-09-02 Fri 16:57]--[2016-09-02 Fri 17:11] =>  0:14
+    CLOCK: [2016-09-02 Fri 16:30]--[2016-09-02 Fri 16:56] =>  0:26
+    CLOCK: [2016-09-02 Fri 15:22]--[2016-09-02 Fri 16:00] =>  1:25
+    CLOCK: [2016-09-02 Fri 14:52]--[2016-09-02 Fri 15:21] =>  0:29
+    CLOCK: [2016-09-02 Fri 14:16]--[2016-09-02 Fri 14:51] =>  0:35
+    CLOCK: [2016-09-02 Fri 13:53]--[2016-09-02 Fri 14:15] =>  0:22
+    CLOCK: [2016-09-02 Fri 13:42]--[2016-09-02 Fri 13:52] =>  0:10
+    CLOCK: [2016-09-02 Fri 13:28]--[2016-09-02 Fri 13:42] =>  0:14
+    CLOCK: [2016-09-02 Fri 12:36]--[2016-09-02 Fri 12:55] =>  0:19
+    CLOCK: [2016-09-01 Thu 22:21]--[2016-09-01 Thu 23:13] =>  0:52
+
+Originally we created a clear distinction between expanders and
+indexers. In truth these are not particularly good names since
+indexers actually "expand" the objects they touch, adding missing
+data. We could call them all expanders, but then this just highlights
+the fact that something is not quite right with naming.
+
+In practice, we have:
+
+- a set of classes that act on the model before it is merged (and the
+  workflow that binds them);
+- the merging;
+- a set of classes that act on the model after it is merged (and the
+  workflow that binds them);
+- the top-level workflow that joins these.
+
+We should:
+
+- rename all of these types to "processor". Not a great name, but at
+  least it lies less than indexer and expander. Actually between
+  processor and expander there is probably little gain. Rename all to
+  expander.
+- rename the workflows to =pre_merge_workflow= and
+  =post_merge_workflow=.
+- rename input descriptor to just descriptor.
+- rename =frontend_workflow= to =descriptor_processor= and add it to
+  the pre-merge workflow.
+- implement the main workflow in terms of these sub-workflows.
+- move frontend registrar to workflow.
+
+*** COMPLETED Generalisation tidy-up                                  :story:
+    CLOSED: [2016-09-03 Sat 23:43]
+    CLOCK: [2016-09-03 Sat 23:31]--[2016-09-03 Sat 23:41] =>  0:10
+    CLOCK: [2016-09-03 Sat 23:24]--[2016-09-03 Sat 23:30] =>  0:06
+    CLOCK: [2016-09-03 Sat 23:20]--[2016-09-03 Sat 23:23] =>  0:03
+    CLOCK: [2016-09-03 Sat 23:12]--[2016-09-03 Sat 23:19] =>  0:07
+    CLOCK: [2016-09-03 Sat 22:56]--[2016-09-03 Sat 23:11] =>  0:15
+    CLOCK: [2016-09-03 Sat 22:53]--[2016-09-03 Sat 22:55] =>  0:02
+    CLOCK: [2016-09-03 Sat 22:45]--[2016-09-03 Sat 22:52] =>  0:07
+    CLOCK: [2016-09-03 Sat 21:05]--[2016-09-03 Sat 22:44] =>  1:39
+    CLOCK: [2016-09-02 Fri 23:52]--[2016-09-03 Sat 00:03] =>  0:11
+    CLOCK: [2016-09-02 Fri 22:20]--[2016-09-02 Fri 23:51] =>  1:31
+    CLOCK: [2016-09-02 Fri 22:02]--[2016-09-02 Fri 22:19] =>  0:17
+    CLOCK: [2016-09-02 Fri 17:47]--[2016-09-02 Fri 17:52] =>  0:05
+    CLOCK: [2016-09-02 Fri 17:12]--[2016-09-02 Fri 17:46] =>  0:34
+
+Since we are touching some of the older generalisation code, we should
+take this opportunity to do a few clean-ups:
+
+- add a is leaf property.
+- compute is parent and is child in yarn.
+- move validation code from =yarn.dia= into yarn. We don't have a
+  validator yet, so maybe it can go into the indexers.
+
+Rework generalisation code:
+
+- first pass: store parents.
+- second pass:
+  - set is child if has parent.
+  - if in parent map set is parent.
+  - if is child and not is parent, set is leaf.
+  - if is leaf, recurse to find original parent - do not recurse if
+    original parent already set. if is leaf, add leaves to container
+    against original parent.
+  - set in_inheritance_relationship.
+- third pass: populate leaves
+
+Notes:
+
+- attempted to convert leaves to set - bad idea. We want lists to
+  stabilise order. However, at present we are sorting the lists. This
+  needs to be looked at.
+
+*** COMPLETED Create an indexer for resolution data                   :story:
+    CLOSED: [2016-09-04 Sun 22:55]
+    CLOCK: [2016-09-04 Sun 22:32]--[2016-09-04 Sun 22:55] =>  0:23
+    CLOCK: [2016-09-04 Sun 22:24]--[2016-09-04 Sun 22:31] =>  0:07
+    CLOCK: [2016-09-04 Sun 21:45]--[2016-09-04 Sun 21:55] =>  0:10
+    CLOCK: [2016-09-04 Sun 21:25]--[2016-09-04 Sun 21:44] =>  0:19
+    CLOCK: [2016-09-04 Sun 09:00]--[2016-09-04 Sun 09:07] =>  0:07
+    CLOCK: [2016-09-04 Sun 08:42]--[2016-09-04 Sun 08:59] =>  0:17
+    CLOCK: [2016-09-04 Sun 08:26]--[2016-09-04 Sun 08:41] =>  0:15
+
+Now we need to use resolver in multiple places, it makes sense to
+cache the resolver indices in the intermediate model. This could be
+done by an indexer. We could make this the first step post-merge. We
+should probably only cache indices that are reused across expanders.
+
+indices
+
+*** COMPLETED First chat with IS about current state of dogen         :story:
+    CLOSED: [2016-09-05 Mon 13:07]
+    CLOCK: [2016-09-05 Mon 11:16]--[2016-09-05 Mon 13:13] =>  1:57
+
+- state of the world in windows builds, etc.
+- agile: backlog, current sprint.
+- how the process works (GitHub, PRs, etc.
+- objectives: get windows at the same level as linux, all tests
+  passing, documentation, easy build experience.
+
+*** COMPLETED Extend name builder with required functionality         :story:
+    CLOSED: [2016-09-05 Mon 22:40]
+    CLOCK: [2016-09-05 Mon 22:33]--[2016-09-05 Mon 22:40] =>  0:07
+    CLOCK: [2016-09-05 Mon 21:47]--[2016-09-05 Mon 21:59] =>  0:12
+    CLOCK: [2016-09-05 Mon 21:35]--[2016-09-05 Mon 21:46] =>  0:11
+    CLOCK: [2016-09-05 Mon 21:06]--[2016-09-05 Mon 21:34] =>  0:28
+    CLOCK: [2016-09-04 Sun 22:56]--[2016-09-04 Sun 23:26] =>  0:30
+
+We need the ability to take in a scope delimited string and convert it
+into a name. We could use the name tree parser for this but its
+overkill. We need to split out the name building functionality from
+the name tree builder as we need to reuse it. We probably should add
+an API to name builder that takes in a list of strings and performs
+the heuristics done in name tree builder.
+
+Tasks:
+
+- move top-level model names to indices, and make use of new index.
+- move code in finish_current_node to name builder and make use of
+  name builder in name tree builder. Function takes in an intermediate
+  model and a list of strings.
+
+Actually this approach won't work. The problem is this: A defines type
+a, b in B inherits from a, c in C inherits from b; target is C. In
+this case, we will not resolve type =a= correctly in cases where we
+rely on top-level module names. This is because we have already merged
+the model. For this to work we would have to use the name builder
+prior to merging. This could be done maybe by renaming
+=local_attributes_expander= to =parsing_expander= (?) or something
+equally generic, and ensuring meta-data expansion takes place
+beforehand. This approach would mean we would have the same level of
+support for parent names as we have for attributes, which is
+encouraging since attributes support cross-model references without a
+problem.
+
+Tasks:
+
+- rename =local_attributes_expander= to =parsing_expander=
+- rename =all_attributes_expander= to =attributes_expander=
+- move handling of fluency and immutability to the attributes
+  expander.
+- move code in =finish_current_node= to name builder and make use of
+  name builder in name tree builder. Function takes in model name, top
+  level modules and a list of strings and returns a name.
+- create a =name_parser= that splits a string based on a separator and
+  then calls name builder. For now hard-code the splitter to the scope
+  operator =::=. Actually, since we are already doing some basic
+  splitting for the model name method (in =name_builder=) we should
+  hijack the class some more and support a splitting build method
+  directly. One less class to add.
+
+*** COMPLETED Add support for user defined final types                :story:
+    CLOSED: [2016-09-05 Mon 23:41]
+
+*Rationale*: Completed as part of work in this sprint.
+
+At some point we started talking about the possibility of having types
+defined as final by the user, via dynamic extensions. This was to be
+done using =dia.is_final=. We never did implement it properly.
+
+- define attribute in dia to sml
+- use it to update =is_final= in sml
+
+*** COMPLETED Consider adding support for inheritance via meta-data   :story:
+    CLOSED: [2016-09-06 Tue 10:28]
+    CLOCK: [2016-09-06 Tue 10:43]--[2016-09-06 Tue 10:48] =>  0:05
+    CLOCK: [2016-09-06 Tue 10:36]--[2016-09-06 Tue 10:42] =>  0:06
+    CLOCK: [2016-09-06 Tue 10:29]--[2016-09-06 Tue 10:35] =>  0:06
+    CLOCK: [2016-09-06 Tue 09:24]--[2016-09-06 Tue 10:28] =>  1:04
+    CLOCK: [2016-09-06 Tue 09:17]--[2016-09-06 Tue 09:23] =>  0:06
+    CLOCK: [2016-09-06 Tue 08:11]--[2016-09-06 Tue 09:16] =>  1:05
+    CLOCK: [2016-09-05 Mon 23:17]--[2016-09-05 Mon 23:46] =>  0:29
+    CLOCK: [2016-09-05 Mon 23:13]--[2016-09-05 Mon 23:16] =>  0:03
+    CLOCK: [2016-09-05 Mon 22:57]--[2016-09-05 Mon 23:12] =>  0:15
+    CLOCK: [2016-09-05 Mon 22:48]--[2016-09-05 Mon 22:56] =>  0:08
+    CLOCK: [2016-09-05 Mon 22:41]--[2016-09-05 Mon 22:47] =>  0:06
+    CLOCK: [2016-09-03 Sat 23:54]--[2016-09-03 Sat 23:59] =>  0:05
+    CLOCK: [2016-09-03 Sat 23:42]--[2016-09-03 Sat 23:53] =>  0:11
+    CLOCK: [2016-09-01 Thu 21:14]--[2016-09-01 Thu 22:20] =>  1:06
+
+In certain cases it may not be possible to add all inheritance
+relationships in a diagram; this is the case with =formatters= in
+=cpp=. There are just too many classes implementing the
+=formatter_interface= and the diagram would become too messy if we
+added generalisation relationships for them all. This would also be
+the case with inheritance for exceptions in a lot of cases.
+
+We got away with it so far because we are not generating formatter
+interfaces, but one can imagine having the same problem with
+generatable types. It would be nice if one could add a meta-data
+parameter to the class to convey inheritance information, like so:
+
+: #DOGEN yarn.parent=x.y.z
+
+The notation for the parent as well as the name of the tag needs to be
+thought through.
+
+This means we can also inherit across models. See Allow cross model
+inheritance.
+
+Tasks:
+
+- add new fields;
+- add machinery to read in field in yarn's generalisation indexer;
+  actually this is a bit of a hack. It makes more sense to do this
+  during settings expansion.
+- add test in trivial inheritance.
+
+**** Bad Ideas
+
+One very interesting way of doing this is via stereotypes. We could
+extend the meta-model with a stereotype called =TypeReference=. We
+would need support for qualified names as well, so for instance in
+model =a= one could declare a class called =b::c= with =TypeReference=
+and that would tell Dogen that this is not a new declaration of =c=
+but a reference to an existing declaration in model =a=. This would
+also make it clear from a UML perspective that inheritance is being
+used. The class =b::c= in model =a= would be empty.
+
+This is not a very good idea as it will just cause confusion and it
+will require machinery to place the type in the right point in element
+space.
+
+*** CANCELLED Pick-up Boost 1.61 from Debian Testing                  :story:
+    CLOSED: [2016-09-06 Tue 11:45]
+    CLOCK: [2016-09-06 Tue 11:45]--[2016-09-06 Tue 12:12] =>  0:27
+    CLOCK: [2016-09-06 Tue 10:49]--[2016-09-06 Tue 11:45] =>  0:56
+
+At present we have a locally compiled boost because Debian Testing was
+stuck on an old version for a long time. However, it seems Boost 1.61
+is now out. We should try using this instead of our local Boost.
+
+Boost 1.61 in Debian Testing still has problems with adjacency
+list. It seems this is fixed in trunk, so maybe it will be fixed on
+1.62. We will wait for this rather than manually patching debian
+packages, etc.
+
+Mail sent to mailing list to clarify the situation:
+
+[[http://lists.boost.org/boost-users/2016/09/86527.php][{Boost-users} {boost}{graph} Support for C++11 on adjacency list]]
+
+*** COMPLETED Allow cross model inheritance                           :story:
+    CLOSED: [2016-09-06 Tue 20:37]
+    CLOCK: [2016-09-06 Tue 21:05]--[2016-09-06 Tue 21:14] =>  0:09
+    CLOCK: [2016-09-06 Tue 20:38]--[2016-09-06 Tue 21:04] =>  0:26
+    CLOCK: [2016-09-06 Tue 20:30]--[2016-09-06 Tue 20:37] =>  0:07
+    CLOCK: [2016-09-06 Tue 20:02]--[2016-09-06 Tue 20:29] =>  0:27
+
+#+begin_quote
+*Story*: As a dogen user, I want to inherit types from existing models
+so that I can extend them.
+#+end_quote
+
+At present we can only inherit within the same model. This is a
+limitation of how to express inheritance in a Dia diagram - either the
+parent is part of that diagram or it is not, and if it's not we have
+no way of connecting the generalisation relationship to it.
+
+The bulk of the work has already been done with inheritance via
+meta-data. This story is about testing cross-model inheritance and
+fixing where required. It does not include the visitor work (see other
+story below).
+
+*Previous Understanding*
+
+Having said that, it would actually be quite simple to allow cross
+model inheritance by using dynamic extensions:
+
+- create a field that forces a type to behave like a parent,
+  regardless of whether there are any children or not; the key
+  problems seems to be that childless types are final.
+- create a field that contains a qualified name of a parent,
+  regardless of whether it's in this model or not;
+- change the transformer to convert these fields into yarn inheritance
+  relationships.
+
+There may be some fallout in places where we assume that the
+descendants are all in this model such as serialisation, visitors.
+
+Now that we have =is_final= in yarn, we should check when adding cross
+model inheritance that the type we have inherited from is not
+final. This may just be part of the validator's work.
+
+We should also generate "augmented" visitors automatically with the
+new types.
+
+The biggest problem with this is name resolution. Up to now this
+hadn't been a problem because we could rely on the parent name being
+resolvable. However, once we add cross-model inheritance, the parent
+name is no longer resolvable directly (unless we stipulate that the
+external module path must be the same for all models).
+
+*** COMPLETED Add support for visitor inheritance                     :story:
+    CLOSED: [2016-09-07 Wed 22:54]
+    CLOCK: [2016-09-07 Wed 22:14]--[2016-09-07 Wed 22:54] =>  0:40
+    CLOCK: [2016-09-07 Wed 21:14]--[2016-09-07 Wed 22:13] =>  0:59
+    CLOCK: [2016-09-07 Wed 21:02]--[2016-09-07 Wed 21:13] =>  0:11
+    CLOCK: [2016-09-07 Wed 20:39]--[2016-09-07 Wed 21:01] =>  0:22
+    CLOCK: [2016-09-07 Wed 20:02]--[2016-09-07 Wed 20:38] =>  0:36
+    CLOCK: [2016-09-07 Wed 18:01]--[2016-09-07 Wed 18:06] =>  0:05
+    CLOCK: [2016-09-07 Wed 17:27]--[2016-09-07 Wed 18:00] =>  0:33
+    CLOCK: [2016-09-07 Wed 11:32]--[2016-09-07 Wed 12:42] =>  1:10
+    CLOCK: [2016-09-07 Wed 10:53]--[2016-09-07 Wed 11:04] =>  0:11
+    CLOCK: [2016-09-07 Wed 10:28]--[2016-09-07 Wed 10:52] =>  0:24
+    CLOCK: [2016-09-07 Wed 10:07]--[2016-09-07 Wed 10:27] =>  0:20
+    CLOCK: [2016-09-07 Wed 09:58]--[2016-09-07 Wed 10:06] =>  0:08
+    CLOCK: [2016-09-07 Wed 09:02]--[2016-09-07 Wed 09:57] =>  0:55
+    CLOCK: [2016-09-06 Tue 22:04]--[2016-09-06 Tue 22:28] =>  0:24
+    CLOCK: [2016-09-06 Tue 21:33]--[2016-09-06 Tue 21:45] =>  0:12
+    CLOCK: [2016-09-06 Tue 21:15]--[2016-09-06 Tue 21:32] =>  0:17
+
+We need to detect when we inherit from a visitable type across models
+and generate a "local visitor" for that model.
+
+- add parent of optional name to visitor.
+- when we are injecting the visitor, we need to bucket leaves by model
+  first. Then we need to generate one visitor per bucket.
+- we need to populate visitable by in this bucketed way as well.
+- all leaves that belong to external models must be placed in the same
+  location on that model. Throw if not.
+- update include generation to take visitor parent into account.
+- update visitor template to detect external visitation and inherit
+  accordingly.
+
+- make visitor fully qualified in accepts and add include for visitor
+  if its not from the base class. This will be hard to
+  determine. Perhaps we can hack it and check for a parent in visitor.
+- add include for parent in visitor.
+
+*** COMPLETED Include forward declaration in visitable types          :story:
+    CLOSED: [2016-09-07 Wed 22:55]
+
+*Rationale*: implemented as part of visitor refactor. Note though
+that this is only applicable to the base class as we are inlining
+these methods.
+
+There doesn't seem to be any good reason to include the full visitor
+header in visitable types - we should be able to get away with
+including only the forward declaration for the visitor.
+
+This is actually fairly important because every time we change the
+visitor template, we end up rebuilding 350-odd files for no
+reason. This wouldn't happen if we were using forward declarations.
+
+*** COMPLETED Move visitor =accept= methods to cpp file               :story:
+    CLOSED: [2016-09-07 Wed 23:20]
+    CLOCK: [2016-09-07 Wed 23:32]--[2016-09-07 Wed 23:39] =>  0:07
+    CLOCK: [2016-09-07 Wed 23:21]--[2016-09-07 Wed 23:31] =>  0:10
+    CLOCK: [2016-09-07 Wed 22:56]--[2016-09-07 Wed 23:20] =>  0:24
+
+At present we are declaring the visitor =accept= methods inline purely
+because it was easier to code generate that way. But it makes little
+sense to inline virtual methods, and we are paying the cost of large
+rebuilds whenever the visitor changes, for no good reason. Move these
+methods to the implementation.
+
+*** COMPLETED Analysis work on implementing remaining yarn types      :story:
+    CLOSED: [2016-09-08 Thu 09:07]
+    CLOCK: [2016-09-08 Thu 08:15]--[2016-09-08 Thu 09:07] =>  0:52
+
+Types left:
+
+- forward declarations: these are generated off of a yarn model by
+  transformer. Do not require any work in =quilt.cpp=.
+- registrar: generated in factory. Does not seem to require anything
+  else other than the yarn model.
+- includers: created in factory at the moment. Can be generated at the
+  start from a clean yarn model. However, we need to change the
+  properties logic for every type such that they register themselves
+  against the correct includer.
+- cmakelists: created in factory. Great deal of hackery to determine
+  the source and include directories and the ODB folder. Ideally
+  these should be part of properties somehow.
+- odb_options: created in factory. Great deal of hackery; most
+  information should be in properties rather than in this class.
+
+In conclusion, there is no reason (as far as =quilt.cpp= goes) we
+can't create a "injector interface" and allow backends to register
+their injectors; this means these types would then go through the
+remaining yarn workflow. We don't have a use case for this at present
+but it seems like the right thing to do.
+
+Tasks:
+
+- split injector into stereotypes expander and containement expander.
+- create a new injector that takes in injection sources. These
+  register against the main workflow.
+- add injection to model after transformation.
+- rename fabric to yarn and implement the =quilt.cpp= injection
+  source.
+- move model flattening from fabric workflow to main workflow.
+
+*** COMPLETED Split injector into separate classes                    :story:
+    CLOSED: [2016-09-08 Thu 10:07]
+    CLOCK: [2016-09-08 Thu 09:50]--[2016-09-08 Thu 10:07] =>  0:17
+    CLOCK: [2016-09-08 Thu 09:38]--[2016-09-08 Thu 09:49] =>  0:11
+    CLOCK: [2016-09-08 Thu 09:33]--[2016-09-08 Thu 09:37] =>  0:04
+    CLOCK: [2016-09-08 Thu 09:08]--[2016-09-08 Thu 09:32] =>  0:24
+
+We need to free up the name injector. Split it into:
+
+- stereotypes expander: visitor work at present;
+- containement expander: global module work.
+
+Leave injector as an empty class.
+
+*** COMPLETED Add injector interface and registrar                    :story:
+    CLOSED: [2016-09-08 Thu 11:14]
+    CLOCK: [2016-09-08 Thu 11:12]--[2016-09-08 Thu 11:14] =>  0:02
+    CLOCK: [2016-09-08 Thu 11:02]--[2016-09-08 Thu 11:11] =>  0:09
+    CLOCK: [2016-09-08 Thu 10:28]--[2016-09-08 Thu 11:01] =>  0:33
+    CLOCK: [2016-09-08 Thu 10:23]--[2016-09-08 Thu 10:27] =>  0:04
+    CLOCK: [2016-09-08 Thu 10:08]--[2016-09-08 Thu 10:22] =>  0:14
+
+Tasks:
+
+- rename injector to =injection_expander=.
+- create an =injection_interface= and =injection_registrar=, owned by
+  the main workflow.
+- supply registrar to injection expander. Expander goes through all
+  injectors.
+
+*** COMPLETED Analysis: supporting multiple elements for one id       :story:
+    CLOSED: [2016-09-08 Thu 21:22]
+    CLOCK: [2016-09-08 Thu 21:01]--[2016-09-08 Thu 21:22] =>  0:21
+    CLOCK: [2016-09-08 Thu 20:09]--[2016-09-08 Thu 21:00] =>  0:51
+
+Up to now we defined an id of an element to map to a single element;
+this was a key axiom of yarn's conceptual model. However, we've hit a
+limitation with forward declarations: a forward declaration introduces
+a second modeling element for the same id. If we were to use a
+different id then the properties generation (and the formatter) would
+be incorrect. We could of course try to supply the existing modeling
+element to the formatters that generate forward declarations. The
+problem with this approach is that we just want a single formatter for
+all forward declarations rather than one per element type (visitor,
+object, etc). This has not been a problem up to now because, where
+multiple formatters exist for the same modeling element (and facet),
+they actually require all the data on the modeling element
+(e.g. header/implementation).
+
+We could update yarn's conceptual model like so: an entity has a
+unique identity in modeling space. An entity can map to multiple
+representations in modeling space, called elements. An elements can
+map to multiple representations in formatting space via the different
+formatting functions; a formatting function maps an element to a
+file. One can also conceive a kind of formatting function that maps
+multiple elements into a file.
+
+As it happens we could simply change the model's container to a list
+instead of a map, allowing multiple elements to map to the same
+id. This will just break a couple of use cases:
+
+- factory for includer generation; this is just due to the hacks we
+  put in.
+- path derivatives factory: we are trying to figure out if a name is a
+  model name. We could add an index to the model for this.
+
+With this approach we don't need to make this change too visible as it
+is likely to just cause confusion.
+
+*** COMPLETED Add language-specific element injection                 :story:
+    CLOSED: [2016-09-08 Thu 21:22]
+    CLOCK: [2016-09-08 Thu 11:44]--[2016-09-08 Thu 11:58] =>  0:14
+    CLOCK: [2016-09-08 Thu 11:37]--[2016-09-08 Thu 11:43] =>  0:06
+    CLOCK: [2016-09-08 Thu 11:33]--[2016-09-08 Thu 11:36] =>  0:03
+    CLOCK: [2016-09-08 Thu 11:14]--[2016-09-08 Thu 11:32] =>  0:18
+
+We need to create a factory that adds =quilt.cpp= specific elements
+into the yarn model.
+
+Tasks:
+
+- delete fabric workflow and flatten model in main workflow.
+- rename fabric to yarn: actually this results in a huge number of
+  naming errors all across properties. We'd have to fully qualify all
+  uses of the name yarn in order for this to work (which is what we
+  did for formatters). The biggest problem comes from the includers
+  (=all.hpp=). We need to keep fabric.
+- add forward declarations.
+- add injector interface that injects forward declarations.
+
+*** COMPLETED Implement includers in fabric                           :story:
+    CLOSED: [2016-09-09 Fri 21:28]
+    CLOCK: [2016-09-09 Fri 21:08]--[2016-09-09 Fri 21:28] =>  0:20
+    CLOCK: [2016-09-09 Fri 20:22]--[2016-09-09 Fri 21:07] =>  0:45
+    CLOCK: [2016-09-09 Fri 12:04]--[2016-09-09 Fri 12:06] =>  0:02
+    CLOCK: [2016-09-09 Fri 11:50]--[2016-09-09 Fri 12:03] =>  0:13
+    CLOCK: [2016-09-09 Fri 11:10]--[2016-09-09 Fri 11:49] =>  0:39
+    CLOCK: [2016-09-09 Fri 10:16]--[2016-09-09 Fri 11:10] =>  0:54
+    CLOCK: [2016-09-09 Fri 09:15]--[2016-09-09 Fri 10:15] =>  1:00
+    CLOCK: [2016-09-09 Fri 08:50]--[2016-09-09 Fri 09:14] =>  0:24
+    CLOCK: [2016-09-09 Fri 08:15]--[2016-09-09 Fri 08:49] =>  0:34
+    CLOCK: [2016-09-08 Thu 22:40]--[2016-09-08 Thu 22:49] =>  0:09
+    CLOCK: [2016-09-08 Thu 21:41]--[2016-09-08 Thu 22:39] =>  0:58
+    CLOCK: [2016-09-08 Thu 21:27]--[2016-09-08 Thu 21:39] =>  0:12
+
+We need to get rid of the hack in factory and implement these
+correctly. We should take the opportunity and review all the includer
+stories in backlog.
+
+We could add a type that keeps track of interesting elements (visitor,
+object, etc). We could also keep track of formatters per facet: given
+a type like say visitor, go through all the visitor formatters and
+record their names and facets. We could even have a "contribute to
+master includer" method in the formatter so that forward declarations
+and class implementation etc can return false. Alternatively, filter
+out formatters that are not cpp headers.
+
+Overall approach:
+
+- create an element named after the master header (=all=?).
+- add all types that we are interested in including to the master
+  header during its generation - i.e. filter by element types via
+  visitation. For now we can only do yarn types but presumably in the
+  future we can also include registrar.
+- obtain access to the formatter container. This will have to be done
+  by accessing =formatters::workflow::registrar()= directly as there
+  is no sensible way of supplying it as an argument, given that the
+  injector is registering against yarn.
+- for each type we're interested in, get the set of formatters and
+  their facet. Filter by formatters that contribute to master includer
+  (formatters that are headers should suffice). Build a map of facet
+  => (formatter, list of names).
+- during inclusion provision, get all the names for the current facet
+  as determined by the includers formatter facet instance; this is set
+  on construction of the formatter but we don't seem to have a way to
+  access it during inclusion provision.
+
+Tasks:
+
+- rename to master includes or master headers
+
+We have now made use of the new master headers but however we seem to
+be still relying on the old formatter properties being computed inside
+of factory. We need to figure out why the formatter properties are not
+being computed for master includer.
+
+Merged stories:
+
+*Tidy-up master include generation*
+
+At present we have one humongous hack in the factory to generate the
+master includers. How to do this properly:
+
+- wait until we start using yarn types.
+- loop through the yarn model instead of the path derivatives.
+- use a visitor to dispatch the types.
+- do not filter out services?
+- filter registrars etc based on type dispatching.
+
+*Consider renaming includers*
+
+Its very confusing to have header files that include lots of other
+header files called "includers". There is too much overloading. We
+should consider calling them "master header files" as per Schaling
+terminology in the [[http://theboostcpplibraries.com/boost.spirit][boost book]].
+
+*** COMPLETED Quilt's formatter names are incorrect                   :story:
+    CLOSED: [2016-09-09 Fri 22:09]
+    CLOCK: [2016-09-09 Fri 22:10]--[2016-09-09 Fri 22:12] =>  0:02
+    CLOCK: [2016-09-09 Fri 21:55]--[2016-09-09 Fri 22:09] =>  0:14
+    CLOCK: [2016-09-09 Fri 21:29]--[2016-09-09 Fri 21:54] =>  0:25
+
+Originally we had named the formatter interfaces after the quilt types
+(class, enum, etc). After the change to use yarn types, we forgot to
+update the formatter names to match the yarn types.
+
+*** COMPLETED Implement registrar in fabric                           :story:
+    CLOSED: [2016-09-10 Sat 14:50]
+    CLOCK: [2016-09-10 Sat 14:00]--[2016-09-10 Sat 14:52] =>  0:52
+    CLOCK: [2016-09-10 Sat 13:24]--[2016-09-10 Sat 13:59] =>  0:35
+    CLOCK: [2016-09-10 Sat 00:00]--[2016-09-10 Sat 00:14] =>  0:14
+    CLOCK: [2016-09-09 Fri 23:14]--[2016-09-09 Fri 23:59] =>  0:45
+    CLOCK: [2016-09-09 Fri 23:00]--[2016-09-09 Fri 23:13] =>  0:13
+    CLOCK: [2016-09-09 Fri 22:57]--[2016-09-09 Fri 22:59] =>  0:02
+    CLOCK: [2016-09-09 Fri 22:10]--[2016-09-09 Fri 22:56] =>  0:46
+
+We need to move registrar info into fabric.
+
+*** COMPLETED Move injection to intermediate model                    :story:
+    CLOSED: [2016-09-10 Sat 17:04]
+    CLOCK: [2016-09-10 Sat 17:05]--[2016-09-10 Sat 17:09] =>  0:04
+    CLOCK: [2016-09-10 Sat 16:48]--[2016-09-10 Sat 17:04] =>  0:16
+    CLOCK: [2016-09-10 Sat 16:06]--[2016-09-10 Sat 16:47] =>  0:41
+    CLOCK: [2016-09-10 Sat 16:02]--[2016-09-10 Sat 16:05] =>  0:03
+    CLOCK: [2016-09-10 Sat 15:44]--[2016-09-10 Sat 16:01] =>  0:17
+    CLOCK: [2016-09-10 Sat 15:34]--[2016-09-10 Sat 15:43] =>  0:09
+
+If we could inject types into the intermediate model we'd gain a few
+things for free:
+
+- no need for leaves and references in the final model - these are
+  only needed because of registrar generation.
+- no need to worry about duplicate ids across containers - final
+  transformation takes care of that.
+- access to indices and other transient data (no use case for this
+  just yet).
+
+We should implement this.
+
+Tasks:
+
+- add a =injected_types= container to intermediate model
+- change injection interface to use intermediate model and deal with
+  the injector fallout.
+- update transformer to take into account injected types.
+
+*** COMPLETED Use a list in model rather than a map                   :story:
+    CLOSED: [2016-09-10 Sat 18:49]
+    CLOCK: [2016-09-10 Sat 18:27]--[2016-09-10 Sat 18:49] =>  0:22
+    CLOCK: [2016-09-10 Sat 17:10]--[2016-09-10 Sat 17:47] =>  0:37
+    CLOCK: [2016-09-10 Sat 15:15]--[2016-09-10 Sat 15:33] =>  0:18
+    CLOCK: [2016-09-10 Sat 14:53]--[2016-09-10 Sat 15:14] =>  0:21
+
+Tasks:
+
+- add index for modules to allow path derivatives to figure out the
+  modules. Actually since no one else is using this, we should just
+  compute it on the fly for this class.
+- update yarn model and remove flattening in =quilt.cpp=. Although we
+  are also filtering with the flattening.
+- update all visitors in =quilt.cpp=.
+
+*** COMPLETED Track down =quilt.cpp= generation bug                   :story:
+    CLOSED: [2016-09-11 Sun 14:04]
+    CLOCK: [2016-09-11 Sun 14:05]--[2016-09-11 Sun 14:10] =>  0:05
+    CLOCK: [2016-09-11 Sun 13:55]--[2016-09-11 Sun 14:04] =>  0:09
+    CLOCK: [2016-09-11 Sun 12:54]--[2016-09-11 Sun 13:54] =>  1:00
+    CLOCK: [2016-09-11 Sun 11:54]--[2016-09-11 Sun 12:05] =>  0:11
+    CLOCK: [2016-09-11 Sun 11:23]--[2016-09-11 Sun 11:53] =>  0:30
+    CLOCK: [2016-09-11 Sun 09:42]--[2016-09-11 Sun 11:22] =>  1:40
+
+Once we introduced element's new flag, =quilt.cpp= stopped
+generating. This is due to an error in assistant:
+
+: 2016-09-11 09:45:53.763003 [ERROR] [quilt.cpp.formatters.assistant] Could not find qualified name for language.{ "__type__": "languages", "value": "cpp" }
+
+The problem seems to be that we are not generating the name tree's
+qualified name for non-target models. This is somehow a side-effect of
+allowing cross-model inheritance. What is not clear is why all other
+properties of element, obtained via concept refinement are not a
+problem.
+
+The root problem was that cross model references was not implemented
+properly. Due to the fact that a lot of the yarn pipeline was only
+processing the target model, we never did expand attributes inherited
+from other models correctly. This meant that the complete constructor
+was slicing types by calling the default constructor and not allowing
+users to supply base class properties:
+
+: master_header::master_header(const std::unordered_map<std::string, std::unordered_map<std::string, std::list<dogen::yarn::name> > >& inclusion_by_facet)
+:    : dogen::yarn::element(),
+:      inclusion_by_facet_(inclusion_by_facet) { }
+
+However, this was good enough for the tests and all code generation
+cases we had, so we didn't notice it.
+
+Once we introduced a property at the element level, this partial
+processing became a problem. This is because:
+
+- the local properties container of the parent located in an external
+  model was populated with the new property, as local properties do
+  not require additional yarn processing (i.e. irrespective of
+  external or target model they are always populated);
+- the descendant type thus obtained the parent's property via target
+  model attribute expansion;
+- however, the property did not go through resolution since it
+  belonged to an external model.
+
+The quick hack solution is to process all types including those from
+external models on the entire yarn pipeline and to fix the resolver to
+take into account the source of the attribute. This appears to
+increase the amount of work done in the yarn pipeline quite a bit.
+
+Finger in the air measurements:
+
+*Before*
+
+RAT:
+
+11:31:23 - 11:31:42: 19
+11:32:00 - 11:32:18: 18
+11:32:31 - 11:32:49: 18
+
+Knit tests:
+
+11:33:07 - 11:33:25: 18
+11:33:34 - 11:33:51: 17
+11:34:01 - 11:34:19: 18
+
+Knit all:
+
+11:34:32 - 11:34:42: 10
+11:35:03 - 11:35:12: 9
+11:35:26 - 11:35:36: 10
+
+*After*
+
+RAT:
+
+13:59:50 - 13:59:56: 6
+14:00:17 - 14:00:23: 6
+14:00:49 - 14:00:55: 6
+
+Knit tests:
+
+14:01:32 - 14:01:38: 6
+14:01:58 - 14:02:03: 5
+14:02:13 - 14:02:19: 6
+
+Knit all:
+
+14:02:33 - 14:02:37: 4
+14:02:59 - 14:03:03: 4
+14:03:15 - 14:03:20: 5
+
+This is extremely puzzling and counter-intuitive: we are (or should
+be) doing a lot more work now, but the performance went up
+dramatically. However, all tests pass and all models are generated
+correctly so we won't spend time investigating this.
+
+*** COMPLETED Introduce the notion of composite elements              :story:
+    CLOSED: [2016-09-11 Sun 14:34]
+    CLOCK: [2016-09-11 Sun 14:25]--[2016-09-11 Sun 14:32] =>  0:07
+    CLOCK: [2016-09-11 Sun 14:11]--[2016-09-11 Sun 14:24] =>  0:13
+    CLOCK: [2016-09-10 Sat 23:25]--[2016-09-10 Sat 23:26] =>  0:01
+    CLOCK: [2016-09-10 Sat 22:48]--[2016-09-10 Sat 22:57] =>  0:09
+    CLOCK: [2016-09-10 Sat 22:34]--[2016-09-10 Sat 22:47] =>  0:13
+    CLOCK: [2016-09-10 Sat 22:20]--[2016-09-10 Sat 22:31] =>  0:11
+
+One way to solve the forward declarations conundrum is to allow
+certain types of elements to be "sub-elements" all the way up to final
+model generation. At this point they can be unpacked. In element
+formatter we would have to loop through the composite elements and
+somehow visit these too.
+
+Perhaps we do not need to make composition so explicit. We could
+instead have a flag in element that signals this composition, and then
+allow duplicate id's during transformation for types with this flag
+set. This means that a) only injectable types can compose and b) there
+can be at most two elements for a given id, which is sufficient to
+satisfy the current use case.
+
+Names for the flag:
+
+- is specialisation: vaguely descriptive, but the problem is the
+  confusion with generalisation. These should ideally be related
+  terms rather than distinct concepts.
+- something evoking the idea of shadowing: subsidiary, complementary,
+  extends.
+
+Lets settle on =is_element_extension=. This avoids confusion with
+=extensions=.
+
+*** COMPLETED Implement forward declarations in fabric                :story:
+    CLOSED: [2016-09-11 Sun 23:03]
+    CLOCK: [2016-09-11 Sun 22:57]--[2016-09-11 Sun 23:03] =>  0:06
+    CLOCK: [2016-09-11 Sun 22:53]--[2016-09-11 Sun 22:56] =>  0:03
+    CLOCK: [2016-09-11 Sun 22:43]--[2016-09-11 Sun 22:52] =>  0:09
+    CLOCK: [2016-09-11 Sun 21:48]--[2016-09-11 Sun 22:42] =>  0:54
+    CLOCK: [2016-09-11 Sun 21:16]--[2016-09-11 Sun 21:47] =>  0:31
+
+Tasks:
+
+- visit the elements and generate forward declarations as per
+  transformer.
+- add interfaces for new element and update template.
+
+** Deprecated

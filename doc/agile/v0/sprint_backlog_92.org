@@ -1,0 +1,586 @@
+#+title: Sprint Backlog 92
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- start implementing dart.
+- add full support for JSON.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-11-21 Mon 10:19]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *33:53* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 33:53   |       |       | 100.0 |
+| Active                                                                      |         | 33:53 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  0:10 |   0.5 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:27 |   1.3 |
+| COMPLETED Tidy-up README file                                               |         |       |  1:07 |   3.3 |
+| COMPLETED Sort out PIC/PIE linking problems                                 |         |       |  1:55 |   5.7 |
+| COMPLETED Try to fix BinTray problems                                       |         |       |  1:09 |   3.4 |
+| COMPLETED Supply model references via meta-data rather than command line    |         |       |  3:43 |  11.0 |
+| COMPLETED Remove trailing blank lines in comments                           |         |       |  0:39 |   1.9 |
+| COMPLETED External module path for target should be in diagram              |         |       |  1:28 |   4.3 |
+| COMPLETED Make JSON yarn a fully supported frontend                         |         |       | 10:26 |  30.8 |
+| COMPLETED Add a utility that converts a dia model into JSON                 |         |       |  6:48 |  20.1 |
+| COMPLETED Split yarn.json output from yarn.dia                              |         |       |  0:58 |   2.9 |
+| COMPLETED Possible performance regression at =2ac04ea=                      |         |       |  0:31 |   1.5 |
+| COMPLETED Check that all dogen models convert to JSON                       |         |       |  0:27 |   1.3 |
+| POSTPONED Create a tool to generate product skeletons                       |         |       |  4:05 |  12.1 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-11-21 Mon 10:19]
+    CLOCK: [2016-11-07 Mon 09:08]--[2016-11-07 Mon 09:18] =>  0:10
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-11-07 Mon 10:10]
+    CLOCK: [2016-11-07 Mon 09:19]--[2016-11-07 Mon 09:46] =>  0:27
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.91.0, "Namibe"
+
+#+begin_src markdown
+Overview
+========
+With this sprint we have concluded the bulk of the work on internal refactoring. There were also a number of user visible changes:
+
+- **integration of knit and stitch**: its no longer necessary to run the stand alone executable to transform stitch templates; elements can be configured to run this automatically as part of knitting.
+- **introduction of wale**: in addition to stitch, a simpler type of templates was introduced.
+- **stitch templates can make use of profiles**: it is now possible to avoid duplication in stitch templates by creating profiles.
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_91.org).
+#+end_src
+
+*** COMPLETED Tidy-up README file                                     :story:
+    CLOSED: [2016-11-07 Mon 11:32]
+    CLOCK: [2016-11-07 Mon 11:31]--[2016-11-07 Mon 11:42] =>  0:11
+    CLOCK: [2016-11-07 Mon 10:34]--[2016-11-07 Mon 11:30] =>  0:56
+
+Our README is quite old and stale. We need to:
+
+- mention MDSD
+- add build instructions
+
+*** COMPLETED Sort out PIC/PIE linking problems                       :story:
+    CLOSED: [2016-11-07 Mon 13:22]
+    CLOCK: [2016-11-07 Mon 10:23]--[2016-11-07 Mon 10:34] =>  0:11
+    CLOCK: [2016-11-07 Mon 09:46]--[2016-11-07 Mon 10:22] =>  0:36
+    CLOCK: [2016-11-07 Mon 08:00]--[2016-11-07 Mon 09:08] =>  1:08
+
+
+Ever since we last dist-upgraded we stop being able to build Dogen. We
+are getting linking errors to do with PIC. The problem seems to be
+related to [[https://wiki.debian.org/Hardening#DEB_BUILD_HARDENING_PIE_.28gcc.2Fg.2B-.2B-_-fPIE_-pie.29][DEB_BUILD_HARDENING_PIE]], which forces all binaries to be
+built with PIE. However, our libraries are not built with PIC, so
+there seems to be some kind of incompatibility.
+
+We rebuilt latest boost with the testing compiler but that didn't
+quite solve all the issues, so the problem is also within the dogen
+code.
+
+[[https://github.com/ldc-developers/ldc/pull/1664][This ticket]] provides some insight:
+
+#+begin_quote
+Modern Linux distributions have their toolchain generate PIC code for
+additional security features (like ASLR).
+Since there is no (sane) way to detect whether the toolchain defaults to
+PIC code, we simply default to PIC code on all Linux
+distributions to avoid linking issues on these OSes.
+
+The relocation model can be switched back to non-PIC code manually at
+any time.
+#+end_quote
+
+Seems like the solution is just to add:
+
+#+begin_src
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+#+end_src
+
+To the top-level CMake file. It at least solves the problem locally.
+
+Links:
+
+- [[https://cmake.org/pipermail/cmake/2010-September/039468.html][PIE and PIC in mixed projects]]
+- [[http://stackoverflow.com/questions/38296756/what-is-the-idiomatic-way-in-cmake-to-add-the-fpic-compiler-option][What is the idiomatic way in CMAKE to add the -fPIC compiler option?]]
+
+*** COMPLETED Try to fix BinTray problems                             :story:
+    CLOSED: [2016-11-07 Mon 16:30]
+    CLOCK: [2016-11-07 Mon 13:15]--[2016-11-07 Mon 13:34] =>  0:19
+    CLOCK: [2016-11-07 Mon 12:20]--[2016-11-07 Mon 12:34] =>  0:14
+    CLOCK: [2016-11-07 Mon 11:43]--[2016-11-07 Mon 12:19] =>  0:36
+
+According to BinTray support:
+
+#+begin_src
+As we can see at the provided descriptor output, you didn’t entered "uploadPattern" for the files, and this seems to be the reason for the issue.
+The file pattern format should be like this (excludePattern is optimal):
+
+{"includePattern": "target/(.*)", "excludePattern": "target/.*.zip$", "uploadPattern": "/$1"}
+
+You can find project example in our GitHub "Bintray Examples" page : travis-ci-example.
+#+end_src
+
+Try to update descriptor and see if it fixes it. Using =$1= actually
+resulted in a =$1= package, presumably because we are not using
+regexes. We need to hard-code the name.
+
+*** COMPLETED Supply model references via meta-data rather than command line :story:
+    CLOSED: [2016-11-07 Mon 18:28]
+    CLOCK: [2016-11-07 Mon 18:14]--[2016-11-07 Mon 18:25] =>  0:11
+    CLOCK: [2016-11-07 Mon 17:06]--[2016-11-07 Mon 18:13] =>  1:07
+    CLOCK: [2016-11-07 Mon 16:56]--[2016-11-07 Mon 17:05] =>  0:09
+    CLOCK: [2016-11-07 Mon 16:20]--[2016-11-07 Mon 16:55] =>  0:35
+    CLOCK: [2016-11-07 Mon 14:13]--[2016-11-07 Mon 15:19] =>  1:06
+    CLOCK: [2016-11-07 Mon 14:07]--[2016-11-07 Mon 14:12] =>  0:05
+    CLOCK: [2016-11-07 Mon 13:36]--[2016-11-07 Mon 14:06] =>  0:30
+
+It doesn't make any sense to have model dependencies in the command
+line. After all, the model cannot be interpreted without them. A
+better way to do this would be to split this functionality into two:
+
+- command line supplies "import directories" or "reference
+  directories", that is, directories to search when looking for
+  models. By default the system directory is already in the
+  path. Actually by default we should look into the current directory;
+  this is sufficient for all our current use cases.
+- model supplies "import statements". The problem here is that we need
+  to also supply the file name of the model. We could perhaps omit the
+  extension and then load all files that match (e.g. =.dia=, =.json=,
+  etc). If more than one matches we should error. Actually we should
+  just supply the full filename, as well as keep the current notation
+  for the external project path.
+
+This is also a nice way to avoid loading system models unnecessary;
+users still need to declare the models they depend on, regardless if
+system or user.
+
+Each model should also supply the external module path as meta-data.
+
+This is particularly painful since cross-model inheritance was
+introduced because it means references are now transitive (we need to
+know of the references of any model we reference). Once we add them to
+the model, we should also load referenced models' references so that
+the process is automatic.
+
+In addition to references, we must also be able to supply the external
+module path for the target model via the meta-data.
+
+Notes:
+
+- in order for this to work we need to refactor the pre-merge workflow
+  quite considerably. We need to split out the target model, process
+  that first, then use the annotations to build the descriptors. This
+  probably means we need to merge the descriptor factory with the
+  pre-merge workflow. We should do this refactoring first.
+
+Tasks:
+
+- refactor descriptor factory, merge it with pre-merge workflow.
+- add new references field to workflow
+- add parsing of field as per options
+- add references to all models
+- remove command line option
+
+Merged stories
+
+*External module path and references as meta-data*
+
+It actually does not make a lot of sense to allow users to supply
+external module paths and references as command line options. This is
+because the model will fail to build unless we provide the correct
+ones; these are not configurable items in this sense. The project
+path, etc are - and so should remain command line options.
+
+We need to move these two into the meta-data. This would also mean we
+no longer need to pass in external module paths for references, which
+is much cleaner.
+
+*** COMPLETED Remove trailing blank lines in comments                 :story:
+    CLOSED: [2016-11-10 Thu 12:07]
+    CLOCK: [2016-11-10 Thu 11:28]--[2016-11-10 Thu 12:07] =>  0:39
+
+We should remove the annoying trailing lines in comments as it is
+causing spurious diffs with JSON.
+
+*** COMPLETED External module path for target should be in diagram    :story:
+    CLOSED: [2016-11-10 Thu 22:38]
+    CLOCK: [2016-11-10 Thu 22:39]--[2016-11-10 Thu 22:41] =>  0:02
+    CLOCK: [2016-11-10 Thu 22:15]--[2016-11-10 Thu 22:38] =>  0:23
+    CLOCK: [2016-11-10 Thu 21:29]--[2016-11-10 Thu 22:14] =>  0:45
+    CLOCK: [2016-11-08 Tue 15:46]--[2016-11-08 Tue 16:04] =>  0:18
+
+We should have a way to provide external module path from within the
+diagram, like we do with references. It really does not make sense to
+provide different values for this since the code will not work (and
+since the external module path for the references is already in the
+diagram).
+
+This has a few interesting implications:
+
+- we won't need to provide the pseudo kvps for references like we do
+  now, since the models themselves will already have the external
+  module path.
+- the annotation can be a yarn.dia field like =yarn.dia.comment= is;
+  this would allow us to process it early on in the front-end rather
+  than in the guts of yarn. The downside is that we need to figure out
+  how to update all elements once the external module path is
+  known. However, since references are computing during merging, this
+  means we do not have to worry about them.
+- actually this is not quite so simple. The keys for the maps use the
+  external module path, so they all need to be recomputed; all objects
+  need to be reinserted. We need to somehow figure this information
+  out before we do any processing to the diagram. We could go directly
+  to the processed objects and look for this kvp before we generate
+  the graph. We need to locate a UML note that has no parent, with a
+  comment which applies to parent object; the comment processor can
+  extract the external module directly. We can supply it to the
+  builder and the rest of the processing remains the same.
+- in JSON we can supply external module path as part of JSON itself
+  rather than an annotation. In addition, we can do this up front
+  before we process any elements so there is no need to
+  update/post-process the entire model.
+
+*Previous Understanding*
+
+- this is not an issue as the name builder does the splitting.
+
+A related problem is that we do not support nested external module
+paths at present; the code seems to assume it is only one module
+deep. This can be fixed by adding some processing code in name factory
+for the cases where external module path is a string (i.e. look for
+=::= and split accordingly).
+
+*** COMPLETED Make JSON yarn a fully supported frontend               :story:
+    CLOSED: [2016-11-11 Fri 15:09]
+    CLOCK: [2016-11-11 Fri 14:40]--[2016-11-11 Fri 15:09] =>  0:29
+    CLOCK: [2016-11-10 Thu 18:13]--[2016-11-10 Thu 18:16] =>  0:03
+    CLOCK: [2016-11-10 Thu 12:07]--[2016-11-10 Thu 12:12] =>  0:05
+    CLOCK: [2016-11-10 Thu 10:00]--[2016-11-10 Thu 11:27] =>  1:27
+    CLOCK: [2016-11-09 Wed 20:45]--[2016-11-09 Wed 21:38] =>  0:53
+    CLOCK: [2016-11-09 Wed 12:35]--[2016-11-09 Wed 13:20] =>  0:45
+    CLOCK: [2016-11-08 Tue 14:11]--[2016-11-08 Tue 15:45] =>  1:34
+    CLOCK: [2016-11-08 Tue 14:08]--[2016-11-08 Tue 14:10] =>  0:02
+    CLOCK: [2016-11-08 Tue 14:03]--[2016-11-08 Tue 14:07] =>  0:04
+    CLOCK: [2016-11-08 Tue 13:40]--[2016-11-08 Tue 14:02] =>  0:22
+    CLOCK: [2016-11-08 Tue 12:40]--[2016-11-08 Tue 12:50] =>  0:10
+    CLOCK: [2016-11-08 Tue 11:46]--[2016-11-08 Tue 12:05] =>  0:19
+    CLOCK: [2016-11-08 Tue 11:07]--[2016-11-08 Tue 11:45] =>  0:38
+    CLOCK: [2016-11-08 Tue 10:51]--[2016-11-08 Tue 11:06] =>  0:15
+    CLOCK: [2016-11-08 Tue 10:25]--[2016-11-08 Tue 10:50] =>  0:25
+    CLOCK: [2016-11-08 Tue 08:30]--[2016-11-08 Tue 09:18] =>  0:48
+    CLOCK: [2016-11-07 Mon 22:56]--[2016-11-07 Mon 23:02] =>  0:06
+    CLOCK: [2016-11-07 Mon 22:54]--[2016-11-07 Mon 22:55] =>  0:01
+    CLOCK: [2016-11-07 Mon 22:51]--[2016-11-07 Mon 22:53] =>  0:02
+    CLOCK: [2016-11-07 Mon 22:43]--[2016-11-07 Mon 22:50] =>  0:07
+    CLOCK: [2016-11-07 Mon 22:05]--[2016-11-07 Mon 22:42] =>  0:37
+    CLOCK: [2016-11-07 Mon 21:42]--[2016-11-07 Mon 22:04] =>  0:22
+    CLOCK: [2016-11-07 Mon 20:49]--[2016-11-07 Mon 21:41] =>  0:52
+
+#+begin_quote
+*Story*: As a dogen user, I want to be able to write my domain models
+in JSON since I don't have any need for UML visualisation.
+#+end_quote
+
+At present we are using an yarn JSON format to supply Dogen the system
+libraries. However, there is nothing stopping us from having a
+full-blown JSON frontend useful for code generation. For this we need:
+
+- flag to state if its a target model or not;
+- ability to supply external module path;
+- ability to supply all of the missing information for yarn types
+  (properties for object, stereotypes, enumerations, etc).
+
+In order to test this we could generate a model from both Dia and JSON
+and make sure we arrive at the same yarn.
+
+As part of this work we probably need to create a new stage in the yarn
+pipeline where we populate:
+
+- inheritance related properties (is_parent, leaves, is_final)
+
+We need to look at the dia to sml transformer and see what it is doing
+that is also required by JSON and move it to yarn.
+
+We should have a look at the Boost Fusion approach:
+
+- [[http://jrruethe.github.io/blog/2015/05/21/boost-fusion-json-serializer/][Boost Fusion JSON Serialiser]]
+
+*** COMPLETED Add a utility that converts a dia model into JSON        :epic:
+    CLOSED: [2016-11-11 Fri 15:09]
+    CLOCK: [2016-11-11 Fri 12:52]--[2016-11-11 Fri 13:16] =>  0:24
+    CLOCK: [2016-11-11 Fri 10:08]--[2016-11-11 Fri 11:04] =>  0:56
+    CLOCK: [2016-11-11 Fri 09:15]--[2016-11-11 Fri 10:07] =>  0:52
+    CLOCK: [2016-11-10 Thu 22:41]--[2016-11-10 Thu 22:52] =>  0:11
+    CLOCK: [2016-11-10 Thu 17:15]--[2016-11-10 Thu 18:10] =>  0:55
+    CLOCK: [2016-11-10 Thu 16:40]--[2016-11-10 Thu 17:14] =>  0:34
+    CLOCK: [2016-11-10 Thu 16:23]--[2016-11-10 Thu 16:39] =>  0:16
+    CLOCK: [2016-11-10 Thu 15:15]--[2016-11-10 Thu 16:22] =>  1:07
+    CLOCK: [2016-11-10 Thu 14:09]--[2016-11-10 Thu 14:42] =>  0:33
+    CLOCK: [2016-11-10 Thu 12:13]--[2016-11-10 Thu 13:13] =>  1:00
+
+#+begin_quote
+*Story*: As a dogen user, I want to convert some Dia models into JSON
+documents whenever I don't require UML and diagram formatting, so that
+I don't have to generate the documents manually.
+#+end_quote
+
+It would be great if one could take a dia model and convert it into a
+JSON representation. This would allow users to take models that are
+not particularly useful in UML and convert them into JSON.
+
+Name according to convention: tailor. General coversion tool.
+
+Notes:
+
+- we need to sort objects to ensure we always get them in the same
+  order.
+
+: /home/marco/Development/DomainDrivenConsulting/dogen/build/scripts/build.linux.sh Release gcc /usr/local/personal tailor && /home/marco/Development/DomainDrivenConsulting/dogen/build/scripts/build.linux.sh Release gcc /usr/local/personal tailor_all_primitives && /home/marco/Development/DomainDrivenConsulting/dogen/build/scripts/build.linux.sh Release gcc /usr/local/personal indent_json_yarn.json_all_primitives.json
+
+*** COMPLETED Split yarn.json output from yarn.dia                    :story:
+    CLOSED: [2016-11-12 Sat 16:13]
+    CLOCK: [2016-11-12 Sat 15:50]--[2016-11-12 Sat 16:13] =>  0:23
+    CLOCK: [2016-11-11 Fri 15:09]--[2016-11-11 Fri 15:44] =>  0:35
+
+As a quick hack we just piggy-backed on the existing yarn.dia tests
+and added yarn.json support. However this is not ideal because we have
+made the tests more brittle. In addition, we also have the problem of
+not cleaning up the actual directory.
+
+Tasks:
+
+- split the actual directories;
+- add diff targets for both json and dia;
+- ensure we delete the actual directories before running the test.
+
+*** COMPLETED Possible performance regression at =2ac04ea=            :story:
+    CLOSED: [2016-11-12 Sat 16:46]
+    CLOCK: [2016-11-12 Sat 16:28]--[2016-11-12 Sat 16:46] =>  0:18
+    CLOCK: [2016-11-12 Sat 16:14]--[2016-11-12 Sat 16:27] =>  0:13
+
+At this commit, for some unknown reason, the time of generating all
+models doubled:
+
+*Knit all*:
+
+- 16:16:30 - 16:16:43: 13s
+- 16:18:13 - 16:18:26: 13s
+- 16:18:47 - 16:18:59: 12s
+
+Seems pretty stable. Prior to this it was around 5-6s.
+
+*RAT*:
+
+- 16:22:20 - 16:22:44: 24s
+- 16:22:53 - 16:23:18: 25s
+- 16:24:01 - 16:24:24: 23s
+
+Also pretty stable. Prior to this it was around 6s.
+
+See measurements in [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_87.org#track-down-quiltcpp-generation-bug][this story]].
+
+Actually there was a [[https://en.wikipedia.org/wiki/User_error][PEBKAC]]. We were building on debug by
+mistake. Release numbers look a bit better:
+
+*RAT*:
+
+- 16:31:08 - 16:31:16: 8s
+- 16:31:32 - 16:31:44: 12s
+- 16:32:10 - 16:32:26: 13s
+
+Note that we are now generating both JSON and Dia and also we are
+removing all files before generating. Without the remove all in
+actual:
+
+- 16:33:20 - 16:33:37: 17s
+- 16:34:20 - 16:34:28: 18s
+- 16:34:54 - 16:35:02: 8s
+- 16:35:29 - 16:35:37: 8s
+- 16:35:56 - 16:36:04: 8s
+
+Numbers are a bit unstable but seem to converge to 8s. Without JSON:
+
+- 16:38:26 - 16:38:32: 6s
+- 16:38:46 - 16:38:51: 5s
+- 16:39:07 - 16:39:12: 5s
+
+This means we more or less explained the movement in RAT in terms of
+both JSON and adding a delete. 13s becomes the new baseline.
+
+*Knit tests*
+
+For good measure. No JSON, no deletion:
+
+- 16:40:37 - 16:40:42: 5s
+- 16:41:00 - 16:41:05: 5s
+- 16:41:21 - 16:41:25: 4s
+
+With JSON:
+
+- 16:42:22 - 16:42:30: 8s
+- 16:42:39 - 16:42:47: 8s
+- 16:42:59 - 16:43:07: 8s
+
+With JSON and deletion:
+
+- 16:43:56 - 16:44:04: 8s
+- 16:44:07 - 16:44:15: 7s
+- 16:44:33 - 16:44:41: 8s
+
+As expected, impact of deletion is luck of the draw but most times
+negligible. We've gone up by around 3s. 8s becomes the new baseline.
+
+*Knit all*:
+
+We expect no movement:
+
+- 16:45:42 - 16:45:48: 6s
+- 16:46:01 - 16:46:07: 6s
+- 16:46:18 - 16:46:24: 6s
+
+Confirmed.
+
+*** COMPLETED Check that all dogen models convert to JSON             :story:
+    CLOSED: [2016-11-12 Sat 17:14]
+    CLOCK: [2016-11-12 Sat 16:47]--[2016-11-12 Sat 17:14] =>  0:27
+
+We should convert all of dogen's internal models into JSON and
+generate them to ensure there are no differences.
+
+#+begin_src
+rm *.json
+A="dia knit quilt.cpp wale yarn.json annotations formatters quilt yarn database options stitch yarn.dia"
+for a in $A; do /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/dogen.tailor -t $a.dia -o $a.json; done
+for a in $A; do /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/dogen.knitter -t ${a}.json --cpp-project-dir /home/marco/Development/DomainDrivenConsulting/dogen/projects --ignore-files-matching-regex .*/CMakeLists.txt --ignore-files-matching-regex .*/test/.* --ignore-files-matching-regex .*/tests/.* --verbose --delete-extra-files; done
+#+end_src
+
+Notes:
+
+- problems with quilt.cpp and yarn.dia/yarn.json: the conversion of
+  the model path did not work as expected - we do not know of the "."
+  separator. Fixed it manually and then it all worked (minus
+  CMakeLists, see below). We could possibly fix the builder to
+  automatically use the "." to separate model paths.
+- CMakeLists were deleted on all models for some reason, even though
+  the annotations profile look correct.
+- in quilt we correctly generated the forward declarations for
+  registrar error and workflow error without including boost
+  exception. Not sure why that is, nor why it is that we are including
+  them for forward declarations.
+- Missing include of registrar serialisation in
+  all_ser.hpp. Instability in registrar_ser.cpp, but content is
+  correct otherwise.
+- database.json generated invalid JSON.
+
+In general JSON is good enough as a frontend for now; add stories to
+backlog to fix these issues.
+
+*** POSTPONED Create a tool to generate product skeletons             :story:
+    CLOSED: [2016-11-21 Mon 10:19]
+    CLOCK: [2016-11-15 Tue 09:30]--[2016-11-15 Tue 11:13] =>  1:43
+    CLOCK: [2016-11-14 Mon 14:43]--[2016-11-14 Mon 15:50] =>  1:07
+    CLOCK: [2016-11-14 Mon 12:05]--[2016-11-14 Mon 13:20] =>  1:15
+
+Now that dogen is evolving to a MDSD tool, it would be great to be
+able to create a complete product skeleton from a tool. This would
+entail:
+
+- directory structure. We should document our standard product
+  directory structure as part of this exercise. Initial document added
+  to manual as "project_structure.org".
+- licence: user can choose one.
+- copyright: input by user, used in CMakeFiles, etc. added to the
+  licence.
+- CI support: travis, appveyor
+- EDE support:
+- CMake support: top-level CMakefiles, CPack. versioning
+  templates, valgrind, doxygen. For CTest we should also generate a
+  "setup cron" and "setup windows scheduler" scripts. User can just
+  run these from the build machine and it will start running CTest.
+- conan support: perhaps with just boost for now
+- agile with first sprint
+- README with emblems.
+
+Name for the tool: dart.
+
+Tool should have different "template sets" so that we could have a
+"standard dogen product" but users can come up with other project
+structures.
+
+Tool should add FindODB if user wants ODB support. Similar for EOS
+when we support it again. We should probably have HTTP links to the
+sources of these packages and download them on the fly.
+
+Tool should also create git repo and do first commit (optional).
+
+For extra bonus points, we should create a project in GitHub, Travis
+and AppVeyor from dart.
+
+We should also generate a RPM/Deb installation script for at least
+boost, doxygen, build essentials, clang.
+
+We should also consider a "refresh" or "force" statement, perhaps on a
+file-by-file basis, which would allow one to regenerate all of these
+files. This would be useful to pick-up changes in travis files, etc.
+
+One problem with travis files is that each project has its own
+dependencies. We should move these over to a shell script and call
+these. The script is not generated or perhaps we just generate a
+skeleton. This also highlights the issue that we have different kinds
+of files:
+
+- files that we generate and expect the user to modify;
+- files that we generate but don't expect user modifications;
+- files that the user generates.
+
+We need a way to classify these.
+
+Dart should use stitch templates to generate files.
+
+We may need some options such as "generate boost test ctest
+integration", etc.
+
+Notes:
+
+- [[https://github.com/elbeno/skeleton][Skeleton]]: project to generate c++ project skeletons.
+- split all of the configuration of CMake dependencies from main CMake
+  file. Possible name: ConfigureX? ConfigureODB, etc. See how find_X
+  is implemented.
+- detect all projects by looping through directories.
+- fix CMake generation so that most projects are generated by Dogen.
+- add option to Dogen to generate test skeleton.
+- detect all input models and generate targets by looping through
+  them.
+- add CMake file to find knitter etc and include those files in
+  package. We probably should install dogen now and have dogen rely on
+  installed dogen first, with an option to switch to "built" dogen.
+
+** Deprecated
+*** CANCELLED Add region support to stitch                            :story:
+    CLOSED: [2016-10-25 Tue 11:05]
+
+*Rationale*: This requires too much engineering effort. Decided on a
+simpler approach.
+
+- extend stitch to allow injecting external kvps such as
+  decoration. This can probably be done manually but needs to be
+  investigated.
+- extend stitch to support named regions; the text template will
+  preserve the names after template instantiation.
+- note: regions are a property of the artefact. knit will also have to
+  support regions. Perhaps we should start having well-defined regions
+  such as =decoration.preamble=, =decoration.postamble=, etc.

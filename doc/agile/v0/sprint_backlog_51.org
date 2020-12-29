@@ -1,0 +1,619 @@
+#+title: Sprint Backlog 51
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+#+tags: { refactor(r) bug(b) feature(f) vision(v) }
+#+tags: { meta_data(m) tests(a) formatters(d) packaging(q) media(h) build(u) validation(x) diagrams(w) }
+#+tags: dia(y) sml(l) cpp(k) config(o)
+
+* Stories
+
+This file contains all stories that were closed during sprint 51.
+
+The *Mission Statement* for this sprint is to implement the core of
+the meta-data processing, in both SML and the formatters. We also want
+to improve the communication with the outside world.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-09-22 Mon 08:20]
+
+| Headline                                                         | Time    |       |      |
+|------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                     | *43:12* |       |      |
+|------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                  |         | 43:12 |      |
+| COMPLETED Sprint and product backlog grooming                    |         |       | 7:54 |
+| COMPLETED Updates to the manual and readme files                 |         |       | 1:46 |
+| COMPLETED Fix windows continuous build                           |         |       | 0:22 |
+| COMPLETED Create a sub-system for meta-data                      |         |       | 3:46 |
+| COMPLETED Add static registration to meta-data workflow          |         |       | 0:19 |
+| COMPLETED Move the root enricher to formatters                   |         |       | 0:49 |
+| COMPLETED Implement a grapher in meta_data                       |         |       | 1:51 |
+| COMPLETED Link types and concepts to their containing module     |         |       | 0:57 |
+| COMPLETED Enrichment as a two-stage process                      |         |       | 0:07 |
+| COMPLETED Create an SML grapher                                  |         |       | 7:02 |
+| COMPLETED Implement the enricher interface in formatters         |         |       | 1:42 |
+| COMPLETED Create the global "namespace" module                   |         |       | 1:48 |
+| COMPLETED Populate containing module in JSON hydrator            |         |       | 3:42 |
+| COMPLETED C++ formatters use of =headers_for_facet_=             |         |       | 0:05 |
+| COMPLETED Move formatters meta-data types to meta-data namespace |         |       | 0:25 |
+| COMPLETED Merge C++ models                                       |         |       | 6:05 |
+| COMPLETED Implement the backend enricher in cpp                  |         |       | 2:08 |
+| COMPLETED Analyse use cases for meta-data                        |         |       | 2:24 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-09-22 Mon 08:20]
+    CLOCK: [2014-09-21 Sun 20:40]--[2014-09-21 Sun 20:46] =>  0:06
+    CLOCK: [2014-09-21 Sun 20:34]--[2014-09-21 Sun 20:37] =>  0:03
+    CLOCK: [2014-09-21 Sun 19:58]--[2014-09-21 Sun 20:30] =>  0:32
+    CLOCK: [2014-09-21 Sun 18:54]--[2014-09-21 Sun 19:51] =>  0:57
+    CLOCK: [2014-09-21 Sun 18:48]--[2014-09-21 Sun 18:54] =>  0:06
+    CLOCK: [2014-09-21 Sun 15:10]--[2014-09-21 Sun 18:40] =>  3:30
+    CLOCK: [2014-09-21 Sun 14:29]--[2014-09-21 Sun 15:09] =>  0:40
+    CLOCK: [2014-09-20 Sat 02:11]--[2014-09-20 Sat 02:15] =>  0:04
+    CLOCK: [2014-09-17 Wed 08:03]--[2014-09-17 Wed 08:21] =>  0:18
+    CLOCK: [2014-09-15 Mon 07:51]--[2014-09-15 Mon 08:04] =>  0:13
+    CLOCK: [2014-09-14 Sun 18:10]--[2014-09-14 Sun 18:16] =>  0:06
+    CLOCK: [2014-09-12 Fri 19:33]--[2014-09-12 Fri 19:37] =>  0:04
+    CLOCK: [2014-09-11 Thu 07:51]--[2014-09-11 Thu 08:01] =>  0:10
+    CLOCK: [2014-09-09 Tue 17:50]--[2014-09-09 Tue 17:55] =>  0:05
+    CLOCK: [2014-09-09 Tue 07:51]--[2014-09-09 Tue 08:05] =>  0:14
+    CLOCK: [2014-09-08 Mon 17:52]--[2014-09-08 Mon 18:04] =>  0:12
+    CLOCK: [2014-09-08 Mon 08:01]--[2014-09-08 Mon 08:35] =>  0:34
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-09-22 Mon 08:20]
+    CLOCK: [2014-09-18 Thu 18:39]--[2014-09-18 Thu 18:46] =>  0:07
+    CLOCK: [2014-09-16 Tue 08:25]--[2014-09-16 Tue 08:40] =>  0:15
+    CLOCK: [2014-09-14 Sun 23:04]--[2014-09-14 Sun 23:35] =>  0:31
+    CLOCK: [2014-09-14 Sun 23:01]--[2014-09-14 Sun 23:04] =>  0:03
+    CLOCK: [2014-09-14 Sun 22:52]--[2014-09-14 Sun 23:01] =>  0:09
+    CLOCK: [2014-09-14 Sun 22:41]--[2014-09-14 Sun 22:51] =>  0:10
+    CLOCK: [2014-09-12 Fri 08:22]--[2014-09-12 Fri 08:36] =>  0:14
+    CLOCK: [2014-09-11 Thu 22:34]--[2014-09-11 Thu 22:51] =>  0:17
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Manual: fix Fundamental Building Blocks section         :story:
+    CLOSED: [2014-09-08 Mon 08:14]
+
+We allowed this section to evolve as a collage of different ideas, but
+now it is no longer making sense as a whole. We need to go back to the
+drawing board and create a structure for it.
+
+*** COMPLETED Fix windows continuous build                            :story:
+    CLOSED: [2014-09-10 Wed 18:47]
+    CLOCK: [2014-09-08 Mon 21:45]--[2014-09-08 Mon 22:07] =>  0:22
+
+Ever since we refactored the test models into their own folder, the
+windows build stopped working. This is because we are too deep in the
+directory tree, resulting in paths longer that the maximum supported
+path. We need to move the build to a top-level folder somewhere.
+
+Of course we still have the linking issue but that will be addressed
+later.
+
+Actions:
+
+- hacked scripts to point to root build directory to see if this fixes
+  the issue.
+
+*** COMPLETED Create a sub-system for meta-data                       :story:
+    CLOSED: [2014-09-10 Wed 20:01]
+
+We need to create a simple interface that takes a ptree and a model
+and updates the tags on the ptree. We also need a way to register
+against the meta-data tagger.
+
+**** COMPLETED Rename tagger to processor                              :task:
+     CLOSED: [2014-09-08 Mon 23:20]
+     CLOCK: [2014-09-08 Mon 22:56]--[2014-09-08 Mon 23:20] =>  0:24
+     CLOCK: [2014-09-08 Mon 18:04]--[2014-09-08 Mon 18:37] =>  0:33
+
+As per analysis story, we need to rename =meta_data_tagger= to
+=meta_data_processor=. May be a good time to remove all the existing
+tagging code. We need to re-add it later on in the right places.
+
+Actions:
+
+- created scratch pad for saving this kind of code snippets;
+- copied across the tagger code;
+- renamed the type in the model and regenerated;
+- fixed code in workflow.
+
+**** COMPLETED Design and implement the interface                      :task:
+     CLOSED: [2014-09-08 Mon 23:21]
+
+- add interface to model;
+- add some tests to make sure the interface is usable.
+
+*interface*
+
+: name: meta_data_populator_interface
+: identity: string
+: dependencies: list of string
+: populate(const model, const parent module, concept)
+: populate(const model, const parent module, module)
+: populate(const model, const parent module, type)
+
+**** COMPLETED Update SML diagram and generate code                    :task:
+     CLOSED: [2014-09-10 Wed 20:01]
+     CLOCK: [2014-09-10 Wed 18:12]--[2014-09-10 Wed 18:48] =>  0:36
+     CLOCK: [2014-09-10 Wed 07:51]--[2014-09-10 Wed 08:40] =>  0:49
+     CLOCK: [2014-09-09 Tue 17:55]--[2014-09-09 Tue 18:39] =>  0:44
+     CLOCK: [2014-09-09 Tue 08:06]--[2014-09-09 Tue 08:46] =>  0:40
+
+As the names of the meta-data classes became more and more unwieldy,
+it became obvious that they need their own namespace. Move all of them
+there and get rid of the =meta_data= prefixes.
+
+Also, we should take this opportunity to rename =populator= to
+=enricher= as it enriches the meta-data.
+
+*** COMPLETED Add static registration to meta-data workflow           :story:
+    CLOSED: [2014-09-10 Wed 22:30]
+    CLOCK: [2014-09-10 Wed 22:11]--[2014-09-10 Wed 22:30] =>  0:19
+
+- create a static method to register instances of the interface and a
+  static container to hold them;
+- add a simple list of shared pointers to keep track of the registered
+  expanders.
+
+*** COMPLETED Move the root enricher to formatters                    :story:
+    CLOSED: [2014-09-12 Fri 07:56]
+    CLOCK: [2014-09-11 Thu 08:05]--[2014-09-11 Thu 08:54] =>  0:49
+
+We originally envisioned a root enricher in formatters just to make
+sure the graph had a root. In reality this is a conceptual error: SML
+cannot by definition have any meta-data since it has the type system
+to express itself. If there is anything that needs to be expressed in
+SML it must be expressed as a type.
+
+However, there is indeed an enricher that all enrichers depend on: the
+formatters enricher.
+
+- move the root enricher to formatters;
+- add a way to distinguish the root enricher from other enrichers
+  during registration.
+
+*** COMPLETED Implement a grapher in meta_data                        :story:
+    CLOSED: [2014-09-12 Fri 08:21]
+    CLOCK: [2014-09-12 Fri 07:51]--[2014-09-12 Fri 08:21] =>  0:30
+    CLOCK: [2014-09-10 Wed 22:30]--[2014-09-10 Wed 23:51] =>  1:21
+
+- create a grapher in meta_data that represents the dependencies
+  between instances of the interface
+- once the enricher has been instantiated we need to loop through the
+  list of expanders and build a graph.
+- on execute, iterate through the graph executing all instances of the
+  interface.
+
+*** COMPLETED Link types and concepts to their containing module      :story:
+    CLOSED: [2014-09-12 Fri 20:53]
+    CLOCK: [2014-09-12 Fri 19:00]--[2014-09-12 Fri 19:05] =>  0:05
+
+Instead of keeping track of the previous vertex in the graph we should
+really express the containment relationship via the type system in SML
+since that is exactly its job. Then we can query the model to look for
+the module's qname during enrichment. Suggested name for the property:
+=parent_module=.
+
+**** COMPLETED Add properties to manage these relationships            :task:
+     CLOSED: [2014-09-12 Fri 19:36]
+     CLOCK: [2014-09-12 Fri 19:19]--[2014-09-12 Fri 19:32] =>  0:13
+     CLOCK: [2014-09-12 Fri 19:06]--[2014-09-12 Fri 19:12] =>  0:06
+
+We need to change the affected types, most likely via a concept, to
+keep track of the parent package.
+
+**** COMPLETED Populate the new properties                             :task:
+     CLOSED: [2014-09-12 Fri 19:44]
+     CLOCK: [2014-09-12 Fri 19:32]--[2014-09-12 Fri 19:44] =>  0:12
+
+During transformation we need some kind of way to determine the parent
+package for any given entity.
+
+**** COMPLETED Rename package to module                               :spike:
+     CLOSED: [2014-09-12 Fri 20:49]
+     CLOCK: [2014-09-12 Fri 20:35]--[2014-09-12 Fri 20:48] =>  0:13
+
+By mistake we named the new methods "package", a UML term, rather than
+"module" - the corresponding SML term.
+
+**** COMPLETED Remove parent package from the enricher interface       :task:
+     CLOSED: [2014-09-12 Fri 20:53]
+     CLOCK: [2014-09-12 Fri 20:49]--[2014-09-12 Fri 20:53] =>  0:04
+
+We no longer need to pass in the parent package; it can be queried
+from the model. Remove it from interface.
+
+**** COMPLETED Make parent package optional                           :spike:
+     CLOSED: [2014-09-12 Fri 21:12]
+     CLOCK: [2014-09-12 Fri 21:08]--[2014-09-12 Fri 21:12] =>  0:04
+
+The model module won't have a parent package, so it has to be
+optional.
+
+*** COMPLETED Enrichment as a two-stage process                       :story:
+    CLOSED: [2014-09-12 Fri 21:01]
+    CLOCK: [2014-09-12 Fri 20:54]--[2014-09-12 Fri 21:01] =>  0:07
+
+We originally thought the graph would allow us to process types in a
+single pass. This is not the case because of circular dependencies. In
+C++ these can be done provided one uses forward declarations; however,
+in SML they are still circular (from the point of view of the
+graph). This means that in addition to a graph we also need to split
+the process into two stages:
+
+- stage 1: entity specific enrichment
+- stage 2: relationship enrichment
+
+*** COMPLETED Create an SML grapher                                   :story:
+    CLOSED: [2014-09-14 Sun 03:10]
+    CLOCK: [2014-09-14 Sun 00:57]--[2014-09-14 Sun 03:10] =>  2:13
+    CLOCK: [2014-09-13 Sat 22:09]--[2014-09-13 Sat 22:22] =>  0:13
+    CLOCK: [2014-09-13 Sat 22:08]--[2014-09-13 Sat 22:09] =>  0:01
+    CLOCK: [2014-09-13 Sat 02:03]--[2014-09-13 Sat 02:34] =>  0:31
+    CLOCK: [2014-09-12 Fri 23:10]--[2014-09-13 Sat 02:03] =>  2:53
+    CLOCK: [2014-09-12 Fri 22:13]--[2014-09-12 Fri 22:59] =>  0:46
+    CLOCK: [2014-09-12 Fri 22:03]--[2014-09-12 Fri 22:12] =>  0:09
+    CLOCK: [2014-09-12 Fri 21:14]--[2014-09-12 Fri 21:30] =>  0:16
+
+We need a class responsible for building a graph of SML qnames, and
+associating these with a ptree.
+
+In order to do this we need to make sure we have a module for the
+model.
+
+The main reason why we need a grapher is because of the relationship
+between modules and types - e.g. we want to make sure a type is
+processed after it's module and a module after its parent module. This
+is so that we can copy over tags. However, the same could be achieved
+by recursing the module graph.
+
+*** COMPLETED Implement the enricher interface in formatters          :story:
+    CLOSED: [2014-09-15 Mon 08:02]
+
+We should start implementing the interface on a few formatters to
+prove that the approach actually works.
+
+**** COMPLETED Create a local traits class                             :task:
+     CLOSED: [2014-09-14 Sun 19:05]
+     CLOCK: [2014-09-14 Sun 18:47]--[2014-09-14 Sun 19:04] =>  0:17
+     CLOCK: [2014-09-14 Sun 18:18]--[2014-09-14 Sun 18:47] =>  0:29
+
+We need to move all the tags that belong to formatters from the tags
+class into the local formatters' traits. We also need to create
+formatter settings.
+
+**** COMPLETED Populate all of the default traits in enricher         :story:
+     CLOSED: [2014-09-14 Sun 20:01]
+     CLOCK: [2014-09-14 Sun 19:05]--[2014-09-14 Sun 20:01] =>  0:56
+
+Move across all the code from taggers that belongs in formatters'
+enricher. Formatters only has first stage enrichment.
+
+*** COMPLETED Create the global "namespace" module                    :story:
+    CLOSED: [2014-09-15 Mon 22:23]
+    CLOCK: [2014-09-15 Mon 08:05]--[2014-09-15 Mon 08:19] =>  0:14
+
+Originally we thought the SML containment graph would have a natural
+root: the target model being generated. On hindsight this is not the
+case. We have a number of models that will all be at the same level as
+the target model such as for instance =std=, =boost= and any user
+model we may depend on. However, all of these models do have a natural
+root: the global namespace (as we call it in C++). In addition, models
+may require placing types directly in the global namespace; that is
+the case with the hardware model. We need to:
+
+- create a module representation of the global namespace;
+- make all model namespaces depend on it;
+- allow the hardware model to place types directly on it.
+
+**** COMPLETED Add global module to injector                           :task:
+     CLOSED: [2014-09-15 Mon 19:34]
+     CLOCK: [2014-09-15 Mon 18:06]--[2014-09-15 Mon 18:49] =>  0:43
+     CLOCK: [2014-09-15 Mon 17:56]--[2014-09-15 Mon 18:03] =>  0:07
+     CLOCK: [2014-09-15 Mon 08:19]--[2014-09-15 Mon 08:41] =>  0:22
+
+Injector needs to create a module with a blank qname, and make all
+modules, concepts and types that do not have a containing module
+depend on it.
+
+**** COMPLETED Add support for modules in merger                       :task:
+     CLOSED: [2014-09-15 Mon 22:23]
+     CLOCK: [2014-09-15 Mon 22:23]--[2014-09-15 Mon 22:35] =>  0:12
+     CLOCK: [2014-09-15 Mon 22:13]--[2014-09-15 Mon 22:23] =>  0:10
+
+At present we do not merge modules in merger. We need to do so. In
+addition, we need to locate the global module and merge it only once.
+
+*** COMPLETED Populate containing module in JSON hydrator             :story:
+    CLOSED: [2014-09-17 Wed 00:31]
+     CLOCK: [2014-09-14 Sun 22:31]--[2014-09-14 Sun 22:41] =>  0:10
+
+We only added support for this in the dia to sml workflow, so the
+enricher is breaking. Add it to JSON workflow too. We should consider
+adding modules directly to the JSON: the user must define the modules
+in JSON, and if they are missing, the model will fail to import.
+
+For the hardware model, we need to somehow detect that the types are
+on the global module. This could be done via a module flag in the
+JSON.
+
+**** COMPLETED Rename references to value object and types            :spike:
+     CLOSED: [2014-09-15 Mon 23:02]
+     CLOCK: [2014-09-15 Mon 22:35]--[2014-09-15 Mon 23:02] =>  0:27
+
+It seems the JSON still has some remnants of the value object
+days. Rename them to the new terms and fix JSON files. We also need to
+rename the top-level container from =types= to =elements=. This is not
+the greatest of names but at least it avoids confusion with the =type=
+descendants in SML.
+
+**** COMPLETED Add post-processing logic for module generation         :task:
+     CLOSED: [2014-09-17 Wed 00:07]
+     CLOCK: [2014-09-16 Tue 23:44]--[2014-09-17 Wed 00:07] =>  0:23
+     CLOCK: [2014-09-16 Tue 17:52]--[2014-09-16 Tue 18:38] =>  0:46
+     CLOCK: [2014-09-16 Tue 07:53]--[2014-09-16 Tue 08:25] =>  0:32
+     CLOCK: [2014-09-15 Mon 23:04]--[2014-09-16 Tue 00:04] =>  1:00
+
+Once the JSON file has been loaded into an SML model, we should go
+through the model and generate all of the inferred modules given the
+qnames. If a module already exists we should skip this. We should also
+do the containment logic as part of the post processing.
+
+- origin type and generation type are still invalid for some reason.
+
+**** COMPLETED Remove hacks in root enricher                           :task:
+     CLOSED: [2014-09-17 Wed 00:31]
+     CLOCK: [2014-09-17 Wed 00:07]--[2014-09-17 Wed 00:31] =>  0:24
+
+Once we are populating the containing module, we need to remove the
+commented out code and FIXME code.
+
+*** COMPLETED C++ formatters use of =headers_for_facet_=              :story:
+    CLOSED: [2014-09-17 Wed 00:36]
+    CLOCK: [2014-09-17 Wed 00:31]--[2014-09-17 Wed 00:36] =>  0:05
+
+We seem to be creating a local variable =headers_for_facet_= in
+function =format_file_infos_activity= but not really making use of
+it. We need to investigate what was that we were trying to do here,
+the name of the variable seems to imply it should have been a member
+variable. Probably a remnant from some old refactoring.
+
+*** COMPLETED Move formatters meta-data types to meta-data namespace  :story:
+    CLOSED: [2014-09-17 Wed 17:57]
+    CLOCK: [2014-09-17 Wed 08:25]--[2014-09-17 Wed 08:50] =>  0:25
+
+We should follow the SML pattern across other domain models and create
+a specific namespace for all the meta-data related classes.
+
+*** COMPLETED Merge C++ models                                        :story:
+    CLOSED: [2014-09-20 Sat 00:48]
+    CLOCK: [2014-09-20 Sat 00:48]--[2014-09-20 Sat 00:51] =>  0:03
+    CLOCK: [2014-09-20 Sat 00:30]--[2014-09-20 Sat 00:42] =>  0:12
+    CLOCK: [2014-09-20 Sat 00:15]--[2014-09-20 Sat 00:30] =>  0:15
+    CLOCK: [2014-09-19 Fri 22:01]--[2014-09-19 Fri 23:33] =>  1:32
+    CLOCK: [2014-09-19 Fri 18:36]--[2014-09-19 Fri 19:25] =>  0:49
+    CLOCK: [2014-09-19 Fri 07:54]--[2014-09-19 Fri 08:40] =>  0:46
+    CLOCK: [2014-09-18 Thu 18:03]--[2014-09-18 Thu 18:39] =>  0:36
+    CLOCK: [2014-09-18 Thu 07:52]--[2014-09-18 Thu 08:42] =>  0:50
+    CLOCK: [2014-09-17 Wed 23:02]--[2014-09-18 Thu 00:04] =>  1:02
+
+*New understanding*: We ended up having to take this story on right
+ now as it doesn't make sense to add all this infrastructure to the
+ C++ formatters model, only to move it later on.
+
+Once all of the tidy-up for the meta-data is done, the C++ model will
+become quite small. At that point we should merge it with the C++
+formatters model. This is quite nice as we will end up with a cohesive
+model - the separation between these two models was always arbitrary.
+
+In addition, we should create namespaces:
+
+- =formatters=: general formatting code used by several formatters
+- facet-specific: e.g. =formatters::types= houses all the formatter
+  code for the types facet and so on. This may be a bit messy in terms
+  of the diagram but it will make the code a lot cleaner.
+
+*** COMPLETED Implement the backend enricher in cpp                   :story:
+    CLOSED: [2014-09-20 Sat 02:11]
+    CLOCK: [2014-09-20 Sat 00:52]--[2014-09-20 Sat 02:09] =>  1:17
+    CLOCK: [2014-09-17 Wed 22:51]--[2014-09-17 Wed 23:01] =>  0:10
+    CLOCK: [2014-09-17 Wed 17:58]--[2014-09-17 Wed 18:36] =>  0:38
+    CLOCK: [2014-09-17 Wed 08:22]--[2014-09-17 Wed 08:25] =>  0:03
+
+The CPP model needs to register a top-level enricher that expands all
+of the C++ specific tags. This has to be done before the formatter
+enrichers kick in. We need to remove all of the =cpp= related code
+from enricher and add it to =cpp= model. For now we should get
+details from settings.
+
+We should declare all of the traits at the model level, at least those
+that are common to all formatters. Perhaps a traits class or some
+such. SML should also declare the proper global traits such as
+=enabled= and so on.
+
+We should consider if we should declare the formatters this way too,
+since they may depend on each other. This would be in the formatters
+model.
+
+*** COMPLETED Create =includers_info= and =forward_declarations_info= :story:
+    CLOSED: [2014-09-20 Sat 02:12]
+
+We should make sure the type system represents all the inputs to
+formatters. Create these types and update their formatters,
+transformer etc.
+
+*** COMPLETED Create formatter interfaces for each concrete entity type :task:refactor:formatters:cpp:
+    CLOSED: [2014-09-21 Sun 16:15]
+
+Formatters should have a single format method that takes a concrete
+entity, formatting settings and knitting settings. It returns a file.
+
+**** Remove =file_formatter_interface=
+
+Update all C++ formatters to use specific types:
+
+- remove factory; update workflow to call formatters directly
+- remove file formatter interface
+- formatters to have format() for each specific supported entity,
+  overloaded as required
+
+**** Update formatters to output =formatters::file=
+
+Instead of passing in a stream, we just want to return a file.
+
+**** Update formatters to take settings and entity as input
+
+We want the formatters to be stateless - well at least as far as
+mutating state goes - so that we can run them in parallel. We also
+want them to have no constructor arguments so we can register them. To
+do so we need to pass in both knitting and formatting settings to
+=format= as well as the entity.
+
+**** Get formatters to register themselves with workflow
+
+Copy the code from the deleted registration files. Formatters should
+register against a content descriptor.
+
+*** COMPLETED Analyse use cases for meta-data                         :story:
+    CLOSED: [2014-09-22 Mon 08:20]
+    CLOCK: [2014-09-21 Sun 13:55]--[2014-09-21 Sun 14:27] =>  0:32
+    CLOCK: [2014-09-21 Sun 12:06]--[2014-09-21 Sun 12:09] =>  0:03
+    CLOCK: [2014-09-21 Sun 11:40]--[2014-09-21 Sun 11:46] =>  0:06
+    CLOCK: [2014-09-21 Sun 11:21]--[2014-09-21 Sun 11:30] =>  0:09
+    CLOCK: [2014-09-21 Sun 10:34]--[2014-09-21 Sun 11:01] =>  0:27
+    CLOCK: [2014-09-20 Sat 20:33]--[2014-09-20 Sat 21:40] =>  1:07
+
+The meta-data sub-system is becoming awfully complicated. The main
+reason why seems to be that we have a lot of hypothetical use cases
+rather than the actual use cases we are supposed to solve. In order to
+make life easier, this story will list all of the real use cases we
+have and we can then look for the simplest solution that satisfies
+these.
+
+- *annotation settings*: licence, copyright owner, etc. The main use
+  case is that each model may have an associated licence and one or
+  more copyright owners. The subsidiary use case is that a given
+  module or file may have a separate copyright owner. This is really
+  only a problem when we support merging. For now a simple solution
+  that allows setting these properties in the model module is
+  sufficient. So the requirement on the meta-data is that the users
+  should be able to set this in the model module, and should not be
+  able to set it up anywhere else. We could simply locate the model
+  module, produce the strongly typed version of the meta-data using
+  the formatter settings factory and attach it to the workflow. It can
+  then supply it to the formatters. No copying across modules/entities
+  is required.
+- *backend settings*: For now as we only have a single backend it must
+  always be enabled. However, in the future, when we have multiple
+  backends, users will most likely only want one out of a set of
+  backends. It is not very likely that C# users will always want to
+  generate C++ code and so on. For this we need a setting at the model
+  module level that enables/disables a backend. There are other
+  properties at the backend level that can be set. For example, for
+  C++: the header and implementation extensions, whether the project
+  is split, the source and include directory, if facet folders are
+  enabled, if unique file names are enabled, etc. As with annotation
+  settings, this should only be done at the model module level, and
+  nowhere else.
+- *facet settings*: the most obvious case is the enabling and
+  disabling of facets. This must take into account facet dependencies
+  and mandatory facets. For example, disabling types is not
+  possible. No facet depends on another facet other than types at
+  present, but they do need to know which facets are enabled for the
+  cases where there is cross-facet interference (e.g. if serialisation
+  is not enabled, types should not have forward declarations related
+  to it, etc). In addition, users may want to override the name of the
+  folders for the facet the post-fix used if unique file names are
+  on. It also seems these settings should only be set at the model
+  module level, and nowhere else.
+- *formatter settings*: some formatters can be disabled independently
+  of the facet: includers and forward declarations mainly. however,
+  the main header and implementation cannot be disabled - one must
+  disable the whole facet. The facet has no meaning without these. In
+  addition we also need to know the file name for inclusion
+  purposes. In a simplified world, these are for each facet since we
+  only include the header file. However, to be strictly correct, one
+  would need these per formatter: main header file, includer, visitor,
+  forward declaration and so on. We never need the main implementation
+  file. We also need to know if the include is for a system type. All
+  of these settings only make sense at the entity level.
+
+In addition to these real requirements for the meta-data subsystem, we
+have also conflated other internal requirements:
+
+- there are class-level properties that are inferred from SML: whether
+  constructors are enabled, etc. They must be supplied for each
+  entity, but we cannot have different values for each facet.
+- we need to name files: in order to generate these names we need
+  access to facet-level and backend-level settings. The names
+  themselves are entity properties, and must be supplied for each
+  formatter.
+- we need to compute the include files from the SML relationships for
+  each formatter. These are entity properties for each formatter.
+
+All of these can be transported in meta-data but only make sense in
+entities and do not require any propagation.
+
+** Deprecated Development Stories
+
+Stories that do not make sense any longer.
+
+*** CANCELLED Refactor hello world example to make it simpler         :story:
+    CLOSED: [2014-09-14 Sun 23:05]
+
+*Rationale*: actually, an hello world kind of has to have the string
+ "hello world" so we can't really get away with it. Leave it as it is.
+
+Whilst we started adding a section on dia in the manual, we noticed
+that the hello world example makes use of =std::string= making it
+unsuitable for a basic example. We need to refactor it to use only
+int.
+
+- change manual sections on hello world
+- change sanity
+
+*** CANCELLED Move includes and header guard into entity              :story:
+    CLOSED: [2014-09-08 Mon 08:10]
+
+*Rationale*: This will be supplied by the meta-data.
+
+With this a formatter can now rely only on entities rather than
+requiring a file.
+
+*** CANCELLED Meta-data transformation in formatters                  :story:
+    CLOSED: [2014-09-21 Sun 16:10]
+
+#+begin_quote
+*Rationale*: this will be done with the new approach.
+#+end_quote
+
+Once we reach the formatters with the complete set of meta-data
+(e.g. after population), we should be able to do a final
+transformation before formatting. This would make the formatter code
+much easier and type safe, instead of querying the ptree directly. And
+since it would live in the C++ formatters model, we could share code
+between formatters.
+
+*** CANCELLED Implement the file formatter interface in types formatter :story:
+    CLOSED: [2014-09-21 Sun 17:14]
+
+Move across this formatter to the new way of doing things.
+
+We need to cast the formatter entity to a C++ entity and dispatch it
+using the type visitor. We also need to add registration support.
+
+We also need to generate the following within the formatter:
+
+- file name
+- header guards
+- formatter specific includes
+- includes

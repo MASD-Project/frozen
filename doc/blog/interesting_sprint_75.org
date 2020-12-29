@@ -1,0 +1,134 @@
+#+title: Nerd Food: Interesting...
+#+options: date:nil toc:nil author:nil num:nil title:nil
+
+Time to flush all those tabs again. Some interesting stuff I bumped
+into recently-ish.
+
+* Finance, Economics, Politics
+
+- [[https://www.propublica.org/article/debt-collection-lawsuits-squeeze-black-neighborhoods][The Color of Debt: How Collection Suits Squeeze Black Neighborhoods]]:
+  Another great example of how markets are not so efficient for
+  certain things and not exactly fair.
+- [[http://www.economist.com/news/briefing/21678215-world-entering-third-stage-rolling-debt-crisis-time-centred-emerging][Pulled back in]]: The Economist's take on how the emerging markets
+  credit bubble will play out. Not sure if I agree with their
+  analysis, but its certainly very worrying to see so much EM debt
+  piling up in such a volatile world.
+- [[http://www.politico.com/magazine/story/2015/11/isil-whos-calling-the-shots-213360][ISIL: Who’s Calling the Shots?]]: Interesting analysis, much better
+  than the usual superficial take one is used to from mass-media.
+- [[http://www.newyorker.com/magazine/2015/08/31/the-other-france][The Other France]]: As with the previous article, I cannot help but be
+  surprised - even more so with this one. Truly, an amazing, in-depth
+  job. Surprisingly good coming from the American media. If you have
+  watched [[http://www.imdb.com/title/tt0113247/][La Haine]], read this. If you have read this, watch La Haine.
+- [[https://www.youtube.com/watch?v%3Diavquu6PP9g][Elon Musk talks Climate Change and Carbon Tax at the Sorbone
+  (12.2.15)]]: Musk raises some interesting points, as usual, such as
+  why we need to tax carbon or else.
+- [[http://www.theguardian.com/society/2015/nov/29/future-of-work-gig-sharing-economy-juggling-jobs]['My father had one job in his life, I've had six in mine, my kids
+  will have six at the same time']]: The Guardian's take in this new
+  world of job displacement and "job context switching". Very
+  interesting.
+- [[https://www.youtube.com/watch?v%3DLZbsxs_VGtQ&feature%3Dyoutu.be][Ship it! QuantLib, IPython Notebook, and Docker]]: QuantLib conference
+  is over, and sadly there are very few videos. This one bucks the
+  trend. The every informative Luigi talks about how QuantLib is
+  moving with the times.
+- [[http://www.theguardian.com/business/2015/dec/07/morgan-stanley-axes-400-bankers-bonds-jobs?CMP%3DShare_AndroidApp_Seesmic][Morgan Stanley axes 400 bankers as bond-trading income dives]]: The
+  contraction of the traditional banking industry continues, even as
+  cryptos are growing insanely.
+
+* Startups et al.
+
+- [[http://blog.erratasec.com/2015/12/tesla-is-copying-apples-business-model.html#.VmL8A3VX9hG][Tesla is copying Apple's business model]]: very interesting comparison
+  between Tesla and Apple's businesses. I don't fully agree with the
+  article, but to be fair it does raise a number of interesting
+  points. I definitely think that when Tesla can deliver mass-market
+  quantities they will dominate sales in a similar fashion to the
+  iPhone.
+- [[http://www.theguardian.com/technology/2015/nov/29/arm-cambridge-britain-tech-company-iphone][ARM: Britain's most successful tech company you've never heard of]]:
+  Short history of ARM. It would be great to have a book about these
+  guys!
+- [[https://medium.com/backchannel/doordash-wants-to-own-the-last-mile-27c03098a657][DoorDash Wants to Own the Last Mile]]: interesting story of a startup
+  that focuses on "last mile" delivery.
+- [[https://www.bitpesa.co][BitPesa]]: cool African start-up in the BitCoin / MPesa space.
+- [[http://ventureburn.com/2015/10/lulalend-true-fintech-company-mixing-tech-finance/][LulaLend]]: Another cool African start-up that is doing well in the
+  payments space.
+- [[https://www.youtube.com/watch?v%3DSqEo107j-uw][Elon Musk and Y Combinator President on Thinking for the Future]]:
+  Altman and Musk discuss the future. Shame the presenter is not a bit
+  geekier or it could have been one of the best.
+- [[https://www.youtube.com/watch?v%3DWwrEQklDoyE][Elon Musk with his Brother Kimbal Musk on a panel]]: Since we're doing
+  the Musk fan-boy thing, here's a great panel with Elon and his
+  brother. A more personal view of his achievements.
+- [[http://www.bloomberg.com/news/articles/2015-11-24/jeff-bezos-vs-elon-musk-a-thrilling-new-space-race][Jeff Bezos vs. Elon Musk: A Thrilling, New Space Race]]: since we are
+  fanboying Musk lets go all the way and read up on the latest about
+  the space race. Very interesting.
+- [[https://www.youtube.com/watch?v%3Du6IZRjP39do][Tesla Shareholders Meeting June 2015]]: I think Tesla is one of the
+  few companies where non-shareholders tune in just to listen and get
+  inspiration. Elon, nerdy and awkward but great and inspiring as
+  always. Choice quote: "I'd expect SpaceX to go public once we get
+  regular flights to mars." - very few people could get away with a
+  statement like that.
+
+* General Coding
+
+- [[http://www.nytimes.com/2015/11/13/technology/gene-amdahl-pioneer-of-mainframe-computing-dies-at-92.html?smprod%3Dnytcore-ipad&smid%3Dnytcore-ipad-share][Gene Amdahl, Pioneer of Mainframe Computing, Dies at 92]]: I've heard
+  the name a lot but never really read about the man.
+- [[http://jvns.ca/blog/2015/11/21/why-you-should-understand-a-little-about-tcp/][Why you should understand (a little) about TCP]]: The new generation
+  discovers the joys of understanding low-level protocols. And Nagle
+  (yes, he of [[https://en.wikipedia.org/wiki/Nagle%2527s_algorithm][Nagle Algorithm]] fame) replies on that thread.
+- [[https://www.youtube.com/channel/UCvq_RgZp3kljp9X8Io9Z1DA][systemd.conf]]: Videos from the conference. Have watched a couple,
+  seemed like a lively conference. Hard to imagine an init system with
+  its own conference though!
+- [[http://www.wired.com/brandlab/2015/05/jeff-hawkins-firing-silicon-brain/][Jeff Hawkins on Firing Up the Silicon Brain]]: I just love Jeff
+  Hawkins. I think Neuroscience needs a lot more engineers like him.
+
+* Databases
+
+- [[http://blog.2ndquadrant.com/when-are-we-going-to-contribute-bdr-to-postgresql/][When are we going to contribute BDR to PostgreSQL?]]: For those (like
+  me) who keep moaning about the lack of [[https://en.wikipedia.org/wiki/Multi-master_replication][BDR]] in Postgres, a great
+  explanation of how the patchset is being merged. Great work by the
+  2nd Quadrant guys.
+
+* C++
+
+- [[http://blog.llvm.org/2015/11/new-elf-linker-from-llvm-project.html][New ELF Linker from the LLVM Project]]: LLVM keeps on delivering! Now
+  a new ELF linker. To be totally honest, I haven't even started using
+  [[https://en.wikipedia.org/wiki/Gold_(linker)][Gold]] in anger - I get the feeling the LLVM linker is going to be
+  transitioned in much quicker than Gold.
+- [[http://blogs.msdn.com/b/vcblog/archive/2015/12/04/introducing-clang-with-microsoft-codegen-in-vs-2015-update-1.aspx][Clang with Microsoft CodeGen in VS 2015 Update 1]]: OMG, OMG how cool
+  is this - MSFT decided to create a backend for Clang that is totally
+  compatible with MSVC _AND_ open source it! This is just insane. This
+  means for example that you now can develop C++ on Windows without
+  ever having to use MSVC and Visual Studio. It also means you can
+  cross-compile from Linux into Windows with 100% certainty things
+  will work. It means that projects like [[https://www.winehq.org/][Wine]] and [[https://www.reactos.org/][ReactOS]] can start
+  thinking about a migration path into Clang (not quite as simple as
+  it may sound but surely makes sense). [[https://www.jetbrains.com/clion/][CLion]] with Clang on Windows
+  will rock. The possibilities are just endless. I never quite
+  understood what C2 was all about until I read this announcement -
+  [[http://www.theregister.co.uk/2015/10/21/microsoft_promises_clang_for_windows_in_november_visual_c_update/][suddenly it all makes sense]]. This is /fantastic/ news.
+
+* Layman Science
+
+- [[http://www.wired.com/brandlab/2015/05/jeff-hawkins-firing-silicon-brain/][Jeff Hawkins on Firing Up the Silicon Brain]]: OK, let me totally
+  honest: I _love_ Jeff Hawkins. I read On Intelligence far too many
+  times to count and would be lying if I didn't admit that it had a
+  little bit to do with my researches in Computational
+  Neuroscience. So as you can imagine, I'm rather excited about [[https://en.wikipedia.org/wiki/Hierarchical_temporal_memory][HTM]]
+  and [[https://en.wikipedia.org/wiki/Numenta][Numenta's]] latest developments. This article is a good catch-up,
+  if slightly high-level. If you want something slightly more
+  technical but still very approachable, [[https://www.youtube.com/watch?v%3D6ufPpZDmPKA][Principles of Hierarchical
+  Temporal Memory (HTM): Foundations of Machine Intelligence]] is a must
+  watch.
+
+* Other
+
+- [[https://www.youtube.com/watch?v%3DlWJkrP4WPFw][NoiseRV Live]]: Still discovering this Portuguese musician, but love
+  his work. Great concert. Could do a little bit less talking between
+  songs, but still - artists prerogative and all that.
+- [[http://bff.fm/broadcasts/4499][Warm Focus: Winging It]]: Interesting set of "intelligent dance music"
+  as we used to call it back in the day.
+- [[https://overcast.fm/%2BBj7wZZ3Mg][Mosaic - The “First” Web Browser]]: Super-cool podcasts about internet
+  history. It would be great to have something like this for UNIX!
+- [[https://www.youtube.com/watch?v%3D0va3F2PWBJc][Jackson C. Frank (1965)]]: Tragic musician from the 60s. Great tunes.
+- [[http://www.gutenberg.org/files/15000/15000-h/vol1.html][Reason in common sense]]: Always wanted to read Santayana
+  properly. Started, but I guess it will be a _very_ long
+  exercise. Interesting, if somewhat strange book.
+- [[https://www.youtube.com/watch?v%3DOSD1mud8JZ8][Ceu - jazz baltica Live (2010)]]: New find, Brazilian musician Ceu.

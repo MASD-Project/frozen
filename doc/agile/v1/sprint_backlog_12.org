@@ -1,0 +1,1163 @@
+#+title: Sprint Backlog 12
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- resolve the refactoring problem with lots of duplicated types.
+- reactivate system testing.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-03-11 Mon 06:30]
+| <75>                                                         |         |       |       |       |
+| Headline                                                     | Time    |       |       |     % |
+|--------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                 | *87:05* |       |       | 100.0 |
+|--------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                      | 87:05   |       |       | 100.0 |
+| Active                                                       |         | 87:05 |       | 100.0 |
+| Edit release notes for previous sprint                       |         |       |  1:27 |   1.7 |
+| Sprint and product backlog grooming                          |         |       |  2:44 |   3.1 |
+| Implement text model generation chain in generation          |         |       |  3:45 |   4.3 |
+| Move generation model out of coding                          |         |       |  4:22 |   5.0 |
+| Rename endomodel to just model                               |         |       |  2:11 |   2.5 |
+| Remove exomodel remnants                                     |         |       |  0:03 |   0.1 |
+| Consider adding a dot graph of the transforms to probing     |         |       |  1:47 |   2.0 |
+| Split annotations processing into two phases                 |         |       |  3:10 |   3.6 |
+| Move injection processing out of coding                      |         |       | 18:39 |  21.4 |
+| Create a extraction model post-processing chain              |         |       |  0:56 |   1.1 |
+| Move coding to generation model transform into orchestration |         |       |  0:33 |   0.6 |
+| Add option for northwind tests                               |         |       |  0:54 |   1.0 |
+| Add DTL to vcpkg                                             |         |       |  5:15 |   6.0 |
+| Remove coding options                                        |         |       |  3:59 |   4.6 |
+| Add basic "diff mode"                                        |         |       | 12:02 |  13.8 |
+| Create a "run byproducts" directory                          |         |       |  1:01 |   1.2 |
+| Logging impact in tracing is blank                           |         |       |  0:50 |   1.0 |
+| Split operation reports from patches                         |         |       |  1:19 |   1.5 |
+| Add org mode support to diff reports                         |         |       |  1:13 |   1.4 |
+| Add dry mode                                                 |         |       |  0:27 |   0.5 |
+| Split extraction model generation from code generation       |         |       |  0:29 |   0.6 |
+| Rework the system tests using diff mode                      |         |       | 14:57 |  17.2 |
+| Try to fix valgrind warning on =find_files=                  |         |       |  0:20 |   0.4 |
+| Rename the =transform= method to =apply=                     |         |       |  3:20 |   3.8 |
+| Fix northwind tests on OSX and Windows                       |         |       |  1:04 |   1.2 |
+| Update metrics in OpenHub                                    |         |       |  0:18 |   0.3 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-02-26 Tue 16:51]
+    :LOGBOOK:
+    CLOCK: [2019-02-27 Wed 10:12]--[2019-02-27 Wed 10:32] =>  0:20
+    CLOCK: [2019-02-26 Tue 15:44]--[2019-02-26 Tue 16:51] =>  1:07
+    :END:
+
+ Add github release notes for previous sprint.
+
+Title: Dogen v1.0.11, "Moçamedes"
+
+#+begin_src markdown
+![Moçamedes](https://www.portaldeangola.com/wp-content/uploads/2018/02/namibe.jpg)
+_Município de Moçamedes, capital da província do Namibe. [(C) 2018 Portal de Angola](https://www.portaldeangola.com/2018/08/03/mocamedes-completa-169-anos-com-mais-espacos-verdes/)_.
+
+# Overview
+
+Sprint 11 was yet another "never ending" sprint, lasting several months and is packed full of work. By far, the largest contributor for this oversized sprint was the work on the PhD thesis, which lays the theoretical foundations of MASD. All of the preliminary reviews of the PhD have now been completed, and we have now reached the "business end" towards the delivery of the dissertation. This is good news for the Dogen development, because it means that the theoretical model is now close to completion and we can once more focus on coding. The downside is that after many months of theory without giving the code the proper attention, it is now quite far away from the theory. Towards the end of the sprint some coding work did get done though, adding some interesting features.
+
+## Infrastructure Cleanup
+
+Continuing from the previous sprint, we worked on a number of small housekeeping tasks that have been outstanding for a while
+
+- Nightly builds have now returned. We still have a number of false positives that need to be suppressed, but we're closing in on those.
+- Clang-cl build is no longer experimental. Dogen now builds and runs all tests, and the C++ reference implementation has only one test failure. We've also made some inroads in improving CDash's support for clang-cl (https://github.com/Kitware/CDash/issues/733). We are now very close to shipping our Windows binaries from clang-cl.
+- Assorted vcpkg updates: Boost is now at v1.69 across all operative systems, ODB is now at v2.5.
+
+## Reference Models Cleanup
+
+A number of small fixes were done to the reference models, improving our confidence in the build process:
+
+- Update all models to latest Dogen, including sync'ing the JSON models to the latest Dia models.
+- Update the ```northwind``` model to latest ODB, and add tests to connect to a postgres database on travis (Linux only). We are now validating our ORM support.
+- Added a colour palette test model to exercise all stereotypes that have an associated colour to ensure the palette is consistent.
+
+## Codebase Cleanup
+
+Continuing with our overall code cleanup, a number of refactors were made:
+
+- the utility model is now a regular model. Together with the "single binary" work (see below), this now means that Dogen is made entirely of Dogen models.
+- reduce the number of generated files that are unused. We've removed many forward declarations and other facets that were generated for no good reason.  This work resulted in cleaning up some bugs for corner cases in facet enablement.
+- clean up temporary profiles, created when we were trying to get rid of unnecessary facets. We now have only one temporary profile, that can only be removed when we fix a bug in Dogen.
+- start using Boost.DI for dependency injection instead of rolling our own code. We still need to replace all the registrars and so forth, but we've made a start.
+
+# User visible changes
+
+A number of user visible changes were made with this release. These are all **breaking changes** and require updates in order for existing models to continue working.
+
+## Complete MASD namespace rename
+
+All of the profiles and meta-data are now in the MASD namespace. With this release we tidied up missed items such as: ```masd.decoration.licence_name```, ```masd.decoration.copyright_notice``` etc that had been missed previously.
+
+## Move command line options to metadata
+
+A number of command line options have been moved into the meta-data section of the model. This is because these options were really model properties. With this change we now make it easier to regenerate models in a reproducible manner. Example options:
+
+```
+#DOGEN masd.extraction.ignore_files_matching_regex=.*/CMakeLists.txt
+#DOGEN masd.extraction.delete_extra_files=true
+#DOGEN masd.extraction.force_write=true
+```
+
+## Create a single Dogen binary
+
+When we started Dogen we created a number of tiny binaries that worked as frontends to specific transformations such as ```knitter```, ```stitcher``` and so forth. However, as we better understood the problem domain, it became clear that there was lots of duplication between binaries for no real advantage. With this release, we implemented the git approach of having a single binary with a "command" interface. The help screen explains this new approach:
+
+```
+$ ./masd.dogen.cli --help
+Dogen is a Model Driven Engineering tool that processes models encoded in supported codecs.
+Dogen is created by the MASD project.
+Dogen uses a command-based interface: <command> <options>.
+See below for a list of valid commands.
+
+Global options:
+
+General:
+  -h [ --help ]                   Display usage and exit.
+  -v [ --version ]                Output version information and exit.
+
+Logging:
+  -e [ --log-enabled ]            Generate a log file.
+  -g [ --log-directory ] arg      Directory to place the log file in. Defaults
+                                  to 'log'.
+  -l [ --log-level ] arg          What level to use for logging. Valid values:
+                                  trace, debug, info, warn, error. Defaults to
+                                  'info'.
+
+Tracing:
+  --tracing-enabled               Generate metrics about executed transforms.
+  --tracing-level arg             Level at which to trace.Valid values: detail,
+                                  summary.
+  --tracing-guids-enabled         Use guids in tracing metrics, Not
+                                  recommended when making comparisons between
+                                  runs.
+  --tracing-format arg            Format to use for tracing metrics. Valid
+                                  values: org-mode, text
+  --tracing-output-directory arg  Directory in which to dump probe data. Only
+                                  used if transforms tracing is enabled.
+
+Error Handling:
+  --compatibility-mode-enabled    Try to process models even if there are
+                                  errors.
+
+Commands:
+
+   generate       Generates source code from input models.
+   convert        Converts a model from one codec to another.
+   weave          Weaves one or more template files into its final output.
+
+For command specific options, type <command> --help.
+```
+
+And then for say the ```generate``` command, we now have:
+
+```
+$ ./masd.dogen.cli generate --help
+Dogen is a Model Driven Engineering tool that processes models encoded in supported codecs.
+Dogen is created by the MASD project.
+Displaying options specific to the generate command.
+For global options, type --help.
+
+Generation:
+  -t [ --target ] arg           Model to generate code for, in any of the
+                                supported formats.
+  -o [ --output-directory ] arg Output directory for the generated code.
+                                Defaults to the current working directory.
+```
+
+This approach cleaned significantly the internals, resulting in the deletion of a number of model-lets and coalescing all of their functionality in a much cleaner way in a single model: ```masd.dogen.cli```.
+
+## New stereotypes
+
+A small number of stereotypes has been added:
+
+- ```masd::cpp::header_only```: handcrafted type that has only a header file.
+- ```masd::entry_point```: handcrafted type that has only an implementation file.
+- ```masd::interface```: handcrafted type that has only a header file.
+
+In the future we will bind different templates to these stereotypes to provide a more suitable starting state.
+
+For more details of the work carried out this sprint, see [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_11.org).
+
+# Next Sprint
+
+We are now in full refactoring mode in Dogen. The objective of the next sprint is to implement the orchestration model properly, removing all of the (many) experiments that have been attempted over the last few years.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.11_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.11/dogen_1.0.11_amd64-applications.deb)
+- [dogen-1.0.11-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.11/dogen-1.0.11-Darwin-x86_64.dmg)
+- [dogen-1.0.11-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/dogen-1.0.11-Windows-AMD64.msi)
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/1100704249032462336][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6506470333200023552][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-03-11 Mon 06:30]
+    :LOGBOOK:
+    CLOCK: [2019-03-11 Mon 06:02]--[2019-03-11 Mon 06:30] =>  0:28
+    CLOCK: [2019-03-10 Sun 08:13]--[2019-03-10 Sun 08:34] =>  0:21
+    CLOCK: [2019-03-10 Sun 07:49]--[2019-03-10 Sun 08:12] =>  0:23
+    CLOCK: [2019-03-07 Thu 14:02]--[2019-03-07 Thu 14:17] =>  0:15
+    CLOCK: [2019-03-07 Thu 13:50]--[2019-03-07 Thu 14:01] =>  0:11
+    CLOCK: [2019-03-07 Thu 13:46]--[2019-03-07 Thu 13:49] =>  0:03
+    CLOCK: [2019-03-04 Mon 18:31]--[2019-03-04 Mon 18:41] =>  0:10
+    CLOCK: [2019-03-04 Mon 18:14]--[2019-03-04 Mon 18:25] =>  0:11
+    CLOCK: [2019-03-01 Fri 11:43]--[2019-03-01 Fri 12:07] =>  0:24
+    CLOCK: [2019-02-26 Tue 15:25]--[2019-02-26 Tue 15:43] =>  0:18
+    :END:
+
+ Updates to sprint and product backlog.
+
+*** COMPLETED Implement text model generation chain in generation     :story:
+    CLOSED: [2019-02-28 Thu 13:54]
+    :LOGBOOK:
+    CLOCK: [2019-02-28 Thu 13:54]--[2019-02-28 Thu 14:02] =>  0:08
+    CLOCK: [2019-02-28 Thu 12:59]--[2019-02-28 Thu 13:53] =>  0:54
+    CLOCK: [2019-02-28 Thu 10:04]--[2019-02-28 Thu 12:05] =>  2:01
+    CLOCK: [2019-02-28 Thu 09:21]--[2019-02-28 Thu 10:03] =>  0:42
+    :END:
+
+Move the text model transform and all related code into the generation
+model. This implies updating all formatters.
+
+Notes:
+
+- move linter into orchestration or extraction
+
+Merged Stories:
+
+*Move text model into extraction model*
+
+We started this work but stopped half-way. This is required in order
+to move to the new pipeline orchestration.
+
+Tasks:
+
+- copy the current state of all types into extraction as they have
+  moved on.
+- make coding refer to extraction to start off with. Eventually the
+  transforms can be moved over to =generation.extraction=.
+
+*Create a context factory for injection model*
+
+At present we are creating a coding context just so we can get access
+to the tracer. We then initialise the injection context with the
+tracer. A better approach would be to have a context factory that
+handles the tracer creation in injection.
+
+*** COMPLETED Move generation model out of coding                     :story:
+    CLOSED: [2019-03-01 Fri 09:13]
+    :LOGBOOK:
+    CLOCK: [2019-03-01 Fri 08:21]--[2019-03-01 Fri 09:13] =>  0:52
+    CLOCK: [2019-02-28 Thu 15:35]--[2019-02-28 Thu 17:34] =>  1:59
+    CLOCK: [2019-02-28 Thu 14:03]--[2019-02-28 Thu 15:34] =>  1:31
+    :END:
+
+- then copy the model from coding into generation and all associated
+  transforms.
+- then add support in each generation model (cpp, csharp) for
+  converting from the generation model to the formattables model.
+- then create a model generation chain that uses the generation model.
+- then delete the model and transforms from coding; delete the
+  adaptors from generation models (cpp, csharp).
+- then move the model to text model chain into generation.
+
+*** COMPLETED Rename endomodel to just model                          :story:
+    CLOSED: [2019-03-01 Fri 11:16]
+    :LOGBOOK:
+    CLOCK: [2019-03-01 Fri 11:21]--[2019-03-01 Fri 11:31] =>  0:10
+    CLOCK: [2019-03-01 Fri 10:55]--[2019-03-01 Fri 11:16] =>  0:21
+    CLOCK: [2019-03-01 Fri 09:14]--[2019-03-01 Fri 10:54] =>  1:40
+    :END:
+
+Now we just have one model in coding we can rename it to something
+sensible. Update all transforms, variables, etc.
+
+Notes:
+
+- what is new adapter in coding?
+
+*** COMPLETED Remove exomodel remnants                                :story:
+    CLOSED: [2019-03-01 Fri 11:20]
+    CLOCK: [2019-03-01 Fri 11:17]--[2019-03-01 Fri 11:20] =>  0:03
+
+It seems we have removed the exomodel on the main, but a grep for it
+still shows quite a few remnants. Go through the grep and remove all
+of it.
+
+*Previous Understanding*
+
+Once the =external= model has been created, we need to replace the
+legacy exomodel related transforms; and once that is done, we need to
+remove all of the legacy code.
+
+*** COMPLETED Update ref impl namespaces to match the new specification :story:
+    CLOSED: [2019-03-01 Fri 11:43]
+
+*Rationale*: already implemented.
+
+Perform the namespace update to the reference implementation.
+
+*** COMPLETED Log file names do not have frontend                     :story:
+    CLOSED: [2019-03-01 Fri 11:45]
+
+*Rationale*: already implemented.
+
+Add extension to log file name so that we can see both Dia and JSON
+logs at the same time. At present, one overwrites the other because we
+do not have the frontend (e.g. the extension) on the log file name.
+
+*** COMPLETED Consider adding a dot graph of the transforms to probing :story:
+    CLOSED: [2019-03-01 Fri 22:30]
+    :LOGBOOK:
+    CLOCK: [2019-03-01 Fri 22:31]--[2019-03-01 Fri 22:39] =>  0:08
+    CLOCK: [2019-03-01 Fri 20:51]--[2019-03-01 Fri 22:30] =>  1:39
+    :END:
+
+At present it is very difficult to figure out the composition of the
+chains and transforms. It would be great if we could visualise them as
+a graph using dot/graphviz. The notation looks quite straightforward
+and since we've already built the graph in tracing, its probably just
+a case of transforming it.
+
+We can just add a new format: dot. Then teach the metrics printer to
+output in it. Ideally we should find a way to put at least the timings
+on the graph as well. We should take this opportunity to use the
+tracing formats directly in metrics printer rather than the "use
+org-mode" hack we do at present.
+
+Generate DOT:
+
+: ./masd.dogen.cli generate -t ~/Development/DomainDrivenConsulting/masd/dogen/integration/projects/masd.dogen.models/dia/hello_world.dia --log-enabled --log-level trace --tracing-enabled --tracing-level detail --tracing-format graphviz --tracing-guids-enabled
+
+Convert to PDF:
+
+: dot -Tpdf transform_stats.dot -o output.pdf
+
+Links:
+
+- [[https://renenyffenegger.ch/notes/tools/Graphviz/examples/index][Graphviz (dot) examples]]
+
+*** COMPLETED Split annotations processing into two phases            :story:
+    CLOSED: [2019-03-02 Sat 15:52]
+    :LOGBOOK:
+    CLOCK: [2019-03-02 Sat 15:37]--[2019-03-02 Sat 15:50] =>  0:13
+    CLOCK: [2019-03-02 Sat 15:12]--[2019-03-02 Sat 15:36] =>  0:24
+    CLOCK: [2019-03-02 Sat 15:01]--[2019-03-02 Sat 15:11] =>  0:10
+    CLOCK: [2019-03-02 Sat 08:01]--[2019-03-02 Sat 08:20] =>  0:19
+    CLOCK: [2019-03-02 Sat 07:19]--[2019-03-02 Sat 08:00] =>  0:41
+    CLOCK: [2019-03-02 Sat 07:09]--[2019-03-02 Sat 07:18] =>  0:09
+    CLOCK: [2019-03-02 Sat 06:31]--[2019-03-02 Sat 07:08] =>  0:37
+    CLOCK: [2019-03-01 Fri 18:01]--[2019-03-01 Fri 18:18] =>  0:17
+    CLOCK: [2019-03-01 Fri 17:40]--[2019-03-01 Fri 18:00] =>  0:20
+    :END:
+
+At present the annotation factory does two very distinct jobs:
+
+- the creation of an annotation. For this we just need to map the KVPs
+  to a slightly more typed structure. This should be doable at pretty
+  much any time.
+- profile expansion. For this we need for all the fields to have been
+  setup and template expanded; we need the stereotypes to have been
+  processed and we need the profiles to have been processed. Only then
+  we can match the dynamic stereotypes against the profiles and setup
+  the annotation.
+
+In a world where profiles are distinct meta-entities, this is fine
+because we can ensure we read the JSON files first and then perform
+model processing. However, going forward, we want models to contain
+profiles (once they are renamed to something more sensible). What this
+means is that we have a circular dependency between profiles and
+models. This had been understood in the past (somewhere in the product
+backlog) but we didn't quite point out a solution.
+
+The solution appears simple: split annotation processing into two
+steps:
+
+- First we initialise the annotation without any further
+  processing. This then allows users to query it, but if they do, they
+  will not see any of the profile related fields. This should be ok
+  because we are just looking for a few root module properties
+  (references, etc). We've already performed some analysis on this -
+  locate this story.
+- Second we expand the profiles. This must be done very early on in
+  coding. Unfortunately, we also made another mistake: when we adapt a
+  injection element into their coding meta-type, we are performing the
+  annotation expansion. This made sense at the time, but its now not
+  ideal because we want to resolve all types to their coding types
+  before we perform profile expansion (so that we can locate the
+  profiles first amongst the meta-types and perform their
+  initialisation).
+
+Problems:
+
+- something is not quite right with stitch expansion; we used to have
+  profile expansion before (somehow) but now it does not work any
+  more. Fixed.
+
+Tasks:
+
+- create a "profile expander" that takes on the role of profile
+  expansion from annotation factory. Update existing transform to call
+  first the factory then the expander and make sure nothing breaks.
+- add annotation processing to injection, including annotation factory
+  (minus profile expansion).
+- remove annotations factory work from new adapter, reusing instead
+  injection annotation.
+
+Notes:
+
+- note that types are different from profiles: once we code-generate
+  the types code, we will register them at initialisation time. This
+  can be done exactly as is at present, but instead of reading the
+  type templates from JSON we are merely creating some C++ code which
+  performs the same role. Then, we can initialise the type repository
+  as we do at present (during context generation), which will then
+  perform the template expansion and so forth. All of this must
+  precede both profile expansion and any querying of annotations prior
+  to expansion. The best way to achieve this is to create a type
+  registrar that allows generated code to register types. We can call
+  this generate code in the initialiser.
+- the generation of the fields will require a transform that creates a
+  masd::object with the fields, the class that registers the type, and
+  a class that reads the fields to populate the object. We need LAM to
+  map types from annotations to the output language.
+
+*** COMPLETED Move injection processing out of coding                 :story:
+    CLOSED: [2019-03-04 Mon 18:13]
+    :LOGBOOK:
+    CLOCK: [2019-03-04 Mon 17:51]--[2019-03-04 Mon 18:13] =>  0:22
+    CLOCK: [2019-03-04 Mon 17:30]--[2019-03-04 Mon 17:50] =>  0:20
+    CLOCK: [2019-03-04 Mon 17:17]--[2019-03-04 Mon 17:29] =>  0:12
+    CLOCK: [2019-03-04 Mon 16:15]--[2019-03-04 Mon 17:16] =>  1:01
+    CLOCK: [2019-03-04 Mon 15:55]--[2019-03-04 Mon 16:14] =>  0:19
+    CLOCK: [2019-03-04 Mon 15:47]--[2019-03-04 Mon 15:54] =>  0:07
+    CLOCK: [2019-03-04 Mon 15:18]--[2019-03-04 Mon 15:46] =>  0:28
+    CLOCK: [2019-03-04 Mon 15:02]--[2019-03-04 Mon 15:17] =>  0:15
+    CLOCK: [2019-03-04 Mon 14:52]--[2019-03-04 Mon 15:01] =>  0:09
+    CLOCK: [2019-03-04 Mon 14:34]--[2019-03-04 Mon 14:51] =>  0:17
+    CLOCK: [2019-03-04 Mon 14:19]--[2019-03-04 Mon 14:33] =>  0:14
+    CLOCK: [2019-03-04 Mon 11:55]--[2019-03-04 Mon 12:00] =>  0:05
+    CLOCK: [2019-03-04 Mon 11:20]--[2019-03-04 Mon 11:54] =>  0:34
+    CLOCK: [2019-03-04 Mon 10:53]--[2019-03-04 Mon 11:19] =>  0:26
+    CLOCK: [2019-03-04 Mon 10:40]--[2019-03-04 Mon 10:52] =>  0:12
+    CLOCK: [2019-03-04 Mon 09:28]--[2019-03-04 Mon 10:39] =>  1:11
+    CLOCK: [2019-03-04 Mon 09:00]--[2019-03-04 Mon 09:27] =>  0:27
+    CLOCK: [2019-03-04 Mon 07:59]--[2019-03-04 Mon 08:28] =>  1:04
+    CLOCK: [2019-03-03 Sun 20:55]--[2019-03-03 Sun 21:04] =>  0:09
+    CLOCK: [2019-03-03 Sun 16:08]--[2019-03-03 Sun 18:55] =>  2:47
+    CLOCK: [2019-03-03 Sun 15:21]--[2019-03-03 Sun 16:07] =>  0:46
+    CLOCK: [2019-03-03 Sun 12:30]--[2019-03-03 Sun 12:46] =>  0:16
+    CLOCK: [2019-03-03 Sun 10:11]--[2019-03-03 Sun 10:41] =>  0:30
+    CLOCK: [2019-03-03 Sun 09:59]--[2019-03-03 Sun 10:11] =>  0:12
+    CLOCK: [2019-03-03 Sun 08:15]--[2019-03-03 Sun 08:23] =>  0:08
+    CLOCK: [2019-03-03 Sun 07:23]--[2019-03-03 Sun 08:14] =>  0:51
+    CLOCK: [2019-03-02 Sat 19:38]--[2019-03-02 Sat 19:45] =>  0:07
+    CLOCK: [2019-03-02 Sat 19:20]--[2019-03-02 Sat 19:37] =>  0:17
+    CLOCK: [2019-03-02 Sat 18:56]--[2019-03-02 Sat 19:19] =>  0:23
+    CLOCK: [2019-03-01 Fri 17:03]--[2019-03-01 Fri 17:39] =>  0:36
+    CLOCK: [2019-03-01 Fri 16:48]--[2019-03-01 Fri 17:02] =>  0:14
+    CLOCK: [2019-03-01 Fri 14:55]--[2019-03-01 Fri 16:47] =>  1:52
+    CLOCK: [2019-03-01 Fri 14:50]--[2019-03-01 Fri 14:54] =>  0:04
+    CLOCK: [2019-03-01 Fri 14:33]--[2019-03-01 Fri 14:49] =>  0:16
+    CLOCK: [2019-03-01 Fri 12:39]--[2019-03-01 Fri 14:32] =>  1:53
+    CLOCK: [2019-03-01 Fri 11:37]--[2019-03-01 Fri 11:43] =>  0:06
+    CLOCK: [2019-03-01 Fri 11:32]--[2019-03-01 Fri 11:36] =>  0:04
+    :END:
+
+We need to stop the intermixing between injection and coding
+models. We need to load up all of the injection models in one go and
+supply them into coding for processing.
+
+Notes:
+
+- add annotations to injection. Read references.
+- add logic to read system models into injection.
+- add a chain in orchestration that does the new injection workflow
+  and passes the model set into coding.
+- delete injection related classes in coding.
+- remove extensions from references, and then use registered injectors
+  to determine the expected extensions.
+- rename model generation chain to model production chain. This way we
+  avoid confusion with code generation.
+- grep for exogenous and endogenous.
+- rename =external_model_to_model_transform= to injection.
+- create a top-level context that owns all other four contexts. It
+  contains the top-level tracer. Then supply the tracer to the other
+  contexts. Create a context factory that internally creates the other
+  contexts.
+- make tracer ioable, then implement all contexts via code
+  generation. Ensure tracer does not end tracing on destruction and
+  make it copyable. Or maybe make it a boost shared pointer.
+- system models should be referenced just like any other model. The
+  only difference is that they are sourced from elsewhere. This means
+  we can now implement the reference models directory path approach.
+- finish the injection clean up, removing all of the injection related
+  transforms.
+- create a profile expansion transform, performed after the injection
+  to coding transform.
+- at this point, we are now read to introduce a new transform that
+  will sit just before the profile expansion transform and which will
+  filter all the meta-elements in the model (such as profiles) and
+  pre-process them prior to profile expansion. There will likely be
+  some complications related to naming (this transform must be done
+  before resolution etc and profiles are a form of name resolution).
+- in order to do side-by-side testing, create a new field called
+  "references2" and populate it with the new style of references. Then
+  create a parallel transform chain that can be switched on and off
+  with a macro from orchestration.
+- we need to also support models with extensions, just in case users
+  decide to supply them. However, this is a bit tricky - sometimes we
+  may have false positives, such as for the "dia" models.
+- strange dependencies:
+  - injection on extraction.
+  - tracing on annotations.
+  - injection.json on extraction.
+
+*** COMPLETED Model references are not transitive                     :story:
+    CLOSED: [2019-03-04 Mon 18:20]
+
+*Rationale*: implemented as part of moving injection processing out of
+coding.
+
+For some reason we do not seem to be following references of
+referenced models. We should load them automatically, now that they
+are part of the meta-data. However, the =yarn.json= model breaks when
+we remove the reference to annotation even though it does not use this
+model directly and =yarn= is referencing it correctly.
+
+The reason why is that we load up references to all intermediate
+models, but then on merge we only take target references. What we
+really need to do is to combine the reference containers on merge. For
+this we need to create a method that loops through the map and inserts
+all keys which have not yet been inserted. Something like "merge
+references".
+
+We should address this issue when we introduce two-phase parsing of
+models. This is because, as with the new meta-model elements, we also
+need to do a first pass across the target and all reference models to
+obtain all the paths for all referenced models. We then need to obtain
+the unique set of referenced models and load those. To put in this
+logic in the code at present (i.e. without a two-phase approach) would
+mean we'd have to load the same models several times (or heavily
+rewrite existing code, resulting in a two-phase approach, anyway).
+
+*** COMPLETED Create a extraction model post-processing chain         :story:
+    CLOSED: [2019-03-05 Tue 09:33]
+    :LOGBOOK:
+    CLOCK: [2019-03-05 Tue 08:48]--[2019-03-05 Tue 09:35] =>  0:47
+    CLOCK: [2019-03-05 Tue 08:38]--[2019-03-05 Tue 08:47] =>  0:09
+    :END:
+
+We already have a few transforms that can go into this chain:
+
+- linting
+- writing
+- diffing
+
+Additional stories are in the backlog.
+
+*** COMPLETED Move coding to generation model transform into orchestration :story:
+    CLOSED: [2019-03-05 Tue 10:09]
+    :LOGBOOK:
+    CLOCK: [2019-03-05 Tue 09:36]--[2019-03-05 Tue 10:09] =>  0:33
+    :END:
+
+There is no need to house this in generation.
+
+*** COMPLETED Dogen's vcpkg export for OSX was created from master    :story:
+    CLOSED: [2019-03-05 Tue 14:20]
+
+*Rationale*: implemented as part of the DTL work.
+
+Problems:
+
+- we have built it from master instead of masd branch.
+- installing libodb et al. from master fails due to a config error. We
+  need to check that master has our fix. We need to check that the
+  config.h workaround works for OSX as well.
+- when building using the masd branch, we can't download ODB from git
+  due to a hash mismatch. This may be something to do with the git
+  version (2.7).
+
+*** COMPLETED Move top-level transforms into orchestration            :story:
+    CLOSED: [2019-03-05 Tue 14:25]
+
+- clear up the existing orchestration model We don't really know what
+  its current state is. Keep it as a backup as we may need to go back
+  to it.
+- copy the top-level chains into orchestration, into a well
+  defined namespace (say =dirty=). This must include the model to text
+  model and registration. Remove all of these types from coding. At
+  this point coding should only depend on injectors.
+- try implement interface based I/O instead of reading/writing
+  directly from the filesystem.
+- first move the model to text model transform into
+  =generation.cpp=. This means updating all of the formatters. Also,
+  use the external model, deleting all of the text models.
+
+*** COMPLETED Add option for northwind tests                          :story:
+    CLOSED: [2019-03-05 Tue 20:04]
+    :LOGBOOK:
+    CLOCK: [2019-03-05 Tue 19:10]--[2019-03-05 Tue 20:04] =>  0:54
+    :END:
+
+
+At present, when we detect ODB and associated libraries, we build and
+run the northwind tests. However, not all build agents have postgres
+installed. We need an option that can be used to stop the inclusion of
+the northwind tests - or ideally, to build the tests but not run it.
+
+Try also to setup postgres on windows.
+
+*** COMPLETED Update dogen's windows vcpkg export                     :story:
+    CLOSED: [2019-03-05 Tue 20:05]
+
+*Rationale*: completed as part of the vcpkg update.
+
+- ensure we built it from masd and not master
+- check master builds libodb 2.4
+- build libodb 2.5 from masd and re-export.
+
+*** COMPLETED Add DTL to vcpkg                                        :story:
+    CLOSED: [2019-03-06 Wed 11:21]
+    :LOGBOOK:
+    CLOCK: [2019-03-05 Tue 16:39]--[2019-03-05 Tue 18:02] =>  1:23
+    CLOCK: [2019-03-05 Tue 13:02]--[2019-03-05 Tue 15:06] =>  2:04
+    CLOCK: [2019-03-05 Tue 11:42]--[2019-03-05 Tue 12:26] =>  0:44
+    CLOCK: [2019-03-05 Tue 11:01]--[2019-03-05 Tue 11:15] =>  0:14
+    CLOCK: [2019-03-05 Tue 10:10]--[2019-03-05 Tue 11:00] =>  0:50
+    :END:
+
+dtl seems to be the easiest library to work with in terms of
+generating diffs. however, its not on vcpkg.
+
+- add cmake support to dtl. not strictly needed but seems like an easy
+  thing to do and will make vcpkg easier. it also means we can build
+  tests and examples to make sure it all works in isolation. actually
+  this was tried before and not accepted by the maintainer.
+- add dtl port.
+
+Notes:
+
+- odb targets: =odb::libodb-sqlite=
+
+links:
+
+- [[https://github.com/google/diff-match-patch/tree/master/cpp][diff-match-patch]]: interesting diff library but requires qt.
+- [[https://github.com/martinsos/edlib#usage-and-examples][edlib]]: interesting library but seems to be more for levehnstein
+  diffs. also not on vcpkg.
+- [[https://github.com/cubicdaiya/dtl/pull/2][add cmake support]]: pr to add cmake support to dtl, not accepted by
+  the maintainer. see also [[https://github.com/chino540off/dtl][the repo]].
+- [[https://github.com/microsoft/vcpkg/tree/master/ports/libodb][libodb]]: example of a project with a vcpkg specific cmake support.
+- [[https://stackoverflow.com/questions/13438547/linux-c-or-c-library-to-diff-and-patch-strings][linux c or c++ library to diff and patch strings?]]
+
+*** COMPLETED Remove coding options                                   :story:
+    CLOSED: [2019-03-06 Wed 11:21]
+    :LOGBOOK:
+    CLOCK: [2019-03-06 Wed 09:51]--[2019-03-06 Wed 11:30] =>  1:39
+    CLOCK: [2019-03-06 Wed 09:01]--[2019-03-06 Wed 09:50] =>  0:49
+    CLOCK: [2019-03-05 Tue 15:07]--[2019-03-05 Tue 16:38] =>  1:31
+    :END:
+
+By now we should have moved away from using most properties in coding
+options. We need to get rid of this class because its making the logic
+confusing.
+
+- delete unused properties.
+- move remaining properties to the context.
+
+In fact this is all one big hack at present. We started off by having
+a single context for all activities, but in truth there are different
+requirements. For conversion we just need the injection context. We
+need to have different make functions in the factory for each use
+case. Each function should take in the API configuration itself, plus
+any additional (i.e. hacked) parameters.
+
+Notes:
+
+- transform options and formatting repository are not used in coding.
+
+*** COMPLETED Add basic "diff mode"                                   :story:
+    CLOSED: [2019-03-07 Thu 13:45]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 12:46]--[2019-03-07 Thu 13:39] =>  0:53
+    CLOCK: [2019-03-07 Thu 11:58]--[2019-03-07 Thu 12:04] =>  0:06
+    CLOCK: [2019-03-07 Thu 10:37]--[2019-03-07 Thu 11:57] =>  1:20
+    CLOCK: [2019-03-07 Thu 09:31]--[2019-03-07 Thu 10:36] =>  1:05
+    CLOCK: [2019-03-07 Thu 06:15]--[2019-03-07 Thu 07:34] =>  1:19
+    CLOCK: [2019-03-06 Wed 18:46]--[2019-03-06 Wed 19:02] =>  0:16
+    CLOCK: [2019-03-06 Wed 18:02]--[2019-03-06 Wed 18:12] =>  0:10
+    CLOCK: [2019-03-06 Wed 17:12]--[2019-03-06 Wed 18:01] =>  0:49
+    CLOCK: [2019-03-06 Wed 16:11]--[2019-03-06 Wed 17:12] =>  1:01
+    CLOCK: [2019-03-06 Wed 15:23]--[2019-03-06 Wed 16:10] =>  0:47
+    CLOCK: [2019-03-06 Wed 15:05]--[2019-03-06 Wed 15:22] =>  0:17
+    CLOCK: [2019-03-06 Wed 13:02]--[2019-03-06 Wed 15:04] =>  2:02
+    CLOCK: [2019-03-06 Wed 12:01]--[2019-03-06 Wed 12:06] =>  0:05
+    CLOCK: [2019-03-06 Wed 11:31]--[2019-03-06 Wed 12:00] =>  0:29
+    CLOCK: [2019-03-05 Tue 15:07]--[2019-03-05 Tue 15:19] =>  0:12
+    CLOCK: [2019-03-05 Tue 11:16]--[2019-03-05 Tue 11:41] =>  0:25
+    CLOCK: [2019-03-05 Tue 07:52]--[2019-03-05 Tue 08:38] =>  0:46
+    :END:
+
+We need a very simple way of checking all generated files in memory
+against what's in the file system and returning a flag if they are
+different. We can then use these flags to determine if tests pass. In
+the future we can extend this approach to include a proper diff of the
+files, but for now we just need a reliable way to run system tests
+again.
+
+Actually the right solution for this is to see the processing as part
+of a chain:
+
+- out of the generator come a set of artefacts with operations (write,
+  merge, ignore)
+- these get joined with a transform that reads the state of the file
+  system. It then adds more operations: delete, etc. If there are no
+  diffs, it marks those files as skip.
+- the final step is a processor which gets that model and executes the
+  operations. This can then be replaced by a "reporter" that simply
+  states what the operations would be.
+
+Diff mode is using the report to see if there are any diffs.
+
+Notes:
+
+- before we can check in we need a find DTL cmake script. done.
+- it seems there is no use case for having both a diff and also
+  writing files. So we should just rename diffing to dry-run. When
+  enabled, it disables writing.
+- we need to have the brief diffs on a diff report rather than on the
+  patch. We need a separate transfrom to make the report.
+- check default diff style
+- add newly_generated to diff
+- stitch workflow is still using artefact writer.
+
+Merged Stories:
+
+*Validation-only or dry-run mode*
+
+Both stitcher and knitter could do with a "dry-run" mode in which we'd
+do everything except for actually outputting.
+
+*For Knitter*
+
+It would be nice if one could just check if a dia diagram is valid for
+code generation, e.g. =--validate= or something along those lines.
+
+*For Stitch*
+
+We are interested in performing the parsing. This would be useful for
+example for a flymake mode in emacs.
+
+An additional feature of dry-run would be to run, generate the model
+and then produce a unified diff, e.g. tell me what you'd change. For
+this we'd have to link against a diff library. We need to
+automatically exclude non-overwrite files (or have an option to
+exclude/include them).
+
+Links:
+
+- [[https://github.com/google/diff-match-patch/tree/master/cpp][google Diff Match Patch library]]
+- [[https://github.com/cubicdaiya/dtl][DTL: Diff Template Library]]
+- [[https://stackoverflow.com/questions/1451694/is-there-a-way-to-diff-files-from-c][SO: Is there a way to diff files from C++?]]
+
+*Dry-run option to just diff with existing generated code*
+
+#+begin_quote
+*Story*: As a dogen user, I want to know what has changed with the
+next code generation so that I can evaluate if the changes are as
+expected or not.
+#+end_quote
+
+It would be useful to have an option that would do everything except
+writing the files to disk; instead, it would diff them with the
+existing files and report if there are any differences. This would be
+useful to make sure the source code matches the latest version of the
+diagram.
+
+We could use something like the [[https://code.google.com/p/dtl-cpp/wiki/Tutorial][DTL library]].
+
+*** COMPLETED Create a "run byproducts" directory                     :story:
+    CLOSED: [2019-03-07 Thu 15:19]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 14:22]--[2019-03-07 Thu 15:23] =>  1:01
+    :END:
+
+We are now outputting quite a lot of different things:
+
+- logs
+- tracing
+- diffing
+- reports
+- reference graph (eventually)
+- ...
+
+This means we are creating a whole load of random files for each
+run. Ideally we want them all placed under a sensible directory
+structure with the following properties:
+
+- its easy to delete everything in one go, without deleting anything
+  important by mistake such as generated and/or handcrafted code.
+- for each "run", there is a top level directory aggregating the
+  byproducts. Its annoying to have to go to a top-level log directory,
+  top-level tracing directory etc and then look for a run.
+- its easy to move them all out of the way with little configuration
+  (e.g. not having to change N different directories, one at a time).
+- its good to have the run id in filenames because we tend to have a
+  lot of them open at the same time. This applies to logs, patches,
+  etc.
+
+Directory structure:
+
+- dogen.byproduct
+- run ID
+- folder if needed, e.g. tracing. Otherwise, file: log, patch etc.
+
+*** COMPLETED Logging impact in tracing is blank                      :story:
+    CLOSED: [2019-03-07 Thu 16:14]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 15:24]--[2019-03-07 Thu 16:14] =>  0:50
+    :END:
+
+This should be set to the logging level.
+
+*** COMPLETED Split operation reports from patches                    :story:
+    CLOSED: [2019-03-07 Thu 17:28]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 17:25]--[2019-03-07 Thu 17:30] =>  0:05
+    CLOCK: [2019-03-07 Thu 16:44]--[2019-03-07 Thu 17:24] =>  0:40
+    CLOCK: [2019-03-07 Thu 16:15]--[2019-03-07 Thu 16:43] =>  0:28
+    CLOCK: [2019-03-07 Thu 14:16]--[2019-03-07 Thu 14:22] =>  0:06
+    :END:
+
+We stated by making the reports mutually exclusive from patch
+generation but in truth we tend to look at both: the report to get an
+overview of the changes and the diff to see the detail. Its painful to
+have to run dogen twice to get that view. Change the options to allow
+creating both in one go.
+
+*** COMPLETED Add org mode support to diff reports                    :story:
+    CLOSED: [2019-03-07 Thu 21:07]
+     :LOGBOOK:
+     CLOCK: [2019-03-07 Thu 20:35]--[2019-03-07 Thu 21:07] =>  0:32
+     CLOCK: [2019-03-07 Thu 20:25]--[2019-03-07 Thu 20:34] =>  0:09
+     CLOCK: [2019-03-07 Thu 17:51]--[2019-03-07 Thu 18:04] =>  0:13
+     CLOCK: [2019-03-07 Thu 17:31]--[2019-03-07 Thu 17:50] =>  0:19
+     :END:
+
+Its good to have a flat view for grepping for specific files, but its
+not ideal when trying to get an overview of the changes. We really
+need two styles of reports: plain and org mode.
+
+*** COMPLETED Add dry mode                                            :story:
+    CLOSED: [2019-03-07 Thu 21:31]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 21:32]--[2019-03-07 Thu 21:36] =>  0:04
+    CLOCK: [2019-03-07 Thu 21:08]--[2019-03-07 Thu 21:31] =>  0:23
+    :END:
+
+With this option we will perform all the work in memory but not
+actually output generated code. It is intended to be used with diffing
+and tracing. Some activities may not support it (e.g. conversion?).
+
+*** COMPLETED Split extraction model generation from code generation  :story:
+    CLOSED: [2019-03-08 Fri 12:10]
+    :LOGBOOK:
+    CLOCK: [2019-03-08 Fri 11:51]--[2019-03-08 Fri 12:10] =>  0:19
+    CLOCK: [2019-03-08 Fri 11:40]--[2019-03-08 Fri 11:50] =>  0:10
+    :END:
+
+In order to make the models testable, we need access to the extraction
+model. However, we do not want to create a custom pipeline just for
+testing because we'd end up testing different things. Refactor the
+existing code such that the generation pipeline makes use of the
+extraction pipeline.
+
+*** COMPLETED Drop the original extension in tailor                   :story:
+    CLOSED: [2019-03-08 Fri 17:38]
+
+*Rationale*: fixed as part of system tests work.
+
+Filenames in tailor look weird:
+
+: dart.dia.json
+
+it should just be:
+
+: dart.json
+
+Actually this is not a tailor / converter problem per se - its just
+that CMake is supplying the entire file name with extension to dogen
+as the destination. However, due to restrictions on how =NAME_WE=
+works for multiple extensions, it is non-trivial to sort this
+problem. In addition, because we want to read models from the dia
+directory and write them into the JSON directory, we can't just simply
+change dogen to update the extension itself. We need some hackery in
+CMake to process extensions properly like by dropping the last N
+characters of the filename or some such.
+
+*** COMPLETED Rework the system tests using diff mode                 :story:
+    CLOSED: [2019-03-09 Sat 17:02]
+    :LOGBOOK:
+    CLOCK: [2019-03-10 Sun 07:25]--[2019-03-10 Sun 07:48] =>  0:23
+    CLOCK: [2019-03-09 Sat 16:11]--[2019-03-09 Sat 17:02] =>  0:51
+    CLOCK: [2019-03-09 Sat 14:23]--[2019-03-09 Sat 15:26] =>  1:03
+    CLOCK: [2019-03-09 Sat 07:40]--[2019-03-09 Sat 08:19] =>  0:39
+    CLOCK: [2019-03-09 Sat 07:24]--[2019-03-09 Sat 07:39] =>  0:15
+    CLOCK: [2019-03-09 Sat 07:15]--[2019-03-09 Sat 07:23] =>  0:08
+    CLOCK: [2019-03-09 Sat 06:06]--[2019-03-09 Sat 07:14] =>  1:08
+    CLOCK: [2019-03-08 Fri 19:14]--[2019-03-08 Fri 20:19] =>  1:05
+    CLOCK: [2019-03-08 Fri 17:52]--[2019-03-08 Fri 18:41] =>  0:49
+    CLOCK: [2019-03-08 Fri 17:22]--[2019-03-08 Fri 17:51] =>  0:29
+    CLOCK: [2019-03-08 Fri 15:03]--[2019-03-08 Fri 17:02] =>  1:59
+    CLOCK: [2019-03-08 Fri 13:09]--[2019-03-08 Fri 15:02] =>  1:53
+    CLOCK: [2019-03-08 Fri 12:43]--[2019-03-08 Fri 12:48] =>  0:05
+    CLOCK: [2019-03-08 Fri 09:27]--[2019-03-08 Fri 11:39] =>  2:12
+    CLOCK: [2019-03-08 Fri 08:35]--[2019-03-08 Fri 09:26] =>  0:51
+    CLOCK: [2019-03-08 Fri 06:13]--[2019-03-08 Fri 07:20] =>  1:07
+    :END:
+
+Once we have diff mode, we need to find some kind of workflow for
+tests:
+
+- each product is composed of a git URL and a list of models.
+- we git clone all repos as part of the build process.
+- directories and model locations are hard-coded in each test.
+- test runs against the model and hard-coded location, produces the
+  diff. Test asserts of the diff being non-zero.
+
+The problem with this approach is that we now have to do git checkouts
+of external projects in order to build and run the product. This is
+not ideal. Another approach is:
+
+- for the models of dogen itself, discover the models.
+- for external models, use environment variables. For the reference
+  models, if not defined then error. This is because the code
+  generator should not break the reference models.
+- for other project models, these can be ignored if not defined. This
+  is so we don't have to get all external projects when developing
+  locally, but the build machine will still validate them.
+
+Notes:
+
+- create a new test data set for each procuct (dogen, ref models).
+- test data set looks for an env variable. If not defined, throws.
+- test data set has hard-coded paths to each model, and to their
+  output.
+- test runs main orchestration transform against model then checks for
+  no writes or removes. prints out first 5 diffs to console.
+- enable diffing, reporting.
+- check how byproduct directory works with tests.
+- we cannot force all users to run system tests against reference
+  models. This basically would mean that if you want to use dogen from
+  git you'd have to also download reference models etc. We need to
+  hide this behind a feature switch.
+- we must now remember to always keep JSON models up to date or tests
+  will fail. This is probably a good thing.
+
+*** COMPLETED Try to fix valgrind warning on =find_files=             :story:
+    CLOSED: [2019-03-10 Sun 08:14]
+    :LOGBOOK:
+    CLOCK: [2019-02-27 Wed 17:25]--[2019-02-27 Wed 17:45] =>  0:20
+    :END:
+
+We seem to be doing something wrong with directory iterators:
+
+: UMC ==7755== Conditional jump or move depends on uninitialised value(s)
+: ==7755==    at 0xA0FAFB: (anonymous namespace)::dir_itr_increment(void*&, void*&, std::__cxx11::basic_string, std::allocator >&, boost::filesystem::file_status&, boost::filesystem::file_status&) (operations.cpp:2163)
+: ==7755==    by 0xA101B5: boost::filesystem::detail::directory_iterator_increment(boost::filesystem::directory_iterator&, boost::system::error_code*) (operations.cpp:2374)
+: ==7755==    by 0xA1002E: boost::filesystem::detail::directory_iterator_construct(boost::filesystem::directory_iterator&, boost::filesystem::path const&, boost::system::error_code*) (operations.cpp:2354)
+: ==7755==    by 0x6F2AF6: boost::filesystem::directory_iterator::directory_iterator(boost::filesystem::path const&) (operations.hpp:905)
+: ==7755==    by 0x6F2462: boost::filesystem::recursive_directory_iterator::recursive_directory_iterator(boost::filesystem::path const&) (operations.hpp:1174)
+: ==7755==    by 0x6F0E15: masd::dogen::utility::filesystem::find_files(boost::filesystem::path const&) (file.cpp:85)
+: ==7755==    by 0x6ADB4B: masd::dogen::coding::helpers::mapping_set_repository_factory::obtain_mappings[abi:cxx11](std::vector > const&) const (mapping_set_repository_factory.cpp:66)
+: ==7755==    by 0x6AF507: masd::dogen::coding::helpers::mapping_set_repository_factory::make(std::vector > const&) const (mapping_set_repository_factory.cpp:172)
+
+Not clear why this is coming out so we just ignored it for now.
+
+*** COMPLETED Rename the =transform= method to =apply=                :story:
+    CLOSED: [2019-03-10 Sun 22:24]
+    :LOGBOOK:
+    CLOCK: [2019-03-10 Sun 22:16]--[2019-03-10 Sun 22:24] =>  0:08
+    CLOCK: [2019-03-10 Sun 21:42]--[2019-03-10 Sun 22:15] =>  0:33
+    CLOCK: [2019-03-10 Sun 21:15]--[2019-03-10 Sun 21:41] =>  0:26
+    CLOCK: [2019-03-10 Sun 14:12]--[2019-03-10 Sun 15:00] =>  0:48
+    CLOCK: [2019-03-10 Sun 14:05]--[2019-03-10 Sun 14:11] =>  0:06
+    CLOCK: [2019-03-10 Sun 13:31]--[2019-03-10 Sun 14:04] =>  0:33
+    CLOCK: [2019-03-10 Sun 10:02]--[2019-03-10 Sun 10:43] =>  0:41
+    CLOCK: [2019-03-04 Mon 18:25]--[2019-03-04 Mon 18:30] =>  0:05
+    :END:
+
+Its a bit silly to name classes =x_transform= and then to have their
+main method also called =transform=. We should rename these to
+something like =apply=.
+
+We should work on this once the system tests are back and running, as
+we may break a lot of things with a "simple" tidy-up.
+
+*** COMPLETED Add logging to console again                            :story:
+    CLOSED: [2019-03-11 Mon 06:10]
+
+*Rationale*: Implemented as part of the diffing work.
+
+We removed logging to console because we didn't have any use cases,
+but there is at least one and its really useful: debugging. Add it
+back again.
+
+*** COMPLETED Problems in conversion of dogen models                  :story:
+    CLOSED: [2019-03-11 Mon 06:18]
+
+*Rationale*: the problems are no longer directly related to
+conversion, but just to our JSON representation.
+
+Regenerated all models, got the following errors:
+
+- we are adding the extension to the dia filename because of how CMake
+  works. We should probably remove the output parameter or at least
+  allow defaulting it to a replacement of the extension.
+- we are removing the dependencies due to duplicates in JSON keys.
+- we are looking for .dia diagrams instead of .json for references.
+
+*Previous Understanding*
+
+We converted all of dogen's models from dia into JSON using tailor and
+code-generated them to see if there were any differences.
+
+Issues to address:
+
+- problems with =quilt.cpp= and =yarn.dia= / =yarn.json=: the
+  conversion of the model path did not work as expected - we do not
+  know of the "."  separator. Fixed it manually and then it all worked
+  (minus CMakeLists, see below). We could possibly fix the builder to
+  automatically use the "." to separate model paths. Actually with the
+  latest changes we now seem to only be looking at the first model
+  module, so for =yarn.dia= we only have =yarn=.
+- CMakeLists were deleted on all models for some reason, even though
+  the annotations profile look correct.
+- in quilt we correctly generated the forward declarations for
+  registrar error and workflow error without including boost
+  exception. Not sure why that is, nor why it is that we are including
+  them for forward declarations.
+- Missing include of registrar serialisation in
+  =all_ser.hpp=. Instability in =registrar_ser.cpp=, but content is
+  correct otherwise.
+- =database.json= generated invalid JSON.
+- references in dia diagrams have the dia extension. This means that
+  they do not resolve when converted to JSON.
+
+"Script":
+
+ #+begin_src
+rm *.json
+A="dia knit quilt.cpp wale yarn.json annotations formatters quilt yarn database options stitch yarn.dia"
+for a in $A; do /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/dogen.tailor -t $a.dia -o $a.json; done
+for a in $A; do /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/dogen.knitter -t ${a}.json --cpp-project-dir /home/marco/Development/DomainDrivenConsulting/dogen/projects --ignore-files-matching-regex .*/CMakeLists.txt --ignore-files-matching-regex .*/test/.* --ignore-files-matching-regex .*/tests/.* --verbose --delete-extra-files; done
+ #+end_src
+
+In an ideal world, we should probably have a script that we run as
+part of =knit_and_stitch= that converts to tailor and then runs
+knitter on the models, so that we keep track of tailor breaks outside
+of JSON test models.
+
+*** POSTPONED Fix northwind tests on OSX and Windows                  :story:
+    CLOSED: [2019-03-11 Mon 06:29]
+    :LOGBOOK:
+    CLOCK: [2019-03-06 Wed 12:07]--[2019-03-06 Wed 12:11] =>  0:04
+    CLOCK: [2019-03-06 Wed 08:00]--[2019-03-06 Wed 09:00] =>  1:00
+    :END:
+
+Get the tests to compile and run on windows. At present they are
+failing to link. It seems there is some kind of mismatch between debug
+and release, at least on MSVC.
+
+Building with linking errors is available [[https://ci.appveyor.com/project/mcraveiro/cpp-ref-impl/builds/22859591][here]]. For now we've disabled
+postgres:
+
+: diff --git a/.appveyor.yml b/.appveyor.yml
+: index 3f9fc6e..c265e24 100644
+: --- a/.appveyor.yml
+: +++ b/.appveyor.yml
+: @@ -41,7 +41,6 @@ services:
+:  before_build:
+:    - SET PGUSER=postgres
+:    - SET PGPASSWORD=Password12!
+: -  - SET POSTGRES_SERVER_SETUP=1
+:    - psql -f %APPVEYOR_BUILD_FOLDER%\build\scripts\setup_postgres.sql -U postgres
+:    - if DEFINED msvc_setup_path call "%msvc_setup_path%" %msvc_setup_arg%
+:    - cd %APPVEYOR_BUILD_FOLDER%
+
+At present we are building northwind on all platforms, but the tests
+are being excluded on OSX and windows, so we are not really testing
+the linking, just the compilation. One of the problems is that we
+conflated the running of the tests (for which we need a postgres
+server) with the building of the tests (which we should always do
+whenever we find all the required dependencies). However, it seems a
+bit silly yo have to have two flags for this.
+
+At present we have linking failures on both OSX and windows. It is not
+entirely clear what is causing these failures. We need to revisit this
+when we clean up the linking across dogen.
+
+*** POSTPONED Update metrics in OpenHub                               :story:
+    CLOSED: [2019-03-11 Mon 06:29]
+    :LOGBOOK:
+    CLOCK: [2019-03-07 Thu 13:40]--[2019-03-07 Thu 13:45] =>  0:05
+    CLOCK: [2019-03-07 Thu 12:05]--[2019-03-07 Thu 12:18] =>  0:13
+    :END:
+
+For some reason our metrics are stuck at 5 months ago or so. It is
+actually mildly useful to know the number of lines of code etc.
+
+We probably need to delete and re-add the project.
+
+** Deprecated
+*** CANCELLED Consider supplying element configuration as a parameter :story:
+    CLOSED: [2019-03-01 Fri 12:03]
+
+*Rationale*: models have changed so much, not even sure what this
+story is about.
+
+Figure out if element configuration is context or if it is better
+expressed as a stand alone formatting parameter.
+*** CANCELLED Build boost for MinGW                                   :story:
+    CLOSED: [2019-03-05 Tue 14:23]
+
+*Rationale*: we will not support any additional compilers in CI as the
+ones we have are already keeping us busy.
+
+We do not have a MinGW build on windows. This could probably be easily
+added. Steps:
+
+- download and install =mingw= on the windows VM.
+- create a vcpkg package using =mingw=, and upload it to dropbox.
+- setup a new build on appveyor on the build matrix for mingw.
+
+Notes:
+
+- In order to add support for appveyor we need to fix the path:
+
+:  # Workaround for CMake not wanting sh.exe on PATH for MinGW
+:  - ps: PATH=%PATH%:C:\Program Files\Git\usr\bin;=%
+: before_build:
+:  - ps: set PATH=C:\MinGW\bin;%PATH%

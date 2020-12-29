@@ -1,0 +1,164 @@
+#+title: Sprint Backlog 34
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 34.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:04]
+
+| Headline                                                            | Time    |       |       |
+|---------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                        | *20:51* |       |       |
+|---------------------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                                     |         | 20:51 |       |
+| COMPLETED Sprint and product backlog grooming                       |         |       |  0:04 |
+| COMPLETED Implement hydration manager in terms of other hydrators   |         |       |  1:27 |
+| COMPLETED =std::list= of =boost::filesystem::path= does not compile |         |       |  2:36 |
+| COMPLETED Create a basic C++ skeleton in SML to OM model            |         |       | 13:21 |
+| COMPLETED Define a JSON representation for SML models               |         |       |  3:23 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2013-09-23 Mon 07:53]
+    CLOCK: [2013-09-09 Mon 08:10]--[2013-09-09 Mon 08:14] =>  0:04
+
+*** COMPLETED Implement hydration manager in terms of other hydrators :story:
+    CLOSED: [2013-09-09 Mon 22:59]
+    CLOCK: [2013-09-09 Mon 22:10]--[2013-09-09 Mon 23:00] =>  0:50
+    CLOCK: [2013-09-09 Mon 18:40]--[2013-09-09 Mon 18:43] =>  0:03
+    CLOCK: [2013-09-09 Mon 18:15]--[2013-09-09 Mon 18:40] =>  0:25
+    CLOCK: [2013-09-09 Mon 17:59]--[2013-09-09 Mon 18:08] =>  0:41
+
+- renamed it to workflow since it brings together other objects in a
+  sequence of steps
+- made it a stand alone template function as its pretty trivial.
+
+*** COMPLETED =std::list= of =boost::filesystem::path= does not compile :spike:
+    CLOSED: [2013-09-21 Sat 22:30]
+    CLOCK: [2013-09-21 Sat 22:26]--[2013-09-21 Sat 23:07] =>  0:41
+    CLOCK: [2013-09-21 Sat 21:55]--[2013-09-21 Sat 22:26] =>  0:31
+    CLOCK: [2013-09-21 Sat 20:58]--[2013-09-21 Sat 21:30] =>  0:32
+    CLOCK: [2013-09-21 Sat 20:30]--[2013-09-21 Sat 20:57] =>  0:27
+    CLOCK: [2013-09-21 Sat 02:34]--[2013-09-21 Sat 02:59] =>  0:25
+
+Creating a class with a list of paths does not compile. add a test to
+the boost model and fix it.
+
+*** COMPLETED Create a basic C++ skeleton in SML to OM model          :story:
+    CLOSED: [2013-09-23 Mon 07:53]
+    CLOCK: [2013-09-22 Sun 23:14]--[2013-09-22 Sun 23:53] =>  0:39
+    CLOCK: [2013-09-22 Sun 22:45]--[2013-09-22 Sun 23:14] =>  0:29
+    CLOCK: [2013-09-22 Sun 19:44]--[2013-09-22 Sun 20:10] =>  0:26
+    CLOCK: [2013-09-22 Sun 19:09]--[2013-09-22 Sun 19:44] =>  0:35
+    CLOCK: [2013-09-22 Sun 17:07]--[2013-09-22 Sun 19:08] =>  2:01
+    CLOCK: [2013-09-21 Sat 23:07]--[2013-09-22 Sun 00:34] =>  1:27
+    CLOCK: [2013-09-21 Sat 02:59]--[2013-09-21 Sat 03:16] =>  0:14
+    CLOCK: [2013-09-20 Fri 23:20]--[2013-09-21 Sat 02:35] =>  3:15
+    CLOCK: [2013-09-20 Fri 18:10]--[2013-09-20 Fri 18:50] =>  0:40
+    CLOCK: [2013-09-20 Fri 07:47]--[2013-09-20 Fri 08:20] =>  0:33
+    CLOCK: [2013-09-19 Thu 23:16]--[2013-09-20 Fri 00:09] =>  0:53
+    CLOCK: [2013-09-19 Thu 22:00]--[2013-09-19 Thu 23:16] =>  1:16
+    CLOCK: [2013-09-19 Thu 18:27]--[2013-09-19 Thu 18:55] =>  0:28
+    CLOCK: [2013-09-10 Tue 07:49]--[2013-09-10 Tue 08:11] =>  0:22
+
+There is one fatal flaw in the current OM implementation: the
+formatters contain both the class structure and their
+implementation. By splitting the creation of the classes from the
+formatting, we've added an additional mapping step which is quite
+complex: e.g. how does one locate the formatter for the complete
+constructor. This would result in layers of binding with senseless
+names. Thus formatting cannot be split from the creation of C++ model
+types.
+
+This means the previous C++ model was wrong not because of the C++
+formatting model but because of the C++ model itself. We should not
+have tried to create an intermediate representation of C++, but
+instead created formatters that work at the SML level and they
+themselves perform the translation - collaborating with helper
+classes.
+
+*** COMPLETED Define a JSON representation for SML models             :story:
+    CLOSED: [2013-09-23 Mon 07:54]
+
+New understanding:
+
+Create JSON files that can be hydrated into SML, containing the main
+system models (primitives, boost and std). Add implementation specific
+parameters to provide all of the information that has been hard-coded
+into the transformer such as move constructor support, etc. Create an
+hydrator to read these files into SML.
+
+Original understanding:
+
+We should really use something like boost property tree to allow
+system models to be loaded from file. We can then convert primitives,
+boost, STL, etc to this. These "models" would then output both a SML
+model as well as some kind of CPP representation with include files,
+etc.
+
+We should call these "profiles" in the sense of ODB (the Qt profile,
+the boost profile, etc). A file should contain all types for that
+profile, from which we generate both the SML model and the inclusions
+for includer.
+
+Since INI files do not support nesting/collections, we probably need
+to use XML or JSON.
+
+See [[http://www.boost.org/doc/libs/1_53_0/doc/html/boost_propertytree/parsers.html#boost_propertytree.parsers.ini_parser][boost property tree]].
+
+Example file available at =data/profiles/sample.ini=.
+
+**** COMPLETED Rename profiles to library
+     CLOSED: [2013-09-13 Fri 18:31]
+
+This will be a system type library, with all the supported system models.
+
+**** COMPLETED Add JSON representations of all of the system models
+     CLOSED: [2013-09-13 Fri 18:32]
+     CLOCK: [2013-09-13 Fri 18:10]--[2013-09-13 Fri 18:29] =>  0:19
+     CLOCK: [2013-09-13 Thu 07:46]--[2013-09-13 Thu 08:30] =>  0:44
+     CLOCK: [2013-09-12 Thu 18:10]--[2013-09-12 Thu 18:43] =>  0:33
+     CLOCK: [2013-09-12 Thu 07:46]--[2013-09-12 Thu 08:18] =>  0:32
+     CLOCK: [2013-09-11 Wed 18:10]--[2013-09-11 Wed 18:43] =>  0:33
+     CLOCK: [2013-09-11 Wed 07:46]--[2013-09-11 Wed 08:18] =>  0:32
+
+**** CANCELLED Create an hydrator from JSON into SML
+     CLOSED: [2013-09-23 Mon 07:54]
+     CLOCK: [2013-09-13 Fri 18:36]--[2013-09-13 Fri 18:40] =>  0:04
+     CLOCK: [2013-09-13 Fri 18:29]--[2013-09-13 Fri 18:35] =>  0:06
+
+*** Create an SML level concept for facets                            :story:
+
+In reality, "facets" are not a C++ thing; they are language
+neutral. They are, however, expressed differently in different
+languages. For example:
+
+- types: same on all languages
+- debug_printing: overloaded operator<< in C++, toString() in Java,
+  ToString() in C#, etc.
+- serialisation: slightly less obvious, but effectively the most
+  "native" serialisation available for the given programming
+  language. For C++ this is boost serialisation.
+- hashing: language specific support for hashing, in C++ either std
+  hash or boost hash, in Java/C# overloading of hash functions.
+- test_data: some facilities for test data generation
+- relational: bindings for relational databases. ODB in C++.
+
+We can introduce these concepts at the SML level, probably at the
+=model= and =abstract_object= level; we can then do further
+translation at the language level, as required.
+
+*** Propagatable parameters                                           :story:
+
+Some implementation specific parameters should be propagated along the
+composition graph (e.g. boost serialisation status disabled). We could
+spot these parameters whilst building the model and do the propagation
+there and then.
+
+** Deprecated Development Stories

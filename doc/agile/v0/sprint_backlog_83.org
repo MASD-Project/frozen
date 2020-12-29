@@ -1,0 +1,977 @@
+#+title: Sprint Backlog 83
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- implement helper methods dynamically for as many facets as possible.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-07-04 Mon 20:19]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *39:51* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 39:51   |       |      | 100.0 |
+| Active                                                                      |         | 39:51 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:57 |   9.9 |
+| COMPLETED Manual updates and blog posts                                     |         |       | 0:53 |   2.2 |
+| COMPLETED Refactor helper settings                                          |         |       | 0:35 |   1.5 |
+| COMPLETED Add properties for helpers                                        |         |       | 1:35 |   4.0 |
+| COMPLETED Consider renaming =yarn::property= to attribute                   |         |       | 1:23 |   3.5 |
+| COMPLETED Rename formattables to properties                                 |         |       | 0:50 |   2.1 |
+| COMPLETED Rename helper instances                                           |         |       | 0:37 |   1.5 |
+| COMPLETED Tidy-up pretty printer                                            |         |       | 1:10 |   2.9 |
+| COMPLETED Rename qualified to id                                            |         |       | 0:51 |   2.1 |
+| COMPLETED Rename unparsed type  in name tree                                |         |       | 0:47 |   2.0 |
+| COMPLETED Add a builder-like API to pretty printer                          |         |       | 1:18 |   3.3 |
+| COMPLETED Implement automatic model name detection in name builder          |         |       | 0:51 |   2.1 |
+| COMPLETED Populate qualified and identifiable name                          |         |       | 2:05 |   5.2 |
+| COMPLETED Rename =name_tree='s parent                                       |         |       | 0:16 |   0.7 |
+| COMPLETED Compute yarn property related information                         |         |       | 2:17 |   5.7 |
+| COMPLETED Remove redundancy in properties' repositories                     |         |       | 0:22 |   0.9 |
+| COMPLETED Create a top-level type to aggregate properties and helpers       |         |       | 1:42 |   4.3 |
+| COMPLETED Refactor helper descriptor                                        |         |       | 0:23 |   1.0 |
+| COMPLETED Add an helper method interface                                    |         |       | 1:03 |   2.6 |
+| COMPLETED Remove encoded from yarn's name tree                              |         |       | 1:24 |   3.5 |
+| COMPLETED Add support for helpers bound to multiple formatters.             |         |       | 0:41 |   1.7 |
+| COMPLETED Add class info to is enabled in formatter helper interface        |         |       | 0:29 |   1.2 |
+| COMPLETED Fix issues with build in laptop                                   |         |       | 0:48 |   2.0 |
+| COMPLETED Remove helper name from formatter helper interface                |         |       | 0:08 |   0.3 |
+| COMPLETED Fix a number of Windows build errors                              |         |       | 0:41 |   1.7 |
+| COMPLETED Fix Mingw build's warning                                         |         |       | 0:10 |   0.4 |
+| COMPLETED Implement types helper methods with new helper infrastructure     |         |       | 3:12 |   8.0 |
+| COMPLETED Move identifiable and qualified to assistant                      |         |       | 0:32 |   1.3 |
+| COMPLETED Refactor helper properties yet again                              |         |       | 2:56 |   7.4 |
+| COMPLETED Remove =aggregator= in dynamic                                    |         |       | 0:07 |   0.3 |
+| COMPLETED Rename aspect settings to element settings                        |         |       | 1:18 |   3.3 |
+| COMPLETED Thoughts on the overall design for settings                       |         |       | 1:09 |   2.9 |
+| POSTPONED Implement IO helper methods with new helper infrastructure        |         |       | 3:21 |   8.4 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-07-04 Mon 20:18]
+    CLOCK: [2016-06-29 Wed 14:37]--[2016-06-29 Wed 14:52] =>  0:15
+    CLOCK: [2016-06-27 Mon 15:35]--[2016-06-27 Mon 16:15] =>  0:40
+    CLOCK: [2016-06-24 Fri 13:10]--[2016-06-24 Fri 13:17] =>  0:07
+    CLOCK: [2016-06-23 Thu 08:17]--[2016-06-23 Thu 08:22] =>  0:05
+    CLOCK: [2016-06-22 Wed 20:39]--[2016-06-22 Wed 20:49] =>  0:10
+    CLOCK: [2016-06-22 Wed 16:17]--[2016-06-22 Wed 16:38] =>  0:21
+    CLOCK: [2016-06-21 Tue 21:30]--[2016-06-21 Tue 21:42] =>  0:12
+    CLOCK: [2016-06-20 Mon 20:45]--[2016-06-20 Mon 21:07] =>  0:22
+    CLOCK: [2016-06-20 Mon 15:12]--[2016-06-20 Mon 15:39] =>  0:27
+    CLOCK: [2016-06-17 Fri 23:46]--[2016-06-17 Fri 23:50] =>  0:04
+    CLOCK: [2016-06-17 Fri 22:55]--[2016-06-17 Fri 23:45] =>  0:50
+    CLOCK: [2016-06-17 Fri 10:40]--[2016-06-17 Fri 11:04] =>  0:24
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Manual updates and blog posts                           :story:
+    CLOSED: [2016-07-04 Mon 20:18]
+    CLOCK: [2016-06-22 Wed 22:22]--[2016-06-22 Wed 22:31] =>  0:09
+    CLOCK: [2016-06-21 Tue 20:46]--[2016-06-21 Tue 21:30] =>  0:44
+
+Time taken with blog posts and updates to the manual.
+
+*** COMPLETED Refactor helper settings                                :story:
+    CLOSED: [2016-06-17 Fri 12:29]
+    CLOCK: [2016-06-17 Fri 11:55]--[2016-06-17 Fri 12:29] =>  0:34
+    CLOCK: [2016-06-17 Fri 11:50]--[2016-06-17 Fri 11:51] =>  0:01
+
+- use =boost::optional= to denote no helper settings;
+- remove the nonsense around visitors since we don't need concrete types;
+- add some basic validation to ensure we throw if no family is supplied.
+
+*** COMPLETED Add properties for helpers                              :story:
+    CLOSED: [2016-06-17 Fri 22:54]
+    CLOCK: [2016-06-17 Fri 22:41]--[2016-06-17 Fri 22:54] =>  0:13
+    CLOCK: [2016-06-17 Fri 12:33]--[2016-06-17 Fri 13:11] =>  0:38
+    CLOCK: [2016-06-17 Fri 11:05]--[2016-06-17 Fri 11:49] =>  0:44
+
+We should pre-compute all of the required helper instances for a given
+element and have them ready for formatting. Create all of the types
+required for this.
+
+What we were trying to say in this terse form is this:
+
+- every type needs a set of helpers with zero or more elements. This
+  is a set in that there are no duplicates.
+- this set is computed on the basis of relationships with other types
+  which themselves have helper settings.
+- once we got this set, we can then loop through it and ask the
+  registrar for the helpers for each family.
+- however, we must also have the helper settings next to this
+  information as we will need these.
+- finally, a given helper may call other methods inside it. This is
+  why we need to have the associated helpers. At present this happens
+  only in hashing.
+
+Notes:
+
+- we must keep track of types done by complete name. This can be done
+  in main function.
+- we must remember the children's helper instance properties to
+  populate associated helpers (but just direct children). This can be
+  achieved by returning these in the recursive function.
+- we must build helper instances for all children. This requires
+  supplying a list by reference.
+- we must build the complete name.
+- we need the complete name in two places: helpers and properties. For
+  properties all we care about is the top-level complete name. We
+  don't really need identifiable names etc. For helpers we need the
+  child complete names and their identifiable versions. Since we are
+  using C++ syntax for the unparsed type, we could extend this logic
+  and move the unparsed type from the property into the name tree - at
+  all levels.
+
+*Previous Understanding*
+
+We need to store the identifiable name of the name tree, as well as
+the language specific representation of the type. The container should
+make use of the name tree index - e.g. use a vector. The only problem
+is that we do not know what the size of the container is without doing
+look ups. We could have a property nested name size in
+stateful. Naming it is not easy though. Nested name cardinality?
+
+*Previous Understanding*
+
+We need to store the identifiable name of the nested name, as well as
+the language specific representation of the type. These are properties
+at the level of the =yarn::property=. The container should make use of
+the index - e.g. use a vector of size of properties list.
+
+Note that these are not properties of the property, but instead
+properties of the property type.
+
+Actually this is not correct; we need the properties for each nested
+name and for each particular nested name structure, possibly unique to
+each property. An alternative is then to come up with an index that
+takes into account the nesting (effectively flattens the nested
+structure). The index starts at zero for a type and increments for
+every property for every level of nesting. Each nested name has an
+index. Then, nested name properties is a flat container for each name
+with the required properties. With this the helpers can continue to
+rely on just the nested name (plus the nested name properties via the
+assistant).
+
+*** COMPLETED Consider renaming =yarn::property= to attribute         :story:
+    CLOSED: [2016-06-18 Sat 01:13]
+    CLOCK: [2016-06-17 Fri 23:50]--[2016-06-18 Sat 01:13] =>  1:23
+
+Since we use properties quite a lot in =quilt.cpp= - and more so when
+we rename formattables to properties - we should probably avoid the
+need to overload the term in yarn. We could rename it to attribute.
+
+Or perhaps the problem is with formatter properties. After all these
+are not "properties of the formatter"; these are inputs into the
+formatting process (and so are settings).
+
+We need to add properties for =yarn::property= so it cannot stay as
+property. We cannot think of a better name other than "properties" for
+formatters so yarn will have to be renamed.
+
+Actually this is no longer urgent so the story can go back to backlog.
+
+*** COMPLETED Rename formattables to properties                       :story:
+    CLOSED: [2016-06-18 Sat 02:04]
+    CLOCK: [2016-06-18 Sat 01:14]--[2016-06-18 Sat 02:04] =>  0:50
+
+Now that we are getting close to the end of the quilt refactor we
+should rename formattables to properties.
+
+*** COMPLETED Rename helper instances                                 :story:
+    CLOSED: [2016-06-18 Sat 02:42]
+    CLOCK: [2016-06-18 Sat 02:05]--[2016-06-18 Sat 02:42] =>  0:37
+
+- rename helper instances etc to helper properties
+- rename helper properties etc to helper descriptor
+
+*** COMPLETED Tidy-up pretty printer                                  :story:
+    CLOSED: [2016-06-19 Sun 12:13]
+    CLOCK: [2016-06-19 Sun 12:05]--[2016-06-19 Sun 12:13] =>  0:08
+    CLOCK: [2016-06-19 Sun 11:02]--[2016-06-19 Sun 12:04] =>  1:02
+
+- rename it to just pretty printer as it will print more than names
+  soon.
+- clean up printing styles - these are just separators. Also make it
+  explicit as the double colon rather than scope operator since we are
+  not using language specific terminology at this level. We don't need
+  to worry about =.= operator for now (as we don't yet support java or
+  C#) but the code should be refactored to make it easy to add it.
+- add support for printing to stream.
+
+*** COMPLETED Rename qualified to id                                  :story:
+    CLOSED: [2016-06-19 Sun 12:37]
+    CLOCK: [2016-06-20 Mon 21:41]--[2016-06-20 Mon 21:58] =>  0:17
+    CLOCK: [2016-06-19 Sun 12:36]--[2016-06-19 Sun 12:49] =>  0:13
+    CLOCK: [2016-06-19 Sun 12:14]--[2016-06-19 Sun 12:35] =>  0:21
+
+Now that we have language specific qualified names, it became obvious
+that what we are calling "qualified" is not a qualified name at all
+but an identifier. Rename:
+
+- qualified to id
+- qualified for to qualified.
+
+*** COMPLETED Rename unparsed type  in name tree                      :story:
+    CLOSED: [2016-06-19 Sun 13:37]
+    CLOCK: [2016-06-19 Sun 12:50]--[2016-06-19 Sun 13:37] =>  0:47
+
+The name "unparsed type" in name tree is very misleading because:
+
+- we are parsing the type in order to obtain the child representation;
+- it is using a dogen specific notation.
+
+We need to rename it, and also make identifiable clearer.
+
+Actually we just can't think of a good name for identifiable so let's
+stick with that for now.
+
+*** COMPLETED Add a builder-like API to pretty printer                :story:
+    CLOSED: [2016-06-19 Sun 21:00]
+    CLOCK: [2016-06-19 Sun 20:13]--[2016-06-19 Sun 21:00] =>  0:47
+    CLOCK: [2016-06-19 Sun 18:14]--[2016-06-19 Sun 18:43] =>  0:29
+    CLOCK: [2016-06-19 Sun 13:38]--[2016-06-19 Sun 13:40] =>  0:02
+
+- make the entire API a builder based API, even for the simpler case
+  of printing just a name.
+- implement name tree builder with new API.
+
+*Previous Understanding*
+
+The more one thinks about it the more pretty printer looks weird:
+
+- it is not actually pretty printing types for user visualisation; it
+  is encoding types according to a scheme into a string
+  representation.
+- the name tree "pretty printing" is partially done in name tree
+  builder.
+- in order to move it to "pretty printer" avoiding looping through the
+  tree again we need a builder interface.
+
+So:
+
+- rename =pretty_printer= to =encoder=;
+- add an =encoder::builder= which handles name trees.
+
+Encoder is a bit of a strong name though. Some reading up on printing
+AST into code reveals a couple of possibilities:
+
+- rewriter: clang; not ideal
+- code printer: closure.
+
+Lets go with =name_printer=. A bit misleading since we also do name
+tree's but better than just petty printer.
+
+Final decision on this:
+
+- make the entire API a builder based API, even for the simpler case
+  of printing just a name.
+- after much discussion with names, the name that seems to lie the
+  list is still =pretty_printer=. We will have to stick with that for
+  now.
+
+*** COMPLETED Implement automatic model name detection in name builder :story:
+    CLOSED: [2016-06-19 Sun 23:19]
+    CLOCK: [2016-06-19 Sun 22:33]--[2016-06-19 Sun 23:18] =>  0:45
+    CLOCK: [2016-06-19 Sun 21:25]--[2016-06-19 Sun 21:31] =>  0:06
+
+At present we have a flag in name builder to detect if we are building
+a model name; if so, we deal with the simple name correctly. However,
+we implemented some logic in quilt that detects this without user
+input. Remove the flag and add this logic.
+
+Actually, instead of wasting cycles detecting things, we should just
+have modes of operation - we always know when we are building a model
+name.
+
+*** COMPLETED Populate qualified and identifiable name                :story:
+    CLOSED: [2016-06-20 Mon 01:03]
+    CLOCK: [2016-06-20 Mon 00:03]--[2016-06-20 Mon 01:03] =>  1:00
+    CLOCK: [2016-06-19 Sun 23:30]--[2016-06-20 Mon 00:02] =>  0:32
+    CLOCK: [2016-06-19 Sun 23:20]--[2016-06-19 Sun 23:30] =>  0:10
+    CLOCK: [2016-06-19 Sun 21:01]--[2016-06-19 Sun 21:24] =>  0:23
+
+We need to populate the new name and name tree properties for
+qualified and identifiable name.
+
+*** COMPLETED Rename =name_tree='s parent                             :story:
+    CLOSED: [2016-06-20 Mon 01:20]
+    CLOCK: [2016-06-20 Mon 01:04]--[2016-06-20 Mon 01:20] =>  0:16
+
+Parent is not a good name as we are referring to the current
+node. Maybe =self=? We went with =current= in the end. Not ideal, but
+at least it does not lie like =parent= did.
+
+*** COMPLETED Create a module indexer in sml                          :story:
+    CLOSED: [2016-06-20 Mon 15:39]
+
+*Rationale*: This was done as part of the yarn refactors.
+
+We need to create a class that computes module containment. At present
+this is done in JSON hydrator.
+
+In addition, we also have huge amounts of nonsense in injector, in
+particular =add_containing_module_to_non_contained_entities=. This
+should also be handled by the module indexer.
+
+*** COMPLETED Remove complete name and use qualified name             :story:
+    CLOSED: [2016-06-20 Mon 15:39]
+
+*Rationale*: This won't be a problem after the
+formattables/properties/fabric refactor in quilt.
+
+At present we have both complete name and qualified name in
+formatables. Qualified name is blank. We should remove complete name
+and populate qualified name.
+
+This is in nested type info.
+
+*** COMPLETED Thoughts on simplifying the formattables generation     :story:
+    CLOSED: [2016-06-20 Mon 15:39]
+
+*Rationale*: This is already under way with the
+formattables/properties/fabric refactor in quilt.
+
+We have a problem in the way which we are doing the formattables:
+because we are doing model traversals for each of the factories, we
+cannot easily introduce a set of manually generated qnames such as the
+registrar and includers. However, if we started off the main workflow
+by creating a structure like so:
+
+- qname
+- optional entity (new base class in yarn); if null we need to create
+  extensions as an empty object.
+
+We then need a list of these that get passed in to all repository
+factories. These use a visitor of entity to resolve to a type (where
+required).
+
+We can inject types to this list that have a qname but no entity. For
+these we generate some parts of the formatter properties. Actually, we
+still need to generate inclusion lists even when there is no
+entity. Perhaps we need to create a new method in the provider that
+does not take an yarn entity but still generates the inclusion list.
+
+Actually this should all be done in yarn. We should have zero qname
+look-ups coming out of yarn, just follow references. This story is a
+variation of the split between "partial" models and "full" models.
+
+Well not everything should be done in yarn. We still need to create a
+structure with the properties above, but that is done by iterating
+through a list in the yarn model.
+
+One slight problem with this approach: sometimes we need to preserve
+some relationships in the newly generated objects. For registrar we
+need to preserve the model leaves. For the includers / master headers
+we need to express somehow the inclusion relationship at the formatter
+level. The latter is definitely a special case because it is a pure
+C++ concept: include files cannot be modeled in yarn. However,
+registrar is slightly different because we still need to compute the
+includes based on the leaves. This means that the above approach will
+not provide a clean solution, unless we synthesise an yarn object when
+providing the includes. And of course we need to be careful taking
+that route or else we will end up generating the object across all
+facets.
+
+*** COMPLETED Move all properties in =cpp= to a properties namespace  :story:
+    CLOSED: [2016-06-20 Mon 15:39]
+
+Once all formattables are gone, we should have only properties left in
+the formattables namespace. We should then rename it to
+properties. Thus we have two kinds of things: settings, which are a
+direct translation of meta-data without any further processing and
+properties which require processing.
+
+Merged stories:
+
+*Split formatter properties and associated classes from formattables*
+
+We have two kinds of data: the formattables themselves (mapped from
+yarn) and associated data (formatter properties). The latter is
+totally independent. We should create a namespace for all of these
+classes and a workflow that produces the data ready for consumption. A
+tentative name is =manifest=.
+
+*** COMPLETED Compute yarn property related information               :story:
+    CLOSED: [2016-06-20 Mon 15:44]
+    CLOCK: [2016-06-21 Tue 23:33]--[2016-06-22 Wed 00:14] =>  0:41
+    CLOCK: [2016-06-18 Sat 23:05]--[2016-06-18 Sat 23:10] =>  0:05
+    CLOCK: [2016-06-18 Sat 22:52]--[2016-06-18 Sat 23:04] =>  0:12
+    CLOCK: [2016-06-18 Sat 22:05]--[2016-06-18 Sat 22:51] =>  0:46
+    CLOCK: [2016-06-18 Sat 08:13]--[2016-06-18 Sat 08:46] =>  0:33
+
+Now that we no longer have nested type infos, we need to recompute the
+complete names etc for all properties up front and store them in a
+repository. This information is almost identical to that of the
+helpers but its not easy to share it. For now we should just brute
+force it and then look for patterns.
+
+By brute-force it we mean recompute it every time we need to use
+it. Or alternatively we could just add these directly to the name
+tree. After all they are (or should be) applicable to all languages.
+
+- add the three properties to name tree;
+- add logic to compute them into yarn;
+- change helpers to reuse this.
+
+Actually the qualified name is language specific. Having said that,
+its such a minimal thing that we could conceivably add it to yarn: we
+could have a language specific representation on a a container.
+
+- add enumeration for language as per language agnostic story
+  (backlog);
+- add language specific containers for qualified name.
+
+We need to update the name pretty printer to take on responsibilities
+from the name builder in quilt:
+
+- add support for name trees - and so rename it to just pretty
+  printer? We can then have a print name and a print name tree.
+- the name builder can then be responsible for programming language
+  specific logic and calls to the pretty printer to populate the new
+  properties.
+
+*** COMPLETED Remove redundancy in properties' repositories           :story:
+    CLOSED: [2016-06-20 Mon 16:36]
+    CLOCK: [2016-06-20 Mon 21:08]--[2016-06-20 Mon 21:16] =>  0:08
+    CLOCK: [2016-06-20 Mon 16:22]--[2016-06-20 Mon 16:36] =>  0:14
+
+At present we have attributes in repositories such as:
+
+: path_derivatives_by_name
+
+Since we are in =path_derivatives_repository=, perhaps we could call
+the attribute simply =by_name=.
+
+*** COMPLETED Create a top-level type to aggregate properties and helpers :story:
+    CLOSED: [2016-06-20 Mon 19:00]
+    CLOCK: [2016-06-20 Mon 18:32]--[2016-06-20 Mon 19:00] =>  0:28
+    CLOCK: [2016-06-20 Mon 16:57]--[2016-06-20 Mon 17:34] =>  0:37
+    CLOCK: [2016-06-20 Mon 16:08]--[2016-06-20 Mon 16:22] =>  0:14
+    CLOCK: [2016-06-20 Mon 15:44]--[2016-06-20 Mon 16:07] =>  0:23
+
+We need a way to create an aggregate type that contains all of the
+"auxiliary" information about a type: basically formatter properties
+and helper settings.
+
+This type should be called =element_properties=.
+
+- change the return type of the properties workflow to be element
+  properties (well pair of element properties and formattables - for
+  now).
+- have a look at the context type in formatters. Looked at this, we
+  just need to do minor updates to it to take in the element
+  properties.
+
+*** COMPLETED Refactor helper descriptor                              :story:
+    CLOSED: [2016-06-20 Mon 21:39]
+    CLOCK: [2016-06-20 Mon 21:17]--[2016-06-20 Mon 21:40] =>  0:23
+
+It seems there is an impedance mismatch between the helper formatters
+and the helper descriptor. These are expecting a name tree. Since we
+have all the required information in the name tree, we don't even need
+the descriptor any more.
+
+The problem with this approach though is that its no longer clear
+which type we are helping though. Best to tidy-up the descriptor to
+make sure the name reflect the yarn provenience.
+
+*** COMPLETED Add an helper method interface                          :story:
+    CLOSED: [2016-06-20 Mon 23:22]
+    CLOCK: [2016-06-20 Mon 22:56]--[2016-06-20 Mon 23:21] =>  0:25
+    CLOCK: [2016-06-20 Mon 22:45]--[2016-06-20 Mon 22:55] =>  0:10
+    CLOCK: [2016-06-20 Mon 22:16]--[2016-06-20 Mon 22:44] =>  0:28
+
+We should also investigate on the need for the nested type info
+assistant.
+
+Tasks:
+
+- create interface.
+- add interface to registrar.
+- implement interface in at least one helper.
+- update assistant to query registrar for helpers based on type family
+  in context. Performs a recursive descent on nested name.
+- problem: io helpers in types should only be enabled if io is enabled
+  and if type is in an inheritance relationship. For this we need to
+  have access to formatter properties (potentially via assistant) but
+  we also need to have access to the type that owns the properties. We
+  could augment helper interface with the assistant - easy as we
+  already have it on the format method - and the element - harder; we
+  need to supply the object as part of helper method creation.
+- problem: we need to ask for complete and identifiable name N times
+  for a given formatter. It is not a good idea to dynamically compute
+  it or to store it in an associative container - it somehow needs to
+  be next to the nested name.
+
+*Previous Understanding*
+
+- create a registrar for interface with family and formatter name.
+- update all helpers to implement interface and to register
+  themselves.
+- it seems we have two use cases here: the formatter helper interface
+  for formatting purposes and the helper family interface that tells
+  us what formatter this helper belongs to. We do not want to leak
+  details of formatting into formattables. We need to find a name for
+  such an interface in formattables, a bit like the inclusion
+  dependencies provider. Formatter helper details provider? We can
+  then extend the existing formattables registrar and container to
+  store this interface; the formatter helper interface can extend this
+  interface; the main workflow returns all registered formatter
+  helpers in terms of the formatter helper details provider interface.
+- problem: we need additional properties related to the helper which
+  have been hard-coded:
+  - requires generic string; in a general form "string conversion
+    method";
+  - requires quoting;
+  - requires tidying up; in a general form "remove unprintable
+    characters";
+  - requires hashing helper method; in a general form: we need a way
+    to query the helper settings to figure out if a given type has an
+    associated helper method for a given formatter, and if we need to
+    call it implicitly or explicitly; and, if explicitly, we need to
+    ask the helper method formatter for the name of the helper method.
+  - requires dereferencing; for pointer types.
+- seems like yet again we found the wrong solution for this
+  problem. We need to create a top-level set of helper settings for
+  each type with all additional properties; propagate those into
+  formatters via context; and then use the assistant to loop through
+  the nested name (nested info for now) and pick the helper
+  settings. It should also consult the registrar to see if there are
+  any helpers available for this formatter and family.
+
+*** COMPLETED Remove encoded from yarn's name tree                    :story:
+    CLOSED: [2016-06-21 Tue 23:33]
+    CLOCK: [2016-06-21 Tue 23:09]--[2016-06-21 Tue 23:33] =>  0:24
+    CLOCK: [2016-06-21 Tue 22:08]--[2016-06-21 Tue 23:08] =>  1:00
+
+Encoded was a mistake: we don't really need to preserve the
+intermediate format for the type in a non-language specific way (at
+least not at the moment). What we do need is a language specific
+qualified name tree.
+
+We also need the helper descriptor to follow the same pattern.
+
+*** COMPLETED Add support for helpers bound to multiple formatters.   :story:
+    CLOSED: [2016-06-22 Wed 21:32]
+    CLOCK: [2016-06-22 Wed 20:50]--[2016-06-22 Wed 21:31] =>  0:41
+
+Update the formatter helper interface to cater for the following use
+cases:
+
+- there can be more than one helper for a given formatter and
+  family. Example: types needs both IO and types helpers.
+- conversely a helper can have more than one owning formatter (io
+  helper has types and io formatters).
+
+*** COMPLETED Add class info to is enabled in formatter helper interface :story:
+    CLOSED: [2016-06-22 Wed 22:55]
+    CLOCK: [2016-06-22 Wed 22:32]--[2016-06-22 Wed 22:54] =>  0:22
+    CLOCK: [2016-06-22 Wed 22:14]--[2016-06-22 Wed 22:21] =>  0:07
+
+In order to determine if a helper is enabled or not we need to have
+access to the yarn type. Since those are not yet available we need
+access to the class info. The interesting thing is that the helper is
+not directly bound to the yarn type, we just need some information for
+enablement. We probably should avoid coupling the two together -
+e.g. what happens when we are generating helpers for enumerations;
+there is no yarn object then. At present we have a uniform interface
+for the helpers across yarn types. We should preserve this.
+
+For now we will just hack it in and supply it as a parameter. In the
+future we need to consider having it as an element property.
+
+*** COMPLETED Fix issues with build in laptop                         :story:
+    CLOSED: [2016-06-23 Thu 08:21]
+    CLOCK: [2016-06-23 Thu 08:03]--[2016-06-23 Thu 08:16] =>  0:13
+    CLOCK: [2016-06-22 Wed 23:05]--[2016-06-22 Wed 23:40] =>  0:35
+
+For some reason we can't get dogen to build on the laptop. Fix it.
+
+*** COMPLETED Remove helper name from formatter helper interface      :story:
+    CLOSED: [2016-06-23 Thu 19:22]
+    CLOCK: [2016-06-23 Thu 19:14]--[2016-06-23 Thu 19:22] =>  0:08
+
+We are not using the helper's name anywhere at present and it with the
+many to many change (between helpers and formatters) its not so easy
+to determine what its implementation should be. So take the easy way
+out and remove it.
+
+*** COMPLETED Fix a number of Windows build errors                     :epic:
+    CLOSED: [2016-06-24 Fri 21:07]
+    CLOCK: [2016-06-24 Fri 15:02]--[2016-06-24 Fri 15:43] =>  0:51
+
+This epic contains all the known errors in the windows build. We
+should create stories for each error as we fix them.
+
+Tasks:
+
+- remove #define BOOST_TEST_DYN_LINK
+- add =using element_visitor::accept= to all descendants.
+- add qualified name to friend functions.
+- add scoping to register types in template function.
+
+These should fix all of the below errors.
+
+**** Fix windows errors on boost test                                 :story:
+
+Boost test warning:
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/impl/test_tools.ipp(369): warning C4273: 'boost::test_tools::tt_detail::format_assertion_result': inconsistent dll linkage [C:\proj
+: ects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+:   C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/tools/detail/fwd.hpp(96): note: see previous definition of 'format_assertion_result'
+
+Boost test errors:
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/impl/test_tools.ipp(396): error C2491: 'boost::test_tools::tt_detail::prod_report_format': definition of dllimport function not all
+: owed [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/tools/old/impl.hpp(118): error C2264: 'boost::test_tools::tt_detail::equal_impl': error in function definition or declaration; func
+: tion not called [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+
+It may be due to this:
+
+[[http://lists.boost.org/Archives/boost/2015/01/219016.php][{boost} {Test}{Thread} Regression since 9 December?"]]
+
+Reading this entire thread, it seems that Boost.Test had a change that
+caused a lot of issues related to linkage. Strange we don't see this
+on Linux.
+
+**** Boost serialisation
+
+: C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(73): error C2668: 'dogen::config::register_types': ambiguous call to overloaded function [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+:   C:\projects\dogen\projects\config\include\dogen/config/serialization/registrar_ser.hpp(32): note: could be 'void dogen::config::register_types<OutputArchive>(Archive &)'
+:           with
+:           [
+:               OutputArchive=boost::archive::binary_oarchive,
+:               Archive=boost::archive::binary_oarchive
+:           ]
+:   C:\projects\dogen\projects\config\spec\serialization_spec.cpp(30): note: or       'void register_types<OutputArchive>(Archive &)'
+:           with
+:           [
+:               OutputArchive=boost::archive::binary_oarchive,
+:               Archive=boost::archive::binary_oarchive
+:           ]
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(73): note: while trying to match the argument list '(boost::archive::binary_oarchive)'
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(121): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: roundtrip_produces_the_same_entity<boost::archive::binary_iarchive,boost::archive::binary_oarchive>(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(121): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: roundtrip_produces_the_same_entity<boost::archive::binary_iarchive,boost::archive::binary_oarchive>(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(116): note: while compiling class template member function 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::bi
+: nary_roundtrip_produces_the_same_entity(const dogen::config::knitting_options &)'
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(130): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: binary_roundtrip_produces_the_same_entity(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/canned_tests.hpp(72): note: see reference to class template instantiation 'dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>' being compiled
+:   C:\projects\dogen\projects\config\spec\serialization_spec.cpp(54): note: see reference to function template instantiation 'void dogen::utility::test::roundtrip_type<dogen::config::knitting_options_generator>(void)' being compiled
+
+**** Dogen yarn exception
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(60): error C2063: 'boost::serialization::save': not a function [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(63): error C2063: 'boost::serialization::load': not a function [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3927: '->': trailing return type is not allowed after a non-function declarator [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3484: syntax error: expected '->' before the return type [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3613: missing return type after '->' ('int' assumed) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3646: 'visit': unknown override specifier [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2988: unrecognizable template declaration/definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2059: syntax error: '(' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2238: unexpected token(s) preceding ';' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(66): error C3668: 'dogen::yarn::exception::accept': method with override specifier 'override' did not override any base class methods [C:\projects\dogen\build\output\projects\yarn\src\y
+: arn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2628: 'dogen::yarn::exception' followed by 'void' is illegal (did you forget a ';'?) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2270: 'accept': modifiers not allowed on nonmember functions [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2259: 'dogen::yarn::exception': cannot instantiate abstract class [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: due to following members:
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(83): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(82): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(81): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(80): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'bool dogen::yarn::element::equals(const dogen::yarn::element &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(171): note: see declaration of 'dogen::yarn::element::equals'
+
+**** Dogen yarn primitive
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/serialization/primitive_fwd_ser.hpp(30): error C2143: syntax error: missing ';' before '{' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/serialization/primitive_fwd_ser.hpp(30): error C2447: '{': missing function header (old-style formal list?) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2059: syntax error: 'public' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2143: syntax error: missing ';' before ':' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2059: syntax error: ':' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(49): error C2059: syntax error: 'const' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(58): error C2059: syntax error: 'private' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): error C2255: 'friend': not allowed outside of a class definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): error C2244: 'save': unable to match function definition to an existing declaration [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): note: see declaration of 'save'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): error C2255: 'friend': not allowed outside of a class definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): error C2244: 'load': unable to match function definition to an existing declaration [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): note: see declaration of 'load'
+
+**** Dogen yarn enumeration
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(40): error C2990: 'dogen::yarn::enumerator': non-class template has already been declared as a class template [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(121): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(121): error C2228: left of '.swap' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(52): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\pr
+: ojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(106): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(107): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(108): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(109): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+
+**** Dogen mock model factory
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): error C2259: 'dogen::yarn::exception': cannot instantiate abstract class [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: due to following members:
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(83): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(82): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(81): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(80): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'bool dogen::yarn::element::equals(const dogen::yarn::element &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(171): note: see declaration of 'dogen::yarn::element::equals'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(533): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(534): error C2079: 'r' uses undefined class 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(535): error C2228: left of '.name' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(535): note: type is 'int'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(536): error C2228: left of '.value' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(536): note: type is 'int'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(540): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+
+*** COMPLETED Fix Mingw build's warning                               :story:
+    CLOSED: [2016-06-24 Fri 21:07]
+    CLOCK: [2016-06-24 Fri 15:44]--[2016-06-24 Fri 15:54] =>  0:10
+
+We've added the initial support to MinGW on Appveyor:
+
+- [[http://help.appveyor.com/discussions/questions/372-build-setup-for-a-c-program][Build setup for a C program]]
+- [[https://github.com/imazen/libpng/blob/master/appveyor.yml][libpng appveyor.yml]]
+- [[https://www.appveyor.com/updates/2015/05/30][Appveyor adds support for MinGW]]
+- [[http://altrepo.eu/matyapiro31/mingw-w64-thrift/blob/master/appveyor.yml][mingw-w64-thrift]]
+
+However the build is now failing with:
+
+: cmake ../.. -DCMAKE_BUILD_TYPE=%configuration% -G "%generator%"
+: CMake Error at C:/Program Files (x86)/CMake/share/cmake-3.4/Modules/CMakeMinGWFindMake.cmake:22 (message):
+:   sh.exe was found in your PATH, here:
+:
+:   C:/Program Files/Git/usr/bin/sh.exe
+:
+:   For MinGW make to work correctly sh.exe must NOT be in your path.
+:
+:   Run cmake from a shell that does not have sh.exe in your PATH.
+:
+:   If you want to use a UNIX shell, then use MSYS Makefiles.
+:
+: Call Stack (most recent call first):
+:   CMakeLists.txt:25 (project)
+:
+:
+: CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+: CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+: -- Configuring incomplete, errors occurred!
+
+We have attempted to remove Git from path as per these instructions:
+
+- [[https://github.com/jibsen/brieflz/blob/0c6fb73984f11e697dfaade5cdc5e291c1655c67/appveyor.yml][Removing Git's sh from the path]]
+
+But it did not resolve the error above.
+
+*** COMPLETED Implement types helper methods with new helper infrastructure :story:
+    CLOSED: [2016-06-27 Mon 16:34]
+    CLOCK: [2016-06-24 Fri 21:12]--[2016-06-24 Fri 21:35] =>  0:23
+    CLOCK: [2016-06-24 Fri 15:55]--[2016-06-24 Fri 15:58] =>  0:03
+    CLOCK: [2016-06-23 Thu 19:23]--[2016-06-23 Thu 19:50] =>  0:27
+    CLOCK: [2016-06-23 Thu 08:22]--[2016-06-23 Thu 08:51] =>  0:29
+    CLOCK: [2016-06-22 Wed 15:47]--[2016-06-22 Wed 16:16] =>  0:29
+    CLOCK: [2016-06-22 Wed 15:30]--[2016-06-22 Wed 15:46] =>  0:16
+    CLOCK: [2016-06-21 Tue 21:46]--[2016-06-21 Tue 22:07] =>  0:21
+    CLOCK: [2016-06-21 Tue 20:01]--[2016-06-21 Tue 20:45] =>  0:44
+
+- call the new method from the formatters in types and ensure the
+  generated code matches previous code.
+- remove/disable all legacy helper method generation.
+
+*** COMPLETED Move identifiable and qualified to assistant            :story:
+    CLOSED: [2016-06-27 Mon 17:22]
+    CLOCK: [2016-06-27 Mon 17:11]--[2016-06-27 Mon 17:21] =>  0:10
+    CLOCK: [2016-06-27 Mon 16:48]--[2016-06-27 Mon 17:10] =>  0:22
+
+After a lot of faffing it is becoming obvious that we should just
+supply a raw name tree to quilt and let it do whats required. We need
+to get rid of the additional attributes we added to helper and move
+the machinery across to the assistant.
+
+*** COMPLETED Refactor helper properties yet again                    :story:
+    CLOSED: [2016-06-28 Tue 17:28]
+    CLOCK: [2016-06-28 Tue 17:29]--[2016-06-28 Tue 17:36] =>  0:07
+    CLOCK: [2016-06-28 Tue 15:39]--[2016-06-28 Tue 17:28] =>  1:49
+    CLOCK: [2016-06-28 Tue 15:01]--[2016-06-28 Tue 15:39] =>  0:38
+    CLOCK: [2016-06-27 Mon 17:23]--[2016-06-27 Mon 17:45] =>  0:22
+
+We don't seen to be able to capture helper properties correctly. The
+final understanding is now:
+
+- we need at the top level a pair of current name tree, helper
+  settings.
+- we don't need descriptor at all.
+- the associated helpers are actually the direct descendants, paired
+  with their helper settings.
+
+With this structure we should be able to satisfy all use cases so far.
+
+*** COMPLETED Remove =aggregator= in dynamic                          :story:
+    CLOSED: [2016-06-29 Wed 15:00]
+    CLOCK: [2016-06-29 Wed 14:53]--[2016-06-29 Wed 15:00] =>  0:07
+
+We seem to have an unused class in dynamic: =aggregator=. Remove it if so.
+
+*** COMPLETED Rename aspect settings to element settings              :story:
+    CLOSED: [2016-06-29 Wed 16:22]
+    CLOCK: [2016-06-29 Wed 16:05]--[2016-06-29 Wed 16:22] =>  0:17
+    CLOCK: [2016-06-29 Wed 15:41]--[2016-06-29 Wed 16:04] =>  0:23
+    CLOCK: [2016-06-29 Wed 15:02]--[2016-06-29 Wed 15:40] =>  0:38
+
+We need to pile up other type related settings which are not related
+to our ideas around aspects. =type= is sufficiently vague for now.
+
+Backlog search for related stories:
+
+- [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_79.org#rename-aspect-settings-to-element-settings][Rename aspect settings to element settings]]: Original renaming in
+  Sprint 79.
+- [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_79.org#add-a-field-for-quiltcpphelper_family][Add a field for =quilt.cpp.helper_family=]]: renamed it back to aspect
+  settings.
+
+The rationale in these previous stories was that if we could contain
+the settings to just aspects then we can call the class aspect
+settings; if however we end up bundling more generic element settings
+then we need to rename it to element settings. We now have a case to
+rename it because we need to add =string_conversion_method=.
+
+Tasks:
+
+- rename classes to element settings.
+- rename fields to element instead of type. Also good because it
+  avoids confusion with =types= facet.
+- add =string_conversion_method= field.
+
+*** COMPLETED Thoughts on the overall design for settings             :story:
+    CLOSED: [2016-06-29 Wed 17:32]
+    CLOCK: [2016-06-29 Wed 16:23]--[2016-06-29 Wed 17:32] =>  1:09
+
+We need to pre-process the global settings bundle, extract the string
+conversion methods and add those to the context.
+
+Actually the more one thinks about this the more obvious it seems that
+most of the properties that are under helper settings are actually
+element settings. These are not specific to the helper at all (we will
+use them from the inserter formatter for example). We need to move
+these properties across and then extend context as required. We should
+create a "global element repository" container.
+
+A lot of the confusion arises because we are modeling different things
+under the same name:
+
+- the definition and instantiation of a helper; e.g. whether a type
+  has a helper method associated with it or not. For these we can have
+  the usual 1-1 mapping.
+- the configuration of the streaming invocation for a type. For these
+  we need a global container of these "IO settings".
+
+With this simple change of perspective, it all now makes sense:
+
+- bundle is in reality "element settings"; that is to say, all
+  settings at the element level that will be passed directly into
+  formatting (e.g. without any post-processing). It is the
+  mirror-image of "element properties".
+- general settings are really file properties; the configuration of
+  how a file will be formatted, produced from post-processing "file
+  settings". Thus they should be moved from bundle into element
+  properties. File properties belong here because we have one file per
+  element.
+- we need the "IO settings" as described above. "IO settings" needs an
+  "IO settings repository" which is passed in to context. These are
+  global settings, per ID.
+- helper settings are just family; the rest are IO settings. We can
+  just have a field for this in helper properties, which also makes it
+  cleaner. Now we can move the family into helper properties where it
+  is mandatory, and remove it from the descriptor.
+- streaming for type uses IO settings and should probably be called
+  "IO invocation for type". It is called with an ID; we look up the
+  corresponding settings in the global IO settings container.
+
+*** POSTPONED Implement IO helper methods with new helper infrastructure :story:
+    CLOSED: [2016-07-04 Mon 20:18]
+    CLOCK: [2016-06-29 Wed 14:10]--[2016-06-29 Wed 14:36] =>  0:26
+    CLOCK: [2016-06-28 Tue 22:22]--[2016-06-28 Tue 23:01] =>  0:39
+    CLOCK: [2016-06-28 Tue 21:57]--[2016-06-28 Tue 22:21] =>  0:24
+    CLOCK: [2016-06-28 Tue 21:49]--[2016-06-28 Tue 21:56] =>  0:07
+    CLOCK: [2016-06-28 Tue 20:46]--[2016-06-28 Tue 21:48] =>  1:02
+    CLOCK: [2016-06-28 Tue 17:37]--[2016-06-28 Tue 17:50] =>  0:13
+    CLOCK: [2016-06-27 Mon 16:34]--[2016-06-27 Mon 16:47] =>  0:13
+    CLOCK: [2016-06-27 Mon 16:16]--[2016-06-27 Mon 16:33] =>  0:17
+
+Problems:
+
+- we do not have a "streaming for type" function in assistant. We need
+  to figure out how to obtain this data from the helper.
+- we do not have a name tree so we do not know what the key and value
+  names are for associative containers. We probably need to add the
+  name tree to the helper descriptor.
+- =string_conversion_method= cannot be implemented as is;we need it
+  for all properties, not just in the context of helpers. This seems
+  to imply we need a way to access this information directly from the
+  property. It will need some thinking.
+
+** Deprecated
+*** CANCELLED Investigate slow down                                   :story:
+    CLOSED: [2016-06-20 Mon 15:51]
+
+*Rationale*: Speed is back to normal so lets not waste time on this.
+
+With commit 7e89ddb we introduced a set of hacks to inject settings
+and formatter properties into the repositories. This seems to have had
+a very negative impact in performance. We need to ensure performance
+goes back to normal after the hacks have been removed.
+
+*** CANCELLED Consider splitting =formattables::transformer=          :story:
+    CLOSED: [2016-06-20 Mon 15:51]
+
+*Rationale*: We will decom transformer so no need to worry.
+
+We have two different responsibilities within transformer:
+
+- to perform an individual (1-1) transformation of a tack type into a
+  formatable;
+- to determine how many transformations of a tack type are required,
+  and to do them.
+
+Maybe we should have a transformer sub-workflow that collaborates with
+specific transformers, aligned to =cpp= types
+(e.g. =class_info_transformer=, =enum_info_transformer= and so on,
+each taking different tack types). The role of the top-level
+transformer is to call all of the sub-transformers for a given tack
+type.
+
+The other option is to align them to tack types and to produce
+different =cpp= types.

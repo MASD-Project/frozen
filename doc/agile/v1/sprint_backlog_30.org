@@ -1,0 +1,1172 @@
+#+title: Sprint Backlog 30
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Sprint Goals
+
+- to finish the codec tidy-up work.
+- to implement org mode codec.
+
+* Stories
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-12-29 Tue 13:33]
+| <75>                                                |         |       |       |       |
+| Headline                                            | Time    |       |       |     % |
+|-----------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                        | *51:33* |       |       | 100.0 |
+|-----------------------------------------------------+---------+-------+-------+-------|
+| Stories                                             | 51:33   |       |       | 100.0 |
+| Active                                              |         | 51:33 |       | 100.0 |
+| Edit release notes for previous sprint              |         |       |  6:04 |  11.8 |
+| Create a demo and presentation for previous sprint  |         |       |  0:34 |   1.1 |
+| Sprint and product backlog grooming                 |         |       |  1:13 |   2.4 |
+| Add support for reading org mode documents          |         |       | 19:46 |  38.3 |
+| Remove leading and trailing new lines from comments |         |       |  1:03 |   2.0 |
+| Stitch templates are consuming whitespace           |         |       |  1:56 |   3.8 |
+| Add org-mode codec for input                        |         |       |  8:56 |  17.3 |
+| Convert library models into org                     |         |       |  1:26 |   2.8 |
+| Convert reference models into org                   |         |       |  2:56 |   5.7 |
+| Assorted improvements to org model                  |         |       |  0:37 |   1.2 |
+| Create a model to org transform                     |         |       |  3:57 |   7.7 |
+| Remove JSON and Dia models for Dogen                |         |       |  1:07 |   2.2 |
+| Split orchestration tests by model and codec        |         |       |  1:58 |   3.8 |
+#+tblfm: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2020-12-15 Tue 18:52]
+    :LOGBOOK:
+    CLOCK: [2020-12-15 Tue 18:02]--[2020-12-15 Tue 18:52] =>  0:50
+    CLOCK: [2020-12-14 Mon 22:02]--[2020-12-14 Mon 22:49] =>  0:47
+    CLOCK: [2020-12-14 Mon 18:15]--[2020-12-14 Mon 19:31] =>  1:16
+    CLOCK: [2020-12-13 Sun 19:20]--[2020-12-13 Sun 22:31] =>  3:11
+    :END:
+
+add github release notes for previous sprint.
+
+release announcements:
+
+- [[https://twitter.com/MarcoCraveiro/status/1338921450623930373][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6730489589905154048/][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+#+begin_src markdown
+![Bar O Stop](https://explorersclubfh.files.wordpress.com/2010/06/bar-stop-to-benguela.jpg)
+_Bar O Stop, Namibe. (C) 2010 [Jo Sinfield](https://explorersclubfh.wordpress.com/2010/06/30/angola-update-and-binga-bay-to-flamingo-bay-26th-to-29th-june-2010/)_
+
+# Introduction
+
+And so t'was that the 29th sprint of the 1.0 era finally came to a close; and what a bumper sprint it was. If you recall, on [Sprint 28](https://github.com/MASD-Project/dogen/releases/tag/v1.0.28) we saw the light and embarked on a coding walkabout to do a "bridge refactor". The rough objective was to complete a number of half-baked refactors, and normalise the entire architecture around key domain concepts that have been absorbed from MDE (Model Driven Engineering) literature. Sprint 29 brings this large wandering to a close - well, at least as much as one can "close" these sort of _never ending things_ - and leaves us on a great position to focus back on "real work". Lest you have forgotten, the "real work" had been to wrap things up with the PMM (Physical Meta-Model), but it had fallen by the wayside since the end of [Sprint 27](https://github.com/MASD-Project/dogen/releases/tag/v1.0.27). When this work resumes, we can now reason about the architecture without having to imagine some idealised target state that would probably never arrive (at the rate we were progressing), making the effort a lot less onerous. Alas, this trivialises the sprint somewhat. The truth was that it took over 380 commits and 89 hours of intense effort to get us in this place, and it is difficult to put in words the insane amount of work that makes up this release. Nevertheless, one is compeled to give it a good old go, so settle in for the ride that was Sprint 29.
+
+# User visible changes
+
+This section normally covers stories that affect end users, with the video providing a quick demonstration of the new features, and the sections below describing them in more detail. As there were no user facing features, the video discusses the work on internal features instead.
+
+[![Sprint 1.0.29 Demo](https://img.youtube.com/vi/FEqQVCWo0S4/0.jpg)](https://youtu.be/FEqQVCWo0S4)
+_Video 1: Sprint 29 Demo._
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_29.org).
+
+## Significant Internal Stories
+
+This sprint had two key goals, both of which were achieved:
+
+- moving remaining "formattable" types to logical and physical models.
+- Merge ```text``` models.
+
+By far, the bulk of the work went on the second of these two goals. In addition, a "stretch" goal appeared towards the end of the sprint, which was to tidy-up and merge the ```codec``` model. These goals were implemented by means of four core stories, which captured four different aspects of the work, and were then aided by a cast of smaller stories which, in truth, were more like sub-stories of these "conceptual epics". We shall cover the main stories in the next sections and slot in the smaller stories as required. Finally, there were a number of small "straggler stories" which we'll cover at the end.
+
+### Complete the formattables refactor
+
+A very long running saga - nay, a veritable Brazilian soap opera of coding - finally came to an end this sprint with the conclusion of the "formattables" refactor. We shan't repeat ourselves explaining what this work entailed, given that [previous release notes](https://github.com/MASD-Project/dogen/releases/tag/v1.0.28) had already done so in excruciating detail, but its certainly worth perusing those writings to get an understanding of the pain involved. This sprint we merely had to tie up lose ends and handle the C# aspects of the formattables namespace. As before, all of these objects were moved to "suitable" locations within the LPS (Logical-Physical Space), though perhaps further rounds of modeling clean-ups are required to address the many shortcomings of the "lift-and-shift" approach taken. This was by design, mind you; it would have been very tricky, and _extremely_ slow-going, if we had to do a proper domain analysis for each of these concepts and then determine the correct way of modeling them. Instead, we continued the approach laid out for the C++ model, which was to move these crazy critters to the ```logical``` or ```physical``` models with the least possible amount of extra work. To be fair, the end result was not completely offensive to our sense of taste, in _most_ cases, but there were indeed instances that required closing one's eyes and "just get on with it", for we kept on being tempted to do things "properly". It takes a Buddhist-monk-like discipline to restrict oneself to a single "kind" of refactor at a time, but it is crucial to do so because otherwise one will be forever stuck in the "refactor loop", which we described in [The Refactoring Quagmire](https://mcraveiro.blogspot.com/2018/01/nerd-food-refactoring-quagmire.html) all those moons ago.
+
+It is also perhaps worth spending a few moments to reflect on the lessons taught by formattables. On one hand, it is a clear validation of the empirical approach. After all, though the modeling was completely wrong from a domain expertise standpoint, much of what was laid out within this namespace captured the essence of the task at hand. So, what was _wrong_ about formattables? The key problem was that we believed that there were three representations necessary for code-generation:
+
+- the external representation, which is now housed in the ```codec``` model;
+- the "language agnostic" representation, which is now housed in the ```logic``` model;
+- the "language-specific" representation, which was implemented by formattables (_i.e._, ```text.cpp``` and ```text.csharp```).
+
+What the empirical approach demonstrated was that there is no clear way to separate the second and third representations, try as we might, because there is just _so much_ overlap between them. The road to the LPS had necessarily to go through formattables, because _in theory_ it appeared so clear and logical that separate TSs (Technical Spaces) should have clean, TS-specific representations which were ready to be written to files. As [Mencken stated](https://quoteinvestigator.com/2016/07/17/solution/):
+
+> Every complex problem has a solution which is simple, direct, plausible—and wrong.
+
+In fact, It took a great deal of careful reading through the literature, together with a lot of practical experimentation, to realise that doing so is not at all  practical. Thus, it does not seem that it was possible to have avoided making this design mistake. One could even say that this "mistake" is nothing but the empirical approach at play, because you are expected to conduct experiments and accumulate facts about your object of study, and then revise your hypothesis accordingly. The downside, of course, is that it takes a fair amount of time and effort to perform these "revisions" and it certainly feels as if there was "wasted time" which could have been saved if only we started off with the correct design in the first place. Alas, it is not clear how would one simply have the intuition for the correct design _without_ the experimentation. In other words, the programmer's perennial condition.
+
+### Move helpers into ```text``` model and add them to the PMM
+
+As described in the story above, it has become increasingly clear that the ```text``` model is nothing but a repository of M2T (Model to Text) transforms, spread out across TS's and exposed programatically into the PMM for code generation purposes. Therefore, the TS-specific models for C++ and C# no longer make any sense; what is instead required is a combined ```text``` model containing all of the text transforms, adequately namespaced, making use of common interfaces and instantiating all of the appropriate PMM entities. This "merging" work fell under the umbrella of the architectural clean up work planned for this sprint.
+
+The first shot across the bow in the merging war concerned moving "helpers" from both C++ and C# models into the combined model. A bit of historical context is perhaps useful here. Helpers, in the M2T sense, have been a pet-peeve of ours for many _many_ moons. Their role is to code-generate _functionlets_ inside of the archetypes (_e.g._ the "real" M2T transforms). These helpers, via an _awfully_ complicated binding logic which we shall not bore you with, bind to the type system and then end up acting as "mini-adapters" for specific purposes, such as allowing us to use third-party libraries within Dogen, cleaning up strings prior to dumping them in streams and so forth. A code sample should help in clarifying this notion. The below code fragment, taken from ```logical::entities::element```, contains the output three different helper functions:
+
+```c++
+inline std::string tidy_up_string(std::string s) {
+    boost::replace_all(s, "\r\n", "<new_line>");
+    boost::replace_all(s, "\n", "<new_line>");
+    boost::replace_all(s, "\"", "<quote>");
+    boost::replace_all(s, "\\", "<backslash>");
+    return s;
+}
+
+namespace boost {
+
+inline bool operator==(const boost::shared_ptr<dogen::variability::entities::configuration>& lhs,
+const boost::shared_ptr<dogen::variability::entities::configuration>& rhs) {
+    return (!lhs && !rhs) ||(lhs && rhs && (*lhs == *rhs));
+}
+
+}
+
+namespace boost {
+
+inline std::ostream& operator<<(std::ostream& s, const boost::shared_ptr<dogen::variability::entities::configuration>& v) {
+    s << "{ " << "\"__type__\": " << "\"boost::shared_ptr\"" << ", "
+      << "\"memory\": " << "\"" << static_cast<void*>(v.get()) << "\"" << ", ";
+
+    if (v)
+        s << "\"data\": " << *v;
+    else
+        s << "\"data\": ""\"<null>\"";
+    s << " }";
+    return s;
+}
+
+}
+```
+
+The main advantage of the "helper approach" is that one does not have to distribute any additional header files or libraries to compile the generated code, other than the third-party libraries themselves. Sadly, this is not sufficient to compensate for its downsides. This approach has never been particularly efficient or _pretty_ - imagine hundreds of lines such as the above scattered around the code base - but, significantly, it isn't particularly scalable _either_, because one needs to modify the code generator accordingly for every new third party library, together with the associated (and rather complex) bindings. Our incursions through the literature provided a much cleaner way to address these requirements via hand-crafted PDMs (Platform Definition Models), which are coupled with third-party libraries and are responsible for providing any glue needed by generated code. However, since we've been knee-deep into a cascade of refactoring efforts, we could not bring ourselves to halt the present work once more and context-switch to yet another (possibly) long running refactoring effort. As a result, we decided to keep calm and carry on the burden of moving helpers around, until such time we could refactor them out of existence. The ```text``` model merging did present a chance to revisit this decision, but we thought best "to confuse one issue at a time" and decided to "just move" the helpers across to the ```text``` model. As it turned out, "just moving" them was no trivial matter. Our troubles begun as soon as we tried to untangle the "helpers" from the "assistant".
+
+At this juncture, your design alarm bells are probably ringing very loudly, and so were ours. After all, a common adage amongst senior developers is that whenever you come up with entities named "assistant", "helper", "manager" and the like, they are giving you a clear and unambiguous indication that you have a slim understanding of the domain; worse, they'll soon devolve into a great big ball of mud, for no one can possibly divine their responsibilities. The blog posts on this matter are far too many to count - _i.e._, [Jeff Atwood](https://blog.codinghorror.com/i-shall-call-it-somethingmanager), [Alan Green](http://www.bright-green.com/blog/2003_02_25/naming_java_classes_without_a.html), and many Stack Overflow posts such as [this one](https://softwareengineering.stackexchange.com/questions/129537/can-manager-classes-be-a-sign-of-bad-architecture). However, after some investigation, it seemed there was indeed some method in our madness:
+
+- the "helpers" where really PDMs in disguise, and those would be dealt with at some point in the future, so they could be ignored for now;
+- the "assistant" had ultimately two distinct responsibilities: 1) to perform some TS-specific transformation of data elements from the logical model, which we now understood to fall under the logical model umbrella; 2) to perform some "formating assistance", providing common routines to a lot of M2T transforms. We implemented some of these refactors, but others were deemed to be outside of the scope of the present exercise, and were therefore added to the backlog.
+
+This was the harbinger of things to come. Much more significantly, assistants and helpers where bound together in a cycle, meaning we could not move them incrementally to the ```text``` model as we originally envisioned. As we've elaborated many a times in these pages, cycles are never the bearers of good fortune, so we took upon ourselves breaking the cycle as part of this exercise. Fortunately this was not too difficult, as the parts of the assistant API used by the helpers were fairly self contained. The functionality was encapsulated into an ABC (Abstract Base Class), a decision that is not without controversy, but which suffices amply to address the problem at hand - all the more so given that helpers are to be removed in the not too distant future.
+
+A third stumbling block was that, even though helpers are deprecated and their impact should be contained to legacy code, they still needed to be accessible via the PMM. Sadly, the existing helper code was making use of some of the same features which in the new world are addressed by the PMM, and so we had no choice but to extend the PMM with helper support. Though not ideal, this was done in a fairly painless manner, and it is hopefully self-contained enough that not much of the code base will start to rely on its presence. Once all of these obstacles were resolved, the bulk of the work was fairly repetitive: to move helpers in groups into the ```text``` model, tidying up each text template until it produced compilable code.
+
+In the end, the following stories were required to bring the main story to a close:
+
+- **Improvements to template processing in logical model**: minor fixes to how templates were being handled.
+- **Convert legacy helpers into new style helpers in C++**: the bulk of the adaptation work in the C++ TS.
+- **Add C++ helpers to the PMM**: Adding PMM infrastructure to deal with helpers. Here we are mainly concerned with C++, but to be fair much of the infrastructure is common to all TSs.
+- **Remove unused wale keys in ```text.cpp```**: minor tidy-up of templates and associated wale (mustache) keys.
+- **Merge ```cpp_artefact_transform*``` wale templates** : Removal of unnecessary wale (mustache) templates.
+- **Add C# helpers to the PMM**: Modifications to the PMM to cater for C#-specific concerns.
+- **Move helpers to ```text``` model**: Remaining work in moving the helpers across to the combined ```text``` model.
+
+### Move text transforms in C++ and C# models into text model
+
+Once we had helpers under our belt, we could turn our attention to the more pressing concerns of the M2T transforms. These presented a bigger problem due to scale: there are just _far too many_ text transforms. This was a particularly annoying problem due to how editing in Dia works at present, with severe limitations on copying and pasting across diagrams. Alas, there was nothing for it but patience. Over a long period of time, we performed a similar exercise to that of the helpers and moved each text template into their resting location in the ```text``` model. The work was not what you'd call a creative exercise, but nonetheless an important one because the final layout of the ```text``` model now mirrors the contents of the PMM - precisely what we had intended from the beginning.
+
+![Text model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_text_model_birds_eye.png)
+_Figure 1: Birds-eye view of the ```text``` model_
+
+Figure 1 shows a birds-eye view of the ```text``` model. On the top-leftmost corner, in orange, you can see the wale (mustache) templates. Next to it is the ```entities``` namespace, containing the definition of the LPS (in pink-ish). At the bottom of the picture, with the greener tones, you have the two major TS: C++ (on the bottom left) and C# (on the bottom right, clipped). Each TS shows some of the M2T transforms that composes them. All elements are exposed into the PMM via code-generation.
+
+### Clean up and merge codec models
+
+The final "large" architectural problem we had to address was the current approach for the ```codec``` models. Long ago, we envisioned a proliferation of the number of codecs for Dogen, and so thought these should be dynamically injected to facilitate the use case. In our view, each codec would extend Dogen to process file types for specific uses, such as adding eCore support, as well as for other, non-UML-based representations. Whilst we still see a need for such an approach, it was originally done with little conceptual understanding of MDE and as such resulted in lots of _suis generis_ terminology. In addition, we ended up with lots of little "modelets" with tiny bits of functionality, because each codec now shares most of its pipeline with the main ```codec``` model. Thus, the right approach was to merge all of these models into the ```codec``` model, and to move away from legacy terms such as ```hydrator```, ```encoder``` and the like, favouring instead the typical MDE terminology of transforms and transform chains. This story covered the bulk of the work, including the merging of the ```codec.json``` and ```codec.org``` models, but sadly just as we were closing in in the ```codec.dia``` model we ran out of time. The work shall be completed early next sprint.
+
+![Codec model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_codec_model_transforms.png)
+_Figure 2: Fragment of the ```codec``` model after refactoring._
+
+Other stories related to this work:
+
+- **Use MDE terminology in Dia model**: the plain (non-codec) representation of Dia got an "MDE tidy-up, following the same pattern as all other models and using transforms rather than hydrators, etc.
+
+### Assorted smaller stories
+
+A number of small stories was also worked on:
+
+- **Fix some problems with c++ visual studio**: assorted improvements to Visual Studio project files; though these are still not ready for end users.
+- **Orchestration should have an initialiser**: instead of copying and pasting the individual initialisers, create a top-level initialiser in orchestration and reuse it.
+- **Add namespaces to "dummy function"**: two classes with the same name in different namespaces resulted in the same "dummy" function, resulting in spurious OSX warnings. With this change, we generate the dummy function name from file path resulting in unique names in a component.
+- **Remove disabled files from project items**: C# and C++ Visual Studio solutions contained files for disabled facets, due to the way enablement worked in C#. With the merge to the text model, this caused problems so we now honour disabled facets when generating project files.
+- **Remove JSON models from Dogen**: Remove tests for JSON models within the Dogen product. JSON is still supported within the C++ reference implementation, but at least this way we do not need to regenerate the JSON models every time we change Dogen models which is quite often.
+
+### Video series of Dogen coding
+
+This sprint we concluded the video series on the formattables refactor as well as a series on the ```text``` model refactor. These are available as playlists. The tables below present a summary of each part. Note that the previous videos for the formattables refactor are available on the release note for [Sprint 28](https://github.com/MASD-Project/dogen/releases/tag/v1.0.28).
+
+|Video|Description|
+|--------|-------------|
+|[Part 19](https://www.youtube.com/watch?v=0e0NQ2Kaqj4)|In this video we get rid of most of the helper related properties in formattables and _almost_ get rid of the formattables model itself, but fail to do so in the end due to some unexpected dependencies.|
+|[Part 20](https://www.youtube.com/watch?v=UQhHk4yJwtM)|In this part we start to add the PMM infrastructure, beginning with the logical model representation of helpers. However, when we try to use it in anger, the world blows up.|
+|[Part 21](https://www.youtube.com/watch?v=yRFOnENVt1k)|In this video we try to generate the helpers implementation but find that there are some very significant errors in how helpers have been modeled.|
+|[Part 22](https://www.youtube.com/watch?v=IaT8bX4l1LY)|In this episode we complete the transition of types helpers and do a few hash helpers. Apologies for the echo in the sound.|
+|[Part 23](https://www.youtube.com/watch?v=Qyimrk3uWv0)|In this video we tackle the helpers in the C# Technical Space, as well as other assorted types.|
+|[Part 24](https://www.youtube.com/watch?v=cbscX39OJUc)|In the final part in this series, we finally get rid of the formattables namespace.|
+
+_Table 1: Remaining videos on the playlist for the formattables refactor._
+
+[![Formattables refactor](https://img.youtube.com/vi/pMqUzX0PU_I/0.jpg)](https://www.youtube.com/playlist?list=PLwfrwe216gF0NHaErGDeJrtGU8pAoNYlG)
+_Video 2: Playlist "MASD - Dogen Coding: Formatables Refactor"._
+
+|Video|Description|
+|--------|-------------|
+|[Part 1](https://www.youtube.com/watch?v=B_WuIIWCKFU&ab_channel=MarcoCraveiro)|In this part we introduce the task, and describe the overall approach. We also start to tackle the helpers.|
+|[Part 2](https://www.youtube.com/watch?v=KhAaJCfG0xk)|In this part we tried to replace the C++ helper interface with the one from Text but we faced all sorts of fundamental issues and had to go back to the drawing board.|
+|[Part 3](https://www.youtube.com/watch?v=5_XhlZLfWl4)|In this part we spend a lot of time copying and pasting code to adapt the helper M2T transforms to the new interface. We get close to the end of this task but don't quite complete it.|
+|[Part 4](https://www.youtube.com/watch?v=fAEXYsdrmhU)|In this part we move across all backends and facets to the combined text model.|
+|[Part 5](https://www.youtube.com/watch?v=mCrTE6_0iPY)|In this part we remove all of the helper parafernalia in text.cpp and text.csharp, bar the helpers themselves, and consolidate it all under the text model. We also move the first helper.|
+|[Part 6](https://www.youtube.com/watch?v=NhrHBSOvfNE)|In this part we review the helper work we did offline and attempt to move to the new, non-TS-specific way of organising text transforms.|
+|[Part 7](https://www.youtube.com/watch?v=9rnc_VIx6TI)|In this part we review a number of changes done offline and then deal with the C# assistant, moving it across to the text model.|
+|[Part 8](https://www.youtube.com/watch?v=4xQ9BePy3Yc)|In this part we mostly complete the work on merging the text model. Apologies in advance for this vide as it has a number of problems including bad sound quality as well as several stoppages, and finally, it terminates abruptly due to a machine crash. However we kept it for the record|
+|[Part 9](https://www.youtube.com/watch?v=DddLTLyCsOM)|This part is a recap due to the abrupt ending of the previous part, due to a machine crash (damn NVidia drivers for Linux!).|
+
+_Table 2: Individual videos on the playlist for the ```text``` model refactor._
+
+[![Text model refactor](https://img.youtube.com/vi/B_WuIIWCKFU/0.jpg)](https://www.youtube.com/playlist?list=PLwfrwe216gF0MGgLSSOmRW3g_BcfrgIzU)
+_Video 3: Playlist "MASD - Dogen Coding: Formatables Refactor"._
+
+## Resourcing
+
+On one hand, the utilisation rate of 35% was not particularly brilliant this sprint, but by pretty much any other metric it has to be considered a model of resource consumption (if you pardon the MDE pun). Almost 89% of the total ask was used on stories directly related to the development process, and whilst the break down of stories was not exactly stellar, we still managed a good spread with the top 3 stories consuming 24.1%, 17.8% and 15.2% respectively. We tend to look closely at this because its a good indicator of the health of the analysis of a sprint, and its always a bad sign when one story dominates the majority of the ask. Nonetheless, when one looks at the story titles in more detail its still clear that there was a certain element of laziness in how the work was split and, as always, there is room for improvement in this department. The 11% on non-core tasks had the usual characteristics, with 5.7% allocated to the release notes, and a very cheap demo at 0.5%. One important note though is that this sprint consumed almost 90 hours in total rather than the more traditional 80, which means that looking at percentage numbers is somewhat misleading, particularly when comparing to a typical sprint. The major downside of this sprint was general tiredness, as usual, given the huge amount of the commitment. Sadly not much can be changed in this department, and ideally we wouldn't want to slow down in the next sprint though the Holidays may have a detrimental effect.
+
+![Sprint 29 stories](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_29_pie_chart.jpg)
+_Figure 3_: Cost of stories for sprint 29.
+
+## Roadmap
+
+The key alteration to the road map - other than the removal of the long standing "formattables refactor" - was the addition of the org-mode codec. We've spent far too many hours dealing with the inadequacies of Dia, and it is by now clear that we have much to gain by moving into Emacs for all our modeling needs (and thus, all our Dogen needs since everything else is already done inside Emacs). Therefore we've decided to take the hit and work on implementing org-mode support next sprint before we resume the PMM work. Other than that we are as we were, though on the plus side the road map does have a very realistic feel now given that we are actually completing targets on a sprint by sprint basis.
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_29_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_29_resource_allocation_graph.png)
+
+# Binaries
+
+You can download binaries from either [Bintray](https://bintray.com/masd-project/main/dogen/1.0.29) or [GitHub](https://github.com/MASD-Project/dogen/releases/tag/v1.0.29), as per Table 3. All binaries are 64-bit. For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available in [zip](https://github.com/MASD-Project/dogen/archive/v1.0.28.zip) or [tar.gz](https://github.com/MASD-Project/dogen/archive/v1.0.29.tar.gz) format.
+
+| Operative System | Format | BinTray | GitHub |
+|----------|-------|-----|--------|
+|Linux Debian/Ubuntu | Deb | [dogen_1.0.29_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.29/dogen_1.0.29_amd64-applications.deb) | [dogen_1.0.29_amd64-applications.deb](https://github.com/MASD-Project/dogen/releases/download/v1.0.29/dogen_1.0.29_amd64-applications.deb) |
+|OSX | DMG | [DOGEN-1.0.29-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.29/DOGEN-1.0.29-Darwin-x86_64.dmg) | [DOGEN-1.0.29-Darwin-x86_64.dmg](https://github.com/MASD-Project/dogen/releases/download/v1.0.29/DOGEN-1.0.29-Darwin-x86_64.dmg)|
+|Windows | MSI | [DOGEN-1.0.29-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.29-Windows-AMD64.msi) | [DOGEN-1.0.29-Windows-AMD64.msi](https://github.com/MASD-Project/dogen/releases/download/v1.0.29/DOGEN-1.0.29-Windows-AMD64.msi) |
+
+_Table 3: Binary packages for Dogen._
+
+**Note 1:** The OSX and Linux binaries are not stripped at present and so are larger than they should be. We have [an outstanding story](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped) to address this issue, but sadly CMake does not make this a trivial undertaking.
+
+**Note 2:** Due to issues with Travis CI, we had a number of failed OSX builds and we could not produce a final build for this sprint. However, given no user related functionality is provided, we left the link to the last successful build of Sprint 29. The situation with Travis CI is rather uncertain at present so we may remove support for OSX builds altogether next sprint.
+
+# Next Sprint
+
+The goals for the next sprint are:
+
+- to finish the codec tidy-up work.
+- to implement org mode codec.
+- to start implement path and dependencies via PMM.
+
+That's all for this release. Happy Modeling!
+#+end_src markdown
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2020-12-14 Mon 23:24]
+    :LOGBOOK:
+    CLOCK: [2020-12-14 Mon 22:50]--[2020-12-14 Mon 23:24] =>  0:34
+    :END:
+
+Time spent creating the demo and presentation.
+
+**** Presentation
+
+***** Dogen v1.0.29, "Bar O Stop"
+
+    Marco Craveiro
+    Domain Driven Development
+    Released on 14th December 2020
+
+***** Complete the formattables refactor
+***** Move helpers into text model and add them to the PMM
+***** Clean up and merge codec models
+
+*** STARTED Sprint and product backlog grooming                       :story:
+    :LOGBOOK:
+    CLOCK: [2020-12-28 Mon 09:31]--[2020-12-28 Mon 09:38] =>  0:07
+    CLOCK: [2020-12-28 Mon 09:12]--[2020-12-28 Mon 09:30] =>  0:18
+    CLOCK: [2020-12-27 Sun 18:20]--[2020-12-27 Sun 18:22] =>  0:02
+    CLOCK: [2020-12-27 Sun 12:35]--[2020-12-27 Sun 12:42] =>  0:07
+    CLOCK: [2020-12-27 Sun 11:44]--[2020-12-27 Sun 11:47] =>  0:03
+    CLOCK: [2020-12-26 Sat 20:38]--[2020-12-26 Sat 20:39] =>  0:01
+    CLOCK: [2020-12-16 Wed 19:02]--[2020-12-16 Wed 19:11] =>  0:09
+    CLOCK: [2020-12-18 Fri 09:00]--[2020-12-18 Fri 09:26] =>  0:26
+    :END:
+
+Updates to sprint and product backlog.
+
+Notes:
+
+- create a v4 in product backlog that captures new features. v2 should
+  only have bugs and structural changes that impact the architecture;
+  v3 is tooling related features only.
+
+*** COMPLETED Stitch formatter updates                                :story:
+    CLOSED: [2020-12-18 Fri 09:05]
+
+There are a number of issues with stitch formatters at present:
+
+- stitch transform is still generating its own artefact.
+
+Actually, now that we've updated all formatters do we even need a
+stitch formatter? The helpers are probably going via some other
+route. If so, remove it and the wale formatter.
+
+This is incorrect. Whilst we are using the output of stitch in a
+different way, we are still expanding the stitch template for the
+header files.
+
+*** COMPLETED Clean up helpers interface and move it to =text=        :story:
+    CLOSED: [2020-12-18 Fri 09:05]
+
+Notes:
+
+- we need to include the wale template in the meta-model
+  element. Once this is done we should see if we can remove the stitch
+  and wale formatters in the c++ model.
+- the helper interface should only take logical and physical types so
+  that we can move it to =text=. However, we may be using the
+  assistant. See if we can create the assistant inside the helper as
+  we do with formatters.
+
+*** COMPLETED Create a "combined" assistant in =text=                 :story:
+    CLOSED: [2020-12-18 Fri 09:06]
+
+*Rationale*: implemented in the previous sprint.
+
+Assistant should not really exist, but to get us to the next step we
+should just make it a helper in =text= model. We just need to merge
+the C++ and C# classes into one and move it to =text=.
+
+*** COMPLETED Add support for reading org mode documents              :story:
+    CLOSED: [2020-12-24 Thu 10:27]
+    :LOGBOOK:
+    CLOCK: [2020-12-20 Sun 18:08]--[2020-12-20 Sun 18:39] =>  0:31
+    CLOCK: [2020-12-20 Sun 15:15]--[2020-12-20 Sun 16:30] =>  1:15
+    CLOCK: [2020-12-20 Sun 10:11]--[2020-12-20 Sun 14:15] =>  4:04
+    CLOCK: [2020-12-19 Sat 17:31]--[2020-12-19 Sat 17:33] =>  0:02
+    CLOCK: [2020-12-19 Sat 15:00]--[2020-12-19 Sat 17:30] =>  2:30
+    CLOCK: [2020-12-19 Sat 11:02]--[2020-12-19 Sat 14:23] =>  3:21
+    CLOCK: [2020-12-18 Fri 17:10]--[2020-12-18 Fri 17:44] =>  0:34
+    CLOCK: [2020-12-18 Fri 16:46]--[2020-12-18 Fri 16:53] =>  0:07
+    CLOCK: [2020-12-18 Fri 13:23]--[2020-12-18 Fri 16:29] =>  3:06
+    CLOCK: [2020-12-18 Fri 09:31]--[2020-12-18 Fri 12:42] =>  3:11
+    CLOCK: [2020-12-18 Fri 09:29]--[2020-12-18 Fri 09:30] =>  0:01
+    CLOCK: [2020-12-16 Wed 19:12]--[2020-12-16 Wed 20:16] =>  1:04
+    :END:
+
+Create an org-mode model, and add transforms to read from
+org-mode. The remaining work should go under their own stories (codec,
+writing support, etc).
+
+Merged stories:
+
+*Org-mode as a carrier format for modeling*
+
+This is a bit of a weird idea, but may just work; this story is a
+placeholder to capture ideas in this space. Consider a org-mode
+file as a model. Ideas:
+
+- the top-level properties are all model properties. For example, if
+  you add text at the top, that is a model comment.
+- We could add a org-mode file link for each file element so that we
+  could easily move from model to implementation. The file format
+  should have a section for this (files by facet?), with all of the
+  bookmarks. However, its a bit painful to do this manually, so we
+  need some form of round-tripping.
+- we can also make use of the exact same format for Dogen comments as
+  we do in Dia, with =#DOGEN= markers.
+- stereotypes and other meta-data can be conveyed using org-mode
+  properties. In addition, due to org-babel, we can include code
+  snippets on any programming language, with some (minimal) IDE-like
+  integration.
+- we could also include the GUIDs for merging as org-mode properties.
+- once we create a C++ stand-alone product to represent org-mode
+  documents, we can just create an adapter for it as an injector.
+- there already is some support for creating state-machines in
+  org-mode: [[https://orgmode.org/worg/org-tutorials/org-dot-diagrams.html][Org tutorial on generating simple process diagrams using
+  dot and tables]]
+- we should also look at verb as an extension to org-mode.
+- to parse drawers, we should add two methods to the parser:
+
+  1. try parse drawer start
+  2. try parse drawer content
+
+  we can detect the end of the drawer manually by looking for =:END:=.
+
+Links:
+
+- [[https://github.com/mirkoboehm/OrgModeParser][OrgModeParser]]: requires QT.
+- [[https://www.reddit.com/r/emacs/comments/bciwiz/does_orgmode_have_a_formal_grammar_or_some_subset/][Does orgmode have a formal grammar, or some subset of it?]]
+- [[https://orgmode.org/worg/dev/org-syntax.html][Org Syntax (draft)]]
+- [[https://orgmode.org/worg/dev/org-element-api.html][Org Element API]]
+- [[https://github.com/ngortheone/org-rs][org-rs]]: rust library for org-mode.
+- [[https://github.com/felipealmeida/orgmode-parsers][orgmode-parsers]]
+- [[https://github.com/federicotdn/verb][verb]]: Verb is a package for Emacs which allows you to organize and
+  send HTTP requests.
+- [[https://github.com/PoiScript/orgize][orgize GH]]: A Rust library for parsing orgmode files.
+- [[https://orgmode.org/worg/org-tools/index.html][Org Mode tools!]]
+
+*** COMPLETED Remove leading and trailing new lines from comments     :story:
+    CLOSED: [2020-12-25 Fri 20:15]
+    :LOGBOOK:
+    CLOCK: [2020-12-25 Fri 19:19]--[2020-12-25 Fri 20:15] =>  0:56
+    CLOCK: [2020-12-25 Fri 17:02]--[2020-12-25 Fri 17:09] =>  0:07
+    :END:
+
+At present we are using the comments as supplied in the codec
+model. This works ok mostly, but it has some issues. For Dia the main
+issue is when we use meta-data in a comment, e.g.:
+
+: Directory in which to place C++ source files.
+:
+: #DOGEN masd.variability.binding_point=global
+
+We don't really want a trailing line in this comment, but we need it
+to separate the meta-data. The end result is not ideal:
+
+:     r.name().simple("source_directory_name");
+:     r.name().qualified("masd.cpp.source_directory_name");
+:     r.description(R"(Directory in which to place C++ source files.
+:
+: )");
+
+Similarly in org-mode we are removing the spaces to avoid spurious
+diffs:
+
+: :masd.codec.reference: masd.variability
+: :masd.codec.reference: dogen.profiles
+: :masd.variability.profile: dogen.profiles.base.default_profile
+: :END:
+: Implements the command-line interface for Dogen.
+: * parser_exception                                             :masd_element:
+: :PROPERTIES:
+: :masd.codec.stereotypes: masd::exception
+: :END:
+
+One possible solution is to always remove leading and trailing new
+lines, as a transform inside the logical model.
+
+Links:
+
+- [[https://stackoverflow.com/questions/216823/whats-the-best-way-to-trim-stdstring][What's the best way to trim std::string?]]
+
+*** COMPLETED Stitch templates are consuming whitespace               :story:
+    CLOSED: [2020-12-26 Sat 20:37]
+    :LOGBOOK:
+    CLOCK: [2020-12-26 Sat 19:21]--[2020-12-26 Sat 20:37] =>  1:16
+    CLOCK: [2020-12-26 Sat 17:56]--[2020-12-26 Sat 18:02] =>  0:06
+    CLOCK: [2020-12-26 Sat 17:00]--[2020-12-26 Sat 17:05] =>  0:05
+    CLOCK: [2020-12-26 Sat 16:30]--[2020-12-26 Sat 16:59] =>  0:29
+    :END:
+
+We have whitespace between wale and stitch template, like so:
+
+: <#$ stitch.wale.template_instantiation_result #>
+: <#+
+:
+: void smart_pointer_helper_transform::
+: apply(std::ostream& os, const logical::entities::model& /*m*/,
+:
+
+However, the generated code does not contain the whitespace:
+
+:     const logical::entities::helper_properties& /*hp*/) const {
+:     return true;
+: }
+: void smart_pointer_helper_transform::apply(std::ostream& os, const logical::entities::model& m,
+
+We seem to be trimming the block somehow. Actually the problem is that
+with the trimming of whitespace on the documentation transform we
+removed the trailing new line. That means that the space on the stitch
+template is actually now being used to new line the wale template. We
+did a quick hack to address this problem by adding the newline when
+rendering the wale template. This is not great but it solves the
+problem at hand.
+
+*** COMPLETED Add org-mode codec for input                            :story:
+    CLOSED: [2020-12-26 Sat 20:58]
+    :LOGBOOK:
+    CLOCK: [2020-12-27 Sun 11:48]--[2020-12-27 Sun 12:34] =>  0:46
+    CLOCK: [2020-12-26 Sat 20:39]--[2020-12-26 Sat 20:53] =>  0:14
+    CLOCK: [2020-12-26 Sat 10:01]--[2020-12-26 Sat 10:26] =>  0:25
+    CLOCK: [2020-12-25 Fri 21:02]--[2020-12-25 Fri 21:14] =>  0:12
+    CLOCK: [2020-12-25 Fri 20:16]--[2020-12-25 Fri 20:24] =>  0:08
+    CLOCK: [2020-12-25 Fri 16:50]--[2020-12-25 Fri 17:01] =>  0:11
+    CLOCK: [2020-12-25 Fri 16:30]--[2020-12-25 Fri 16:47] =>  0:17
+    CLOCK: [2020-12-25 Fri 13:41]--[2020-12-25 Fri 15:23] =>  1:42
+    CLOCK: [2020-12-24 Thu 17:00]--[2020-12-24 Thu 17:16] =>  0:16
+    CLOCK: [2020-12-24 Thu 16:08]--[2020-12-24 Thu 16:59] =>  0:51
+    CLOCK: [2020-12-24 Thu 14:18]--[2020-12-24 Thu 14:20] =>  0:02
+    CLOCK: [2020-12-24 Thu 14:12]--[2020-12-24 Thu 14:17] =>  0:05
+    CLOCK: [2020-12-24 Thu 10:24]--[2020-12-24 Thu 14:11] =>  3:47
+    :END:
+
+Create a transform in the codec model that converts org-mode documents
+into codec models.
+
+Notes:
+
+- we need to determine how to handle composition. We thought it would
+  be sufficient to supply qualified names but it seems we are still
+  getting errors to do with containment.
+
+: 2020-12-24 14:09:23.309647 [DEBUG] [logical.transforms.containment_transform] Looking for container:  { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }
+: 2020-12-24 14:09:23.309650 [DEBUG] [logical.transforms.containment_transform] Trying module as the container.
+: 2020-12-24 14:09:23.309652 [DEBUG] [logical.transforms.containment_transform] Could not find container: ' { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }'.
+: 2020-12-24 14:09:23.309655 [DEBUG] [logical.transforms.containment_transform] Trying modeline group as the container.
+: 2020-12-24 14:09:23.309658 [DEBUG] [logical.transforms.containment_transform] Could not find container: ' { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }'.
+: 2020-12-24 14:09:23.309661 [DEBUG] [logical.transforms.containment_transform] Trying backend as the container.
+: 2020-12-24 14:09:23.309665 [DEBUG] [logical.transforms.containment_transform] Could not find container: ' { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }'.
+: 2020-12-24 14:09:23.309668 [DEBUG] [logical.transforms.containment_transform] Trying facets as the container.
+: 2020-12-24 14:09:23.309671 [DEBUG] [logical.transforms.containment_transform] Could not find container: ' { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }'.
+: 2020-12-24 14:09:23.309674 [ERROR] [logical.transforms.containment_transform] Could not find containing element:  { "__type__": "dogen::identification::entities::logical_id", "value": "dogen.profiles.composable" }
+: 2020-12-24 14:09:23.309730 [DEBUG] [logical.transforms.containment_transform] Finished transform: containment.
+
+- =physical.transforms.merge_transform=: set to chain by mistake?
+- we are now generating both C++ and C# code. This implies something
+  is not quite right with the profile binding. However a cursory
+  inspection of profiles shows that they seemed to have been
+  transformed correctly. The problem may be more suitable, causing
+  some binding error. We need to check that the model is binding to
+  the base profile. It is not clear if this is the root cause:
+
+: 2020-12-24 17:02:45.449202 [DEBUG] [variability.transforms.profile_binding_transform] Profile name: 'dogen.profiles.base.default_profile'
+: 2020-12-24 17:02:45.449206 [TRACE] [variability.transforms.profile_binding_transform] Configured base layer profile: dogen.profiles.base.default_profile
+: 2020-12-24 17:02:45.449251 [TRACE] [variability.transforms.profile_binding_transform] Merged profile.
+: 2020-12-24 17:02:45.449255 [TRACE] [variability.transforms.profile_binding_transform] Accumulated profile is empty.
+: 2020-12-24 17:02:45.449257 [TRACE] [variability.transforms.profile_binding_transform] No base layer found on all profiles.
+
+  We need to understand what should be coming out of the
+  merging. Maybe we can compare the logging for org model with the
+  logging for dia model.
+- to sort models by elements:
+
+: jq '.elements|=sort_by(.name.qualified)'
+
+- attributes have an extra new line. Added transform to trim.
+- processing of code blocks generates errors:
+
+: Dynamic exception type: boost::wrapexcept<dogen::templating::stitch::parsing_error>
+: std::exception::what: Unexpected directive.
+: [dogen::templating::stitch::tag_line_number*] = 1
+: unknown location(0): fatal error: in "physical_model_production_chain_tests/dogen_text_org_produces_expected_model": std::runtime_error: Error during test
+
+- spacing in transforms is wrong; we don't seem to have a line of
+  space between stitch and wale, even though we can see the line in
+  the stitch template.
+
+*** COMPLETED Convert library models into org                         :story:
+    CLOSED: [2020-12-27 Sun 11:43]
+    :LOGBOOK:
+    CLOCK: [2020-12-27 Sun 11:02]--[2020-12-27 Sun 11:43] =>  0:41
+    CLOCK: [2020-12-27 Sun 10:00]--[2020-12-27 Sun 10:40] =>  0:40
+    CLOCK: [2020-12-26 Sat 20:53]--[2020-12-26 Sat 20:58] =>  0:05
+    :END:
+
+We should normalise all models into org-mode. We need to convert the
+library models into org, and deal with any missing information we may
+have from the JSON front end.
+
+Notes:
+
+- Error with enums:
+
+: 2020-12-26 20:52:38.570793 [DEBUG] [logical.transforms.enumerations_transform] Started transform: enumerations
+: 2020-12-26 20:52:38.570801 [DEBUG] [logical.transforms.enumerations_transform] Obtaining default enumeration underlying element name for model: dogen.text
+: 2020-12-26 20:52:38.570806 [ERROR] [logical.transforms.enumerations_transform] Model does not have a default enumeration type: dogen.text
+
+  The problem is probably coming from some JSON special code:
+
+#+begin_src json
+{
+      "name": "int8_t",
+      "stereotypes": [
+        "masd::builtin"
+      ],
+      "can_be_enumeration_underlier": true,
+      "can_be_primitive_underlier": true,
+      "tagged_values": {
+#+end_src
+
+- =can_be_enumeration_underlier= and =can_be_primitive_underlier= are
+  probably being lost in translation.
+- for some reason some types are not coming through correctly:
+
+: std::exception::what: Invalid underlying type: std.string
+
+  Nothing looks incorrect in the =std::string= org
+  representation. This was due to bugs in meta-data processing.
+- JSON models are encoding namespaces in names:
+
+:       "name": "posix_time::ptime",
+
+  We need to detect qualified names and then add the required
+  headlines. Actually this is very tricky: at present we do not have a
+  proper way to convert the JSON models into a structure with
+  containment without going into the logical model. It would be a fair
+  bit of work to port this into codec. Instead, we can just convert
+  the models that require this manually.
+
+*** COMPLETED Convert reference models into org                       :story:
+    CLOSED: [2020-12-27 Sun 18:19]
+    :LOGBOOK:
+    CLOCK: [2020-12-27 Sun 18:02]--[2020-12-27 Sun 18:19] =>  0:17
+    CLOCK: [2020-12-27 Sun 16:30]--[2020-12-27 Sun 18:01] =>  1:31
+    CLOCK: [2020-12-27 Sun 13:26]--[2020-12-27 Sun 14:34] =>  1:08
+    :END:
+
+We need to convert all reference models into org, and add tests for
+them.
+
+Notes:
+
+- empty packages are interpreted as elements. There is no easy way to
+  know what is what, other than creating the notion of packages in the
+  codec model. We need to read the fallback type and use it to
+  populate a new tag for modules.
+
+*** COMPLETED Rename =org_mode= model                                 :story:
+    CLOSED: [2020-12-27 Sun 18:21]
+
+*Rationale*: implemented as part of the org codec work.
+
+Seems like a better name is needed for this model. Perhaps =orgmode=?
+Or just =org=? Just don't like =org_mode=.
+
+*** COMPLETED Analysis on org-mode outstanding work                   :story:
+    CLOSED: [2020-12-28 Mon 09:27]
+
+*Rationale*: implemented as separate stories.
+
+Notes:
+
+- map dogen types to a org-mode tag. The tags must replace =::= with
+  an underscore, e.g. =masd_enumeration= for
+  =masd::enumeration=. Mapping is done by detecting stereotype in the
+  stereotype list and removing it from there. Non-tagged headlines
+  default to documentation (see below).
+- any non-tagged section will be treated as documentation. On
+  generation it will be suitably converted into the language's format
+  for documentation (e.g. doxygen, C# docs etc). We need meta-model
+  elements for these such as "section", etc. Annoyingly, this also
+  means converting expressions such as =some text=. This will be
+  trickier.
+- in an ideal world we would also have entities such as paragraphs and
+  the like, to ensure we can reformat the text as required. For
+  example, the 80 column limitation we have in the input may not be
+  suitable for the end format (this is the case with markdown).
+- we are using qualified names, e.g. =entities::attribute=. These need
+  to be removed. We need to move the graphing logic into =codec=. See
+  story for this.
+- All models should have a unique ID for each element. The ID should
+  be based on GUIDs where possible, though there are some difficulties
+  for cases like Dia. We could create a "fixed" function that
+  generates GUIDs from dia IDs. For example:
+
+: <dia:childnode parent="O64"/>
+
+  We could take the id =O64= and normalise it to say 4 digits: =6400=
+  (noticed we removed the =O= as its not valid in hex); and then use a
+  well-defined GUID prefix:
+
+: 3dddc237-3771-45be-82c9-937c5cef
+
+  Then we can append the normalised Dia ID to the prefix. This would
+  ensure we always generate the same GUIDs on conversion from Dia. If
+  the GUIds change within Dia, then they will also change in the
+  conversion. This ID is then used as the codec ID. Note that its the
+  responsibility of the decoder to assign "child node IDs". For JSON
+  this must already be populated. For Dia its the =childnode=
+  field. For org-mode, we need to infer it from the structure of the
+  file. In org-mode we just need to use the =:CUSTOM_ID:= attribute:
+
+: :CUSTOM_ID: 7c38f8ef-0c8c-4f17-a7da-7ed7d5eedeff
+
+- qualified names are computed as a transform via the graph in codec
+  model. Fixed.
+- packages/namespaces do not have a stereotype in org document. In
+  fact nor do regular objects. We need to figure out the logic for
+  meta-types. Done.
+- no space between headline and comment when there are no
+  properties. Done.
+
+Links:
+
+- [[https://writequit.org/articles/emacs-org-mode-generate-ids.html][Emacs Org-mode: Use good header ids!]]
+- [[https://karl-voit.at/2017/09/23/orgmode-as-markup-only/][Org-Mode Is One of the Most Reasonable Markup Languages to Use for
+  Text]]
+
+*** COMPLETED Assorted improvements to org model                      :story:
+    CLOSED: [2020-12-28 Mon 11:26]
+    :LOGBOOK:
+    CLOCK: [2020-12-28 Mon 10:49]--[2020-12-28 Mon 11:26] =>  0:37
+    :END:
+
+List of problems found in current models:
+
+- upper case all drawer contents to see if it fixes github
+  rendering. We need to downcase when transforming into codec. We can
+  keep tags in lower-case at it seems to work ok with
+  github. Actually, maybe we should add support for both lower and
+  upper case just as a test before we update all drawers. It looks
+  pretty bad all in upper case as well. We could not get this to work
+  with github. Perhaps the problem is that we use separators in the
+  keys (dots, underscores). We do not have a good solution to replace
+  these.
+- consider removing =masd_= in tags. Just makes them longer and adds
+  no value. Actually, we'll keep these for now to make sure its clear
+  the document is a "masd" document.
+- try adding =references= tag. Content is a list of links to org
+  models. However, because of the way our referencing works in dogen,
+  we need to do some kind of hack. Perhaps the "text" of the link
+  could be the simple path to the file and the link the relative
+  path. To start off with, it can be ignored and managed
+  manually. This will be spun into its own story for the future.
+- add spaces between drawers and comments. Seems like we are already
+  doing this.
+- inject the custom ID into all headlines. See previous analysis on
+  this. Spun into its own story, not deemed critical.
+
+*** COMPLETED Create a model to org transform                         :story:
+    CLOSED: [2020-12-28 Mon 16:22]
+    :LOGBOOK:
+    CLOCK: [2020-12-28 Mon 15:01]--[2020-12-28 Mon 16:22] =>  1:21
+    CLOCK: [2020-12-28 Mon 11:38]--[2020-12-28 Mon 14:14] =>  2:36
+    :END:
+
+At present we are manually constructing org mode documents. We should
+use the =org= model to do this. First, get it to work via tests and
+then replace the "stringified" uses of org with the proper model.
+
+*** COMPLETED Remove JSON and Dia models for Dogen                    :story:
+    CLOSED: [2020-12-29 Tue 11:34]
+    :LOGBOOK:
+    CLOCK: [2020-12-29 Tue 11:14]--[2020-12-29 Tue 11:34] =>  0:20
+    CLOCK: [2020-12-29 Tue 10:50]--[2020-12-29 Tue 11:13] =>  0:23
+    CLOCK: [2020-12-28 Mon 16:24]--[2020-12-28 Mon 16:37] =>  0:13
+    CLOCK: [2020-12-28 Mon 11:27]--[2020-12-28 Mon 11:38] =>  0:11
+    :END:
+
+After getting org inot the final shape, remove all non-org
+models. Also remove the associated tests, and utility classes.
+
+Problems after removal:
+
+- nightly is borked; still running dia target. Fixed.
+- example is using hello world from dia. Need to use org. Fixed.
+- need to add containing element ID from Dia or else we will have to
+  do this manually to every model. Spun into story.
+- we need to create a "frozen" dogen project that keeps the JSON and
+  Dia models as they are. They are good tests and we want to make sure
+  we don't break anything going forward. We should reinstate the dia
+  and JSON models, make sure they are up-to-date and the tests are
+  clean, then take the frozen snapshot. Spun into story.
+- split tests by model and by codec to avoid LSP problems.
+
+*** COMPLETED Split orchestration tests by model and codec            :story:
+    CLOSED: [2020-12-29 Tue 13:32]
+    :LOGBOOK:
+    CLOCK: [2020-12-29 Tue 11:34]--[2020-12-29 Tue 13:32] =>  1:58
+    :END:
+
+At present we have a single set of tests for all models. This is
+causing issues with LSP. Split them by product and by codec, e.g.:
+
+: cpp_ref_impl_json
+: cpp_ref_impl_dia
+
+etc. Also, make all common code utility methods.
+
+*** Add tags to org model                                             :story:
+
+We need something like:
+
+: #+tags: { story(s) epic(e) spike(p) }
+
+e.g.:
+
+: #+tags: { element(e) attribute(a) module(m) }
+
+The converter should add this. Once added, regenerate all models. Also
+take the opportunity to drop the =masd_= prefix.
+
+*** Create a "frozen" dogen project                                   :story:
+
+We need to create a "frozen" dogen project that keeps the JSON and Dia
+models as they are. They are good tests and we want to make sure we
+don't break anything going forward. We should reinstate the dia and
+JSON models, make sure they are up-to-date and the tests are clean,
+then take the frozen snapshot.
+
+*** Inject custom IDs into org documents                              :story:
+
+All models should have a unique ID for each element. The ID should be
+based on GUIDs where possible, though there are some difficulties for
+cases like Dia. We could create a "fixed" function that generates
+GUIDs from dia IDs. For example:
+
+: <dia:childnode parent="O64"/>
+
+We could take the id =O64= and normalise it to say 4 digits: =6400=
+(noticed we removed the =O= as its not valid in hex); and then use a
+well-defined GUID prefix:
+
+: 3dddc237-3771-45be-82c9-937c5cef
+
+Then we can append the normalised Dia ID to the prefix. This would
+ensure we always generate the same GUIDs on conversion from Dia. If
+the GUIds change within Dia, then they will also change in the
+conversion. This ID is then used as the codec ID. Note that its the
+responsibility of the decoder to assign "child node IDs". For JSON
+this must already be populated. For Dia its the =childnode= field. For
+org-mode, we need to infer it from the structure of the file. In
+org-mode we just need to use the =:CUSTOM_ID:= attribute:
+
+: :CUSTOM_ID: 7c38f8ef-0c8c-4f17-a7da-7ed7d5eedeff
+
+
+*** Add include directories to models                                 :story:
+
+In some cases we may require additional include directories to be
+added to a project. It should be possible to add these to a product or
+component. We need to find a specific use case for this though.
+
+Actually, we should just support a =--include= or =-I= parameter. We
+also need to dump the include directories in dumpspecs.
+
+*** Move hello world model from models directory                      :story:
+
+It is confusing to have it mixed up with product models. Use a regular
+dogen model to test the package. We could have it on the reference
+model as a stand alone example, or we could create a "hello dogen"
+product for a trivial example of dogen usage.
+
+Actually, we need to address the entire samples use case. The easy
+thing to do is just to add all dogen org models as examples. Or we
+could just add the hello world model.
+
+Merged stories:
+
+*Create or update samples folder*
+
+We should add samples to the package. These could be organsided by
+injector (dia, json), then by language type (lam, cpp, csharp) or vice
+versa.
+
+We could also try to generate all of these models when testing the
+package.
+
+On the other hand, once we create a proper package for dogen headers,
+with SOs etc, we should really include the dogen models there. In
+effect, it will be symmetric with PDM packages.
+
+
+*** Remove dia-specific types in dia model                            :story:
+
+We probably don't need the "processed" types, we can just use the
+codec types directly.
+
+*** Refactor the templating model                                     :story:
+
+We should use "standard" conventions in this model as well:
+
+- add entities namespace. Name entities after their "type",
+  e.g. =stitch_template=, etc.
+- add transforms for the template expansion.
+
+*** Consider handling "dia comments" in a general manner              :story:
+
+At present we allow comments with:
+
+: #DOGEN masd.codec.dia.comment=true
+
+to be processed as part of the containing object. We should try to
+generalise this notion so that any codec could make use of this
+feature.
+
+*** Move graph of containment to codec model                          :story:
+
+At present we are doing the containment graph within the dia codec. We
+should really do this in the main codec model so we can reuse it for
+org-mode.
+
+*** Move wale templates to TS namespaces                              :story:
+
+At present the wale templates are in the top-level namespace of the
+text model, but they should really be in each technical space.
+
+Merged stories:
+
+*Move mustache templates into the =transforms= namespaces*
+
+We left the templates at the top level as it was in the TS-specific
+models but they should really be within =transforms= namespace. We
+need to check to see how name resolution for templates is working.
+
+*** Implement M2T chains via code generation                          :story:
+
+We need to update the =backend= and =part= transforms to be a set of
+calls to their "children", based on the PMM. Once this is done we can
+remove all of the existing infrastructure in the TS models:
+
+- repositories
+- initialisers
+- workflows
+- traits
+- registrars
+
+Notes:
+
+- in the new world we no longer need a M2T interface at the text
+  transform level. The backend chain knows of all of the facet chains;
+  and the facet chains know of all of the archetypes. We can dispatch
+  the element using the visitor into a concrete type and then find the
+  archetypes that process that type. However, we do not want to
+  generate an apply method per logical element...
+
+Merged stories:
+
+*Implement backend and facet transform*
+
+The backend transform should:
+
+- return the ID of the backend;
+- use the facet and archetype transforms to process all elements.
+
+Check backlog for a story on this.
+
+*** Consider renaming =text= to =logical_physical=                    :story:
+
+This is really the right name for the model; the text processing part
+are the transforms that are done on the model.
+
+Notes:
+
+- rename =logical_physical_region= to just =region=.
+- actually another way of looking at this is trying to figure out what
+  is the dominant responsibility of the component. The LPS will
+  probably be 2 or 3 types whereas the M2T transforms will be 99% of
+  the types. We probably should name the model after lps and the
+  component after the M2Ts. So rename instead the model to LPS.
+
+*** Deprecate managed directories                                     :story:
+
+There should only be one "managed directory" at the input stage, which
+is the component directory (for component models). If parts have
+relative directories off of the component directory then we should add
+to the list of managed directories inside the PM pipeline.
+
+*** Validate no two artefacts have the same ID                        :story:
+
+At present it is possible to generate two artefacts with the same path
+(which is the physical ID) and then have them overwrite each
+other. This causes diffs that are very difficult to get to the bottom
+of. It would be better to fail with a validation that detects
+duplicates.
+
+Merged stories:
+
+*Add a validator for text model*
+
+The validator should check the paths. This can also be done in
+physical model.
+
+:                 /*
+:                  * FIXME: we are still generating artefacts for global
+:                  * module.
+:                  */
+:                 if (aptr->file_path().empty()) {
+:                     BOOST_LOG_SEV(lg, error) << empty_path
+:                                              << aptr->name().id();
+:                     // BOOST_THROW_EXCEPTION(transform_exception(empty_path +
+:                     //         aptr->name().id().value()));
+:                     continue;
+:                 }
+
+*** Fix name of configuration tracing file                            :story:
+
+This name looks incorrect:
+
+: 00000-configuration--initial_input.json
+
+*** Rename =name= to =codec= name                                     :story:
+
+- add codec ID to name.
+
+Notes:
+
+- variability is also using the name class.
+
+*** Add descriptions to PMM elements                                  :story:
+
+We need to read a description attribute for:
+
+- backend
+- facet
+- part
+- archetype
+
+And populate these on the LM PMM, and then code generate them. The
+description should be the comment of the associated element.
+
+*** Create a physical ID in logical-physical space                    :story:
+
+Artefacts are points in logical-physical space. They should have an ID
+which is composed by both logical and physical location. We could
+create a very simple builder that concatenates both, for example:
+
+: <dogen><variability><entities><default_value_override>|<masd><cpp><types><class_header>
+
+The use of =|= would make it really easy to split out IDs as required,
+and to visually figure out which part is which. Note though that the
+ID is an opaque identifier and the splitting happens for
+troubleshooting purposes only, not in the code. With the physical
+model, all references are done using these IDs. So for example, if an
+artefact =a0= depends on artefact =a1=, the dependency is recorded as
+the ID of =a1=. The physical model should also be indexed by ID
+instead of being a list of artefacts.
+
+We already created =logical_meta_physical_id= type so maybe we don't
+need this ID as well.
+
+*** codecs: encoders and decoders should work in terms of strings     :story:
+
+We should only have strings (or perhaps streams) in the encoder and
+decoder interfaces. The handling of files should be the responsibility
+of the caller.
+
+*** Factor out duplication in stitch and wale templates               :story:
+
+At present we are duplicating a lot of stuff in stitch templates. If
+we look at the directives, we can group them as follows:
+
+1. Hard-coded. These have the same value for all templates:
+
+: <#@ masd.stitch.stream_variable_name=ast.stream() #>
+: <#@ masd.stitch.inclusion_dependency=<boost/throw_exception.hpp> #>
+: <#@ masd.stitch.inclusion_dependency="dogen.utility/types/log/logger.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.physical/types/helpers/meta_name_factory.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.logical/types/helpers/meta_name_factory.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/traits.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/traits.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/assistant.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/inclusion_constants.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/formatting_error.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text/types/formatters/sequence_formatter.hpp" #>
+: <#@ masd.stitch.wale.kvp.meta_name_factory=logical::helpers::meta_name_factory #>
+
+2. Facet-dependent. These have the same value for a given facet:
+
+: <#@ masd.stitch.containing_namespaces=dogen::text::cpp::transforms::types #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/types/traits.hpp" #>
+
+3. Meta-element dependent. If we know who the meta-element is, we can
+   generate these:
+
+: <#@ masd.stitch.inclusion_dependency="dogen.logical/types/entities/structural/object.hpp" #>
+: <#@ masd.stitch.wale.kvp.yarn_element=logical::entities::structural::object #>
+: <#@ masd.stitch.wale.kvp.meta_element=object #>
+
+4. M2T transform dependent. If we know the name of the transform, we
+   can generate these:
+
+: <#@ masd.stitch.wale.kvp.class.simple_name=class_implementation_transform #>
+: <#@ masd.stitch.wale.kvp.archetype.simple_name=class_implementation #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/types/class_implementation_transform.hpp" #>
+
+5. Not needed in the new world:
+
+: <#@ masd.stitch.wale.text_template=cpp_artefact_transform_implementation.wale #>
+
+6. Are dependent on the content of the template and so must be added manually:
+
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/io/traits.hpp" #>
+: <#@ masd.stitch.inclusion_dependency="dogen.text.cpp/types/transforms/io/inserter_implementation_helper.hpp" #>
+
+We can address the first point and possibly the second point by
+creating profiles. For point 3 and 4 we could inject these values as
+part of transforms. Finally, we could so some simple filtering of
+meta-data: any key starting with =masd.stitch.= is added to the KVP
+container for the template. Some of these are injected manually.
+
+Sadly we cannot share profiles between C++ and C# because at present
+we cannot inherit across models. We could consider fixing this via
+meta-data. Actually having said that we need to be able to use:
+
+: masd.variability.profile = dogen.profiles.base.disable_all_facets
+
+In the same model; this may work across models as well (modulus
+possible problems with merging).
+
+At any rate the profiles should be kept within the =text*= models
+given they are used only for M2T transforms.
+
+*** Stitch templates should be bound to Dogen M2T transforms          :story:
+
+At present we have tried to create some kind of generic implementation
+of a templating engine. However in practice we only need it for the
+implementation of the apply method of a M2T transform. We could take
+advantage of this in order to simplify templates; we could assume that
+the only thing we could code-generate in a stitch template is the
+inside of the apply method. We need to check but T4 does something
+similar. This would mean that many things would be hard-coded such as
+the name of the stream variable etc.
+
+Everything else should be supplied as meta-data parameters to the
+modeling element for archetypes: includes, etc. This means the
+templates would be much simpler. This can only be done once we use the
+PMM to compute paths. Also, we probably require a way to inject the
+dependencies. This will probably require merging code generation as
+well.
+
+Also this can only be done when we remove the current implementation
+of helpers and move to PDMs.
+
+*** Name all transform exceptions consistently                        :story:
+
+It seems on engine we call them "transform exception" but on assets we
+call them "transformation error". Check all other models and them
+these consistently.
+
+Merged stories:
+
+*Rename =transformation_error= to =transform_exception=*
+
+In keeping with the framework guidelines for naming exceptions. We need to
+also look at all other exceptions.
+
+** Deprecated
+
+*** CANCELLED Consider moving helper chain to outside the text transforms :story:
+    CLOSED: [2020-12-18 Fri 09:01]
+
+*Rationale*: helpers are only temporary so lets not waste any extra
+engineering on them.
+
+Given helpers are temporary this may not make a lot of sense, but for
+what its worth, we could run the chain prior to executing the text
+transforms and then supply a string parameter with the helper
+text. This way the assistant would do less and there would be less
+code in each text transform.
+
+*** CANCELLED Rename "model-to-X" to TLAs                             :story:
+    CLOSED: [2020-12-18 Fri 09:01]
+
+Given that model-to-text (M2T) and text-to-model (T2M) - to a lesser
+extent - are well known TLAs in MDE we should make use of these in
+class names. The names we have at present are very long. The
+additional size is not providing any benefits.
+
+*** CANCELLED Merge properties factory with stitching factory         :story:
+    CLOSED: [2020-12-18 Fri 09:03]
+
+In stitch we still have a few classes that are light on
+responsibilities. One case is the stitching properties factory, traits
+etc. We should merge all of this into a single class, properties
+factory.

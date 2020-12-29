@@ -1,0 +1,814 @@
+#+title: Sprint Backlog 93
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- add the basic infrastructure for C# support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-12-13 Tue 08:41]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *70:37* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 70:37   |       |       | 100.0 |
+| Active                                                                      |         | 70:37 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  3:00 |   4.2 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  1:02 |   1.5 |
+| COMPLETED Update readme                                                     |         |       |  0:11 |   0.3 |
+| COMPLETED Test data generation for dates generates invalid dates            |         |       |  0:33 |   0.8 |
+| COMPLETED Handle missing stitch templates scenario                          |         |       |  1:04 |   1.5 |
+| COMPLETED Move project directory to output options                          |         |       |  1:10 |   1.7 |
+| COMPLETED Update the conceptual model to clarify backends and kernels       |         |       |  4:20 |   6.1 |
+| COMPLETED Detect knitter and disable code generation accordingly            |         |       |  1:15 |   1.8 |
+| COMPLETED Clean up kernel and backend confusion                             |         |       |  5:17 |   7.5 |
+| COMPLETED Add a "language" directory for each backend                       |         |       |  5:44 |   8.1 |
+| COMPLETED Split C++ profiles and templates from C#                          |         |       |  1:11 |   1.7 |
+| COMPLETED Formatter registrar validation is not being called                |         |       |  0:20 |   0.5 |
+| COMPLETED Move decoration repository to quilt                               |         |       |  0:43 |   1.0 |
+| COMPLETED Move module id container into yarn                                |         |       |  0:24 |   0.6 |
+| COMPLETED Add basic infrastructure for C#                                   |         |       | 17:02 |  24.1 |
+| COMPLETED Add support for C#-style documentation                            |         |       |  1:57 |   2.8 |
+| COMPLETED Add support for visual studio projects and solutions              |         |       |  6:05 |   8.6 |
+| COMPLETED OSX build is borked                                               |         |       |  0:21 |   0.5 |
+| COMPLETED Add facet directories to locator                                  |         |       |  1:09 |   1.6 |
+| COMPLETED Split json and dia tests                                          |         |       |  0:12 |   0.3 |
+| COMPLETED Split the "built-ins" by language                                 |         |       |  0:28 |   0.7 |
+| COMPLETED Models should have an associated language                         |         |       |  2:57 |   4.2 |
+| COMPLETED Add support for properties in C#                                  |         |       |  2:20 |   3.3 |
+| POSTPONED Use an unordered map in qualified name                            |         |       |  0:10 |   0.2 |
+| COMPLETED Add types with no properties and one property                     |         |       |  0:05 |   0.1 |
+| COMPLETED Ensure a stable sort of project items                             |         |       |  0:17 |   0.4 |
+| COMPLETED Identify floating point types in yarn                             |         |       |  1:25 |   2.0 |
+| POSTPONED Add helper infrastructure to C#                                   |         |       |  4:38 |   6.6 |
+| POSTPONED Add support for test data generation in C#                        |         |       |  1:03 |   1.5 |
+| POSTPONED Add support for Equals in C#                                      |         |       |  2:49 |   4.0 |
+| POSTPONED Language namespaces and modeling element locations                |         |       |  0:53 |   1.3 |
+| POSTPONED Add support for Decimal numbers in C++                            |         |       |  0:32 |   0.8 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-12-11 Sun 22:09]--[2016-12-11 Sun 22:21] =>  0:12
+    CLOCK: [2016-12-10 Sat 20:31]--[2016-12-10 Sat 20:55] =>  0:24
+    CLOCK: [2016-12-08 Thu 11:31]--[2016-12-08 Thu 11:34] =>  0:03
+    CLOCK: [2016-12-08 Thu 11:00]--[2016-12-08 Thu 11:30] =>  0:30
+    CLOCK: [2016-12-02 Fri 09:01]--[2016-12-02 Fri 09:09] =>  0:08
+    CLOCK: [2016-11-30 Wed 16:20]--[2016-11-30 Wed 16:30] =>  0:10
+    CLOCK: [2016-11-30 Wed 13:37]--[2016-11-30 Wed 15:00] =>  1:23
+    CLOCK: [2016-11-21 Mon 10:11]--[2016-11-21 Mon 10:21] =>  0:10
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-11-21 Mon 10:29]
+    CLOCK: [2016-11-21 Mon 10:30]--[2016-11-21 Mon 11:24] =>  0:54
+    CLOCK: [2016-11-21 Mon 10:21]--[2016-11-21 Mon 10:29] =>  0:08
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.92.0, "Praia Amélia"
+
+#+begin_src markdown
+Overview
+========
+The sprint's headline feature is the completion of the JSON frontend. In the past, the JSON frontend was used solely to supply "proxy models" to Dogen - i.e. top-level type definitions for external libraries such as ```std``` and ```boost```, required so that user models could consume external types.
+
+With this release, we finally got the JSON frontend to provide the same level of support as the Dia frontend (modulus any undetected bugs). Note that Dia will remain the preferred frontend for Dogen's own development but - significantly - users are now free to choose their preferred frontend and are no longer required to install/use Dia in order to code-generate models.
+
+As with everything else in Dogen, regrettably, the documentation is scarce. However, there are examples of JSON models in [the JSON test data pack](https://github.com/DomainDrivenConsulting/dogen/tree/master/test_data/yarn.json/input), which largely mirror [the Dia test data pack](https://github.com/DomainDrivenConsulting/dogen/tree/master/test_data/yarn.dia/input).
+
+Other user visible changes
+===================
+
+- References are now supplied as part of the diagram rather than via the command line. This means you do not need to manually keep track of transitive references - you are only required to supply the models you directly depend on, and their references are automatically picked up. Use ```yarn.references``` to supply References via meta-data.
+- External Modules are now supplied as part of the diagram rather than via the command line. This also means that references no longer require you to provide External Modules for each model that consumes them. Use ```yarn.dia.external_modules``` to supply External Modules in the Dia frontend, via meta-data. In the JSON frontend,  use ```"external_modules": "X"``` directly. As always, [Dogen's own Dia frontend models](https://github.com/DomainDrivenConsulting/dogen/tree/master/projects/input_models) provide modeling examples as well as examples for the the corresponding ```dogen.knitter``` [invocation](https://github.com/DomainDrivenConsulting/dogen/blob/master/projects/input_models/CMakeLists.txt).
+- A new command line utility was added to convert Dia models into JSON models called ```tailor```. It was added primarily to simplify the work on JSON support, but it may also be useful for users wishing to migrate frontends.
+- We are now uploading binary packages to [Bintray](https://bintray.com/domaindrivenconsulting/Dogen). At present we only upload Deb for Linux and DMGs for OSX. These packages are experimental. Any feedback is highly appreciated.
+- Dogen no longer adds a trailing line in comments.
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_92.org).
+
+Project Status
+==========
+With this release, we have more or less implemented all the major architectural features for this product we needed internally at Domain Driven Consulting, so we will focus more on using the product and fixing problems as we find them.
+
+On the other hand, we have also successfully engaged a customer who requires C# support. It is likely that the next few iterations will focus on adding support for other languages.
+#+end_src
+
+*** COMPLETED Update readme                                           :story:
+    CLOSED: [2016-11-21 Mon 11:36]
+    CLOCK: [2016-11-21 Mon 11:25]--[2016-11-21 Mon 11:36] =>  0:11
+
+Add some blurb about binary packages, JSON support and windows support.
+
+*** COMPLETED Test data generation for dates generates invalid dates  :story:
+    CLOSED: [2016-11-30 Wed 12:06]
+    CLOCK: [2016-11-30 Wed 11:33]--[2016-11-30 Wed 12:06] =>  0:33
+
+When we create dates greater than 27, we generate invalid dates. This
+is because of this code:
+
+#+begin_src
+    unsigned int day((position + 1) % 27);
+#+end_src
+
+We are probably generating a zero when we get to 27.
+
+*** COMPLETED Improve support for modules in JSON                     :story:
+    CLOSED: [2016-11-30 Wed 13:41]
+
+*Rationale*: addressed when we added JSON support.
+
+At present we are implying the existence of modules in JSON by looking
+at the types qname. This is not ideal because it means one cannot
+supply meta-data for modules. We should probably revisit the layout to
+have a nested structure with namespaces containing types.
+
+We should still support "implied" modules because it makes the file
+format less verbose for the common use case though.
+
+*** COMPLETED Handle missing stitch templates scenario                :story:
+    CLOSED: [2016-12-02 Fri 10:14]
+    CLOCK: [2016-12-02 Fri 09:10]--[2016-12-02 Fri 10:14] =>  1:04
+
+When bootstrapping a new model such as =quilt.csharp= which make use
+of =artefact formatters=, code generation fails:
+
+: Error: File not found: /home/marco/Development/DomainDrivenConsulting/dogen/projects/quilt.csharp/src/types/formatters/io/enum_formatter.stitch
+
+This is because we haven't yet created the stitch templates. The right
+thing to do is to create an empty template if none is found so that
+bootstrapping can take place.
+
+Actually its a bit dodgy that we are creating files in the middle of
+formatting. Perhaps a better way is to do nothing. The user is still
+responsible for providing the template. We just create a blank file
+for the expanded content.
+
+*** COMPLETED Move project directory to output options                :story:
+    CLOSED: [2016-12-02 Fri 12:11]
+    CLOCK: [2016-12-04 Sun 18:33]--[2016-12-04 Sun 18:44] =>  0:11
+    CLOCK: [2016-12-02 Fri 11:12]--[2016-12-02 Fri 12:11] =>  0:59
+
+At present we have only one C++ specific option left:
+
+: project_directory_path
+
+In truth, this is not C++ specific at all. We need to move it to
+output options and delete the class.
+
+Actually we have so few options now that it makes more sense to just
+merge them into a single class.
+
+*** COMPLETED Update the conceptual model to clarify backends and kernels :story:
+    CLOSED: [2016-12-05 Mon 09:18]
+    CLOCK: [2016-12-05 Mon 08:51]--[2016-12-05 Mon 09:17] =>  0:26
+    CLOCK: [2016-12-05 Mon 08:12]--[2016-12-05 Mon 08:50] =>  0:38
+    CLOCK: [2016-12-04 Sun 23:13]--[2016-12-05 Mon 00:33] =>  1:20
+    CLOCK: [2016-12-04 Sun 20:36]--[2016-12-04 Sun 22:32] =>  1:56
+
+*Rationale*: this story is not totally completed but its clear enough
+so that we can now proceed with implementation. Further clean up will
+have to wait for some available time.
+
+It seems we did not do a great job at our first stab of the conceptual
+model. Add the required clarifications for kernel and backends and do
+a small tidy-up to ensure what's there makes sense.
+
+*** COMPLETED Detect knitter and disable code generation accordingly  :story:
+    CLOSED: [2016-12-05 Mon 14:50]
+    CLOCK: [2016-12-05 Mon 15:23]--[2016-12-05 Mon 15:29] =>  0:06
+    CLOCK: [2016-12-05 Mon 14:50]--[2016-12-05 Mon 15:22] =>  0:32
+    CLOCK: [2016-12-05 Mon 14:12]--[2016-12-05 Mon 14:49] =>  0:37
+
+At present you can try to build the codegen knitting targets even
+before you built knitter. We should make them conditional on detecting
+=knitter=. We just need to make sure this is not cached by CMake.
+
+*** COMPLETED Clean up kernel and backend confusion                   :story:
+    CLOSED: [2016-12-05 Mon 16:38]
+    CLOCK: [2016-12-05 Mon 16:21]--[2016-12-05 Mon 16:38] =>  0:17
+    CLOCK: [2016-12-05 Mon 15:30]--[2016-12-05 Mon 16:20] =>  0:50
+    CLOCK: [2016-12-05 Mon 13:34]--[2016-12-05 Mon 14:01] =>  0:42
+    CLOCK: [2016-12-05 Mon 11:09]--[2016-12-05 Mon 12:30] =>  1:21
+    CLOCK: [2016-12-05 Mon 11:01]--[2016-12-05 Mon 11:08] =>  0:07
+    CLOCK: [2016-12-05 Mon 09:41]--[2016-12-05 Mon 10:40] =>  1:24
+    CLOCK: [2016-12-05 Mon 09:18]--[2016-12-05 Mon 09:40] =>  0:22
+    CLOCK: [2016-12-04 Sun 19:41]--[2016-12-04 Sun 20:35] =>  0:54
+
+We made it clear in the conceptual model that a kernel is made up of
+one or more backends, but this was not carried out in the code
+base. Now we need to instantiate multiple backends, we need to clean
+up these terms.
+
+Actually, the conceptual model is not quite as finished as we
+expected. It doesn't really clarify backends or kernels, but seems to
+imply that a kernel is what we've been calling a sub-kernel.
+
+Tasks:
+
+- clean up these definitions in the conceptual model.
+- rename model in annotations to kernel (templates).
+- add family to archetype location, and update existing kernel to be
+  just the kernel rather than the family.
+- rename all data files that refer to it, update JSON processing
+  etc.
+
+We are trying to introduce too many changes in one go, so it will be
+difficult to isolate faults. We can break it down somewhat:
+
+- split kernel from family;
+- rename formatter to archetype in template kinds;
+- rename global template to recursive template;
+- make recursive template work at all levels.
+
+Actually its not easy to split these tasks because they are
+interrelated. However, we've moved out any work which is not strictly
+required and done all the required work in one go.
+
+*** COMPLETED Add a "language" directory for each backend             :story:
+    CLOSED: [2016-12-06 Tue 11:15]
+    CLOCK: [2016-12-06 Tue 11:12]--[2016-12-06 Tue 11:15] =>  0:03
+    CLOCK: [2016-12-06 Tue 10:35]--[2016-12-06 Tue 11:11] =>  0:36
+    CLOCK: [2016-12-06 Tue 10:23]--[2016-12-06 Tue 10:34] =>  0:11
+    CLOCK: [2016-12-06 Tue 09:51]--[2016-12-06 Tue 10:22] =>  0:31
+    CLOCK: [2016-12-06 Tue 09:02]--[2016-12-06 Tue 09:50] =>  0:48
+    CLOCK: [2016-12-05 Mon 21:54]--[2016-12-05 Mon 22:01] =>  0:07
+    CLOCK: [2016-12-05 Mon 21:30]--[2016-12-05 Mon 21:53] =>  0:23
+    CLOCK: [2016-12-05 Mon 20:39]--[2016-12-05 Mon 21:29] =>  0:50
+    CLOCK: [2016-12-05 Mon 20:17]--[2016-12-05 Mon 20:38] =>  0:21
+    CLOCK: [2016-12-05 Mon 20:01]--[2016-12-05 Mon 20:16] =>  0:15
+    CLOCK: [2016-12-05 Mon 17:27]--[2016-12-05 Mon 18:08] =>  0:41
+    CLOCK: [2016-12-05 Mon 17:10]--[2016-12-05 Mon 17:26] =>  0:16
+    CLOCK: [2016-12-05 Mon 16:38]--[2016-12-05 Mon 16:43] =>  0:05
+    CLOCK: [2016-12-04 Sun 19:37]--[2016-12-04 Sun 19:40] =>  0:03
+    CLOCK: [2016-12-04 Sun 18:53]--[2016-12-04 Sun 19:27] =>  0:34
+
+In order to support multiple backends, we need to split the project
+directory by backend - which maps to a programming language (at least
+at present). For example:
+
+: cpp
+: csharp
+: ...
+
+Note that we do not support multiple kernels at present, but this
+could easily be achieved by adding the kernel to the directory name:
+
+: quilt.cpp
+: quilt.csharp
+: ...
+
+The splitting of the output directory should only kick in when there
+are two or more enabled backends. We also need to ensure there is
+at least one enabled backend.
+
+For this to work we need:
+
+- =enabled= as a backend template, expanded for all available
+  backends. The field needs to move up to the =quilt= configuration.
+- =quilt= to check the conditions set above and inform the backends
+  that they need to use the backend directory or not. We could
+  optionally have a switch that forces always using backend
+  directory. This is useful in cases where users have some models only
+  for one language, but others models which use more than one language
+  and want to use a consistent directory layout.
+- add a backend field for the kernel directory name; this can also be
+  a backend template. This allows users to configure the directory
+  name.
+
+Tasks:
+
+- rename archetype location in backend to something else to reflect
+  its real purpose (locations of all formatters). Source it directly
+  from quilt rather than the quilt registrar in knit.
+- add archetype location for the backend itself.
+- read enabled field in the quilt model for all backends. Remember the
+  number of enabled backends.
+- before executing a backend, get its archetype location and obtain
+  the corresponding enabled field. If not enabled, do not execute.
+- if enabled, supply the number of enabled backends to the backend and
+  pass it on to locator.
+- add a field at quilt level: =enable_kernel_directories=. Defaults to
+  false. If true, we always generate it. If false, and number of
+  enabled backends > 1 we also generate it (logging a warning). Add a
+  "kernel_type_group" to locator to read these new fields.
+- add a field at quit.cpp level: directory. If we need a kernel
+  directory, read this field and use it when creating output
+  directory.
+- rename backends to kernels, no need for two terms to mean the same
+  thing.
+- set =quilt.csharp.enabled= to false on all test models to start off
+  with, and update them as we start adding C# support.
+
+: +#DOGEN quilt.enable_kernel_directories=true
+
+*** COMPLETED Split C++ profiles and templates from C#                :story:
+    CLOSED: [2016-12-06 Tue 16:03]
+    CLOCK: [2016-12-06 Tue 15:52]--[2016-12-06 Tue 16:03] =>  0:11
+    CLOCK: [2016-12-06 Tue 15:38]--[2016-12-06 Tue 15:51] =>  0:13
+    CLOCK: [2016-12-06 Tue 14:01]--[2016-12-06 Tue 14:48] =>  0:47
+
+When we did =quilt.cpp= there was an implicit assumption that C++ and
+C# would share formatters, profiles, etc. Hence they were named:
+
+: artefact formatter
+: helper formatter
+
+And so forth. Same with the wale templates. However:
+
+- the formatter interfaces for C# are different - simpler, so it makes
+  no sense to add the C++ complexity;
+- by implication, the wale templates will also be different too;
+- so the profiles must be different as well.
+
+However, these names are quite clear so we need to preserve some of
+that clarity. Options:
+
+: cpp artefact formatter
+: cpp helper formatter
+
+: artefact formatter (cpp)
+: helper formatter (cpp)
+
+: c++ artefact formatter
+: c++ helper formatter
+
+*** COMPLETED Formatter registrar validation is not being called      :story:
+    CLOSED: [2016-12-06 Tue 17:17]
+    CLOCK: [2016-12-06 Tue 16:57]--[2016-12-06 Tue 17:17] =>  0:20
+
+We seem to somehow have removed the calls to validate the formatter's
+registrar.
+
+:    workflow::registrar().validate();
+
+When we add this back, validation fails.
+
+*** COMPLETED Move decoration repository to quilt                     :story:
+    CLOSED: [2016-12-07 Wed 11:14]
+    CLOCK: [2016-12-07 Wed 10:31]--[2016-12-07 Wed 11:14] =>  0:43
+
+At present the data directories and the decoration repository are
+created in =quilt.cpp=. We need to move it to =quilt= so that
+=quilt.csharp= can reuse it.
+
+*** COMPLETED Move module id container into yarn                      :story:
+    CLOSED: [2016-12-07 Wed 14:07]
+    CLOCK: [2016-12-07 Wed 13:52]--[2016-12-07 Wed 14:07] =>  0:15
+    CLOCK: [2016-12-07 Wed 13:42]--[2016-12-07 Wed 13:51] =>  0:09
+
+At present we are obtaining the set of module id's inside
+=quilt.cpp=. This is also required by =quilt.csharp= so we need to
+move it up into yarn.
+
+*** COMPLETED Add basic infrastructure for C#                         :story:
+    CLOSED: [2016-12-08 Thu 09:13]
+    CLOCK: [2016-12-09 Fri 14:08]--[2016-12-09 Fri 14:11] =>  0:03
+    CLOCK: [2016-12-07 Wed 23:18]--[2016-12-07 Wed 23:38] =>  0:20
+    CLOCK: [2016-12-07 Wed 22:55]--[2016-12-07 Wed 23:17] =>  0:22
+    CLOCK: [2016-12-07 Wed 22:25]--[2016-12-07 Wed 22:54] =>  0:29
+    CLOCK: [2016-12-07 Wed 21:19]--[2016-12-07 Wed 22:24] =>  1:05
+    CLOCK: [2016-12-07 Wed 21:01]--[2016-12-07 Wed 21:18] =>  0:17
+    CLOCK: [2016-12-07 Wed 17:15]--[2016-12-07 Wed 17:33] =>  0:18
+    CLOCK: [2016-12-07 Wed 16:42]--[2016-12-07 Wed 17:14] =>  0:32
+    CLOCK: [2016-12-07 Wed 15:25]--[2016-12-07 Wed 16:41] =>  1:16
+    CLOCK: [2016-12-07 Wed 13:25]--[2016-12-07 Wed 13:41] =>  0:16
+    CLOCK: [2016-12-07 Wed 12:42]--[2016-12-07 Wed 13:00] =>  0:18
+    CLOCK: [2016-12-07 Wed 12:16]--[2016-12-07 Wed 12:41] =>  0:25
+    CLOCK: [2016-12-07 Wed 11:15]--[2016-12-07 Wed 12:15] =>  1:00
+    CLOCK: [2016-12-07 Wed 08:50]--[2016-12-07 Wed 10:30] =>  1:40
+    CLOCK: [2016-12-06 Tue 18:10]--[2016-12-06 Tue 18:21] =>  0:11
+    CLOCK: [2016-12-06 Tue 17:54]--[2016-12-06 Tue 18:09] =>  0:15
+    CLOCK: [2016-12-06 Tue 17:18]--[2016-12-06 Tue 17:53] =>  0:35
+    CLOCK: [2016-12-06 Tue 16:19]--[2016-12-06 Tue 16:56] =>  0:37
+    CLOCK: [2016-12-06 Tue 16:05]--[2016-12-06 Tue 16:18] =>  0:13
+    CLOCK: [2016-12-06 Tue 11:24]--[2016-12-06 Tue 12:20] =>  0:56
+    CLOCK: [2016-12-06 Tue 11:16]--[2016-12-06 Tue 11:24] =>  0:08
+    CLOCK: [2016-12-04 Sun 18:45]--[2016-12-04 Sun 18:52] =>  0:07
+    CLOCK: [2016-12-04 Sun 18:29]--[2016-12-04 Sun 18:33] =>  0:04
+    CLOCK: [2016-12-02 Fri 13:10]--[2016-12-02 Fri 13:28] =>  0:18
+    CLOCK: [2016-12-02 Fri 11:06]--[2016-12-02 Fri 11:12] =>  0:06
+    CLOCK: [2016-12-02 Fri 10:35]--[2016-12-02 Fri 11:05] =>  0:30
+    CLOCK: [2016-12-02 Fri 10:15]--[2016-12-02 Fri 10:35] =>  0:20
+    CLOCK: [2016-12-01 Thu 11:01]--[2016-12-01 Thu 12:16] =>  1:15
+    CLOCK: [2016-11-30 Wed 16:21]--[2016-11-30 Wed 17:45] =>  1:24
+    CLOCK: [2016-11-30 Wed 16:19]--[2016-11-30 Wed 16:20] =>  0:01
+    CLOCK: [2016-11-30 Wed 16:01]--[2016-11-30 Wed 16:19] =>  0:18
+    CLOCK: [2016-11-30 Wed 13:37]--[2016-11-30 Wed 15:00] =>  1:23
+
+The objective of this story is to create a quilt model for C# with at
+least one formatter generating a C# class.
+
+Notes:
+
+- at present the formatters are all using wale templates for C++. This
+  won't work. Create either new wale templates for C# or maybe to
+  start off with just hand craft the formatters until we can see a
+  pattern emerging.
+- we need to figure out a way to move enablement out to quilt.
+- inclusion is probably now just a question of reference management;
+  we've probably got enough in yarn for this.
+- flag to toggle use of regions
+-
+
+Key problems:
+
+- not calculating path at present.
+- no enablement support - need some formattables like structure for
+  this.
+- no helper support - will be needed for test data.
+- will need fabric in order to support =csproj=.
+- no support for facet directory, facet postfix, kernel directory, etc.
+  Locator needs to be moved into formattables.
+
+Tasks:
+
+- add one formatter in =quilt.csharp=, with a archetype location so
+  that we generate its fields - remove the hack of manually generating
+  archetype locations.
+
+*** COMPLETED Add support for C#-style documentation                  :story:
+    CLOSED: [2016-12-08 Thu 10:59]
+    CLOCK: [2016-12-08 Thu 09:02]--[2016-12-08 Thu 10:59] =>  1:57
+
+Formatters at present does not support C# documentation. Sample ([[https://github.com/mono/monodevelop/blob/master/main/src/core/MonoDevelop.Core/MonoDevelop.Core.Execution/ExecutionTarget.cs][source]]):
+
+: /// <summary>
+: /// Gets or sets a value indicating whether this <see cref="MonoDevelop.Core.Execution.ExecutionTarget"/> is notable.
+: /// </summary>
+: /// <remarks>
+: /// This is introduced to be able to highlight execution targets for whatever reason makes sense for the project.
+: /// For example, the android add-in uses this to indicate which emulators are currently running but other addins can use this
+: /// for their own purposes
+: /// </remarks>
+
+Add a new enum for it and update comment formatter with this style.
+
+*** COMPLETED Add support for visual studio projects and solutions    :story:
+    CLOSED: [2016-12-08 Thu 20:48]
+    CLOCK: [2016-12-08 Thu 19:34]--[2016-12-08 Thu 20:47] =>  1:13
+    CLOCK: [2016-12-08 Thu 17:37]--[2016-12-08 Thu 17:42] =>  0:05
+    CLOCK: [2016-12-08 Thu 17:29]--[2016-12-08 Thu 17:36] =>  0:07
+    CLOCK: [2016-12-08 Thu 16:15]--[2016-12-08 Thu 17:27] =>  1:12
+    CLOCK: [2016-12-08 Thu 15:03]--[2016-12-08 Thu 16:14] =>  1:11
+    CLOCK: [2016-12-08 Thu 14:21]--[2016-12-08 Thu 15:02] =>  0:41
+    CLOCK: [2016-12-08 Thu 13:44]--[2016-12-08 Thu 14:20] =>  0:36
+    CLOCK: [2016-12-08 Thu 13:29]--[2016-12-08 Thu 13:44] =>  0:15
+    CLOCK: [2016-12-08 Thu 11:53]--[2016-12-08 Thu 12:21] =>  0:28
+    CLOCK: [2016-12-08 Thu 11:35]--[2016-12-08 Thu 11:52] =>  0:17
+
+We need to start compiling the generated code to make sure it is
+valid. For this we need support for solutions and projects.
+
+Notes:
+
+- model needs to have an associated GUID pair to ensure it is stable
+  across code generations. These must be supplied as meta-data.
+
+*** COMPLETED OSX build is borked                                     :story:
+    CLOSED: [2016-12-08 Thu 20:48]
+    CLOCK: [2016-12-08 Thu 19:29]--[2016-12-08 Thu 19:33] =>  0:04
+    CLOCK: [2016-12-08 Thu 19:11]--[2016-12-08 Thu 19:28] =>  0:17
+
+We seem to have broken the OSX build with commit 8799814. The error
+is:
+
+: In file included from /Users/travis/build/DomainDrivenConsulting/dogen/projects/quilt.csharp/src/types/formatters/repository.cpp:21:
+: In file included from /Users/travis/build/DomainDrivenConsulting/dogen/projects/quilt.csharp/include/dogen/quilt.csharp/types/formatters/repository.hpp:31:
+: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/unordered_map:383:35: error: no member named 'value' in 'std::__1::is_empty<std::__1::hash<std::__1::basic_string<char> > >'
+:          bool = is_empty<_Hash>::value && !__libcpp_is_final<_Hash>::value
+                 ~~~~~~~~~~~~~~~~~^
+: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/unordered_map:765:13: note: in instantiation of default argument for '__unordered_map_hasher<std::__1::basic_string<char>, std::__1::__hash_value_type<std::__1::basic_string<char>, boost::shared_ptr<dogen::annotations::value> >, std::__1::hash<std::__1::basic_string<char> > >' required here
+:    typedef __unordered_map_hasher<key_type, __value_type, hasher>   __hasher;
+:            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+: /Users/travis/build/DomainDrivenConsulting/dogen/projects/annotations/include/dogen/annotations/types/annotation.hpp:88:84: note: in instantiation of template class 'std::__1::unordered_map<std::__1::basic_string<char>, boost::shared_ptr<dogen::annotations::value>, std::__1::hash<std::__1::basic_string<char> >, std::__1::equal_to<std::__1::basic_string<char> >, std::__1::allocator<std::__1::pair<const std::__1::basic_string<char>, boost::shared_ptr<dogen::annotations::value> > > >' requested here
+:    std::unordered_map<std::string, boost::shared_ptr<dogen::annotations::value> > entries_;
+
+https://travis-ci.org/DomainDrivenConsulting/dogen/jobs/181637659
+
+According to this SO post, seems like we're missing a string include:
+
+[[http://stackoverflow.com/questions/32121497/this-hash-only-works-for-enumeration-types][This hash only works for enumeration types]]
+
+*** COMPLETED Add facet directories to locator                        :story:
+    CLOSED: [2016-12-09 Fri 10:13]
+    CLOCK: [2016-12-09 Fri 09:22]--[2016-12-09 Fri 09:45] =>  0:23
+    CLOCK: [2016-12-09 Fri 09:04]--[2016-12-09 Fri 09:21] =>  0:17
+    CLOCK: [2016-12-09 Fri 08:45]--[2016-12-09 Fri 09:03] =>  0:18
+    CLOCK: [2016-12-08 Thu 20:49]--[2016-12-08 Thu 21:00] =>  0:11
+
+At present we are ignoring facet directories. Read them from the meta
+data and place items in the correct locations.
+
+*** COMPLETED Split json and dia tests                                :story:
+    CLOSED: [2016-12-09 Fri 13:55]
+    CLOCK: [2016-12-09 Fri 13:43]--[2016-12-09 Fri 13:55] =>  0:12
+
+At present it is difficult to figure out:
+
+- if an error affects one backend or both;
+- if it affects one, which one.
+
+We need to split frontends in knit workflow tests. We need to also be
+able to conditionally run just one frontend.
+
+*** COMPLETED Split the "built-ins" by language                       :story:
+    CLOSED: [2016-12-10 Sat 10:41]
+    CLOCK: [2016-12-09 Fri 11:57]--[2016-12-09 Fri 12:12] =>  0:15
+    CLOCK: [2016-12-09 Fri 10:38]--[2016-12-09 Fri 10:42] =>  0:04
+    CLOCK: [2016-12-09 Fri 10:28]--[2016-12-09 Fri 10:37] =>  0:09
+
+Originally, we created the [[https://github.com/DomainDrivenConsulting/dogen/blob/master/data/library/hardware.json][hardware]] proxy model with the assumption
+that, in general, all programming languages would map to it. However,
+this is not the case: not all languages support what we deemed to be
+the fundamental types. For example, in C# there is no =long long=, and
+=unsigned long= is called =ulong=. Thus we need to split out the
+hardware model into language specific "built-ins" models. This also
+means we need to completely segregate models by language, as per story
+[[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_93.org#models-should-have-an-associated-language][Models should have an associated language]]. We need to implement this
+first.
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/ms228360(v%3Dvs.90).aspx][Data Types (C# vs. Java)]]
+
+*** COMPLETED Models should have an associated language                :epic:
+    CLOSED: [2016-12-10 Sat 10:41]
+    CLOCK: [2016-12-10 Sat 10:04]--[2016-12-10 Sat 10:41] =>  0:37
+    CLOCK: [2016-12-10 Sat 09:50]--[2016-12-10 Sat 10:04] =>  0:14
+    CLOCK: [2016-12-09 Fri 13:56]--[2016-12-09 Fri 14:08] =>  0:12
+    CLOCK: [2016-12-09 Fri 13:02]--[2016-12-09 Fri 13:43] =>  0:41
+    CLOCK: [2016-12-09 Fri 11:17]--[2016-12-09 Fri 11:56] =>  0:39
+    CLOCK: [2016-12-09 Fri 10:42]--[2016-12-09 Fri 11:16] =>  0:34
+
+Tasks:
+
+- add enumeration to models;
+- when merging ensure that we are merging consistently. This means we
+  must also check that we only merge models that we reference (which
+  we are probably doing at present). The logic is: references can only
+  be of the same language of the target model.
+
+*Previous Understanding*
+
+#+begin_quote
+*Story*: As a dogen user, I want to make sure I only use valid system
+models so that I don't generate models that code generate but do not
+compile.
+#+end_quote
+
+Certain models (e.g. system / library models) can only be used in a
+give language; for example =boost= and =std= only make sense in C++. A
+.Net library model would only make sense in .Net, etc. These are
+Language Specific Models (LSM). Once a model depends on a LSM it
+itself becomes an LSM and it should not be able to then make use of
+models of other languages nor should one be able to request a code
+generation for other languages.
+
+However, one day we will have a system model which is a Language
+Agnostic Model (LAM). The system model will provide a base set of
+functionality across languages such as containers, and for each type
+it will have mappings to language specific types. The mapping is
+declared as dynamic extensions in the appropriate section
+(i.e. =tags::cpp::mapped_type= or something of that ilk). If a model
+depends only on LAMs, it is itself a LAM and can be used to generate
+code on any supported language (presumably a supported language is
+defined to be that for which we have both mappings and a code
+generation backend).
+
+A first step for this would be to have a language enumeration in yarn
+which is a property of the model, and one entry of which is "language
+agnostic".
+
+*** COMPLETED Add support for properties in C#                        :story:
+    CLOSED: [2016-12-10 Sat 12:38]
+    CLOCK: [2016-12-10 Sat 13:55]--[2016-12-10 Sat 14:16] =>  0:21
+    CLOCK: [2016-12-10 Sat 12:50]--[2016-12-10 Sat 12:58] =>  0:08
+    CLOCK: [2016-12-10 Sat 12:35]--[2016-12-10 Sat 12:37] =>  0:02
+    CLOCK: [2016-12-10 Sat 12:26]--[2016-12-10 Sat 12:34] =>  0:08
+    CLOCK: [2016-12-10 Sat 11:40]--[2016-12-10 Sat 12:25] =>  0:45
+    CLOCK: [2016-12-10 Sat 11:31]--[2016-12-10 Sat 11:39] =>  0:08
+    CLOCK: [2016-12-10 Sat 10:42]--[2016-12-10 Sat 11:30] =>  0:48
+
+We need to go through yarn and populate the properties in the types
+facet.
+
+*** POSTPONED Use an unordered map in qualified name                  :story:
+    CLOSED: [2016-12-10 Sat 12:49]
+    CLOCK: [2016-12-10 Sat 12:38]--[2016-12-10 Sat 12:48] =>  0:10
+
+For some reason we are using a map, but its not clear that we need
+sorting. Change it to unordered and see what breaks.
+
+It seems we get errors in serialisation when using the map. Create a
+patch and investigate this later.
+
+*** COMPLETED Add types with no properties and one property           :story:
+    CLOSED: [2016-12-10 Sat 17:55]
+    CLOCK: [2016-12-10 Sat 17:51]--[2016-12-10 Sat 17:56] =>  0:05
+
+In order to make sure we're not hard-coding for the multiple
+properties scenario, create simple classes with no properties and one
+property.
+
+*** COMPLETED Ensure a stable sort of project items                   :story:
+    CLOSED: [2016-12-11 Sun 10:20]
+    CLOCK: [2016-12-10 Sat 21:41]--[2016-12-10 Sat 21:48] =>  0:07
+    CLOCK: [2016-12-10 Sat 20:20]--[2016-12-10 Sat 20:30] =>  0:10
+
+We seem to have generated some diffs with clang. The problem is order
+in the project:
+
+: -    <Compile Include="Types/AllBuiltins.cs" />
+: -    <Compile Include="SequenceGenerators/AllBuiltinsSequenceGenerator.cs" />
+: -    <Compile Include="Types/OneProperty.cs" />
+: -    <Compile Include="SequenceGenerators/OnePropertySequenceGenerator.cs" />
+:     <Compile Include="Types/NoProperties.cs" />
+:     <Compile Include="SequenceGenerators/NoPropertiesSequenceGenerator.cs" />
+: +    <Compile Include="Types/OneProperty.cs" />
+: +    <Compile Include="SequenceGenerators/OnePropertySequenceGenerator.cs" />
+: +    <Compile Include="Types/AllBuiltins.cs" />
+: +    <Compile Include="SequenceGenerators/AllBuiltinsSequenceGenerator.cs" />
+
+We need to sort the project items before we create the project.
+
+*** COMPLETED Identify floating point types in yarn                   :story:
+    CLOSED: [2016-12-11 Sun 11:42]
+    CLOCK: [2016-12-11 Sun 11:31]--[2016-12-11 Sun 11:42] =>  0:11
+    CLOCK: [2016-12-11 Sun 11:16]--[2016-12-11 Sun 11:30] =>  0:14
+    CLOCK: [2016-12-11 Sun 10:16]--[2016-12-11 Sun 11:16] =>  1:00
+
+At present C# code is generating warnings on floats and doubles:
+
+: FloatProperty == value.FloatProperty &&
+: DoubleProperty == value.DoubleProperty &&
+: Warning: Comparison of floating point numbers can be unequal due to the
+: differing precision of the two values.
+
+This is a similar problem to what we have in [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#equality-in-floating-point-numbers-is-incorrect][the c++
+implementation]]. Since this is common across all languages, we can add
+floating point as a yarn concept.
+
+*** POSTPONED Add helper infrastructure to C#                         :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-12-11 Sun 21:46]--[2016-12-11 Sun 22:08] =>  0:22
+    CLOCK: [2016-12-11 Sun 21:24]--[2016-12-11 Sun 21:45] =>  0:21
+    CLOCK: [2016-12-11 Sun 21:01]--[2016-12-11 Sun 21:23] =>  0:22
+    CLOCK: [2016-12-11 Sun 20:29]--[2016-12-11 Sun 21:00] =>  0:31
+    CLOCK: [2016-12-11 Sun 20:02]--[2016-12-11 Sun 20:28] =>  0:26
+    CLOCK: [2016-12-11 Sun 18:31]--[2016-12-11 Sun 18:55] =>  0:24
+    CLOCK: [2016-12-11 Sun 18:25]--[2016-12-11 Sun 18:30] =>  0:05
+    CLOCK: [2016-12-11 Sun 18:18]--[2016-12-11 Sun 18:24] =>  0:06
+    CLOCK: [2016-12-11 Sun 18:05]--[2016-12-11 Sun 18:17] =>  0:12
+    CLOCK: [2016-12-11 Sun 17:57]--[2016-12-11 Sun 18:04] =>  0:07
+    CLOCK: [2016-12-11 Sun 17:45]--[2016-12-11 Sun 17:56] =>  0:11
+    CLOCK: [2016-12-11 Sun 17:04]--[2016-12-11 Sun 17:44] =>  0:40
+    CLOCK: [2016-12-11 Sun 16:42]--[2016-12-11 Sun 17:03] =>  0:21
+    CLOCK: [2016-12-11 Sun 16:11]--[2016-12-11 Sun 16:41] =>  0:30
+
+It is now clear we will need helpers:
+
+- types: floating point comparison.
+- test data: for most proxy types.
+- io: for most proxy types.
+
+Add all of the required infrastructure to C# so we can make use of
+helpers in these facets.
+
+*** POSTPONED Add support for test data generation in C#              :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-12-10 Sat 15:30]--[2016-12-10 Sat 16:33] =>  1:03
+
+We need to create a facet that generates domain types. It should be
+idiomatic in C# - =IEnumerable=, etc.
+
+Links:
+
+- [[http://geekswithblogs.net/BlackRabbitCoder/archive/2010/04/21/more-fun-with-c-iterators-and-generators.aspx][More Fun with C# Iterators and Generators]]
+- [[https://gist.github.com/DForshner/5533088][NaiveFibonacciSequenceGenerator.cs]]
+- [[https://coding.abel.nu/2011/12/return-ienumerable-with-yield-return/][Return IEnumerable with yield return]]
+
+*** POSTPONED Add support for Equals in C#                            :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-12-11 Sun 16:01]--[2016-12-11 Sun 16:10] =>  0:09
+    CLOCK: [2016-12-11 Sun 12:44]--[2016-12-11 Sun 12:57] =>  0:13
+    CLOCK: [2016-12-11 Sun 12:39]--[2016-12-11 Sun 12:43] =>  0:04
+    CLOCK: [2016-12-11 Sun 11:54]--[2016-12-11 Sun 12:38] =>  0:44
+    CLOCK: [2016-12-11 Sun 11:49]--[2016-12-11 Sun 11:53] =>  0:04
+    CLOCK: [2016-12-11 Sun 11:43]--[2016-12-11 Sun 11:48] =>  0:05
+    CLOCK: [2016-12-10 Sat 17:57]--[2016-12-10 Sat 18:11] =>  0:14
+    CLOCK: [2016-12-10 Sat 16:34]--[2016-12-10 Sat 17:50] =>  1:16
+
+We need some basic support for Equals and GetHashCode.
+
+Links:
+
+- [[http://www.loganfranken.com/blog/687/overriding-equals-in-c-part-1/][Overriding Equals in C# (Part 1)]]
+- [[http://www.loganfranken.com/blog/692/overriding-equals-in-c-part-2/][Overriding Equals in C# (Part 2)]]
+- [[http://www.loganfranken.com/blog/698/overriding-equals-in-c-part-3/][Overriding Equals in C# (Part 3)]]
+
+Problems with GetHashCode:
+
+: Types/AllBuiltins.cs(109,38): error CS0176: Static member `object.ReferenceEquals(object, object)' cannot be accessed with an instance reference, qualify it with a type name instead
+: Types/AllBuiltins.cs(111,38): error CS0176: Static member `object.ReferenceEquals(object, object)' cannot be accessed with an instance reference, qualify it with a type name instead
+
+We need a way to know if a type has a static GetHashCode or not.
+
+We also need a way to compare floating point numbers. In both cases
+the easiest thing is to use helpers. See:
+
+- [[http://stackoverflow.com/questions/3874627/floating-point-comparison-functions-for-c-sharp][Floating point comparison functions for C#]]
+
+*** POSTPONED Language namespaces and modeling element locations      :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-12-11 Sun 10:01]--[2016-12-11 Sun 10:15] =>  0:14
+    CLOCK: [2016-12-09 Fri 10:19]--[2016-12-09 Fri 10:27] =>  0:08
+    CLOCK: [2016-12-09 Fri 10:13]--[2016-12-09 Fri 10:18] =>  0:05
+    CLOCK: [2016-12-09 Fri 09:46]--[2016-12-09 Fri 10:12] =>  0:26
+
+
+When we designed Dogen's meta-model yarn, we created a separation from
+"physical space" and "modeling space". That is, a modeling element
+living in modeling space does not know of any implementation specific
+details such as serialisation or test data generation. Those are
+concerns left to the kernels that implement "physical space" such as
+the C++ kernel and are normally implemented as separate facets. Again,
+facets are a "physical concept" and have no equivalent in modeling
+space.
+
+Facets normally tend to have a folder associated, originally
+envisioned as a way keep the code a bit more manageable. If we take
+the [[https://github.com/DomainDrivenConsulting/dogen/tree/master/projects/yarn/include/dogen/yarn][yarn model itself]] as an example:
+
+- types: domain types
+- hash: support for std::hash
+- io: iostreams support
+- serialization: boost serialisation support
+- test_data: test data generators
+
+Crucially, modeling space is not aware at all of these folders and
+thus they are not related to the modeling space concept of modules. So
+it is that the domain type, housed in the types folder, is [[https://github.com/DomainDrivenConsulting/dogen/blob/master/projects/yarn/include/dogen/yarn/types/enumeration.hpp][defined as]]:
+
+#+begin_src
+...
+namespace dogen {
+namespace yarn {
+
+/**
+ * @brief Defines a bounded set of logically related values for a primitive type
+ * or a string.
+ */
+class enumeration final : public dogen::yarn::element {
+...
+#+end_src
+
+And so forth (note the absence of "types" in the namespace
+declaration). This worked well for C++. However, this approach may
+cause problems for C# and will certainly cause problems for Java. This
+is because in these languages, folders are supposed to correspond to
+namespaces. In C# this is largely optional, but in Java it is
+mandatory. Thus we need some way of injecting the facet directories as
+internal modules before we code generate.
+
+Actually this is non-trivial; all references to types will now have to
+concern themselves with the facet. For example, say test data
+generator is referring to the domain type; this now needs to be
+qualified correctly, as they are in different namespaces. This
+requires quite a bit of thinking in order to generate compilable
+code.
+
+On further thought, perhaps its not that bad. We just to be able to
+distinguish proxy from non-proxy types (in order to know whether to
+apply the "fake" facet namespace); then, we either apply the current
+facet (say test data) or types. We don't refer to a third facet. In
+addition, we can also use the facet folder as the fake namespace. So,
+before we make use of a name, we need to call the assistant to inject
+the fake internal module, either with the current facet or types; this
+is done for all non-proxy names. The "is proxy" property needs to be
+added to names.
+
+Tasks:
+
+- add a meta-data flag to enable/disable this feature.
+- in assistant, during code generation, provide a function which
+  injects the internal module.
+
+*** POSTPONED Add support for Decimal numbers in C++                  :story:
+    CLOSED: [2016-12-12 Mon 13:28]
+    CLOCK: [2016-11-30 Wed 13:04]--[2016-11-30 Wed 13:36] =>  0:32
+
+- try using ICU DecNumber library.
+- check compiler support (MSVC may have decimals; if so, use that instead)
+
+** Deprecated

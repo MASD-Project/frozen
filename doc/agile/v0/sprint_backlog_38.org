@@ -1,0 +1,210 @@
+#+title: Sprint Backlog 38
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 38.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:05]
+
+| Headline                                                              | Time    |       |       |
+|-----------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                          | *20:02* |       |       |
+|-----------------------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                                       |         | 20:02 |       |
+| COMPLETED Sprint and product backlog grooming                         |         |       |  0:35 |
+| COMPLETED Create the =om::annotation= class and update code to use it |         |       |  1:06 |
+| COMPLETED Implement auxiliar data structures required for formatting  |         |       | 11:13 |
+| COMPLETED Fix broken OM formatter tests                               |         |       |  0:24 |
+| COMPLETED Remove new lines from output of property tree               |         |       |  0:37 |
+| COMPLETED Make mock model factory aware of stages in SML pipeline     |         |       |  2:38 |
+| COMPLETED Refactor SML mock factory                                   |         |       |  1:22 |
+| COMPLETED Initial implementation of indexer                           |         |       |  2:07 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2013-11-19 Tue 07:50]
+    CLOCK: [2013-11-19 Tue 07:48]--[2013-11-19 Tue 07:50] =>  0:02
+    CLOCK: [2013-11-15 Fri 08:37]--[2013-11-15 Fri 08:40] =>  0:03
+    CLOCK: [2013-11-13 Wed 18:24]--[2013-11-13 Wed 18:50] =>  0:26
+    CLOCK: [2013-11-04 Mon 07:47]--[2013-11-04 Mon 07:51] =>  0:04
+
+*** COMPLETED Create the =om::annotation= class and update code to use it :story:
+    CLOSED: [2013-11-04 Mon 21:41]
+    CLOCK: [2013-11-04 Mon 21:35]--[2013-11-04 Mon 21:37] =>  0:02
+    CLOCK: [2013-11-04 Mon 21:00]--[2013-11-04 Mon 21:35] =>  0:35
+    CLOCK: [2013-11-04 Mon 08:24]--[2013-11-04 Mon 08:32] =>  0:08
+    CLOCK: [2013-11-04 Mon 07:54]--[2013-11-04 Mon 08:15] =>  0:21
+
+create a class to aggregate the licence, modeline and
+marker.
+
+namestorming: authorship, about, origination, file_meta_data,
+file_details.
+
+Suggested name: =meta_data=. In the context of OM this is makes sense
+because the purpose of OM is to produce files, and this aggregate
+contains the meta data required to produce them. File meta data would
+confuse inputs with outputs.
+
+We can't use =meta_data= because we already have a meta-data path in
+the file formatter and that refers to SML meta-data, so its very
+confusing.
+
+Instead we'll use =annotation=. Implies meta-data still, but avoids
+confusion with the SML kind.
+
+*** COMPLETED Implement auxiliar data structures required for formatting :story:
+    CLOSED: [2013-11-13 Wed 18:25]
+    CLOCK: [2013-11-04 Mon 07:53]--[2013-11-04 Mon 07:54] =>  0:01
+    CLOCK: [2013-11-13 Wed 18:15]--[2013-11-13 Wed 18:24] =>  0:09
+    CLOCK: [2013-11-13 Wed 07:52]--[2013-11-13 Wed 08:40] =>  0:48
+    CLOCK: [2013-11-13 Wed 06:30]--[2013-11-13 Wed 07:24] =>  0:54
+    CLOCK: [2013-11-12 Tue 18:20]--[2013-11-12 Tue 19:09] =>  0:49
+    CLOCK: [2013-11-12 Tue 07:54]--[2013-11-12 Tue 08:39] =>  0:45
+    CLOCK: [2013-11-11 Mon 22:35]--[2013-11-11 Mon 23:37] =>  1:02
+    CLOCK: [2013-11-11 Mon 18:06]--[2013-11-11 Mon 18:53] =>  0:47
+    CLOCK: [2013-11-11 Mon 08:22]--[2013-11-11 Mon 09:12] =>  0:50
+    CLOCK: [2013-11-09 Sat 22:43]--[2013-11-10 Sun 01:05] =>  2:22
+    CLOCK: [2013-11-09 Sat 22:07]--[2013-11-09 Sat 22:08] =>  0:01
+    CLOCK: [2013-11-08 Fri 07:49]--[2013-11-08 Fri 08:20] =>  0:31
+    CLOCK: [2013-11-07 Thu 18:00]--[2013-11-07 Thu 18:10] =>  0:10
+    CLOCK: [2013-11-07 Thu 08:23]--[2013-11-07 Thu 08:33] =>  0:10
+    CLOCK: [2013-11-07 Thu 07:47]--[2013-11-07 Thu 08:18] =>  0:31
+    CLOCK: [2013-11-06 Wed 08:24]--[2013-11-06 Wed 08:29] =>  0:05
+    CLOCK: [2013-11-06 Wed 07:46]--[2013-11-06 Wed 08:17] =>  0:31
+    CLOCK: [2013-11-05 Tue 08:26]--[2013-11-05 Tue 08:35] =>  0:09
+    CLOCK: [2013-11-05 Tue 07:48]--[2013-11-05 Tue 08:20] =>  0:32
+    CLOCK: [2013-11-05 Tue 07:38]--[2013-11-05 Tue 07:44] =>  0:06
+
+Note: this story is becoming a bit of an epic, providing insufficient
+granularity of time spent. Due to this it has been closed (still
+incomplete), and the remaining work will be carried out in stories at
+the right level of complexity.
+
+New understanding:
+
+Its better to piggy-back on existing machinery. So:
+
+- leave model as is, with a leaves container. model cannot have any
+  other type of relationship so this is in keeping with making invalid
+  states unrepresentable.
+- change Stateful to contain properties by property type or property
+  set. No point in using an enumeration for the sets because the
+  inherited properties need the parent's qname.
+- create a relationships container in abstract object and replace
+  existing relationships with it.
+- Create an indexer to add additional data to containers.
+
+Old understanding:
+
+The objective of this exercise is to create a data structure that can
+store all the data associated with a type needed for formatting.
+
+- create an enumeration for all possible relationship types. name:
+  =relationship_types=. values: original_parent, parent,
+  regular_association, pointer_association, leaf, visitor, key.
+- create an enumeration for the property sets. name:
+  =property_sets=. values: all, inherited, self
+
+- create a class called =index= with two properties: =relationships=
+  and =properties=:
+
+: relationships: std::unordered_map<relationship_types,std::list<qname>>
+: properties: std::unordered_map<property_types,std::list<property>>
+
+- create a concept called =Indexable= with a property of type =index=.
+  the concept is modeled by =model= and =abstract_object=.
+
+- create a class called =indexer=, responsible for taking in a merged
+  model and populating the index property of all things
+  Indexable. Move code from =extrator= and =transformer= (leaf
+  processing) into =indexer=.
+
+- delete property cache interface etc and make user of index.
+
+- delete extractor, etc and make user of index.
+
+Older understanding:
+
+- create an indexer that populates the index. add indexer to SML
+  workflow.
+- create a class to aggregate type information: type itself, indexed
+  properties, relationships: =type_details=. this should be in OM
+  although it only has SML types. This is because this class is only
+  useful for outputting stuff.
+
+*** COMPLETED Fix broken OM formatter tests                           :spike:
+    CLOSED: [2013-11-13 Wed 20:30]
+    CLOCK: [2013-11-13 Wed 19:09]--[2013-11-13 Wed 19:27] =>  0:18
+    CLOCK: [2013-11-13 Wed 18:56]--[2013-11-13 Wed 19:02] =>  0:15
+
+- port across the changes to the SML mock factory - without these the
+  formatters won't work.
+- ensure transformer updates the new key properties such as
+  =is_child=, etc.
+
+*** COMPLETED Remove new lines from output of property tree           :spike:
+    CLOSED: [2013-11-15 Fri 09:19]
+    CLOCK: [2013-11-15 Fri 08:00]--[2013-11-15 Fri 08:37] =>  0:37
+
+For some annoying reason property tree attempts to format the JSON
+output and this breaks the workflow around prettify json. We need to
+manually remove these new lines.
+
+In addition, it seems that empty property trees produce invalid JSON:
+
+: { "__type__": "dogen::sml::model", "documentation": "Some documentation",
+: "meta_data": {{}
+: }
+: , "name":  { "__type__": "dogen::sml::qname", "model_name"
+: ...
+
+So the streaming is currently borked.
+
+Could not find any evidence at all of these double brackets. However,
+an empty model does fail to validate, most likely due to line breaks
+as our JSON parser is very dumb. Added code to remove line breaks.
+
+*** COMPLETED Make mock model factory aware of stages in SML pipeline :spike:
+    CLOSED: [2013-11-17 Sun 01:39]
+    CLOCK: [2013-11-17 Sun 00:40]--[2013-11-17 Sun 01:39] =>  0:59
+    CLOCK: [2013-11-17 Sun 00:30]--[2013-11-17 Sun 00:40] =>  0:10
+    CLOCK: [2013-11-16 Sat 23:38]--[2013-11-17 Sun 00:00] =>  1:02
+    CLOCK: [2013-11-16 Sat 22:31]--[2013-11-16 Sat 23:38] =>  1:07
+
+- add utility methods for properties
+- handle different stages in the SML pipeline: we can no longer make
+  it a static factory.
+
+*** COMPLETED Refactor SML mock factory                               :spike:
+     CLOSED: [2013-11-14 Thu 07:17]
+     CLOCK: [2013-11-14 Thu 07:01]--[2013-11-14 Thu 07:17] =>  0:16
+     CLOCK: [2013-11-14 Thu 06:53]--[2013-11-14 Thu 07:01] =>  0:08
+     CLOCK: [2013-11-14 Thu 05:52]--[2013-11-14 Thu 06:50] =>  0:58
+
+- tidy up property generation, insertion into containers etc.
+- add support for mock models with concepts
+
+*** COMPLETED Initial implementation of indexer                       :story:
+    CLOSED: [2013-11-19 Tue 07:49]
+
+Create a class called =indexer=, responsible for taking in a merged
+model and populating the index property of all things Indexable. Move
+code from =extrator= and =transformer= (leaf processing) into
+=indexer=.
+
+**** COMPLETED Start adding unit tests for the indexing of modeled concepts :task:
+     CLOSED: [2013-11-19 Tue 07:50]
+     CLOCK: [2013-11-17 Sun 22:42]--[2013-11-17 Sun 23:05] =>  0:23
+     CLOCK: [2013-11-17 Sun 22:39]--[2013-11-17 Sun 22:42] =>  0:03
+     CLOCK: [2013-11-17 Sun 22:00]--[2013-11-17 Sun 22:39] =>  0:39
+     CLOCK: [2013-11-15 Fri 07:52]--[2013-11-15 Fri 08:00] =>  0:08
+     CLOCK: [2013-11-14 Thu 07:56]--[2013-11-14 Thu 08:50] =>  0:54
+
+** Deprecated Development Stories

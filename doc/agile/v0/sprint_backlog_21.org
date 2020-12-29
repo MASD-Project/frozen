@@ -1,0 +1,171 @@
+#+title: Sprint Backlog 21
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 21.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2012-11-22 Thu 08:40]
+
+| Headline                                    | Time   |      |      |
+|---------------------------------------------+--------+------+------|
+| *Total time*                                | *6:39* |      |      |
+|---------------------------------------------+--------+------+------|
+| Development Stories Implemented             |        | 6:39 |      |
+| COMPLETED Refactor type generation in dogen |        |      | 6:39 |
+#+end:
+
+*** COMPLETED Refactor type generation in dogen                       :story:
+    CLOSED: [2012-11-22 Thu 07:20]
+    CLOCK: [2012-11-22 Thu 07:20]--[2012-11-22 Thu 08:37] =>  1:17
+    CLOCK: [2012-11-21 Wed 22:00]--[2012-11-22 Thu 00:15] =>  2:15
+    CLOCK: [2012-11-21 Wed 14:26]--[2012-11-21 Wed 17:33] =>  3:07
+
+After reading [[http://domaindrivendesign.org/books/evans_2003][Domain Driver Design]] more carefully, it seems that we
+are making an incorrect separation between domain types: those which
+have behaviour from those who don't. Eric Evans splits types inside a
+domain as follows:
+
+- Entities (or reference objects): Those primarily driven by an ID,
+  similar to our =versioned= types;
+- Value objects: other objects which are not identifiable, but for
+  which state is an identity (e.g. number 4, string "xyz");
+- Services: the doers, those who are responsible for making/doing
+  things.
+
+We had a number of stories dealing with "manual" types, these are all
+part of this misunderstanding (attached to this story as notes). The
+correct implementation for this is to have stereotypes which allow
+dogen to make the above distinctions for types:
+
+- =entity=: equivalent to current versioned
+- =value=: default case if nothing is present
+- =service=: dogen will not code generate these types but will expect
+  the user to add them manually. It will add them to the includers and
+  warn if files are missing.
+
+In addition, we should rename the =domain= directory to =types= since
+everything is part of the domain model, but this directory is
+responsible for housing the types.
+
+**** Mix-and-match of manual types                                     :note:
+
+When adding types manually one needs to add a regex to get dogen to
+ignore these files. This works but it means dogen does not add these
+files to the includers. A better solution would be to add a stereotype
+of =manual= which would result in automatic ignoring of files for
+these types as well as adding them to includers.
+
+**** Add support for _manual_ types                                    :note:
+
+Sometimes one requires data structures which are just too complicated
+for code generation, such as =boost::multi_index=. In this cases one
+should add these domain types manually, together with their
+serialisation, etc. However, if one then wants to make use of these
+types from trivial types, the code generator will fail to resolve. We
+need a stereotype of _manual_ (or some such name) which allows the
+type to be declared to the type system but no further processing
+(including generation) will occur.
+
+**** COMPLETED Rename =domain= to =types=                              :task:
+     CLOSED: [2012-11-21 Wed 18:15]
+
+Rename the code generated directory =domain= to =types= as it doesn't
+house the domain, but its types.
+
+**** COMPLETED Rename =versioned= stereotype to =entity=               :task:
+     CLOSED: [2012-11-21 Wed 21:31]
+
+The rationale is explained in the above description.
+
+**** COMPLETED Add stereotype of =value=                               :task:
+     CLOSED: [2012-11-21 Wed 21:31]
+
+This is the default case; effectively stereotype does nothing.
+
+**** COMPLETED Add stereotype of =service=                             :task:
+     CLOSED: [2012-11-22 Thu 08:36]
+
+When present, we generate an empty pod, but we will not actually code
+generate files for this pod; we will just add the file names to the
+list of produced files so that housekeeper can ignore them. This is
+for all facets.
+
+This means we need to add an additional checking step after writing
+all files that verifies that all files are really on the filesystem.
+
+*** COMPLETED Reduce size of doxygen packages                         :story:
+    CLOSED: [2012-11-21 Wed 16:37]
+
+We need to investigate our doxygen configuration to figure out why our
+doxygen packages are so large - weighing at 350MB at the moment, they
+are too large to be uploaded to github. We need to find other
+project's doxygen configuration to figure out what we are doing wrong.
+
+The main problem must be related to PNG generation.
+
+*** COMPLETED Dogen should generate stand alone CMake                 :story:
+    CLOSED: [2012-11-21 Wed 16:45]
+
+There should be an option to generate a stand alone =CMakeLists.txt= -
+the domain should compile in total isolation from kitanda. This is
+useful for demos, etc.
+
+*** COMPLETED External package path for references                    :story:
+    CLOSED: [2012-11-23 Fri 10:54]
+
+At present we are assuming the package path is the same for all
+references. This is not correct. We need to pass in a second argument
+after the reference with the package path for that model:
+
+: --reference ${CMAKE_SOURCE_DIR}/diagrams/creris/credit_risk.dia creris
+
+MC: ended up implementing with a comma, as program options doesn't
+seem to deal too well with multi-token which repeated multiple times.
+
+*** COMPLETED Validate model dependencies                             :story:
+    CLOSED: [2012-11-23 Fri 10:59]
+
+In the past we checked that all types existed, even those who belong
+to separate models. But we didn't do an upfront check to make sure
+that all models that target depends on are present. Add a check for
+this.
+
+*** COMPLETED Generate the SML model from dogen                       :story:
+    CLOSED: [2012-11-24 Sat 01:28]
+
+Now that dogen is functional we should remove all the hand-crafted
+code in the SML model which could be code generated.
+
+*** COMPLETED Multi-line strings on JSON                              :story:
+    CLOSED: [2012-11-24 Sat 14:55]
+
+Our inserters need to remove all newline characters before outputting
+them as JSON. This is a problem for SML documentation for example.
+
+While we were at it, we fixed quotes in strings too.
+
+*** COMPLETED JSON =__type__= should be fully qualified               :story:
+    CLOSED: [2012-11-24 Sat 15:21]
+
+At present the JSON =__type__= is only the class name. It should
+really be fully qualified.
+
+*** COMPLETED Empty base class causes compilation errors              :spike:
+    CLOSED: [2012-11-29 Thu 17:14]
+
+For some reason we didn't have tests for the empty base class
+scenario - they were marked as =entity=. It was actually broken, as
+found out in creris.
+
+*** COMPLETED Always writing files even without content changes       :spike:
+
+For some reason we are always writing all files in a model even when
+nothing has changed. This is very expensive in terms of build times.
+
+** Deprecated Development Stories

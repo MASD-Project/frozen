@@ -1,0 +1,479 @@
+#+title: Sprint Backlog 08
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish the orchestration refactoring;
+- Finish moving file locator and dependencies into yarn;
+- Start sorting out object templates and profiles.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2018-10-02 Tue 15:40]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *32:13* |       |       |   0.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 32:13   |       |       |   0.0 |
+| Active                                                                      |         | 32:13 |       |   0.0 |
+| Edit release notes for previous sprint                                      |         |       |  4:55 |   0.0 |
+| Sprint and product backlog grooming                                         |         |       |  0:11 |   0.0 |
+| Write a blog post on previous sprint                                        |         |       |  3:35 |   0.0 |
+| Update Readme with links to blog posts                                      |         |       |  0:10 |   0.0 |
+| Rename stereotypes                                                          |         |       |  0:35 |   0.0 |
+| Dogen does not generate ODB targets for primitives                          |         |       |  0:36 |   0.0 |
+| Create a presentation on variability                                        |         |       | 15:16 |   0.0 |
+| Move to latest clang and gcc on travis                                      |         |       |  0:40 |   0.0 |
+| Recap of the current situation                                              |         |       |  1:29 |   0.0 |
+| Create the =generation= model                                               |         |       |  3:57 |   0.0 |
+| Reduce build times to avoid timeouts                                        |         |       |  0:49 |   0.0 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2018-01-03 Wed 16:44]
+    CLOCK: [2018-01-03 Wed 16:21]--[2018-01-03 Wed 16:44] =>  0:23
+    CLOCK: [2018-01-01 Mon 18:01]--[2018-01-01 Mon 19:22] =>  1:21
+    CLOCK: [2018-01-01 Mon 11:35]--[2018-01-01 Mon 14:04] =>  2:29
+    CLOCK: [2018-01-01 Mon 09:52]--[2018-01-01 Mon 10:34] =>  0:42
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.07, "Mercado"
+
+#+begin_src markdown
+![Mercado](http://static.panoramio.com/photos/large/8148799.jpg) _Mercado Municipal, Namibe, Angola. (C) Edwin Mello, 2008._
+
+# Overview
+
+The bulk of the work this sprint was yet again spent on refactoring, but at least it now seems there is a light at the end of the tunnel. The adventures were narrated on a blog post: [Nerd Food: The Refactoring Quagmire](https://mcraveiro.blogspot.co.uk/2018/01/nerd-food-refactoring-quagmire.html). The TL; DR of it is that - at long last - we now have a way to contain the refactoring work, which was somewhat spiraling out of control.
+
+The remainder of the sprint was spent on infrastructural tasks such as fixing travis, tests, rtags and so forth.
+
+User visible changes
+================
+
+There are no user visible changes this sprint.
+
+Next Sprint
+===========
+
+Next sprint will be focused on continuing the clean up as described in the blog post above, which hopefully will take us to the final iteration of the architecture - at least for the near future.
+
+Binaries
+======
+
+You can download the remaining binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.07_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.07/dogen_1.0.07_amd64-applications.deb)
+- [dogen-1.0.07-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.07/dogen-1.0.07-Darwin-x86_64.dmg)
+
+*Note: due to issues with Conan, we were not able to generate Windows binaries for this sprint.*
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/948594830267043840][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6354361007493775361][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** STARTED Sprint and product backlog grooming                       :story:
+    CLOCK: [2018-01-01 Mon 09:40]--[2018-01-01 Mon 09:51] =>  0:11
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Write a blog post on previous sprint                    :story:
+    CLOSED: [2018-01-03 Wed 16:09]
+    CLOCK: [2018-01-03 Wed 14:13]--[2018-01-03 Wed 16:09] =>  1:56
+    CLOCK: [2018-01-03 Wed 14:01]--[2018-01-03 Wed 14:12] =>  0:11
+    CLOCK: [2018-01-03 Wed 12:01]--[2018-01-03 Wed 13:29] =>  1:28
+
+Do a quick write-up on the difficulties of the previous sprint.
+
+*** COMPLETED Update Readme with links to blog posts                  :story:
+    CLOSED: [2018-01-03 Wed 16:20]
+    CLOCK: [2018-01-03 Wed 16:10]--[2018-01-03 Wed 16:20] =>  0:10
+
+Given we have a number of blog posts inspired by work on Dogen, we
+should add links to them on the main readme.
+
+*** COMPLETED Rename stereotypes                                      :story:
+    CLOSED: [2018-02-25 Sun 17:57]
+    CLOCK: [2018-02-25 Sun 17:20]--[2018-02-25 Sun 17:55] =>  0:35
+
+It makes more sense to create a dogen-wide UML profile rather than one
+just specific to yarn/modeling. This means renaming all stereotypes to
+dogen, i.e.: =yarn::object_template= becomes =dogen::object_template=
+and so forth. Modeling/yarn is just one of the possible
+implementations of the profile.
+
+*** COMPLETED Dogen does not generate ODB targets for primitives      :story:
+    CLOSED: [2018-02-25 Sun 18:40]
+    CLOCK: [2018-02-25 Sun 18:17]--[2018-02-25 Sun 18:32] =>  0:15
+    CLOCK: [2018-02-25 Sun 17:55]--[2018-02-25 Sun 18:16] =>  0:21
+
+At present the northwind model does not have any targets to generate
+primitives, causing the northwind model build to fail when ODB is
+enabled.
+
+*** COMPLETED Create a presentation on variability                    :story:
+    CLOSED: [2018-03-21 Wed 10:09]
+    CLOCK: [2018-03-06 Tue 14:58]--[2018-03-06 Tue 17:02] =>  2:04
+    CLOCK: [2018-03-06 Tue 12:30]--[2018-03-06 Tue 14:57] =>  2:27
+    CLOCK: [2018-03-06 Tue 09:05]--[2018-03-06 Tue 12:10] =>  3:05
+    CLOCK: [2018-03-05 Mon 12:05]--[2018-03-05 Mon 16:50] =>  4:45
+    CLOCK: [2018-03-02 Fri 09:11]--[2018-03-02 Fri 12:06] =>  2:55
+
+We need to do a presentation on how variability is linked to MDE.
+
+*** COMPLETED Move to latest clang and gcc on travis                  :story:
+    CLOSED: [2018-05-15 Tue 20:34]
+    :LOGBOOK:
+    CLOCK: [2018-05-14 Mon 21:41]--[2018-05-14 Mon 22:21] =>  0:40
+    :END:
+
+It seems our builds started to time out around the transition to gcc
+6.4. Try and upgrade compilers to see if we resume the previous build
+times. Drop support for all older compilers.
+
+*** COMPLETED Recap of the current situation                          :story:
+    CLOSED: [2018-10-02 Tue 15:40]
+    :LOGBOOK:
+    CLOCK: [2018-05-15 Tue 20:03]--[2018-05-15 Tue 21:32] =>  1:29
+    :END:
+
+We have started a number of simultaneous refactors and now its very
+hard to understand where we are and where we are going. We need to go
+though the code and ascertain the state of the onion.
+
+Notes:
+
+- the external model refactoring seems to be complete.
+- the modeling model refactoring seems to have been tangled with the
+  formatters refactor. We have moved some but not all properties into
+  the modeling model but then we realised that some of them should
+  really be in the generation model. However, we then hit the usual
+  problem: how do we decorate element with the generation properties?
+  See the discussion in story "Create the =generation= model" for
+  details on why this is non-trivial. At that point we were left with
+  a series of not particularly ideal options:
+  - go forward and create a pair of element and generatable properties
+    and somehow fix all transforms. In a way this is what we had done
+    with the formatters, except that was after all of the transforms
+    had been applied.
+  - create the idea of "opaque properties" in the modeling model and
+    then unpack the opaque properties in the generation transforms.
+  - add the properties directly to the modeling model (to the element,
+    at least) but only populate them in the generation transforms.
+- the problem we are trying to solve seems to fall somewhere in
+  between the decorator pattern and the mixin pattern but its not
+  quite either.
+- this problem started because we wanted to make a clear separation
+  between modeling space and generation space; modeling space is not
+  aware of the archetype expansion. This makes sense to an extent: we
+  do not want to create dependencies between modeling space and
+  formatters (source of the cycles between components). However, we
+  also do not want to have to define all of the meta-model elements
+  again in order to attach the generatable properties.
+
+*** POSTPONED Create the =generation= model                           :story:
+    CLOSED: [2018-10-02 Tue 15:39]
+    :LOGBOOK:
+    CLOCK: [2018-05-14 Mon 20:32]--[2018-05-14 Mon 21:40] =>  1:48
+    CLOCK: [2018-01-04 Thu 13:33]--[2018-01-04 Thu 13:47] =>  0:14
+    CLOCK: [2018-01-04 Thu 13:48]--[2018-01-04 Thu 14:30] =>  0:42
+    CLOCK: [2018-01-05 Fri 10:41]--[2018-01-05 Fri 11:01] =>  0:46
+    CLOCK: [2018-01-05 Fri 11:31]--[2018-01-05 Fri 11:41] =>  0:10
+    CLOCK: [2018-01-05 Fri 13:28]--[2018-01-05 Fri 13:52] =>  0:24
+    CLOCK: [2018-01-05 Fri 13:53]--[2018-01-05 Fri 13:57] =>  0:04
+    CLOCK: [2018-01-05 Fri 15:04]--[2018-01-05 Fri 15:43] =>  0:39
+    CLOCK: [2018-01-05 Fri 15:44]--[2018-01-05 Fri 15:47] =>  0:03
+    CLOCK: [2018-01-05 Fri 15:48]--[2018-01-05 Fri 16:01] =>  0:13
+    :END:
+
+Create a new model called =generation= and move all code-generation
+related class to it.
+
+We need to create classes for element properties and make model have a
+collection that is a pair of element and element properties. We need a
+good name for this pair:
+
+- extended element
+- augmented element
+- decorated element: though not using the decorator pattern; also, we
+  already have decoration properties so this is confusing.
+
+Alternatively we could just call it =element= and make it contain a
+modeling element.
+
+Approach:
+
+- create a new generation model, copying across all of the meta-model
+  and transform classes from yarn. Get the model to transform from
+  endomodel to generation model.
+- augment formattables with the new element properties. Supply this
+  data via the context or assistant.
+
+Problems:
+
+- all of the transforms assume access to the modeling element means
+  access to the generation properties. However, with the introduction
+  of the generation element we now have a disconnect. For example, we
+  sometimes sort and bucket the elements, and then modify them; this
+  no longer works with generation elements because these are not
+  pointers. It would be easier to make the generation properties a
+  part of the element. This is an ongoing discussion we've had since
+  the days of formattables. However, in formattables we did write all
+  of the transforms to take into account the formattable contained
+  both the element and the formattable properties, whereas now we need
+  to update all transforms to fit this approach. This is a lot more
+  work. The quick hack is to slot in the properties directly into the
+  element as some kind of "opaque properties". We could create a base
+  class =opaque_properties= and then have a container of these in
+  element. However, to make it properly extensible, the only way is to
+  make it a unordered set of pointers.
+
+*** POSTPONED Reduce build times to avoid timeouts                    :story:
+    CLOSED: [2018-10-02 Tue 15:40]
+    :LOGBOOK:
+    CLOCK: [2018-06-18 Mon 10:12]--[2018-06-18 Mon 11:01] =>  0:49
+    :END:
+
+Refactoring at the moment is painful because every time we change
+CMakeFiles we end up rebuilding everything. At 2K plus ninja targets,
+it is a long wait. In addition, we have been getting really close to
+the maximum travis time, resulting in lots of manual fiddling to get
+things to work. However, there is one very easy win: split test models
+from production code. This is more than just a quick hack, really:
+
+- we are compiling the test models with every build at present, but
+  since they are not production code, we only really need to validate
+  them whenever they change. That is - for a given OS, compiler, etc -
+  once a test model compiles, links and its tests run, nothing else
+  needs to be said until the test model changes.
+- test models change very infrequently; only when we do a breaking
+  change on Dogen and we rebase.
+- test models by definition do not reference production code (or at
+  least, /should/ not).
+
+As a first step we should try to isolate the two builds (production,
+test models) via variables so that we can create separate
+travis/appveyor builds for them. In the future we should make the
+separation even more explicit, by moving the folder away from the
+production code.
+
+*Previous Understanding*
+
+At present we get random build time violations on travis due to builds
+taking longer than 50 mins. We need to think of ways to reduce the
+build time. Things to try:
+
+- remove all of the hashing etc for the types we don't need to hash.
+- get rid of the warnings for boost.
+
+** Deprecated
+*** CANCELLED Move some of the more verbose logging to trace          :story:
+    CLOSED: [2017-11-30 Thu 22:41]
+
+We have a category for finer debug logging (=TRACE=) but we are not
+making use of it. There is some rather verbose logging that could be
+moved to it. Go through all the logging and move some to =TRACE=.
+
+One strategy would be to put in the final object of each workflow as
+=DEBUG= (say the expanded model, etc) but the intermediate steps as
+=TRACE=. This mirrors the way we investigate the problem: we
+could check if each sub-system has done it's job correctly, and spot
+the one that didn't; we can then just enable that one sub-system's
+=TRACE= (when that is supported).
+
+We probably should only do this at the end, as we want to make sure
+that the code generator is usable with full logging on. Or perhaps set
+the default to =TRACE=. We should also add a command line option,
+perhaps really verbose or extra verbose.
+
+*** CANCELLED Create a "utility" model like formatters for frontends  :story:
+    CLOSED: [2017-11-30 Thu 22:42]
+
+We have a number of utilities that are common to several backends,
+similar to what happened to formatters. We should probably extract
+those into a common model. At present we have:
+
+- =identifier_parser=: in dia to sml but should also be used from JSON
+when we support full models.
+- "method identifier": this will be used by the merger to identify
+methods and to link them back to language specific methods. Not
+quite frontend, but not far.
+*** CANCELLED Remove new lines from all text to be logged             :story:
+    CLOSED: [2017-11-30 Thu 22:43]
+
+We should strive to write to the log one line per "record". This makes
+grepping etc much easier. We should create a method to convert new
+lines to a marker (say =<new_line>= or whatever we are already doing
+for JSON output). This should be applied to all cases where there is a
+potential to have new lines (comments, etc).
+
+*** CANCELLED Remove references to namespace when within namespace    :story:
+    CLOSED: [2017-11-30 Thu 22:44]
+
+Due to moving classes around, we seem to have lots of cases where code
+in a namespace (say =sml=) refers to types in that namespace with
+qualification (say =sml::qname=). We need to do a grep in each project
+to look for instances of a namespace and ensure they are valid.
+
+*** CANCELLED Use diagram files to setup test models in cmakefile     :story:
+    CLOSED: [2017-11-30 Thu 22:48]
+
+In the CMakeLists for the test models we are already looping through
+all the diagrams:
+
+: foreach(dia_model ${all_dia_test_models})
+
+We should take advantage of this to define =include_directories= and
+=add_subdirectory=. At present we are doing these manually.
+
+*** CANCELLED Setup containing module correctly in mock factory       :story:
+    CLOSED: [2017-11-30 Thu 22:49]
+
+We did not update the yarn mock model factory to populate the
+containing type. We also did not setup the members of the module.
+*** CANCELLED Make features optional at compile time                  :story:
+    CLOSED: [2017-11-30 Thu 22:50]
+
+#+begin_quote
+*Story*: As a dogen user, I want to ignore all facets in a model that
+I don't need so that I don't have to install unnecessary third-party
+dependencies.
+#+end_quote
+
+One scenario we haven't accounted for is for compile time
+optionality. For example, say we have several serialisation facets,
+all of them useful to a general model; however, individual users of
+that model may only be interested in one of the several
+alternatives. In these cases, users should be able to opt out from
+compiling some of the facets and only include those that they are
+interested in. This is different from the current optionality we
+support in that we allow the user to determine what to code
+generate. In this case, the mainline project wants to code generate
+all facets, but the users of the model may choose to compile only a
+subset of the facets.
+
+To implement this we need a trait - say =optional= - that when set
+results in a set of macros that get defined to protect the facet. The
+user can then pass in that macro to cmake to disable the facet. This
+is not the same as the "feature" macros we use for ODB and EOS. These
+are actually not Dogen macros, just hand-crafted macros we put in to
+allow users to compile Dogen without support for EOS and ODB.
+
+The macros should follow the standard notation of =MODEL.FACET= or
+perhaps =MODEL.FACET.FEATURE=, e.g. =cpp.boost_serialization= to make
+the whole of serialisation optional or
+=cpp.boost_serialization.main_header= to make the header optional. Not
+sure if the latter has any use.
+
+*** CANCELLED Move test model diagrams into main diagrams directory   :story:
+    CLOSED: [2017-11-30 Thu 22:52]
+
+For some reason - lost in the mists of time - we decided to split the
+test model diagrams from the main models; the first is in the =diagrams=
+directory, the latter is in the rather non-obvious location of
+=test_data/dia_sml/input/=. All source code goes into =projects=
+though, so this seems like a spurious split. Also, the test data
+directory should really only have data that we generate as part of
+testing (e.g. where there is a pairing of expected and actual) and
+the test model diagrams are not of this kind - we never output dia
+diagrams, at least at present.
+
+The right thing to do is to move them into the =diagrams=
+directory. This is not an easy undertaking because:
+
+- there is hard-coding in the test model sets pointing to these
+- the CMake scripts rely on the location of the diagrams to copy them
+  across
+
+We should create =production= and =test= sub-directories for
+diagrams. Or we could just create a sub-directory of test models like
+we did in projects.
+
+*** CANCELLED Forward declaration is not always correct for services  :story:
+    CLOSED: [2017-11-30 Thu 22:53]
+
+In cases where we used a service as a way of declaring a stand alone
+function (such as the traversals in yarn), the forward declarations do
+not match the header file at all. In this cases we should use
+=nongeneratable= rather than =service= stereotypes, and perhaps when
+that happens we should switch off forward declarations?
+
+In addition, in some cases we may want to use a =struct= rather than a
+=class=. At present we are always forward declaring as =class= but
+sometimes declaring as =struct=.
+
+*** CANCELLED Refactor node according to composite pattern in dia to sml :story:
+    CLOSED: [2017-11-30 Thu 22:54]
+
+This is not required if we decide to [[*Add%20composite%20stereotype][implement]] the composite
+pattern. We should just follow the composite pattern.
+
+*** CANCELLED Use dogen models to test dogen                          :story:
+    CLOSED: [2017-11-30 Thu 22:54]
+
+We should really use the dogen models in the dogen unit tests. The
+rationale is as follows:
+
+- if somebody changes a diagram but forgets to code generate, we want
+  the build to break;
+- if somebody changes the code generator but forgets to regenerate all
+  the dogen models and verify that the code generator still works, we
+  want the build to break.
+
+This will cause some inconvenience during development because it will
+mean that some tests will fail until a feature is finished (or that
+the developer will have to continuously rebase the dogen models), but
+the advantages are important.
+*** CANCELLED Adding new knit tests is hard                           :story:
+    CLOSED: [2017-12-01 Fri 11:41]
+
+In order to test models at the knit level one needs to first generate
+the dia input. This can be done as follows:
+
+: ./dogen_knitter --save-dia-model xml --stop-after-merging
+: -t ../../../../dogen/test_data/dia_sml/input/boost_model.dia
+
+From the bin directory. We need to make these steps a bit more
+obvious. Why do we even need this?
+
+*** CANCELLED Check if we've replaced =assert_object= with =assert_file= :story:
+    CLOSED: [2017-12-01 Fri 11:42]
+
+Assert file is now able to do intelligent comparisons based on the
+extension of the file. From a cursory look, all the usages we have of
+assert object can be replaced by assert file. If that's the case we
+can also remove this function.
+
+*** CANCELLED Replace old style for iterations in IO                  :story:
+    CLOSED: [2017-12-01 Fri 11:43]
+
+At present we are still doing C++-03 iterations in the STL IO files
+such as =vector_io=, =list_io=, etc. We should be using the new =for=
+syntax for C++-11.
+*** CANCELLED Consider folding quilt into yarn                        :story:
+    CLOSED: [2018-05-15 Tue 20:40]
+
+In the far distant future, when we finally finish merging all the
+quilt specific stuff into yarn (e.g. formattables), it actually makes
+sense to deprecate quilt as a concept. Yarn then becomes the central
+point, and frontends and backends are just implementations that hook
+into it. Thus we then have simply =yarn.cpp= and =yarn.csharp=.
+
+However, there is still a concept that needs to be captured: the
+kernel. That is, a set of backends that work together to provide some
+kind of "service". In quilt's case the basic type definitions. We
+could potentially want to implement other backends that are totally
+distinct from quilt. However, we still do not have a concrete use case
+for this. Thus it may make more sense to just fold now and worry about
+these more flexible use cases when they arrive. We can always rename.

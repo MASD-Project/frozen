@@ -1,0 +1,799 @@
+#+title: Sprint Backlog 94
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Continue adding C# support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-12-28 Wed 12:14]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *56:39* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 56:39   |       |       | 100.0 |
+| Active                                                                      |         | 56:39 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  1:09 |   2.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:31 |   0.9 |
+| COMPLETED Add helper infrastructure to C#                                   |         |       |  5:55 |  10.4 |
+| COMPLETED Add support for Equals in C#                                      |         |       |  1:24 |   2.5 |
+| COMPLETED Create a test model solution to validate C# code                  |         |       |  3:47 |   6.7 |
+| COMPLETED Add basic io support to C#                                        |         |       | 11:56 |  21.1 |
+| COMPLETED Add basic test data generation support to C#                      |         |       |  0:41 |   1.2 |
+| COMPLETED Add io and equality canned unit tests to C# model                 |         |       |  3:55 |   6.9 |
+| COMPLETED Update C# stitch templates to match code                          |         |       |  7:28 |  13.2 |
+| COMPLETED Move enumeration population to yarn                               |         |       |  0:43 |   1.3 |
+| COMPLETED Add support for types in packages in C#                           |         |       |  0:18 |   0.5 |
+| COMPLETED Add support for enumerations in C#                                |         |       |  1:48 |   3.2 |
+| COMPLETED Add support for exceptions in C#                                  |         |       |  0:14 |   0.4 |
+| COMPLETED Add support for associations in C#                                |         |       |  3:14 |   5.7 |
+| COMPLETED Add support for inheritance in C#                                 |         |       |  6:21 |  11.2 |
+| COMPLETED Consider changing inherited attributes to a list                  |         |       |  0:34 |   1.0 |
+| COMPLETED Add complete constructor for C# types                             |         |       |  1:44 |   3.1 |
+| COMPLETED Add immutability support for C# types                             |         |       |  0:13 |   0.4 |
+| POSTPONED Consider supporting multiple inheritance on non-proxy models      |         |       |  1:55 |   3.4 |
+| POSTPONED Add handcrafted class to C# test model                            |         |       |  0:03 |   0.1 |
+| POSTPONED Add container types to C# proxy models                            |         |       |  2:46 |   4.9 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-12-28 Wed 12:13]
+    CLOCK: [2016-12-23 Fri 11:06]--[2016-12-23 Fri 11:12] =>  0:06
+    CLOCK: [2016-12-19 Mon 20:11]--[2016-12-19 Mon 20:18] =>  0:07
+    CLOCK: [2016-12-15 Thu 14:11]--[2016-12-15 Thu 14:44] =>  0:33
+    CLOCK: [2016-12-12 Mon 15:07]--[2016-12-12 Mon 15:13] =>  0:06
+    CLOCK: [2016-12-12 Mon 13:15]--[2016-12-12 Mon 13:32] =>  0:17
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-12-12 Mon 13:41]
+    CLOCK: [2016-12-13 Tue 08:25]--[2016-12-13 Tue 08:40] =>  0:15
+    CLOCK: [2016-12-12 Mon 13:42]--[2016-12-12 Mon 13:50] =>  0:08
+    CLOCK: [2016-12-12 Mon 13:33]--[2016-12-12 Mon 13:41] =>  0:08
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.93.0, "Tombwa"
+
+#+begin_src markdown
+Overview
+=======
+The sprint's headline feature is the start of the C# kernel. It is only an experimental feature, but Dogen can already generate the basic infrastructure such as projects, solutions and simple classes. Only primitives are supported at present. For an example of a C# model see the test data sets:
+
+- input: [Dia](https://github.com/DomainDrivenConsulting/dogen/blob/master/test_data/yarn.dia/input/CSharpModel.dia), [JSON](https://github.com/DomainDrivenConsulting/dogen/blob/master/test_data/yarn.json/input/CSharpModel.json)
+- output: [CSharpModel](https://github.com/DomainDrivenConsulting/dogen/tree/master/projects/test_models/CSharpModel)
+
+Most of the work carried out this sprint was related to adding multiple kernels to Dogen, so it is not user visible. Similarly, most of the remaining work was related to the C# kernel.
+
+User visible changes
+===============
+
+- when outputting more than one kernel, Dogen now adds a kernel specific directory (e.g. ```cpp```. ```csharp```).
+- the ```--project-dir``` command line option has been renamed to ```--output-dir```
+- the ```hardware``` model has been split into language-specific "builtin" models
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_93.org).
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX and Linux:
+
+- [dogen_0.93.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.93.0/dogen_0.93.0_amd64-applications.deb)
+- [dogen-0.93.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.93.0/dogen-0.93.0-Darwin-x86_64.dmg)
+
+For other operative systems you need to build it from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/808591399855734784][Tweet]]
+
+*** COMPLETED Add travis support for bintray                          :story:
+    CLOSED: [2016-12-12 Mon 15:12]
+
+*Rationale*: as of sprint 93 we are now generating packages in bintray
+for OSX and Debian.
+
+There is a new web application that interfaces with GitHub:
+[[https://bintray.com/][bintray]].
+
+- add JSON validation to bintray deployment descriptor.
+
+Notes:
+
+- an account was created [[https://bintray.com/mcraveiro][linked to GitHub]].
+- it supports the uploads of [[https://bintray.com/mcraveiro/deb][debs]].
+- [[https://bintray.com/docs/usermanual/uploads/uploads_howdoiuploadmystufftobintray.html][How Do I Upload My Stuff to Bintray?]]
+- [[https://github.com/tim-janik/beast][Beast]] project [[https://raw.githubusercontent.com/tim-janik/beast/master/README.md][README]] with emblems
+- Beast [[https://github.com/tim-janik/beast/blob/master/.travis.yml][travis.yml]]
+- [[https://github.com/tim-janik/rapicorn/blob/master/citool.sh.][citool.sh]] script from [[https://github.com/tim-janik/rapicorn][Rapicorn]] project and their [[https://raw.githubusercontent.com/tim-janik/rapicorn/master/README.md][README]].
+
+At present we are getting the following error:
+
+: Skipping a deployment with the bintray provider because this branch is not permitted
+
+This was fixed. We are now getting the following errors:
+
+: Installing deploy dependencies
+: [Bintray Upload] Reading descriptor file: build/scripts/bintray.json
+: [Bintray Upload] Creating package 'auto-upload'...
+: [Bintray Upload] Bintray response: 400 Bad Request. License 'GPL3' does not exist
+: [Bintray Upload] Creating version '0.88.0'...
+: [Bintray Upload] Bintray response: 404 Not Found. Package 'auto-upload' was not found
+: [Bintray Upload] Warning: Path: build/output/Release/stage/pkg/*.deb does not exist.
+: [Bintray Upload] Publishing version '0.88.0' of package 'auto-upload'...
+: [Bintray Upload] Bintray response: 404 Not Found. Package 'auto-upload' was not found
+
+Actually now we can't even find the bintray file:
+
+: Installing deploy dependencies
+: [Bintray Upload] Reading descriptor file: build/output/gcc/Release/stage/pkg/bintray.json
+: /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/lib/dpl/provider/bintray.rb:54:in `read': No such file or directory @ rb_sysopen - build/output/gcc/Release/stage/pkg/bintray.json (Errno::ENOENT)
+:   from /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/lib/dpl/provider/bintray.rb:54:in `read_descriptor'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/lib/dpl/provider/bintray.rb:443:in `deploy'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/lib/dpl/cli.rb:32:in `run'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/lib/dpl/cli.rb:7:in `run'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/gems/dpl-1.8.21/bin/dpl:5:in `<top (required)>'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/bin/dpl:23:in `load'
+:   from /home/travis/.rvm/gems/ruby-2.2.5/bin/dpl:23:in `<main>'
+: failed to deploy
+
+Ok so now we can find the bintray file but the upload fails with a
+strange error:
+
+: [Bintray Upload] Reading descriptor file: /home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/bintray.json
+: [Bintray Upload] Warning: Path: /home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/dogen-0.91.0-Darwin-x86_64.dmg does not exist.
+: [Bintray Upload] Uploading file '/home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/dogen_0.91.0_amd64-applications.deb' to
+: [Bintray Upload] Bintray response: 400 Bad Request. Invalid file path and name
+: [Bintray Upload] Uploading file '/home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/dogen_0.91.0_amd64-headers.deb' to
+: [Bintray Upload] Bintray response: 400 Bad Request. Invalid file path and name
+: [Bintray Upload] Uploading file '/home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/dogen_0.91.0_amd64-libraries.deb' to
+: [Bintray Upload] Bintray response: 400 Bad Request. Invalid file path and name
+: [Bintray Upload] Uploading file '/home/travis/build/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/pkg/dogen_0.91.0_amd64-tests.deb' to
+: [Bintray Upload] Bintray response: 400 Bad Request. Invalid file path and name
+: [Bintray Upload] Publishing version '0.91.0' of package 'dogen'...
+: [Bintray Upload] Bintray response: 200 OK.
+
+Same on OSX:
+
+: [Bintray Upload] Uploading file '/Users/travis/build/DomainDrivenConsulting/dogen/build/output/clang/Release/stage/pkg/dogen-0.91.0-Darwin-x86_64.dmg' to
+: [Bintray Upload] Bintray response: 400 Bad Request. Invalid file path and name
+: [Bintray Upload] Publishing version '0.91.0' of package 'dogen'...
+: [Bintray Upload] Bintray response: 200 OK.
+
+Emailed bintray for help.
+
+*** COMPLETED Add helper infrastructure to C#                         :story:
+    CLOSED: [2016-12-13 Tue 12:47]
+    CLOCK: [2016-12-13 Tue 12:21]--[2016-12-13 Tue 12:45] =>  0:24
+    CLOCK: [2016-12-13 Tue 10:51]--[2016-12-13 Tue 11:42] =>  0:51
+    CLOCK: [2016-12-13 Tue 09:55]--[2016-12-13 Tue 10:50] =>  0:55
+    CLOCK: [2016-12-13 Tue 09:15]--[2016-12-13 Tue 09:54] =>  0:39
+    CLOCK: [2016-12-12 Mon 16:31]--[2016-12-12 Mon 17:06] =>  0:35
+    CLOCK: [2016-12-12 Mon 15:14]--[2016-12-12 Mon 16:30] =>  1:16
+    CLOCK: [2016-12-12 Mon 13:51]--[2016-12-12 Mon 15:06] =>  1:15
+
+It is now clear we will need helpers:
+
+- types: floating point comparison.
+- test data: for most proxy types.
+- io: for most proxy types.
+
+Add all of the required infrastructure to C# so we can make use of
+helpers in these facets.
+
+Notes:
+
+- problem: we are transforming only those types for which we have
+  formatters. This worked ok in C++ because we pretty much have
+  formatters for all types. However, in C# we've only hooked
+  =object=. This means we are filtering out all primitives, which then
+  means helpers cannot bind. This also illustrates that helper
+  families are really a yarn level concept - or at least should be
+  extracted from the model prior to transformation. It is also a bit
+  surprising that the transformer is performing some kind of
+  reduction.
+- we need to add "is enabled" to suppress number helpers for
+  non-floating point elements in types. We also need to split the wale
+  template for the helpers that need a different "is enabled".
+
+Families:
+
+- boolean
+- object
+- string
+- character
+- number
+
+Patch:
+
+#+begin_src
+@@ -323,7 +324,7 @@ void helper_expander::populate_helper_properties(
+          * We only want to process the master segment; the extensions
+          * can be ignored.
+          */
+-        auto& e(*formattable.element());
++        const auto& e(*formattable.element());
+#+end_src
+
+*** COMPLETED Add support for Equals in C#                            :story:
+    CLOSED: [2016-12-13 Tue 14:13]
+    CLOCK: [2016-12-13 Tue 14:01]--[2016-12-13 Tue 14:13] =>  0:12
+    CLOCK: [2016-12-13 Tue 13:40]--[2016-12-13 Tue 14:00] =>  0:20
+    CLOCK: [2016-12-13 Tue 13:20]--[2016-12-13 Tue 13:39] =>  0:19
+    CLOCK: [2016-12-13 Tue 12:47]--[2016-12-13 Tue 13:19] =>  0:32
+    CLOCK: [2016-12-13 Tue 12:46]--[2016-12-13 Tue 12:47] =>  0:01
+
+We need some basic support for Equals and GetHashCode.
+
+Links:
+
+- [[http://www.loganfranken.com/blog/687/overriding-equals-in-c-part-1/][Overriding Equals in C# (Part 1)]]
+- [[http://www.loganfranken.com/blog/692/overriding-equals-in-c-part-2/][Overriding Equals in C# (Part 2)]]
+- [[http://www.loganfranken.com/blog/698/overriding-equals-in-c-part-3/][Overriding Equals in C# (Part 3)]]
+
+Problems with GetHashCode:
+
+: Types/AllBuiltins.cs(109,38): error CS0176: Static member `object.ReferenceEquals(object, object)' cannot be accessed with an instance reference, qualify it with a type name instead
+: Types/AllBuiltins.cs(111,38): error CS0176: Static member `object.ReferenceEquals(object, object)' cannot be accessed with an instance reference, qualify it with a type name instead
+
+We need a way to know if a type has a static GetHashCode or not.
+
+We also need a way to compare floating point numbers. In both cases
+the easiest thing is to use helpers. See:
+
+- [[http://stackoverflow.com/questions/3874627/floating-point-comparison-functions-for-c-sharp][Floating point comparison functions for C#]]
+
+#+begin_src
+public bool NearlyEqual(double a, double b, double epsilon)
+{
+    double absA = Math.Abs(a);
+    double absB = Math.Abs(b);
+    double diff = Math.Abs(a - b);
+
+    if (a == b)
+    { // shortcut, handles infinities
+        return true;
+    }
+    else if (a == 0 || b == 0 || diff < Double.Epsilon)
+    {
+        // a or b is zero or both are extremely close to it
+        // relative error is less meaningful here
+        return diff < epsilon;
+    }
+    else
+    { // use relative error
+        return diff / (absA + absB) < epsilon;
+    }
+}
+#+end_src
+
+: NearlyEqual(FloatProperty, value.FloatProperty) &&
+: NearlyEqual(DoubleProperty, value.DoubleProperty) &&
+
+*** COMPLETED Create a test model solution to validate C# code        :story:
+    CLOSED: [2016-12-14 Wed 16:04]
+    CLOCK: [2016-12-14 Wed 15:05]--[2016-12-14 Wed 15:40] =>  0:35
+    CLOCK: [2016-12-14 Wed 12:35]--[2016-12-14 Wed 12:53] =>  0:18
+    CLOCK: [2016-12-14 Wed 11:23]--[2016-12-14 Wed 12:00] =>  0:37
+    CLOCK: [2016-12-14 Wed 10:30]--[2016-12-14 Wed 11:22] =>  0:52
+    CLOCK: [2016-12-14 Wed 10:25]--[2016-12-14 Wed 10:29] =>  0:04
+    CLOCK: [2016-12-14 Wed 10:19]--[2016-12-14 Wed 10:24] =>  0:05
+    CLOCK: [2016-12-14 Wed 09:02]--[2016-12-14 Wed 10:18] =>  1:16
+
+We need to first implement the main C# features in MonoDevelop, and
+then use that as a starting point for the templates.
+
+Nuget:
+
+: nuget restore Dogen.TestModels.sln
+
+Build:
+
+: xbuild Dogen.TestModels.sln
+
+Run tests:
+
+: mono packages/NUnit.ConsoleRunner.3.5.0/tools/nunit3-console.exe CSharpModel.Tests/bin/Debug/CSharpModel.Tests.dll
+
+We have a problem with this approach: when we build from msbuild we
+generate obj and bin directories; these then cause errors in the
+codegen tests. We solved this in the Travis build by doing the C#
+build at the end, but this is not ideal for local development.
+
+The requirements are:
+
+- we must be able to build from monodevelop without breaking code gen
+  tests;
+- we must be able to diff and rebase the monodevelop code.
+
+One way to achieve this is to delete these directories after we copy
+the data set across.
+
+*** COMPLETED Add basic io support to C#                              :story:
+    CLOSED: [2016-12-16 Fri 09:14]
+    CLOCK: [2016-12-15 Thu 18:10]--[2016-12-15 Thu 18:32] =>  0:22
+    CLOCK: [2016-12-15 Thu 14:45]--[2016-12-15 Thu 17:48] =>  3:03
+    CLOCK: [2016-12-15 Thu 13:42]--[2016-12-15 Thu 14:10] =>  1:02
+    CLOCK: [2016-12-15 Thu 10:05]--[2016-12-15 Thu 12:39] =>  2:34
+    CLOCK: [2016-12-15 Thu 08:45]--[2016-12-15 Thu 09:38] =>  0:53
+    CLOCK: [2016-12-14 Wed 16:05]--[2016-12-14 Wed 17:24] =>  1:19
+    CLOCK: [2016-12-13 Tue 15:53]--[2016-12-13 Tue 18:24] =>  2:31
+    CLOCK: [2016-12-13 Tue 15:15]--[2016-12-13 Tue 15:52] =>  0:37
+    CLOCK: [2016-12-13 Tue 14:14]--[2016-12-13 Tue 14:23] =>  0:09
+
+We need to implement the Dogen JSON debug output format in C#.
+
+- namespaces for dumpers on other models
+- use helper or dumper
+- is simple type or not
+- needs quotes or not
+- needs tidy-up or not
+
+Notes:
+
+- create a dumper registrar per model
+- add a static constructor that registers the dumper
+- at the meta-model level we need to be able to distinguish between
+  a) primitives that need quoting and those that do not b) proxy types
+  with helpers c) regular model types with dumpers d) regular model
+  types with dumpers and inheritance.
+
+Tasks:
+
+- Implement dumper registrar in MonoDevelop
+- dumpers do not have the correct postfix
+- change project to backslashes
+
+Links:
+
+- [[http://stackoverflow.com/questions/852181/c-printing-all-properties-of-an-object][C#: Printing all properties of an object]]
+- [[https://github.com/mcshaz/BlowTrial/blob/master/GenericToDataFile/ObjectDumper.cs][GenericToDataFile/ObjectDumper.cs]]
+
+Code:
+
+#+begin_src
+<#+
+            for (const auto attr : o.local_attributes()) {
+#>
+            sb.Append("\"<#= attr.name().simple() #>\": ");
+<#+
+                if (!attr.parsed_type().is_current_simple_type())
+#>
+            sb.Append(<#= attr.parsed_type().current().simple() #>Dumper.Dump(target.<#= attr.name().simple() #>));
+<#+
+                else
+#>
+            sb.Append("\"<#= attr.name().simple() #>\": ");
+<#+
+            }
+#>
+#+end_src
+
+*** COMPLETED Add basic test data generation support to C#            :story:
+    CLOSED: [2016-12-16 Fri 09:37]
+    CLOCK: [2016-12-16 Fri 08:55]--[2016-12-16 Fri 09:36] =>  0:41
+
+We need to create a facet that generates domain types. It should be
+idiomatic in C# - =IEnumerable=, etc.
+
+Links:
+
+- [[http://geekswithblogs.net/BlackRabbitCoder/archive/2010/04/21/more-fun-with-c-iterators-and-generators.aspx][More Fun with C# Iterators and Generators]]
+- [[https://gist.github.com/DForshner/5533088][NaiveFibonacciSequenceGenerator.cs]]
+- [[https://coding.abel.nu/2011/12/return-ienumerable-with-yield-return/][Return IEnumerable with yield return]]
+
+*** COMPLETED Add io and equality canned unit tests to C# model       :story:
+    CLOSED: [2016-12-16 Fri 15:39]
+    CLOCK: [2016-12-16 Fri 15:21]--[2016-12-16 Fri 15:38] =>  0:17
+    CLOCK: [2016-12-16 Fri 14:15]--[2016-12-16 Fri 15:20] =>  1:05
+    CLOCK: [2016-12-16 Fri 11:07]--[2016-12-16 Fri 12:13] =>  1:06
+    CLOCK: [2016-12-16 Fri 10:54]--[2016-12-16 Fri 11:07] =>  0:13
+    CLOCK: [2016-12-16 Fri 10:42]--[2016-12-16 Fri 10:53] =>  0:11
+    CLOCK: [2016-12-16 Fri 09:38]--[2016-12-16 Fri 10:41] =>  1:03
+
+We developed a number of C++ "canned tests" for all model elements. We
+need to port them across to C#.
+
+*** COMPLETED Update C# stitch templates to match code                :story:
+    CLOSED: [2016-12-19 Mon 10:49]
+    CLOCK: [2016-12-19 Mon 10:43]--[2016-12-19 Mon 10:49] =>  0:06
+    CLOCK: [2016-12-19 Mon 10:30]--[2016-12-19 Mon 10:42] =>  0:12
+    CLOCK: [2016-12-19 Mon 10:18]--[2016-12-19 Mon 10:29] =>  0:11
+    CLOCK: [2016-12-19 Mon 10:14]--[2016-12-19 Mon 10:17] =>  0:03
+    CLOCK: [2016-12-19 Mon 09:02]--[2016-12-19 Mon 10:13] =>  1:11
+    CLOCK: [2016-12-17 Sat 18:24]--[2016-12-17 Sat 18:42] =>  0:18
+    CLOCK: [2016-12-17 Sat 18:09]--[2016-12-17 Sat 18:23] =>  0:14
+    CLOCK: [2016-12-17 Sat 16:39]--[2016-12-17 Sat 16:58] =>  0:19
+    CLOCK: [2016-12-17 Sat 16:35]--[2016-12-17 Sat 16:38] =>  0:03
+    CLOCK: [2016-12-17 Sat 16:09]--[2016-12-17 Sat 16:34] =>  0:25
+    CLOCK: [2016-12-17 Sat 15:31]--[2016-12-17 Sat 16:08] =>  0:37
+    CLOCK: [2016-12-17 Sat 15:06]--[2016-12-17 Sat 15:30] =>  0:24
+    CLOCK: [2016-12-17 Sat 14:52]--[2016-12-17 Sat 15:05] =>  0:13
+    CLOCK: [2016-12-17 Sat 14:50]--[2016-12-17 Sat 14:51] =>  0:01
+    CLOCK: [2016-12-17 Sat 14:24]--[2016-12-17 Sat 14:46] =>  0:22
+    CLOCK: [2016-12-17 Sat 14:15]--[2016-12-17 Sat 14:23] =>  0:08
+    CLOCK: [2016-12-17 Sat 14:02]--[2016-12-17 Sat 14:14] =>  0:12
+    CLOCK: [2016-12-17 Sat 13:41]--[2016-12-17 Sat 14:01] =>  0:20
+    CLOCK: [2016-12-17 Sat 12:11]--[2016-12-17 Sat 12:19] =>  0:08
+    CLOCK: [2016-12-17 Sat 11:52]--[2016-12-17 Sat 12:10] =>  0:18
+    CLOCK: [2016-12-17 Sat 11:45]--[2016-12-17 Sat 11:51] =>  0:06
+    CLOCK: [2016-12-17 Sat 11:14]--[2016-12-17 Sat 11:44] =>  0:30
+    CLOCK: [2016-12-17 Sat 10:39]--[2016-12-17 Sat 11:13] =>  0:34
+    CLOCK: [2016-12-17 Sat 10:05]--[2016-12-17 Sat 10:38] =>  0:33
+
+Now we've finished adding sequence generators and io support with
+tests manually, we need to make the code generator match the
+handcrafted code.
+
+- qualified name support
+- camel case support
+- dumper does not have "Dumper" prefix
+- no properties still needs methods
+- helpers must end in "Dumper" since we're using that as the facet
+  postfix. Also, its very confusing to have helpers which are not
+  Dogen helpers. We need to rename them.
+
+*** COMPLETED Move enumeration population to yarn                     :story:
+    CLOSED: [2016-12-19 Mon 12:17]
+    CLOCK: [2016-12-19 Mon 11:34]--[2016-12-19 Mon 12:17] =>  0:43
+
+At present we are populating enumeration values, adding =invalid=
+enumerator, etc in each of the frontends. This is not ideal; we should
+only populate the basic information in the frontend and then expand it
+in yarn.
+
+*** COMPLETED Add support for types in packages in C#                 :story:
+    CLOSED: [2016-12-19 Mon 14:02]
+    CLOCK: [2016-12-19 Mon 13:47]--[2016-12-19 Mon 14:05] =>  0:18
+
+We need to add elements in our test model inside a package and ensure
+the generated code is correct.
+
+*** COMPLETED Add support for enumerations in C#                      :story:
+    CLOSED: [2016-12-19 Mon 13:49]
+    CLOCK: [2016-12-19 Mon 14:06]--[2016-12-19 Mon 14:09] =>  0:03
+    CLOCK: [2016-12-19 Mon 13:13]--[2016-12-19 Mon 13:46] =>  0:33
+    CLOCK: [2016-12-19 Mon 12:41]--[2016-12-19 Mon 13:12] =>  0:31
+    CLOCK: [2016-12-19 Mon 11:26]--[2016-12-19 Mon 11:33] =>  0:07
+    CLOCK: [2016-12-19 Mon 10:51]--[2016-12-19 Mon 11:25] =>  0:34
+
+Add all the machinery needed to generate enums in C#. We need to also
+add the flag for default enum:
+
+:         "is_default_enumeration_type": true,
+
+This is causing errors at the moment:
+
+: std::exception::what: Type not found: is_default_enumeration_type
+
+Which is weird since it exists in C++. Actually this is not a
+meta-data parameter, just a regular Json element.
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/sbbt4032.aspx][enum (C# Reference)]]
+
+*** COMPLETED Add support for exceptions in C#                        :story:
+    CLOSED: [2016-12-19 Mon 14:23]
+    CLOCK: [2016-12-19 Mon 14:10]--[2016-12-19 Mon 14:24] =>  0:14
+
+We don't need anything particularly elaborate, just a trivial
+exception inheriting from =System.Exception=.
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/ms173163.aspx][Creating and Throwing Exceptions (C# Programming Guide)]]
+
+*** COMPLETED Add support for associations in C#                      :story:
+    CLOSED: [2016-12-19 Mon 20:10]
+    CLOCK: [2016-12-19 Mon 20:04]--[2016-12-19 Mon 20:10] =>  0:06
+    CLOCK: [2016-12-19 Mon 19:40]--[2016-12-19 Mon 20:03] =>  0:23
+    CLOCK: [2016-12-19 Mon 18:08]--[2016-12-19 Mon 18:12] =>  0:04
+    CLOCK: [2016-12-19 Mon 18:02]--[2016-12-19 Mon 18:07] =>  0:05
+    CLOCK: [2016-12-19 Mon 17:45]--[2016-12-19 Mon 18:01] =>  0:16
+    CLOCK: [2016-12-19 Mon 17:01]--[2016-12-19 Mon 17:44] =>  0:43
+    CLOCK: [2016-12-19 Mon 16:28]--[2016-12-19 Mon 17:00] =>  0:32
+    CLOCK: [2016-12-19 Mon 16:01]--[2016-12-19 Mon 16:27] =>  0:26
+    CLOCK: [2016-12-19 Mon 14:44]--[2016-12-19 Mon 15:05] =>  0:21
+    CLOCK: [2016-12-19 Mon 14:25]--[2016-12-19 Mon 14:43] =>  0:18
+
+Add support for association with other model types.
+
+Problems:
+
+- the key problem is helpers: we do not have a formatter for
+  =Default=. The quick solution for this may just be to inject this
+  family against an empty list of helpers.
+- we have been using sequences for handling calls to add with member
+  separator. However, this won't work in the case of model types which
+  have a completely different API. We need to somehow have two
+  different values in the sequence, depending of the type or somehow
+  make the API consistent.
+
+*** COMPLETED Rename project directory path                           :story:
+    CLOSED: [2016-12-19 Mon 20:16]
+
+*Rationale*: this was completed on the previous sprint.
+
+The C++ options have an attribute called
+=project_directory_path=. This is a bit misleading; it is actually the
+top-level directory that will contain the project directory. In
+addition, this is not really C++ specific at all; it would apply to
+any kernel and sub-kernel. We should rename it and move it to output
+options.
+
+*** COMPLETED Add support for inheritance in C#                       :story:
+    CLOSED: [2016-12-23 Fri 11:05]
+    CLOCK: [2016-12-23 Fri 10:59]--[2016-12-23 Fri 11:05] =>  0:06
+    CLOCK: [2016-12-23 Fri 10:54]--[2016-12-23 Fri 10:58] =>  0:04
+    CLOCK: [2016-12-23 Fri 10:46]--[2016-12-23 Fri 10:53] =>  0:07
+    CLOCK: [2016-12-23 Fri 10:41]--[2016-12-23 Fri 10:45] =>  0:04
+    CLOCK: [2016-12-23 Fri 09:50]--[2016-12-23 Fri 10:40] =>  0:50
+    CLOCK: [2016-12-23 Fri 09:48]--[2016-12-23 Fri 09:49] =>  0:01
+    CLOCK: [2016-12-23 Fri 09:35]--[2016-12-23 Fri 09:48] =>  0:13
+    CLOCK: [2016-12-23 Fri 09:01]--[2016-12-23 Fri 09:34] =>  0:33
+    CLOCK: [2016-12-22 Thu 13:24]--[2016-12-22 Thu 13:46] =>  0:22
+    CLOCK: [2016-12-22 Thu 11:54]--[2016-12-22 Thu 12:00] =>  1:35
+    CLOCK: [2016-12-22 Thu 11:31]--[2016-12-22 Thu 11:53] =>  0:22
+    CLOCK: [2016-12-22 Thu 11:20]--[2016-12-22 Thu 11:30] =>  0:10
+    CLOCK: [2016-12-22 Thu 10:01]--[2016-12-22 Thu 10:40] =>  1:29
+    CLOCK: [2016-12-20 Tue 10:07]--[2016-12-20 Tue 10:21] =>  0:14
+    CLOCK: [2016-12-20 Tue 10:00]--[2016-12-20 Tue 10:06] =>  0:06
+    CLOCK: [2016-12-20 Tue 09:05]--[2016-12-20 Tue 09:59] =>  0:54
+    CLOCK: [2016-12-19 Mon 21:09]--[2016-12-19 Mon 21:55] =>  0:46
+    CLOCK: [2016-12-19 Mon 20:27]--[2016-12-19 Mon 21:08] =>  0:41
+    CLOCK: [2016-12-19 Mon 20:23]--[2016-12-19 Mon 20:26] =>  0:03
+
+We need to update the templates to cope with single-inheritance in
+C#.
+
+Problems:
+
+- child sequence generator is not calling parent's sequence generator
+- child equals is not calling parent's
+
+*** COMPLETED Consider changing inherited attributes to a list        :story:
+    CLOSED: [2016-12-23 Fri 13:33]
+    CLOCK: [2016-12-23 Fri 13:02]--[2016-12-23 Fri 13:20] =>  0:18
+    CLOCK: [2016-12-23 Fri 12:45]--[2016-12-23 Fri 13:01] =>  0:16
+
+*Rationale*: We need to keep it as is for now. See analysis below.
+
+In yarn's =Stateful= we have a map of parent name to attributes. But
+the entire code base assumes we can only have one parent for an
+object. Drop the map, and use a list.
+
+Actually this keeps track of the inheritance graph.
+
+Actually that's not quite right either. We do keep track of properties
+for our "direct" parent, and as such for objects there can only be one
+such parent. However, this is used in the =Stateful= concept which is
+also used by concepts themselves, and they do support multiple
+inheritance. Thus if we changed it to a list we'd break concepts. This
+requires quite a bit of thinking. A story for this is backlogged.
+
+*** COMPLETED Add complete constructor for C# types                   :story:
+    CLOSED: [2016-12-23 Fri 14:15]
+    CLOCK: [2016-12-23 Fri 13:46]--[2016-12-23 Fri 14:15] =>  0:29
+    CLOCK: [2016-12-23 Fri 13:21]--[2016-12-23 Fri 13:45] =>  0:24
+    CLOCK: [2016-12-23 Fri 11:24]--[2016-12-23 Fri 12:03] =>  0:39
+    CLOCK: [2016-12-23 Fri 11:21]--[2016-12-23 Fri 11:23] =>  0:02
+    CLOCK: [2016-12-23 Fri 11:13]--[2016-12-23 Fri 11:20] =>  0:07
+    CLOCK: [2016-12-19 Mon 20:19]--[2016-12-19 Mon 20:22] =>  0:03
+
+We need a constructor that takes in all properties.
+
+Actually we should take on this story after inheritance, because the
+implementation is affected by it.
+
+We also need a parameterless constructor for serialisation purposes.
+
+Links:
+
+- [[http://stackoverflow.com/questions/12561333/why-do-i-need-a-parameterless-constructor][Why do I need a parameterless constructor?]]
+- [[http://stackoverflow.com/questions/267724/why-xml-serializable-class-need-a-parameterless-constructor][Why XML-Serializable class need a parameterless constructor]]
+- [[http://stackoverflow.com/questions/12051/calling-the-base-constructor-in-c-sharp][Calling the base constructor in C#]]
+
+*** COMPLETED Add immutability support for C# types                   :story:
+    CLOSED: [2016-12-23 Fri 14:29]
+    CLOCK: [2016-12-23 Fri 14:16]--[2016-12-23 Fri 14:29] =>  0:13
+
+We need to implement immutability. This can only be done after
+complete constructor.
+
+*** CANCELLED Split =Stateful= concept with regards to inheritance    :story:
+    CLOSED: [2016-12-23 Fri 20:37]
+
+*Rationale*: we will need multiple inheritance in order to support C#.
+
+At present both concepts and objects use the =Stateful= concept in
+order to have attributes. The problem is with
+=inherited_attributes=. For objects we can only have
+single-inheritance, so this map of names to list of attributes
+introduces unnecessary complexity. However, for concepts we do support
+multiple inheritance and this is a key requirement.
+
+If we decide never to support multiple inheritance at the object
+level - which may be desirable, given we are yet to find a use case
+and also we now support C# which does not have multiple inheritance -
+then we should split this property into two, one for each. We should
+remove it from the concept. We could make use of the =Generalization=
+concept, etc.
+*** POSTPONED Consider supporting multiple inheritance on non-proxy models :story:
+    CLOSED: [2016-12-28 Wed 12:13]
+    CLOCK: [2016-12-23 Fri 20:15]--[2016-12-23 Fri 22:10] =>  1:55
+
+We need to be able to express relationships such as the ones used by
+C# containers. But first we need to build an inheritance graph of all
+relevant collections.
+
+Notes:
+
+- if we have leaves at all levels of an hierarchy, we may need to map
+  them to the base class. Actually, in practice, we only care about
+  leaves at the base class level.
+- we need to know which root parent we are visiting. So presumably the
+  question is: did we use root parent as a short-hand for visitation
+  root?
+- equals method is using root parent because apparently "service leafs
+  are not being processed atm". We should remove this check and add a
+  method to assistant that checks there is one root parent.
+
+*** POSTPONED Add handcrafted class to C# test model                  :story:
+    CLOSED: [2016-12-28 Wed 12:13]
+    CLOCK: [2016-12-23 Fri 14:30]--[2016-12-23 Fri 14:33] =>  0:03
+
+We should make sure handcrafted code works in C#.
+
+Actually in order to get handcrafted types to work we need support for
+enablement. This is a somewhat tricky feature so we should leave it
+for after all the main ones are done.
+
+*** POSTPONED Add container types to C# proxy models                  :story:
+    CLOSED: [2016-12-28 Wed 12:14]
+    CLOCK: [2016-12-23 Fri 15:58]--[2016-12-23 Fri 17:35] =>  1:37
+    CLOCK: [2016-12-23 Fri 15:54]--[2016-12-23 Fri 15:57] =>  0:03
+    CLOCK: [2016-12-23 Fri 15:30]--[2016-12-23 Fri 15:54] =>  0:24
+    CLOCK: [2016-12-23 Fri 14:33]--[2016-12-23 Fri 15:15] =>  0:42
+
+We should add all major container types and tests for them.
+
+: IEnumerable, IEnumerable<T>
+: ICollection, ICollection<T>
+: IList, IList<T>
+: IDictionary, IDictionary<K, V>
+: ArrayList, List<T>
+: Queue, ConcurrentQueue<T>, Stack, ConcurrentStack<T>, LinkedList<T>
+: Hashtable, SortedList classes
+: Dictionary<TKey, TValue>, SortedList<TKey, TValue>
+: ConcurrentDictionary<TKey, TValue>
+: KeyedCollection<TKey, TItem>
+
+Notes:
+
+- abstract types require knowing the leaves. We could use the existing
+  machinery to map them.
+- many c# types implement multiple interfaces; we need support for
+  multiple inheritance at the non-proxy model level.
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/0ytkdh4s(v%3Dvs.110).aspx][Commonly Used Collection Types]]
+
+**** Create an inheritance graph of the main collections
+
+System.Collections:
+
+: IEnumerable
+: ICollection: IEnumerable
+: IDictionary : ICollection, IEnumerable
+: IList : ICollection, IEnumerable
+: ArrayList : IList, ICollection, IEnumerable
+: BitArray : ICollection, IEnumerable
+: Hashtable : IDictionary, ICollection, IEnumerable
+: Queue : ICollection, IEnumerable, ICloneable
+: SortedList : IDictionary, ICollection, IEnumerable, ICloneable
+: Stack : ICollection, IEnumerable, ICloneable
+
+System.Collections.ObjectModel:
+
+: Collection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                 IEnumerable, IList, ICollection, IReadOnlyList<T>,
+:                 IReadOnlyCollection<T>
+: KeyedCollection<TKey, TItem> : Collection<TItem>
+
+System.Collections.Generic:
+
+: KeyValuePair<TKey, TValue> (structure)
+: IEnumerable<out T> : IEnumerable
+: ICollection<T> : IEnumerable<T>, IEnumerable
+: IList<T> : ICollection<T>, IEnumerable<T>, IEnumerable
+: IReadOnlyCollection<out T> : IEnumerable<T>, IEnumerable
+: IReadOnlyList<out T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+: IReadOnlyDictionary<K, V>: IReadOnlyDictionary<K, V> :
+:                            IReadOnlyCollection<KeyValuePair<K, V>>,
+:                            IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: ISet<T> : ICollection<T>, IEnumerable<T>, IEnumerable
+: HashSet<T> : ICollection<T>, IEnumerable<T>, IEnumerable,  ISet<T>,
+:              IReadOnlyCollection<T>
+: List<T> : IList<T>, ICollection<T>, IEnumerable<T>,  IEnumerable, IList,
+:           ICollection, IReadOnlyList<T>, IReadOnlyCollection<T>
+:           -> IList<T>, IReadOnlyList<T>
+: Queue<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
+: HashSet<T> : ICollection<T>, IEnumerable<T>, IEnumerable, ISet<T>,
+:              IReadOnlyCollection<T>
+: IDictionary<K, V> : ICollection<KeyValuePair<K, V>>,
+:                     IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: Dictionary<K, V> : IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                    IEnumerable<KeyValuePair<K, V>>, IEnumerable, IDictionary,
+:                    ICollection, IReadOnlyDictionary<K, V>,
+:                    IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedDictionary<K, V> : IDictionary<K, V>,
+:                          ICollection<KeyValuePair<K, V>>,
+:                          IEnumerable<KeyValuePair<K, V>>,
+:                          IEnumerable, IDictionary, ICollection,
+:                          IReadOnlyDictionary<K, V>,
+:                          IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedList<K, V> : IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                    IEnumerable<KeyValuePair<K, V>>, IEnumerable, IDictionary,
+:                    ICollection, IReadOnlyDictionary<K, V>,
+:                    IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedSet<T> : ISet<T>, ICollection<T>, IEnumerable<T>, IEnumerable,
+:                ICollection, IReadOnlyCollection<T>
+: KeyedByTypeCollection<TItem> : KeyedCollection<Type, TItem>
+: LinkedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, ICollection,
+:                 IReadOnlyCollection<T>
+: Stack<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
+: SynchronizedCollection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                             IEnumerable, IList, ICollection
+: SynchronizedKeyedCollection<K, T> : SynchronizedCollection<T>
+: SynchronizedReadOnlyCollection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                                     IEnumerable, IList, ICollection
+
+System.Collections.Immutable:
+
+: IImmutableList<T> : IReadOnlyList<T>,  IReadOnlyCollection<T>, IEnumerable<T>,
+:                     IEnumerable
+: ImmutableList<T>: IImmutableList<T>,  IList<T>, ICollection<T>, IList,
+:                   ICollection,, IReadOnlyList<T>,  IReadOnlyCollection<T>,
+:                   IEnumerable<T>, IEnumerable
+: IImmutableQueue<T> : IEnumerable<T>, IEnumerable
+: ImmutableQueue<T> : IImmutableQueue<T>, IEnumerable<T>,  IEnumerable
+: IImmutableStack<T> : IEnumerable<T>, IEnumerable
+: ImmutableStack<T> : IImmutableStack<T>, IEnumerable<T>,  IEnumerable
+: IImmutableDictionary<K, V> : IReadOnlyDictionary<K, V>,
+:                              IReadOnlyCollection<KeyValuePair<K, V>>,
+:                              IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: ImmutableDictionary<K, V> : IImmutableDictionary<K, V>,
+:                             IReadOnlyDictionary<K, V>,
+:                             IReadOnlyCollection<KeyValuePair<K, V>>,
+:                             IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                             IEnumerable<KeyValuePair<K, V>>, IDictionary
+:                             ICollection, IEnumerable
+: ImmutableSortedDictionary<K, V> : IImmutableDictionary<K, V>,
+:                                   IReadOnlyDictionary<K, V>,
+:                                   IReadOnlyCollection<KeyValuePair<K, V>>,
+:                                   IDictionary<K, V>,
+:                                   ICollection<KeyValuePair<K, V>>,
+:                                   IEnumerable<KeyValuePair<K, V>>,
+:                                   IDictionary, ICollection, IEnumerable
+: IImmutableSet<T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+: ImmutableSortedSet<T> : IImmutableSet<T>,  IReadOnlyList<T>,
+:                         IReadOnlyCollection<T>, IList<T>, ISet<T>,
+:                         ICollection<T>, IEnumerable<T>, IList, ICollection,
+:                          IEnumerable
+: ImmutableHashSet<T> : IImmutableSet<T>, IReadOnlyCollection<T>,
+:                       ISet<T>, ICollection<T>, IEnumerable<T>, ICollection,
+:                       IEnumerable
+
+System.Collections.Concurrent
+
+** Deprecated

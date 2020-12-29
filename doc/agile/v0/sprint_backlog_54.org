@@ -1,0 +1,143 @@
+#+title: Sprint Backlog 54
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+#+tags: { refactor(r) bug(b) feature(f) vision(v) }
+#+tags: { meta_data(m) tests(a) packaging(q) media(h) build(u) validation(x) diagrams(w) frontend(c) backend(g) }
+#+tags: dia(y) sml(l) cpp(k) config(o) formatters(d)
+
+* Stories
+
+This file contains all stories that were closed during sprint 54.
+
+The *Mission Statement* for this sprint is to continue to implement
+the backend model, finish hooking it up to the C++ model and implement
+at least one formatter in the C++ model.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-11-03 Mon 08:12]
+
+| Headline                                                            | Time   |      |      |
+|---------------------------------------------------------------------+--------+------+------|
+| *Total time*                                                        | *9:26* |      |      |
+|---------------------------------------------------------------------+--------+------+------|
+| Development Stories Implemented                                     |        | 9:26 |      |
+| COMPLETED Sprint and product backlog grooming                       |        |      | 0:24 |
+| COMPLETED Updates to the manual and readme files                    |        |      | 0:37 |
+| COMPLETED Remove map from backend interface                         |        |      | 0:09 |
+| COMPLETED Generate all backends in workflow                         |        |      | 0:14 |
+| COMPLETED Add registrar to =cpp= with class formatter support       |        |      | 1:13 |
+| COMPLETED Add formatter dispatcher to =cpp= model                   |        |      | 0:40 |
+| COMPLETED Models that share sub-package names fail to resolve types |        |      | 0:59 |
+| COMPLETED Add transformer to =cpp= workflow                         |        |      | 1:10 |
+| COMPLETED Change list of files to forward list                      |        |      | 2:03 |
+| COMPLETED Module generation type is invalid for library models      |        |      | 0:31 |
+| COMPLETED Fix broken gcc build                                      |        |      | 0:08 |
+| POSTPONED Add support for facet settings                            |        |      | 1:18 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-11-03 Mon 07:59]
+    CLOCK: [2014-11-03 Mon 07:51]--[2014-11-03 Mon 07:59] =>  0:08
+    CLOCK: [2014-10-29 Wed 23:01]--[2014-10-29 Wed 23:10] =>  0:09
+    CLOCK: [2014-10-21 Tue 22:55]--[2014-10-21 Tue 23:02] =>  0:07
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files             :task:media:
+    CLOSED: [2014-11-03 Mon 07:59]
+    CLOCK: [2014-11-01 Sat 21:40]--[2014-11-01 Sat 21:45] =>  0:05
+    CLOCK: [2014-11-01 Sat 08:36]--[2014-11-01 Sat 08:55] =>  0:19
+    CLOCK: [2014-10-22 Wed 22:55]--[2014-10-22 Wed 23:08] =>  0:13
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Remove map from backend interface               :task:refactor:
+    CLOSED: [2014-10-29 Wed 23:19]
+    CLOCK: [2014-10-29 Wed 23:10]--[2014-10-29 Wed 23:19] =>  0:09
+
+We still have a map in the backend interface for general settings even
+though we decided to simplify things and only allow a single general
+settings for a project. Update interface.
+
+*** COMPLETED Generate all backends in workflow                       :story:
+    CLOSED: [2014-10-29 Wed 23:34]
+    CLOCK: [2014-10-29 Wed 23:21]--[2014-10-29 Wed 23:34] =>  0:13
+    CLOCK: [2014-10-29 Wed 23:20]--[2014-10-29 Wed 23:21] =>  0:01
+
+Even though the backends don't actually do anything at the moment, we
+need to make sure we have an end-to-end pipeline.
+
+*** COMPLETED Add registrar to =cpp= with class formatter support     :story:
+    CLOSED: [2014-10-30 Thu 08:17]
+    CLOCK: [2014-10-30 Thu 07:30]--[2014-10-30 Thu 08:17] =>  0:47
+    CLOCK: [2014-10-29 Wed 23:34]--[2014-10-30 Thu 00:00] =>  0:26
+
+Add the basic skeleton of the registrar in =cpp= model with only
+support for class formatters.
+
+*** COMPLETED Add formatter dispatcher to =cpp= model                 :story:
+    CLOSED: [2014-10-30 Thu 18:46]
+    CLOCK: [2014-10-30 Thu 18:06]--[2014-10-30 Thu 18:46] =>  0:40
+
+Create a class to dispatch to the correct formatters and retrieve a
+list of files. Plug it to the workflow.
+
+*** COMPLETED Models that share sub-package names fail to resolve types :spike:bug:
+    CLOSED: [2014-10-30 Thu 23:01]
+    CLOCK: [2014-10-30 Thu 22:02]--[2014-10-30 Thu 23:01] =>  0:59
+
+The =cpp= model has a formatters package, which is also present in the
+formatters model (it is the model package). Due to this, we do not
+seem to be able to resolve types in the formatters model such as
+=general_settings=. We need to tweak resolution code to deal with this scenario.
+
+*** COMPLETED Add transformer to =cpp= workflow               :task:refactor:
+    CLOSED: [2014-10-31 Fri 19:05]
+    CLOCK: [2014-10-31 Fri 18:58]--[2014-10-31 Fri 19:04] =>  0:06
+    CLOCK: [2014-10-31 Fri 18:08]--[2014-10-31 Fri 18:56] =>  0:48
+    CLOCK: [2014-10-30 Thu 18:48]--[2014-10-30 Thu 19:04] =>  0:16
+
+We need to copy across the transformer into the C++ model in order to
+start working on formatter code.
+
+*** COMPLETED Change list of files to forward list            :task:refactor:
+    CLOSED: [2014-10-31 Fri 23:29]
+    CLOCK: [2014-10-31 Fri 23:25]--[2014-10-31 Fri 23:27] =>  0:02
+    CLOCK: [2014-10-31 Fri 21:23]--[2014-10-31 Fri 23:24] =>  2:01
+
+We are paying the cost of a full list for no reason. Use a forward
+list instead.
+
+*** COMPLETED Module generation type is invalid for library models :spike:bug:
+    CLOSED: [2014-11-01 Sat 00:00]
+    CLOCK: [2014-10-31 Fri 23:53]--[2014-11-01 Sat 00:00] =>  0:07
+    CLOCK: [2014-10-31 Fri 23:29]--[2014-10-31 Fri 23:53] =>  0:24
+
+We are relying on generation types to filter in the new workflow but
+it seems the library modules all have an invalid generation types.
+
+*** COMPLETED Fix broken gcc build                                :spike:bug:
+    CLOSED: [2014-11-01 Sat 09:03]
+    CLOCK: [2014-11-01 Sat 08:55]--[2014-11-01 Sat 09:03] =>  0:08
+
+Seems like we borked the gcc build with the formatter dispatcher.
+
+*** POSTPONED Add support for facet settings                          :story:
+    CLOSED: [2014-11-03 Mon 08:12]
+    CLOCK: [2014-11-01 Sat 22:29]--[2014-11-01 Sat 23:47] =>  1:18
+
+- create a "manager" or "initialiser" for each facet, responsible for
+  registering all the formatters and the default settings.
+- find all distinct facets supplied by formatters
+- create a facet settings factory, given a facet
+- apply factory to all facets in workflow
+- supply all settings to formatter dispatcher, including map of facet
+  settings by facet
+- build the settings bundle in dispatcher
+
+** Deprecated Development Stories
+
+Stories that do not make sense any longer.

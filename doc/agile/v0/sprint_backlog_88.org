@@ -1,0 +1,1446 @@
+#+title: Sprint Backlog 88
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- finish working on remaining formattables.
+- refactor quilt.cpp.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-09-26 Mon 09:47]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *91:16* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 91:16   |       |       | 100.0 |
+| Active                                                                      |         | 91:16 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  4:10 |   4.6 |
+| COMPLETED Fix chocolatey warning                                            |         |       |  0:08 |   0.1 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:27 |   0.5 |
+| COMPLETED Analysis on current state of file path generation                 |         |       |  0:57 |   1.0 |
+| CANCELLED Remove inclusion dependencies builder factory                     |         |       |  0:14 |   0.3 |
+| COMPLETED Analysis on formatters, elements and extensibility                |         |       |  1:18 |   1.4 |
+| COMPLETED Refactor =inclusion_dependencies_provider_interface=              |         |       |  1:12 |   1.3 |
+| COMPLETED Investigate broken windows builds                                 |         |       |  0:32 |   0.6 |
+| COMPLETED Refactor path derivatives factory for usage in formatters         |         |       |  5:14 |   5.7 |
+| COMPLETED Move file path generation to formatters                           |         |       |  1:58 |   2.2 |
+| CANCELLED Path derivatives factory generates all possible includes          |         |       |  3:07 |   3.4 |
+| COMPLETED Analysis on inclusion derivatives and path derivatives            |         |       |  1:04 |   1.2 |
+| COMPLETED Split path factory from provider factory                          |         |       |  2:32 |   2.8 |
+| COMPLETED Use providers when building inclusion directives                  |         |       | 12:01 |  13.2 |
+| COMPLETED Fix AppVeyor notifications                                        |         |       |  0:22 |   0.4 |
+| COMPLETED Static use of element types does more harm than good              |         |       |  0:32 |   0.6 |
+| COMPLETED Analysis: major rethink of the implementation of quilt            |         |       |  1:30 |   1.6 |
+| CANCELLED Create a simple Emacs mode for stitch                             |         |       |  1:12 |   1.3 |
+| COMPLETED Add facet folder and formatter enablement to formatter properties |         |       |  2:52 |   3.1 |
+| COMPLETED Move =cmakelists_info= to fabric                                  |         |       |  6:34 |   7.2 |
+| COMPLETED Move =odb_options_info= to fabric                                 |         |       |  1:29 |   1.6 |
+| COMPLETED Remove =formattable_origin_type=                                  |         |       |  0:17 |   0.3 |
+| COMPLETED Remove formattable origin type                                    |         |       |  2:25 |   2.6 |
+| COMPLETED Rename config model to options                                    |         |       |  1:07 |   1.2 |
+| COMPLETED Rename annotation to decoration in formatters model               |         |       |  0:30 |   0.5 |
+| COMPLETED Fix appveyor Visual Studio build                                  |         |       |  1:04 |   1.2 |
+| COMPLETED Big rename for "final" terminology clean up                       |         |       |  2:19 |   2.5 |
+| COMPLETED Tidy-up file configuration in formatters                          |         |       |  3:03 |   3.3 |
+| COMPLETED Stitch still uses "properties"                                    |         |       |  0:27 |   0.5 |
+| CANCELLED Add a stitch prefix to stitch fields                              |         |       |  0:03 |   0.1 |
+| COMPLETED Formatter properties are not optional in assistant                |         |       |  0:10 |   0.2 |
+| COMPLETED Consider removing the overwrite flag in =formatters::file=        |         |       |  0:22 |   0.4 |
+| COMPLETED Handle module generability in yarn                                |         |       |  0:20 |   0.4 |
+| COMPLETED Do a cursory investigation of dia plugin support                  |         |       |  0:49 |   0.9 |
+| COMPLETED Consider merging provider interface with file formatter           |         |       |  9:26 |  10.3 |
+| COMPLETED Add type index to name and to formatter interface                 |         |       |  5:41 |   6.2 |
+| COMPLETED Rename formattables properties to configuration                   |         |       |  1:04 |   1.2 |
+| COMPLETED Update quilt.cpp with pipeline classes                            |         |       |  0:44 |   0.8 |
+| COMPLETED Add transformer to quilt.cpp                                      |         |       |  1:28 |   1.6 |
+| COMPLETED Add enabler to quilt.cpp                                          |         |       |  5:59 |   6.6 |
+| COMPLETED Investigate using postgres to query JSON objects                  |         |       |  2:55 |   3.2 |
+| POSTPONED Add formattable element                                           |         |       |  0:21 |   0.4 |
+| POSTPONED Add includer to quilt.cpp                                         |         |       |  1:17 |   1.4 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-09-26 Mon 09:46]
+    CLOCK: [2016-09-25 Sun 10:08]--[2016-09-25 Sun 10:25] =>  0:17
+    CLOCK: [2016-09-21 Wed 22:00]--[2016-09-21 Wed 22:20] =>  0:20
+    CLOCK: [2016-09-21 Wed 08:01]--[2016-09-21 Wed 09:00] =>  0:59
+    CLOCK: [2016-09-17 Sat 19:43]--[2016-09-17 Sat 20:04] =>  0:21
+    CLOCK: [2016-09-15 Thu 08:48]--[2016-09-15 Thu 09:01] =>  0:13
+    CLOCK: [2016-09-13 Tue 20:09]--[2016-09-13 Tue 20:50] =>  0:41
+    CLOCK: [2016-09-12 Mon 21:57]--[2016-09-12 Mon 22:03] =>  0:06
+    CLOCK: [2016-09-12 Mon 12:23]--[2016-09-12 Mon 12:26] =>  0:03
+    CLOCK: [2016-09-12 Mon 10:40]--[2016-09-12 Mon 11:02] =>  0:22
+    CLOCK: [2016-09-12 Mon 09:28]--[2016-09-12 Mon 09:41] =>  0:13
+    CLOCK: [2016-09-12 Mon 09:10]--[2016-09-12 Mon 09:20] =>  0:10
+    CLOCK: [2016-09-12 Mon 08:15]--[2016-09-12 Mon 08:40] =>  0:25
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Fix chocolatey warning                                  :story:
+    CLOSED: [2016-09-12 Mon 09:28]
+    CLOCK: [2016-09-12 Mon 09:20]--[2016-09-12 Mon 09:28] =>  0:08
+
+We have a strange warning on our windows builds:
+
+: cinst cmake -version 3.4.3
+: Parsing -version resulted in exception:
+: Cannot bundle unregistered option '-e'.
+
+This doesn't appear to be fatal but its annoying.
+
+Its covered by this issue:
+
+[[https://github.com/chocolatey/choco/issues/842][#842: Parsing "-version" results in a warning message (instead of
+"--version")]]
+
+Fixed by using =--version=.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-09-12 Mon 08:55]
+    CLOCK: [2016-09-12 Mon 08:56]--[2016-09-12 Mon 09:09] =>  0:13
+    CLOCK: [2016-09-12 Mon 08:41]--[2016-09-12 Mon 08:55] =>  0:14
+
+We should really start adding some kind of text with the
+release. GitHub supports release notes so we should use them.
+
+Text:
+
+#+begin_src markdown
+Dogen v0.87.0, "Cambongue"
+==========================
+
+This release is still mainly focused on internal refactorings of both the yarn and quilt.cpp models, but added a couple of user visible features:
+
+- **Support for cross-model inheritance**: it is now possible to inherit types from referenced models. In addition, if the parent type was visitable, an "augmented" visitor is generated that takes into account the new derived types.
+- **Performance improvements**: due to the changes required for cross-model inheritance, the overall performance of the code generator has gone up a bit; finger in the air measurements reveal its taking 60-50% of the time to generate the dogen models.
+- **Visitor's accept methods have been moved to the cpp file**: in the past, adding a new descendant to a visitable parent resulted in large rebuilds because the parent included the visitor and the visitor had to change to accommodate the new descendant. Thus, all code that depended on the parent would get rebuilt. To avoid this, the accept methods have now been moved to the cpp file, resulting in smaller builds. We are also now using forward declarations in the visitor.
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_87.org).
+#+end_src
+
+*** COMPLETED Analysis on current state of file path generation       :story:
+    CLOSED: [2016-09-12 Mon 10:39]
+    CLOCK: [2016-09-12 Mon 09:42]--[2016-09-12 Mon 10:39] =>  0:57
+
+File path generation is closely related to the conceptual model of
+formatting.
+
+One of the problems we've had with CMakeLists is that they don't
+really follow the established structure. Up to now the conceptual
+model for formatters had the notion of facets; each facet could map to
+its own folder. All facets were thought of as conceptual entities at
+the same hierarchical level. However, this breaks down with
+CMakeLists:
+
+- we have one at the top of the project, containing the install
+  instructions for the include files; it may also include the ODB
+  targets.
+- we have another in =src=, with the details of the target.
+- we should probably also have a final one under =tests=, but we are
+  not generating it at present. Or perhaps the whole of tests is just
+  material for dart with simpler templates.
+
+A similar situation occurs with ODB and its =options.odb= file, placed
+under =src=.
+
+One possible update to the formatters conceptual model is this: a
+facet may be composed of facets and/or formatting functions. Projects
+all have a "root" facet called the "project facet". That is then made
+up of the "source" and "include" facets, which are then made up of the
+traditional facets (e.g. types, serialisation and so on). The problem
+with this approach is that, at present, source/include are orthogonal
+to the facets - i.e. a formatter belongs to say types, but it does not
+belong to =src=. We infer =src= from the fact that the formatter is a
+=cpp_header= or =cpp_implmentation= (which in itself is wrong).
+
+Another approach is to think of the formatting functions as living in
+a space (formatting function space), each with their own unique
+id. The id maps to a list of strings, which is the path to the
+formatting function in formatting function space. Lets call this the
+"formatter path". The formatter path must be unique. The formatter
+path is then mapped to a filesystem path when the formatting function
+is applied to an element from modeling space. Each formatter must know
+its formatter path, albeit they can rely on some top-level helpers
+since there are only two or three kinds of paths.
+
+One important consideration is that the formatter path is a function
+that takes in:
+
+- options (project, source and include directories);
+- model name: model modules, external modules.
+- facet directory.
+
+Actually this is not the right way to look at this. The formatter path
+should be static for all models since formatting functions live in
+formatting function space and these are not sensitive to the model the
+user is supplying. However, file paths are. Thus we just need to get
+the formatters to compute the file paths. We should obtain the path
+settings as we are doing now, but then supply them to the
+formatters. We should also compute the path derivatives for all
+elements in modeling space, not just c++ headers and implementation.
+
+To cater for the elements which do not map to a facet we should
+introduce the concept of the empty facet in the conceptual model.
+
+*** CANCELLED Remove inclusion dependencies builder factory           :story:
+    CLOSED: [2016-09-12 Mon 19:08]
+    CLOCK: [2016-09-12 Mon 18:54]--[2016-09-12 Mon 19:08] =>  0:14
+
+Its not entirely clear why we need a factory to instantiate a builder
+when the factory does very little other than forward arguments. Try
+removing it and see what breaks.
+
+Actually the reason why is that without a factory we'd have to pass in
+the builder by non-const ref since the builder needs to mutate its
+state in order to build. Added documentation for this.
+
+*** COMPLETED Analysis on formatters, elements and extensibility      :story:
+    CLOSED: [2016-09-12 Mon 21:47]
+    CLOCK: [2016-09-12 Mon 21:15]--[2016-09-12 Mon 21:47] =>  0:32
+    CLOCK: [2016-09-12 Mon 20:27]--[2016-09-12 Mon 20:32] =>  0:05
+    CLOCK: [2016-09-12 Mon 19:45]--[2016-09-12 Mon 20:26] =>  0:41
+
+At present if one adds a new formatter dynamically which formats a new
+(injected) modeling type, it will either be totally ignored by dogen
+or it will break (still to be proved which). This is because we use a
+container of formatters mapping to well defined modeling elements; we
+loop through those to format. The modeling elements must be defined on
+either yarn or quilt.cpp - not by the user.
+
+This approaches has advantages such as avoiding having to dispatch
+both the element and the formatter but it seems a bit of a problem
+that we cannot add formatters with new modeling types due to this.
+
+For this use case to work we would need to somehow be able to resolve
+the element type to a concrete type, and then be able to get all the
+formatters and include providers etc for that concrete element. We
+could start creating maps by [[http://en.cppreference.com/w/cpp/types/type_index][type index]] (see example below). All the
+consumer of derived elements would register themselves against that
+type id. When called, they can statically or dynamically cast the
+element to the expected type. Using formatters an example:
+
+- get rid of formatters container and have a simple list of
+  formatters.
+- at registration time, register against the derived element's type
+  id/index.
+- change model to have a map of type id to element instead of a list.
+- during formatting, for each element request all formatters for that
+  type id.
+
+Actually perhaps we should look at this slightly differently: the
+extensibility points are not around modeling elements but around
+formatters. The system is not designed to allow users to add new
+element types; this would mean, for example, that the computations
+around properties would have to also be extensbile and so
+forth. However, given a fixed set of modeling elements, users can
+freely add new formatters (belonging to new or existing facets). If we
+declare these to be the extensibility points, then we no longer have
+problems with hard-coding.
+
+Papers and assorted links read:
+
+- [[http://sebox.cs.iupui.edu/PDF/visitor-survey-2013.pdf][A Survey Report of Enhancements to the Visitor Software Design
+  Pattern]]
+- [[http://www.cs.loyola.edu/~binkley/722/src/visitors/doc/p270-visser.pdf][Visitor Combination and Traversal Control]]
+- [[http://www.stroustrup.com/multimethods.pdf][Open Multi-Methods for C++]]
+- [[http://codereview.stackexchange.com/questions/84176/proper-use-of-type-info-in-relation-to-mapping-components-to-a-type][Proper use of type_info in relation to mapping components to a type]]
+
+*** COMPLETED Refactor =inclusion_dependencies_provider_interface=    :story:
+    CLOSED: [2016-09-13 Tue 09:57]
+    CLOCK: [2016-09-13 Tue 08:45]--[2016-09-13 Tue 09:57] =>  1:12
+
+We need to generalise this interface to cope with path derivatives.
+
+Tasks:
+
+- rename to =provider_interface=
+- add containers for all elements, including injected ones.
+- add methods:
+  - =provide_inclusion_dependencies=
+  - =provide_path_derivatives=: actually lets add this when we
+    implement it.
+
+*** COMPLETED Investigate broken windows builds                       :story:
+    CLOSED: [2016-09-14 Wed 09:37]
+    CLOCK: [2016-09-14 Wed 09:21]--[2016-09-14 Wed 09:37] =>  0:16
+    CLOCK: [2016-09-14 Wed 08:05]--[2016-09-14 Wed 08:21] =>  0:16
+
+Opened issue with Conan [[https://github.com/conan-io/conan/issues/481][#481]]:
+
+#+begin_src markdown
+Hi guys,
+
+My dogen windows builds started failing since last night[1] with the following error:
+
+```
+echo "Downloading conan..."
+"Downloading conan..."
+wget http://downloads.conan.io/latest_windows -OutFile conan_installer.exe
+conan_installer.exe /VERYSILENT
+set PATH=%PATH%;C:\Program Files (x86)\Conan\conan
+conan --version
+Error loading Python DLL: C:\Program Files (x86)\Conan\conan\python27.dll (error code 14001)
+Command exited with code -1
+```
+
+Any ideas what could be causing this? I've done a couple just to check if its an environmental problem, to no avail. [2],[3]
+
+Cheers
+
+Marco
+
+[1] https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.361/job/yglufvdim4xa19bi for Debug and https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.361/job/wqukii4wcspel7cm for Release
+[2] https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.361/job/yglufvdim4xa19bi for Debug and https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.361/job/wqukii4wcspel7cm for Release
+[3] https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.363/job/m2a76xq0qe8qkvou for Debug and
+https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.363/job/m98mj8nl1sf26xg4 for Release
+#+end_src
+
+Solved with the workaround proposed by memsharded, documented in ticket.
+
+*** COMPLETED Refactor path derivatives factory for usage in formatters :story:
+    CLOSED: [2016-09-14 Wed 21:09]
+    CLOCK: [2016-09-14 Wed 10:54]--[2016-09-14 Wed 11:01] =>  0:07
+    CLOCK: [2016-09-14 Wed 10:40]--[2016-09-14 Wed 10:53] =>  0:13
+    CLOCK: [2016-09-14 Wed 10:31]--[2016-09-14 Wed 10:39] =>  0:08
+    CLOCK: [2016-09-14 Wed 10:15]--[2016-09-14 Wed 10:30] =>  0:15
+    CLOCK: [2016-09-14 Wed 09:51]--[2016-09-14 Wed 10:14] =>  0:23
+    CLOCK: [2016-09-14 Wed 09:38]--[2016-09-14 Wed 09:51] =>  0:13
+    CLOCK: [2016-09-14 Wed 08:40]--[2016-09-14 Wed 09:20] =>  0:40
+    CLOCK: [2016-09-13 Tue 12:00]--[2016-09-13 Tue 12:24] =>  0:24
+    CLOCK: [2016-09-13 Tue 11:38]--[2016-09-13 Tue 11:59] =>  0:21
+    CLOCK: [2016-09-13 Tue 11:26]--[2016-09-13 Tue 11:37] =>  0:11
+    CLOCK: [2016-09-13 Tue 11:06]--[2016-09-13 Tue 11:25] =>  0:19
+    CLOCK: [2016-09-13 Tue 10:36]--[2016-09-13 Tue 11:05] =>  0:29
+    CLOCK: [2016-09-13 Tue 09:58]--[2016-09-13 Tue 10:35] =>  0:37
+    CLOCK: [2016-09-12 Mon 18:35]--[2016-09-12 Mon 18:54] =>  0:19
+    CLOCK: [2016-09-12 Mon 11:26]--[2016-09-12 Mon 12:01] =>  0:35
+
+At present the path derivatives factory is designed to generate paths
+internally. In an ideal world, it should be used by the formatters to
+generate paths. Generate an API for this.
+
+Use cases:
+
+- c++ header file in include.
+- c++ implementation file in src.
+- cmakelists at project level.
+- cmakelists, odb options at src level.
+
+Kinds of paths:
+
+- elements in facets: relative facet path? facet path? common to src
+  and include.
+- include path: relative facet path plus external and model
+  modules. Include only.
+- full path: made up of the base (project directory and model module)
+  plus either nothing (project level items) or a directory (source or
+  include) plus the relative facet path or the include path.
+
+We could create the following methods:
+
+- make full path: takes in the relative path (either a relative facet
+  path or the include path), the directory (either empty, source or
+  include). Produces a full path.
+- make facet path: takes in a name, an extension and the path settings
+  and produces the facet path.
+- make include path: takes in a name, a file extension and the path
+  settings; calls make facet path and augments the result.
+- make cpp header: calls above functions to generate the path
+  derivatives for the c++ header. Takes in a name, formatter name.
+- make cpp implementation: calls above functions to generate the
+  path derivatives for the c++ implementation.
+- make project level item: cmakelists at project level.
+- make source level item: cmakelists at source level.
+
+We should consider caching parts of the path that are const for all
+elements.
+
+Tasks:
+
+- refactor factory to use the API defined above for the current use
+  cases.
+
+*** COMPLETED Move file path generation to formatters                 :story:
+    CLOSED: [2016-09-14 Wed 21:09]
+    CLOCK: [2016-09-13 Tue 22:18]--[2016-09-13 Tue 22:27] =>  0:09
+    CLOCK: [2016-09-13 Tue 21:57]--[2016-09-13 Tue 22:17] =>  0:20
+    CLOCK: [2016-09-13 Tue 20:51]--[2016-09-13 Tue 21:56] =>  1:05
+    CLOCK: [2016-09-12 Mon 12:02]--[2016-09-12 Mon 12:22] =>  0:20
+    CLOCK: [2016-09-12 Mon 11:21]--[2016-09-12 Mon 11:25] =>  0:04
+
+Tasks:
+
+- create a helper class that knows how to generate paths for headers,
+  implementation etc.
+- add a method in the formatter interface that takes in the options,
+  path settings, model name, element name and generates the path
+  derivatives for the formatter.
+- update the path derivatives repository factory to take in the
+  formatters' container. When making, create a container with a pair
+  of formatter and path settings. Then, for each element, loop through
+  the pairs; call the formatter with the element name and path
+  settings to generate the path derivatives. Continue the anti-pattern
+  of generating a path derivatives set that is the cross-product of
+  all elements and formatters even though we know this is not right
+  (backlogged as "Path derivatives factory generates all possible
+  includes").
+- remove visitation in path derivatives repository factory.
+- remove =file_types=.
+
+Merged stories:
+
+*File extension is hard-coded against file type*
+
+At present we are choosing the C++ extension based on the file type:
+
+:    if (ps.file_type() == formatters::file_types::cpp_header)
+:       stream << dot << ps.header_file_extension();
+:    else if (ps.file_type() == formatters::file_types::cpp_implementation)
+:        stream << dot << ps.implementation_file_extension();
+
+It would make more sense to have a formatter group - e.g. header or
+implementation - and to associate the extension with the group.
+
+*** CANCELLED Path derivatives factory generates all possible includes :story:
+    CLOSED: [2016-09-14 Wed 21:09]
+    CLOCK: [2016-09-14 Wed 20:11]--[2016-09-14 Wed 21:09] =>  0:58
+    CLOCK: [2016-09-14 Wed 11:02]--[2016-09-14 Wed 12:27] =>  1:25
+    CLOCK: [2016-09-12 Mon 21:48]--[2016-09-12 Mon 21:56] =>  0:08
+    CLOCK: [2016-09-12 Mon 19:09]--[2016-09-12 Mon 19:45] =>  0:36
+
+At present we are generating all possible includes for all
+formatters. The problem is that we do not have a way to map a yarn type
+to a set of  C++ formatters, so to make our life easier we simply
+generate them all. This has another (lucky) side-effect: when we are
+doing the includes, we do not know what formatter the qname belongs to
+so we just default to the class header formatter. As it happens this
+is not a problem (as explained [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_68.org#inclusion-relies-on-knowing-sml-to-cpp-mapping][here]]).
+
+We need a proper solution for this:
+
+- only generate includes for the formatters that need them;
+- find a way to look for the right formatter given a qname.
+
+This last bit requires a bit of thinking. From a certain angle, we
+don't particularly care about formatters - we are simply asking for
+"the types header for this type" or the "serialisation header for this
+type". It seems we need a higher level concept that formatters can
+belong to (similar to the formatter groups). This concept should allow
+one and only one formatter to exist for a given qname - we can't have
+both an enumeration header and a class header.
+
+Actually the solution for this is quite simple:
+
+- start by mapping elements to facets and formatters: for a given id
+  and a given facet, there is a formatter responsible for providing
+  the header file. This could be done in the builder factory at
+  construction. The map must have a pair of (header, forward
+  declaration).
+- change builder to take in a facet name rather than a formatter name
+  and a flag to indicate whether to use forward declarations or
+  not. For each addition, resolve the formatter name and then use the
+  formatter name to resolve the path settings (or alternatively map
+  them all at the start).
+
+This is not ideal because sometimes we do want to supply a specific
+formatter (forward declarations, visitor). What we need is some kind
+of resolver, used where necessary. For a given facet and element id,
+it returns its main header.
+
+This could be achieved in exactly the same fashion as we did for
+includes: we register types against a parameterised interface, which
+is implemented by the formatter. We could even rename
+=inclusion_dependencies_provider_interface= to just
+=provider_interface= and then have two methods:
+
+- =provide_inclusion_dependencies=
+- =provide_path_derivatives=
+
+This would fit in nicely with the refactor where providers are
+statically registered against the workflow.
+
+Tasks:
+
+- add "supports inclusion" and "is default element facet
+  inclusion". Names to be (greatly) improved upon.
+- in inclusion directories repository factory, for each element,
+  compute the list of relevant formatters and the map of default
+  formatters for facet and element type (i.e. given a formatter name,
+  if it is the default for a facet, returns the facet name). The list
+  is computed by going to the formatter container for the element in
+  question.
+- supply the list to directives settings. Ignore all formatters that
+  are not relevant.
+- in inclusion directories factory, if a formatter is the default
+  formatter, inject a new entry into the directives map against the
+  facet.
+- on all formatters where we do not know the specific formatter name,
+  use the facet name.
+
+Use cases:
+
+- system types do not need anything because in most cases we just need
+  the inclusion directive and this has been overridden in settings.
+- reference models need only the include directive. However we are
+  also computing the file path and header guard.
+- target model types need all three.
+
+*** COMPLETED Analysis on inclusion derivatives and path derivatives  :story:
+    CLOSED: [2016-09-15 Thu 08:48]
+    CLOCK: [2016-09-15 Thu 08:38]--[2016-09-15 Thu 08:47] =>  0:09
+    CLOCK: [2016-09-15 Thu 08:23]--[2016-09-15 Thu 08:38] =>  0:15
+    CLOCK: [2016-09-14 Wed 21:09]--[2016-09-14 Wed 21:49] =>  0:40
+
+Originally we did an artificial separation between path derivatives
+and inclusion directives. The idea was that we'd calculate up front
+all of the path derivatives:
+
+- full path
+- header guard
+- inclusion directive
+
+As these were all related to the file path (in this general view of
+the world). We would then, separately, have heuristics to compute the
+_actual_ include directive. This would have to take into account a few
+more factors:
+
+- not all types have include directives for all facets; some haven't
+  got them at all, some have them for some facets.
+- some types need to override their includes for certain/all facets.
+
+However, this causes some problems:
+
+- we are computing the path derivatives for all model elements,
+  including referenced models and system models. This makes no sense.
+- we are generating path derivatives for the cross-product between
+  elements and formatters, when in reality only a small subset of this
+  cross-product needs it.
+- for referenced models, we do not always need to compute the
+  inclusion directive, since it could have been overridden.
+
+Ideas:
+
+- merge the work of path derivatives and inclusion directives into a
+  single class. Its not easy to name the class. It will continue to
+  capture the path derivatives and inclusion directives in separate
+  repositories, but it will populate them both at the same time. This
+  means we don't have to generate "fake" path derivatives for types
+  that just need an inclusion directive. For this we will have to
+  extend the provider with a method to provide just the include path.
+- this means we can drop the include directive from path derivatives.
+- we need to compute up front the list of the formatters per element
+  type which can contribute to inclusion directives. We then need to
+  setup the settings factory to only look at fields from those
+  formatters.
+- we need to add a default inclusion which is the facet name to the
+  inclusion directives map, against each name.
+- formatter properties should just iterate through the generatable
+  types and pick up their properties. We are generating a lot more
+  formatter properties than needed at the moment.
+
+Final thoughts on this: the above is still to complicated. Instead:
+
+- lets remove inclusion path from path derivatives and perform it
+  directly in inclusion directives. This means regenerating the path
+  and having to supply providers and so on.
+- add flags to formatters interface and group them by flags. This is
+  only required for inclusion directives.
+
+*** COMPLETED Consider creating a "locator" like class for path management :story:
+    CLOSED: [2016-09-15 Thu 09:37]
+
+*Rationale*: done as part of the path directives refactor.
+
+At present we are using path settings to compute paths in several
+places. Most of these exist because of hacks but it still seems that
+it needs to be done in more than one place. We should consider
+something like we had in =sml_to_cpp::locator= that is initialised
+with the path settings and can then be used to create paths.
+
+*** COMPLETED Split path factory from provider factory                :story:
+    CLOSED: [2016-09-15 Thu 11:36]
+    CLOCK: [2016-09-15 Thu 11:35]--[2016-09-15 Thu 11:36] =>  0:01
+    CLOCK: [2016-09-15 Thu 10:12]--[2016-09-15 Thu 11:34] =>  1:22
+    CLOCK: [2016-09-15 Thu 10:00]--[2016-09-15 Thu 10:11] =>  0:11
+    CLOCK: [2016-09-15 Thu 09:01]--[2016-09-15 Thu 09:59] =>  0:58
+
+Tasks:
+
+- create a path factory class that takes on all the responsibilities
+  related to paths from path derivatives factory - basically all
+  methods except header guard generation. Call this class locator to
+  avoid confusion (too many classes with "path" in the name).
+- generate the factory in the properties workflow and supply it to the
+  repository factory.
+- update provider interface to use factory.
+- Remove path derivatives factory and implement the remaining logic
+  directly in the repository factory, including header guard
+  generation.
+
+*** COMPLETED Use providers when building inclusion directives        :story:
+    CLOSED: [2016-09-17 Sat 00:38]
+    CLOCK: [2016-09-17 Sat 00:24]--[2016-09-17 Sat 00:38] =>  0:14
+    CLOCK: [2016-09-17 Sat 00:20]--[2016-09-17 Sat 00:23] =>  0:03
+    CLOCK: [2016-09-17 Sat 00:00]--[2016-09-17 Sat 00:19] =>  0:19
+    CLOCK: [2016-09-16 Fri 21:50]--[2016-09-16 Fri 23:59] =>  2:09
+    CLOCK: [2016-09-16 Fri 21:15]--[2016-09-16 Fri 21:49] =>  0:34
+    CLOCK: [2016-09-16 Fri 09:01]--[2016-09-16 Fri 10:11] =>  1:10
+    CLOCK: [2016-09-15 Thu 21:12]--[2016-09-15 Thu 23:12] =>  2:00
+    CLOCK: [2016-09-15 Thu 13:20]--[2016-09-15 Thu 17:01] =>  3:41
+    CLOCK: [2016-09-15 Thu 13:32]--[2016-09-15 Thu 14:59] =>  1:27
+    CLOCK: [2016-09-15 Thu 11:36]--[2016-09-15 Thu 12:00] =>  0:24
+
+Its difficult to do incremental changes here. The inclusion directives
+factory needs to:
+
+- receive an element and find all of the associated providers;
+- for each provider, obtain their directives settings; this means we
+  need to change the directive settings factory to return settings for
+  a given formatter. We should also read the top-level requires
+  inclusion separately from the formatters.
+- perform the directives settings heuristic. If nothing comes out (and
+  directives are required) then compute the inclusion path and
+  generate the inclusion directive from it.
+- if the provider is default, also add the facet against this
+  directive.
+
+Once we do this, all includes will break. We then need to go through
+all formatters and set the includes to the facets as required.
+
+Tasks:
+
+- supply providers to inclusion directives repository factory instead
+  of path derivatives;
+- compute the inclusion directive on the fly.
+- remove inclusion directive from path settings.
+- remove inclusion directive factory; perform all the work in the
+  repository factory.
+
+Quick fix for the enablement problem: slot in the facet name in the
+enablement map. This can be addressed later properly.
+
+*** COMPLETED Fix AppVeyor notifications                              :story:
+    CLOSED: [2016-09-17 Sat 01:01]
+    CLOCK: [2016-09-17 Sat 00:39]--[2016-09-17 Sat 01:01] =>  0:22
+
+At present the AppVeyor support is not quite right:
+
+- we don't see new builds in gitter;
+- we don't get a "green tick" in Github for AppVeyor builds.
+
+Sort these issues out.
+
+*** COMPLETED Static use of element types does more harm than good    :story:
+    CLOSED: [2016-09-17 Sat 19:20]
+    CLOCK: [2016-09-16 Fri 11:51]--[2016-09-16 Fri 12:05] =>  0:14
+    CLOCK: [2016-09-16 Fri 11:31]--[2016-09-16 Fri 11:45] =>  0:14
+    CLOCK: [2016-09-16 Fri 10:20]--[2016-09-16 Fri 10:24] =>  0:04
+
+This story is very similar to [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_88.org#analysis-on-formatters-elements-and-extensibility][Analysis on formatters, elements and
+extensibility]], but from a slightly different angle.
+
+As an experiment, we tried to keep the formatter interfaces specific
+to the element they support. The idea was to "keep invalid states
+unrepresentable". However, if we think of this in terms of engineering
+trade-offs, the positives are:
+
+- its not possible to call a formatter with a type they do not
+  support
+- its not possible to call all formatters against all types, which
+  would result in lots of calls to formatters only to say "not one of
+  mine".
+- we don't need to use dynamic cast to resolve types.
+
+The downsides are:
+
+- We are writing a lot more code. For each element we now need a
+  separate formatter interface, an entry in the formatters' container,
+  an entry in the providers' container and methods in both
+  registrars. This needs to be done every time we add a new element on
+  yarn or fabric. Forgetting to do it in one of these places results
+  in mysterious errors due to failed look-ups. These are time
+  consuming to debug.
+- the code is non-obvious and requires the use of templates on the
+  visitors.
+- providers and formatters can map to different elements by mistake;
+  this is not easy to figure out.
+- we cannot extend the elements dynamically (we considered this to be
+  an invalid extensibility point). However, it seems the code would
+  cope with new elements and their formatters if it wasn't for the
+  static use of element types. We have no use case for this at
+  present, but it seems like an arbitrary limitation to have.
+
+In conclusion: we should remove the static approach and use a dynamic
+approach.
+
+Notes:
+
+- at present we need to inject a "pseudo" formatter for primitives
+  just so we can inject a provider. If we don't do this then we will
+  not generate inclusion directives for the primitives. This is a
+  problem for when we are including =std::int_8= etc. The key point
+  here is that we can only have include directives if there is a
+  formatter and a provider for an element type. This is not true in
+  the case of primitives. So we do not want to (always) drive the
+  directives generation from the providers.
+
+*** COMPLETED Analysis: major rethink of the implementation of quilt  :story:
+    CLOSED: [2016-09-17 Sat 19:58]
+    CLOCK: [2016-09-17 Sat 18:10]--[2016-09-17 Sat 19:40] =>  1:30
+
+As part of the smaller refactors of quilt, it became clear the entire
+approach is wrong. With yarn we have a very clear pipeline and it is
+trivial to figure out where things have gone wrong; once we have
+located the point in the pipeline we just need to look at the state of
+the objects in the log. With quilt this is not the case. The main
+problem is that we tried to build the components separately and then
+assemble them, but this resulted in a lot more code and a
+fragmentation of responsibilities. It is now quite impossible to
+figure out if a problem is due to a mistake in enablement, or path
+generation, or inclusion dependencies generation and so forth. We need
+to follow an approach similar to yarn, with a clear pipeline made up
+of self-contained classes. We also need to model the notion of a
+formatting model containing formatting entities; conceptually we start
+off with a model in modeling space, which we expand to its
+representation in formatting space. There is no representation of this
+idea in code.
+
+So we need to first organise the domain objects of formatting:
+
+- rename properties back to formattables. We still need to have this
+  arbitrary namespace because we want to split the formatters from the
+  domain entities of the formatting space.
+- define a formattable class made up of: pointer to formatter, pointer
+  to element, configuration. This should really be called
+  =formattable::element= as it is an element in formatting space; but
+  to avoid confusion with =yarn::element= we will call it
+  =formattable=.
+- create the notion of a formattable element id: this is a string made
+  up of the element id plus formatter id. It uniquely identifies
+  formattable elements in formatting space.
+- create a =formattables::model= made up of a map of id to
+  =formattable=.
+- all of the existing properties classes are renamed to configuration
+  classes. They provide the formatting configuration.
+- the objective of the formattables workflow is to codify the
+  formattables pipeline, which is responsible for generating a
+  =formattables::model= - that is, the representation of the model in
+  formatting space.
+
+The formatting pipeline is implemented via "generators", which are
+symmetric to yarn's expanders. We do not call them expanders to
+distinguish them. These are:
+
+- transformer: takes in a =yarn::model= and generates a
+  =formattables::model=. The model will include target and non-target
+  types.
+- includer: responsible for computing the inclusion dependencies.
+- filter: removes the non-target formattables.
+- enabler: generates the enablement configuration.
+- path generator: generates the full paths.
+- guard generator: generates the header guards.
+- aspect generator: generates the aspect configuration.
+- helper generator: generates the helper configuration.
+
+This will have to be reordered depending on their requirements for the
+pipeline (for example path generation and guard generation must be
+done after we filter and so on).
+
+The formatting workflow will then be nothing more than going through
+the =formattables::model= and calling the formatter on the element and
+configuration.
+
+*** CANCELLED Create a simple Emacs mode for stitch                   :story:
+    CLOSED: [2016-09-18 Sun 12:33]
+    CLOCK: [2016-09-18 Sun 11:21]--[2016-09-18 Sun 12:33] =>  1:12
+
+Create a really simple emacs mode that just has different visual
+representations for the stitch code and the template itself.
+
+Tried with generic mode:
+
+ #+begin_src emacs-lisp
+(require 'generic-x) ;; we need this
+
+(define-generic-mode 'stitch-mode
+  () ;; comments not supported
+  '("licence_name" "copyright_notice" "modeline_group_name"
+    "stream_variable_name" "inclusion_dependency"
+    "containing_namespaces") ;; keywords
+  '(("<#@" "<#+" "<#=" "#>" . 'font-lock-operator)) ;; operator
+  '("\\.stitch$") ;; extension
+  nil
+  "Major mode for editing Dogen's Stitch template files."
+  )
+
+;;; stitch-mode.el ends here
+#+end_src
+
+Merged stories:
+
+*Consider creating an Emacs mode for stitch*
+
+It would be nice to have syntax highlighting for stitch templates. We
+have a [[https://github.com/mcraveiro/cunene/blob/master/lisp/other/utils/t4-mode.el][mumamo-based version]] in cunene - originally done for t4 - but
+which is rather unusable.
+
+See also [[https://github.com/fxbois/web-mode][web-mode]].
+
+*Investigate adding polymode support for stitch templates*
+
+We need a way to visualise stitch templates that is a bit more
+readable than fundamental mode. One option is [[https://github.com/vspinu/polymode/tree/master/modes][polymode]].
+
+*** COMPLETED Add facet folder and formatter enablement to formatter properties :story:
+    CLOSED: [2016-09-19 Mon 12:23]
+    CLOCK: [2016-09-19 Mon 10:33]--[2016-09-19 Mon 12:23] =>  1:50
+    CLOCK: [2016-09-19 Mon 10:10]--[2016-09-19 Mon 10:32] =>  0:22
+    CLOCK: [2016-09-19 Mon 09:05]--[2016-09-19 Mon 09:45] =>  0:40
+
+At present we are relying on the presence of all formatter properties
+for a given element when we are formatting. This is required in order
+to know if say IO is enabled when formatting types. However this will
+not work once we do the =quilt.cpp= refactor as we expect only one
+formattable to be available at a time. So we need to move the required
+data into the formatter properties. At present we just need:
+
+- enabled formatters
+- facet folders.
+
+This is also a requirement to move CMakeLists to fabric.
+
+*** COMPLETED Move =cmakelists_info= to fabric                        :story:
+    CLOSED: [2016-09-20 Tue 13:07]
+    CLOCK: [2016-09-20 Tue 13:08]--[2016-09-20 Tue 13:12] =>  0:04
+    CLOCK: [2016-09-20 Tue 10:03]--[2016-09-20 Tue 13:07] =>  3:04
+    CLOCK: [2016-09-20 Tue 09:54]--[2016-09-20 Tue 10:02] =>  0:08
+    CLOCK: [2016-09-18 Sun 12:51]--[2016-09-18 Sun 12:56] =>  0:05
+    CLOCK: [2016-09-18 Sun 12:44]--[2016-09-18 Sun 12:50] =>  0:06
+    CLOCK: [2016-09-18 Sun 11:14]--[2016-09-18 Sun 11:20] =>  0:06
+    CLOCK: [2016-09-18 Sun 10:52]--[2016-09-18 Sun 11:13] =>  0:21
+    CLOCK: [2016-09-18 Sun 10:21]--[2016-09-18 Sun 10:51] =>  0:30
+    CLOCK: [2016-09-17 Sat 22:50]--[2016-09-17 Sat 23:08] =>  0:18
+    CLOCK: [2016-09-17 Sat 20:26]--[2016-09-17 Sat 22:01] =>  1:35
+    CLOCK: [2016-09-17 Sat 20:08]--[2016-09-17 Sat 20:25] =>  0:17
+
+Add the generation of CMakeLists to fabric and remove the legacy
+formattable.
+
+*** COMPLETED Move =odb_options_info= to fabric                       :story:
+    CLOSED: [2016-09-20 Tue 20:43]
+    CLOCK: [2016-09-20 Tue 20:27]--[2016-09-20 Tue 20:39] =>  0:12
+    CLOCK: [2016-09-20 Tue 20:09]--[2016-09-20 Tue 20:26] =>  0:17
+    CLOCK: [2016-09-20 Tue 14:16]--[2016-09-20 Tue 14:46] =>  0:30
+    CLOCK: [2016-09-20 Tue 13:45]--[2016-09-20 Tue 14:15] =>  0:30
+
+Add the generation of ODB options to fabric and remove the legacy
+formattable.
+
+*** COMPLETED Remove =formattable_origin_type=                        :story:
+    CLOSED: [2016-09-20 Tue 21:00]
+    CLOCK: [2016-09-20 Tue 20:43]--[2016-09-20 Tue 21:00] =>  0:17
+
+We seem to distinguish between "internal" and "external"
+formattables. This probably won't make sense after the injection
+refactor.
+
+*** COMPLETED Remove formattable origin type                          :story:
+    CLOSED: [2016-09-20 Tue 21:01]
+    CLOCK: [2016-09-12 Mon 09:02]--[2016-09-12 Mon 11:20] =>  2:18
+    CLOCK: [2016-09-12 Mon 11:03]--[2016-09-12 Mon 11:10] =>  0:07
+
+*Rationale*: duplicate.
+
+This should not be in use any longer so remove it. Actually this
+cannot be done until we handle cmakelists and odb options via
+fabric. This is because path settings will not be computed correctly.
+
+Tasks:
+
+- remove enumeration
+- remove container of internal and external formatters in formatter
+  container.
+
+*** COMPLETED Implement formattables in terms of yarn types            :epic:
+    CLOSED: [2016-09-20 Tue 21:02]
+
+*Rationale*: all stories implemented now.
+
+At present formattables are just a shadow copy of yarn types plus
+additional =cpp= specific types. In practice:
+
+- for the types that are shadow copies, we could have helper utilities
+  that do the translation on the fly (e.g. for names).
+- for additional information which cannot be translated, we could have
+  containers indexed by qualified name and query those just before we
+  call the transformer. This is the case with formatter properties. We
+  need something similar to house "type properties" such as
+  =requires_stream_manipulators=. These could be moved into aspect
+  settings.
+- for types that do not exist in yarn, we could inherit from element;
+  this is the case for registrar, forward declarations, cmakelists and
+  odb options. Note that with this we are now saying that element
+  space contains anything which can be modeled, regardless of if they
+  are part of the programming language type system, or build system,
+  etc. This is not ideal, but its not a problem just yet. We could
+  update the factory to generate these types and then take a copy of
+  the model and inject them in it.
+
+*** COMPLETED Rename config model to options                         :story:
+    CLOSED: [2016-09-20 Tue 21:59]
+    CLOCK: [2016-09-20 Tue 22:00]--[2016-09-20 Tue 22:09] =>  0:09
+    CLOCK: [2016-09-20 Tue 21:36]--[2016-09-20 Tue 21:59] =>  0:23
+    CLOCK: [2016-09-20 Tue 21:01]--[2016-09-20 Tue 21:36] =>  0:35
+
+As part of the big rename, we are reserving config for other more
+meaningful domain entities. Options is closely related to command line
+options (though they may be supplied by other means).
+
+We should also take the opportunity to remove the command line option
+for CMake files.
+
+*** COMPLETED Rename annotation to decoration in formatters model     :story:
+    CLOSED: [2016-09-20 Tue 22:50]
+    CLOCK: [2016-09-20 Tue 22:20]--[2016-09-20 Tue 22:50] =>  0:30
+
+We need to free up annotations for the meta-data. Rename them to
+decorations. A decoration is defined to be the parts of the file which
+are not functionally dependent on the modeling element.
+
+*** COMPLETED Fix appveyor Visual Studio build                        :story:
+    CLOSED: [2016-09-21 Wed 10:59]
+    CLOCK: [2016-09-21 Wed 11:00]--[2016-09-21 Wed 11:20] =>  0:20
+    CLOCK: [2016-09-21 Wed 10:15]--[2016-09-21 Wed 10:59] =>  0:44
+
+For some reason our VS build started failing. First it could not find
+the CMake package so we upgraded it to latest. Then the package
+installed but it could not find the binary.
+
+*** COMPLETED Big rename for "final" terminology clean up             :story:
+    CLOSED: [2016-09-21 Wed 15:42]
+    CLOCK: [2016-09-21 Wed 14:25]--[2016-09-21 Wed 14:44] =>  0:19
+    CLOCK: [2016-09-21 Wed 13:30]--[2016-09-21 Wed 14:24] =>  0:54
+    CLOCK: [2016-09-21 Wed 11:42]--[2016-09-21 Wed 12:13] =>  0:31
+    CLOCK: [2016-09-21 Wed 11:21]--[2016-09-21 Wed 11:41] =>  0:20
+    CLOCK: [2016-09-21 Wed 09:31]--[2016-09-21 Wed 09:44] =>  0:13
+    CLOCK: [2016-09-17 Sat 19:41]--[2016-09-17 Sat 19:43] =>  0:02
+
+We now have a consistent vocabulary across all models. We need to do
+the following renames:
+
+- config: options. These are the command line options.
+- formatters model: annotations become decorations. Licence, etc are
+  decorations on a file.
+- settings: annotations. We are trying to evoke the idea of meta-data
+  here.
+- properties: configuration. This is the configuration used for
+  formatting. Properties namespace becomes formattables.
+
+Merged stories:
+
+*Consider renaming settings to annotations*
+
+Whilst its pretty clear now that settings are a strongly-typed
+representation of the meta-data and properties are the post-processed
+version, the names "settings" and "properties" still sound far too
+similar. It would be nicer to have something more meta-data-like for
+settings such as annotations. Read up the past discussions on
+naming. One possible reason not to use annotations was because we used
+it already in the formatters model. Perhaps that could be renamed to
+something else, freeing up the name?
+
+*** COMPLETED Tidy-up file configuration in formatters                :story:
+    CLOSED: [2016-09-21 Wed 20:54]
+    CLOCK: [2016-09-21 Wed 20:35]--[2016-09-21 Wed 20:52] =>  0:17
+    CLOCK: [2016-09-21 Wed 17:43]--[2016-09-21 Wed 18:23] =>  0:40
+    CLOCK: [2016-09-21 Wed 16:32]--[2016-09-21 Wed 17:42] =>  1:10
+    CLOCK: [2016-09-21 Wed 15:35]--[2016-09-21 Wed 16:31] =>  0:56
+
+We never did like the "file" prefix in file configuration, since many
+things can be construed as existing at the "file level". In a certain
+way, all configuration is ultimately "file configuration" since it
+affects the generation of files. However, things became clearer with
+the decoration rename: what we are calling the "file configuration" is
+actually the decoration configuration. Rename it to make things
+consistent.
+
+Tasks:
+
+- merge file configuration with decoration into a single class:
+  decoration configuration.
+- rename file configuration factory and workflow to decoration factory
+  and workflow.
+- rename file annotation etc to decoration annotation.
+
+*** COMPLETED Stitch still uses "properties"                          :story:
+    CLOSED: [2016-09-21 Wed 21:25]
+    CLOCK: [2016-09-21 Wed 20:53]--[2016-09-21 Wed 21:20] =>  0:27
+
+We didn't rename properties to configuration in stitch. Check
+annotations while we're there.
+
+*** CANCELLED Add a stitch prefix to stitch fields                    :story:
+    CLOSED: [2016-09-21 Wed 21:24]
+    CLOCK: [2016-09-21 Wed 21:21]--[2016-09-21 Wed 21:24] =>  0:03
+
+Now that decoration is used as a prefix for the top-level fields, it
+seems only right to have a prefix for the stitch fields as well. If
+nothing else, for symmetry purposes.
+
+Actually this just looks ugly because the model name is also
+stitch. This is a good idea, but we need to find a good name for the
+field group rather than just stitch. For now might as well leave it as
+is.
+
+*** COMPLETED Formatter properties are not optional in assistant      :story:
+    CLOSED: [2016-09-21 Wed 21:35]
+    CLOCK: [2016-09-21 Wed 21:25]--[2016-09-21 Wed 21:35] =>  0:10
+
+After the formattables refactor, the formatter properties are now
+mandatory for all elements. We should not allow them to be optional in
+assistant.
+
+*** COMPLETED Consider removing the overwrite flag in =formatters::file= :story:
+    CLOSED: [2016-09-21 Wed 21:57]
+    CLOCK: [2016-09-21 Wed 21:58]--[2016-09-21 Wed 21:59] =>  0:01
+    CLOCK: [2016-09-21 Wed 21:36]--[2016-09-21 Wed 21:57] =>  0:21
+
+Investigate if the overwrite flag makes sense in file; it seems we
+only use it in two scenarios: force overwrite requested by user or
+file contents have changed, both of which can be done in the
+file_writer.
+
+Actually this flag is needed. It is required to handle the case where
+we do not code-generate files, unless they do not exist. For example,
+for service headers and implementation we should create the files, but
+then subsequently not touch them. The overwrite flag should be set to
+false. We need to figure out how to implement this and remove the
+hacks around file writing.
+
+For now we have abused this flag to allow legacy files overrides of
+the new world formatters. This is just until we move totally to new
+world though.
+
+*** COMPLETED Handle module generability in yarn                      :story:
+    CLOSED: [2016-09-22 Thu 13:34]
+    CLOCK: [2016-09-22 Thu 13:14]--[2016-09-22 Thu 13:34] =>  0:20
+
+At present we are filtering out modules in =quilt.cpp= just as we are
+about to format them. It probably makes more sense to update the
+generability in yarn.
+
+*** COMPLETED Do a cursory investigation of dia plugin support        :story:
+    CLOSED: [2016-09-22 Thu 21:05]
+    CLOCK: [2016-09-22 Thu 20:51]--[2016-09-22 Thu 21:05] =>  0:14
+    CLOCK: [2016-09-22 Thu 20:15]--[2016-09-22 Thu 20:50] =>  0:35
+
+We should have a quick at how hard it is to do a dia plugin to support
+dogen. We already have a story for this in backlog, so update it.
+
+It seems its fairly trivial to extend dia using Pything:
+
+- [[https://wiki.gnome.org/Apps/Dia/Python][Dia Python Plugin]]
+- [[http://pastebin.com/pPkL3PxQ][Manipulating UML in Dia's Python Console]]
+- [[https://github.com/GNOME/dia/tree/master/plug-ins/python][Lots of examples of python scripts]]
+
+*** COMPLETED Consider merging provider interface with file formatter :story:
+    CLOSED: [2016-09-23 Fri 20:20]
+    CLOCK: [2016-09-23 Fri 20:05]--[2016-09-23 Fri 20:20] =>  0:15
+    CLOCK: [2016-09-23 Fri 18:35]--[2016-09-23 Fri 19:01] =>  0:26
+    CLOCK: [2016-09-23 Fri 18:10]--[2016-09-23 Fri 18:34] =>  0:24
+    CLOCK: [2016-09-23 Fri 17:27]--[2016-09-23 Fri 17:44] =>  0:17
+    CLOCK: [2016-09-23 Fri 16:49]--[2016-09-23 Fri 17:26] =>  0:37
+    CLOCK: [2016-09-23 Fri 14:12]--[2016-09-23 Fri 15:39] =>  1:27
+    CLOCK: [2016-09-23 Fri 13:17]--[2016-09-23 Fri 13:41] =>  0:24
+    CLOCK: [2016-09-23 Fri 13:07]--[2016-09-23 Fri 13:16] =>  0:09
+    CLOCK: [2016-09-23 Fri 11:52]--[2016-09-23 Fri 12:29] =>  0:37
+    CLOCK: [2016-09-23 Fri 10:21]--[2016-09-23 Fri 11:51] =>  1:30
+    CLOCK: [2016-09-22 Thu 23:53]--[2016-09-22 Thu 23:57] =>  0:04
+    CLOCK: [2016-09-22 Thu 21:06]--[2016-09-22 Thu 23:52] =>  2:46
+    CLOCK: [2016-09-22 Thu 18:41]--[2016-09-22 Thu 18:53] =>  0:12
+    CLOCK: [2016-09-22 Thu 18:22]--[2016-09-22 Thu 18:40] =>  0:18
+
+Originally we created the provider interface as an attempt to avoid
+cycles between formatters and formattables. The formattables generate
+inputs to the formatting process, but in order to generate those they
+need access to the formatters. So to break the cycle we supplied those
+inputs via the provider interface, which allowed formattables not to
+depend directly on formatters. However, in practice we still continued
+to have a circular dependency because we need the formatter container
+for a lot of the formattables:
+
+- helper properties use it to generate a mapping of helper family to
+  facet.
+- enablement uses it to generate the field definitions.
+- inclusion directives supplies it to the annotations factory also for
+  field definitions.
+
+So instead of solving the circular references problem, we just added
+more confusion to it. In addition, the current implementation requires
+a lot of boilerplate, with additional registrar and container and
+registration step. This adds to the formatters code.
+
+We can simplify all of this by merging provider into formatters. The
+only slight downside of this is that we now will need to have
+formatters even for types which we do not support such as
+primitives. We had a hack in place for these which won't work any
+longer.
+
+Tasks:
+
+- add relevant methods to formatter and implement them by copying code
+  from provider.
+- remove usage of cpp_header, replace with inclusion support
+  types. Then try to remove enum.
+- replace uses of provider with formatter interface.
+- remove provider, registrar, container and all implementations in
+  formatters.
+
+Merged stories:
+
+*Add include providers for all types*
+
+We need to implement the provider container support for primitives,
+modules and concepts.
+
+Update:
+
+- inclusion dependencies factory
+- provider container
+
+*** COMPLETED Add type index to name and to formatter interface       :story:
+    CLOSED: [2016-09-23 Fri 20:26]
+    CLOCK: [2016-09-23 Fri 20:21]--[2016-09-23 Fri 20:26] =>  0:05
+    CLOCK: [2016-09-22 Thu 17:02]--[2016-09-22 Thu 17:24] =>  0:22
+    CLOCK: [2016-09-22 Thu 13:34]--[2016-09-22 Thu 14:23] =>  0:49
+    CLOCK: [2016-09-22 Thu 12:20]--[2016-09-22 Thu 13:13] =>  0:53
+    CLOCK: [2016-09-22 Thu 09:01]--[2016-09-22 Thu 11:40] =>  2:39
+    CLOCK: [2016-09-21 Wed 09:16]--[2016-09-21 Wed 09:31] =>  0:15
+    CLOCK: [2016-09-21 Wed 09:01]--[2016-09-21 Wed 09:15] =>  0:14
+    CLOCK: [2016-09-20 Tue 22:51]--[2016-09-20 Tue 23:15] =>  0:24
+
+In preparation for the removal of the static formatters, we need to
+add a type index to =yarn::name=. We should also add it to the
+formatter interface and to all formatters.
+
+There is a slight problem in terms of adding type index to name: we do
+not have code generation support for this type. We could add it, but
+then its not trivial for all facets:
+
+- serialisation: seems tricky to serialise the notion of types unless
+  there is direct library support for it. According to SO, this does
+  not look entirely trivial: [[http://stackoverflow.com/questions/36219532/serializing-stdtype-index][Serializing `std::type_index`]].
+- test data: we could simply loop through a few primitives such as
+  bool, int etc.
+- hash: hopefully there is built-in support, but must be tested.
+- odb: similar problem as with serialisation.
+- io: should be fine, perhaps using typeid directly.
+
+But the main question is: why do we need type index in name? From
+looking at the code, its not clear why we made this requirement (in
+light of the "formatter alias/default" support, which will allow us to
+find a formatter across element types). So we'll skip =yarn::name= and
+focus on =quilt.cpp= instead.
+
+Tasks:
+
+- add type index to file formatter interface
+- add format against element to file formatter interface
+- remove all other formatter interfaces
+- update all formatters to inherit directly from file formatter and to
+  dynamic cast element to the supported type. Assistant can provide a
+  helper for this.
+- formatter container is now: all formatters, formatters by type
+  index.
+- update registrar to register using type index.
+- update all uses of formatter container.
+
+*** COMPLETED Remove static formatter containers                      :story:
+    CLOSED: [2016-09-23 Fri 20:26]
+
+*Rationale*: Implemented as part of other stories.
+
+Instead of having containers with separate types, use the type index
+to organise the formatters.
+
+- update formatter interface to use element and to statically cast to
+  concrete element. Start with dynamic cast first though.
+- remove container (provider, formatter).
+- update registrar with a map of type index to formatter (and to provider).
+- formatter workflow now simply calls.
+- remove all element specific formatter interfaces.
+
+*** COMPLETED Rename formattables properties to configuration         :story:
+    CLOSED: [2016-09-23 Fri 21:52]
+    CLOCK: [2016-09-23 Fri 20:47]--[2016-09-23 Fri 21:51] =>  1:04
+
+As part of the big rename we were supposed to rename all properties to
+configuration. We seem to have missed the ones inside of formattables.
+
+Actually, since we are going to dump most of this code in the
+refactor, rename only the data types and leave the rest of the code as
+is.
+
+*** COMPLETED Update quilt.cpp with pipeline classes                  :story:
+    CLOSED: [2016-09-23 Fri 22:48]
+    CLOCK: [2016-09-23 Fri 22:43]--[2016-09-23 Fri 22:48] =>  0:05
+    CLOCK: [2016-09-23 Fri 22:04]--[2016-09-23 Fri 22:43] =>  0:39
+
+Create skeletons for all new classes and make sure it hangs together
+conceptually.
+
+*** COMPLETED Add transformer to quilt.cpp                            :story:
+    CLOSED: [2016-09-24 Sat 13:09]
+    CLOCK: [2016-09-24 Sat 12:49]--[2016-09-24 Sat 13:09] =>  0:20
+    CLOCK: [2016-09-24 Sat 09:01]--[2016-09-24 Sat 09:22] =>  0:21
+    CLOCK: [2016-09-24 Sat 06:40]--[2016-09-24 Sat 07:11] =>  0:31
+    CLOCK: [2016-09-23 Fri 22:49]--[2016-09-23 Fri 23:00] =>  0:11
+    CLOCK: [2016-09-23 Fri 21:56]--[2016-09-23 Fri 22:01] =>  0:05
+
+Takes in a =yarn::model= and generates a container of
+=formattables=. The model will include target and non-target types.
+
+Add workflow methods to execute the new formattables pipeline.
+
+*** COMPLETED Add enabler to quilt.cpp                                :story:
+    CLOSED: [2016-09-25 Sun 09:24]
+    CLOCK: [2016-09-25 Sun 08:01]--[2016-09-25 Sun 09:24] =>  1:23
+    CLOCK: [2016-09-24 Sat 22:43]--[2016-09-25 Sun 00:37] =>  1:54
+    CLOCK: [2016-09-24 Sat 17:01]--[2016-09-24 Sat 19:43] =>  2:42
+
+Generates the enablement configuration.
+
+*** COMPLETED Investigate using postgres to query JSON objects        :story:
+    CLOSED: [2016-09-26 Mon 00:02]
+    CLOCK: [2016-09-25 Sun 21:01]--[2016-09-25 Sun 23:56] =>  2:55
+
+At present we are generating a lot of logging with useful information,
+but the large column sizes (10 MB or more) make emacs unusable. There
+are known issues with long columns on emacs, and no easy fixes for
+this. One alternative is to push the JSON objects into postgres and
+then use queries to analyse the data.
+
+This is actually really useful; in a short space of time one can come
+up with queries to slice and dice log data.
+
+*Useful queries/commands*
+
+Extracting models out of log file:
+
+: grep Final dogen.knitter.quilt.cpp.log > crap.txt
+: tail -n1 crap.txt  | cut -b 65- > ~/crap3.txt
+
+Loading data into postgres:
+
+: create table temp_json (values jsonb);
+: \copy temp_json from '~/crap3.json';
+
+Copying all elements from model into their own rows:
+
+: insert into temp_json
+: select jsonb_array_elements(values->'elements')->'data'
+: from temp_json;
+
+Selecting a specific type:
+
+: select values from temp_json
+: where values->'__parent_0__'->'name'->'simple' = 'formattable'
+: from temp_json;
+
+Selecting by name and object type (for elements with multiple segments):
+
+: select jsonb_array_elements(values->'transparent_associations')
+: from temp_json where values->'__parent_0__'->'name'->>'simple' = 'formattable'
+: and values->>'__type__' like '%object%';
+
+Get all transparent associations:
+
+: select jsonb_array_elements(values->'transparent_associations')->'id'
+: from temp_json where values->'__parent_0__'->'name'->>'simple' = 'formattable'
+: and values->>'__type__' like '%object%';
+
+Opaque:
+
+: select jsonb_pretty(values->'opaque_associations')
+: from temp_json where values->'__parent_0__'->'name'->>'simple' = 'formattable'
+: and values->>'__type__' like '%object%';
+
+Switch off pager:
+
+: \pset pager
+
+Pretty print:
+
+: select jsonb_pretty(values->'opaque_associations')
+: from temp_json where values->'__parent_0__'->'name'->>'simple' = 'formattable'
+: and values->>'__type__' like '%object%';
+
+Keys for an object:
+
+: select jsonb_object_keys(values)
+: from temp_json
+: where values->'__parent_0__'->'name'->>'simple' = 'formattable' and
+: values->>'__type__' like '%object%';
+
+*** POSTPONED Add formattable element                                 :story:
+    CLOSED: [2016-09-26 Mon 09:46]
+    CLOCK: [2016-09-23 Fri 22:02]--[2016-09-23 Fri 22:04] =>  0:02
+    CLOCK: [2016-09-23 Fri 20:27]--[2016-09-23 Fri 20:46] =>  0:19
+
+Create a top-level formattable type that is an aggregation of the
+element and the element configuration. Update workflow to output a
+list of formattable and formatters to take in formattable.
+
+Previous understanding:
+
+- create a top-level type that has formatter, element properties and
+  element. Must be non-generatable. Add formattable id as the sum of
+  element id and formatter id.
+- add =formattables::model= as an unordered map of id to
+  formattable. Implement formatting workflow in terms of formattables
+  model. Add all context properties to model such as
+  streaming_settings_repository and helpers_. element_settings should
+  be merged with configuration.
+- remove formatting context and update formatting workflow to call a
+  visitor to resolve the element and then call the formatter.
+- add an enablement map for all formatters in the formatter
+
+*** POSTPONED Add includer to quilt.cpp                               :story:
+    CLOSED: [2016-09-26 Mon 09:46]
+    CLOCK: [2016-09-25 Sun 17:04]--[2016-09-25 Sun 17:32] =>  0:28
+    CLOCK: [2016-09-25 Sun 11:29]--[2016-09-25 Sun 11:45] =>  0:16
+    CLOCK: [2016-09-25 Sun 11:01]--[2016-09-25 Sun 11:28] =>  0:27
+    CLOCK: [2016-09-25 Sun 10:26]--[2016-09-25 Sun 11:00] =>  0:34
+
+Responsible for computing the inclusion dependencies.
+
+- add a flag in builder to choose new or old API. Supply formattables
+  container by ID and new directives repository. When using old API,
+  these are default initialised. With new API the other parameters are
+  default initialised. Actually a better approach is to create two
+  builder impls and to decide which one to use based on the
+  constructor of the builder.
+
+** Deprecated
+*** CANCELLED Consider renaming formatters                            :story:
+    CLOSED: [2016-09-12 Mon 09:29]
+
+*Rationale*: Actually, we don't want users to think of the
+presentation model when looking at formatters. It is a good analogy if
+you understand what it is that we are trying to do, but its probably
+confusing for someone new to code generation. We'll stick to
+formatters and use formatting functions in our description of the
+conceptual model.
+
+After reading the [[http://martinfowler.com/eaaDev/PresentationModel.html][Presentation Model]] pattern a bit more carefully, it
+seems it provides a good approach for formatters. If one thinks of the
+file as the view, then the formatters are the presenters and the model
+representing all presentation logic (e.g. =cpp=) is the presentation
+model. We could:
+
+- create a top-level folder called =presentation=;
+- rename =formatters= to =core= and move it to =presentation=;
+- move =cpp= to =presentation=;
+- in =cpp=:
+  - rename =formattables= to =presentables=;
+  - rename =formatters= to =presenters=;
+- in this light, =backend= is really the "meta-workflow" for all
+  possible presentations. It should really live under presentation. It
+  would make more sense to merge it with =core=, if it were not that
+  core contains all sorts of loose bits that are useful only in the
+  guts of presentation. We could call it =orchestration= or some such
+  name. Or we could leave it as =presentation::backends=.
+- move =file= to =backends=. We don't really want external clients to
+  have to know about =core= just to obtain a single type. Also,
+  backends shouldn't really have any dependencies.
+- grep for formatting, formattables, formatter, format, etc. and
+  ensure all usages have been replaced with present*.
+
+We should wait until the "great refactoring" is done so that we do not
+have to rename the legacy models too.
+
+*Merged with duplicate*
+
+These are not really formatters; not sure what the right name should
+be though; templates?
+*** CANCELLED Do not merge containers for formatter properties        :story:
+    CLOSED: [2016-09-17 Sat 19:51]
+
+*Rationale*: this story won't be required after the final refactor.
+
+We only need to generate the formatter properties for elements in the
+target model. Start from those instead of merging.
+
+*** CANCELLED Analysis work on handling varying levels of formatter optionality :story:
+    CLOSED: [2016-09-21 Wed 22:03]
+
+*Rationale*: we should handle this as part of the generation types
+clean up. There should be no optionality; if you get to the
+formatters, you must format.
+
+In some cases the formatter may decide that it does not need to create
+a file. The only use case we have is the =namespace_info= where if
+there is no documentation one does not want to create a formatter. At
+present we filter out empty namespaces in the formatters' workflow,
+but this is not very clean because it now means the workflow needs to
+know about the formatter's logic.
+
+This would also make things cleaner for the services hack where we do
+not want to generate services for now. Actually not quite; for
+services we still need to generate skeletons. There are three cases:
+a) nothing should be generated, in which case we should filter these
+elements before hand b) something should be generated, but we may not
+actually overwrite the existing file and c) generate and write,
+regardless.
+
+Note that we do not need to change the stitch templates for this; the
+decision is done before we call the template.
+
+Tasks:
+
+- change formatter interfaces to return =boost::optional<file>=
+- change all formatters.
+
+*** CANCELLED Consider creating a single top-level settings class     :story:
+    CLOSED: [2016-09-21 Wed 22:05]
+
+*Rationale*: This is not feasible in the current design; it would be a
+lot of work for not enough gain.
+
+Since settings are nothing but meta-data, we should be able to read
+them all in one go. Further: we should be able to compute up front the
+inputs (root object, all other objects; sliced from the model) and the
+size of the outputs (vector of settings). It would be a totally
+parallelisable task. This also means we only need a single repository
+by id for all settings.
+
+This repository is then the input for the property workflow. Because
+properties follow a dependency graph, we would still need to compute
+them in some kind of order.
+
+Actually, this is not entirely true: for all elements in the target
+model we will have a single top-level class with all settings (or
+almost all, since some settings only make sense to the root object
+such as directory settings). However, for the reference models we will
+have less settings. We should probably do some taxonomy work here and
+try to figure out what categories of settings we have.
+
+*** CANCELLED Add top-level module names to yarn                      :story:
+    CLOSED: [2016-09-21 Wed 22:15]
+
+*Rationale*: this is only done in locator and its pretty
+self-contained. We can revisit if this changes.
+
+In a couple of places we are computing the top-level modules. We
+should just compute it once and have this as part of the yarn model.
+
+Look for stories related to "model module" in case we have covered
+this already.

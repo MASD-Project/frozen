@@ -1,0 +1,847 @@
+#+title: Sprint Backlog 61
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission
+
+Integrate the new C++ namespaces into a combined workflow and find a
+good architecture to handle file naming and include generation.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-02-15 Sun 23:54]
+
+| Headline                                                               | Time    |       |      |
+|------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                           | *36:21* |       |      |
+|------------------------------------------------------------------------+---------+-------+------|
+| Active                                                                 |         | 36:21 |      |
+| COMPLETED Sprint and product backlog grooming                          |         |       | 0:38 |
+| COMPLETED Improvements to product backlog                              |         |       | 1:01 |
+| COMPLETED Tidy-up formatters workflow                                  |         |       | 0:20 |
+| COMPLETED Create a =formattable= base class                            |         |       | 0:32 |
+| COMPLETED Rename =file_settings= to =file_properties=                  |         |       | 0:11 |
+| COMPLETED Create a class to generate file names                        |         |       | 0:20 |
+| COMPLETED Create a class to generate file properties                   |         |       | 0:30 |
+| COMPLETED Create a formattables workflow                               |         |       | 1:56 |
+| COMPLETED Facet and formatter settings factories to use definitions    |         |       | 1:54 |
+| COMPLETED Split global settings by formatter and facet                 |         |       | 0:04 |
+| COMPLETED Create a settings facade for querying                        |         |       | 1:25 |
+| COMPLETED Implement file name factory                                  |         |       | 3:39 |
+| COMPLETED Add field for =supported=                                    |         |       | 0:33 |
+| COMPLETED Rename =build= method on all factories to =make=             |         |       | 0:50 |
+| COMPLETED Populate entity's identity during transformation             |         |       | 0:07 |
+| COMPLETED Analysis on formattable types and formatter integration      |         |       | 1:13 |
+| COMPLETED Split file properties from includes                          |         |       | 0:57 |
+| COMPLETED Create provider and provider selector interfaces             |         |       | 1:32 |
+| COMPLETED Improve building of file names                               |         |       | 0:56 |
+| COMPLETED Consider renaming config settings to options                 |         |       | 1:07 |
+| COMPLETED Add absolute path support to path builder                    |         |       | 5:06 |
+| COMPLETED Populate the local settings                                  |         |       | 3:06 |
+| COMPLETED Create a toggable replacement with legacy and new formatters |         |       | 0:28 |
+| POSTPONED Clean-up hierarchical support in dynamic                     |         |       | 2:16 |
+| POSTPONED Implement include generation for class header formatter      |         |       | 5:10 |
+| POSTPONED Create settings expander and switcher                        |         |       | 0:30 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-02-15 Sun 23:36]
+    CLOCK: [2015-02-08 Sun 17:28]--[2015-02-08 Sun 17:37] =>  0:09
+    CLOCK: [2015-02-07 Sat 22:29]--[2015-02-07 Sat 22:33] =>  0:04
+    CLOCK: [2015-02-07 Sat 15:45]--[2015-02-07 Sat 15:52] =>  0:07
+    CLOCK: [2015-02-04 Wed 20:50]--[2015-02-04 Wed 21:08] =>  0:18
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-02-15 Sun 23:36]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Improvements to product backlog                         :story:
+    CLOSED: [2015-02-02 Mon 20:21]
+    CLOCK: [2015-02-02 Mon 19:20]--[2015-02-02 Mon 20:21] =>  1:01
+
+We need to make the product backlog a bit more manageable. It has
+grown quite a lot, and we spend a lot of time grooming. The main
+problem is that there are many stories which we are not going to look
+at for a very long time but yet they are interspersed with stories
+that are needed now. We should:
+
+- remove the deprecated section; deprecation is a "sprint-only"
+  phenomena.
+- Split active stories into: a) short term b) medium term c) long
+  term. All the vision stuff should go into long term. Actually we
+  probably should use names that are more reflective: bugs, long term
+  features, etc.
+
+*** COMPLETED Tidy-up formatters workflow                             :story:
+    CLOSED: [2015-02-03 Tue 20:40]
+    CLOCK: [2015-02-03 Tue 20:19]--[2015-02-03 Tue 20:39] =>  0:20
+
+We need to remove all of the facet code and work directly off of the
+formatter container.
+
+*** COMPLETED Create a =formattable= base class                       :story:
+    CLOSED: [2015-02-03 Tue 21:22]
+    CLOCK: [2015-02-03 Tue 20:40]--[2015-02-03 Tue 21:12] =>  0:32
+
+We need to start using the =formattable= base class instead of
+entity. Make entity non-visitable and deal with the fall out.
+
+*** COMPLETED Rename =file_settings= to =file_properties=             :story:
+    CLOSED: [2015-02-03 Tue 21:33]
+    CLOCK: [2015-02-03 Tue 21:22]--[2015-02-03 Tue 21:33] =>  0:11
+
+- rename file settings to file properties because these are not a
+  direct translation from dynamic.
+- create a file properties factory that merges the output of the
+  includes generator and file name generator and spits out file
+  properties per qname, per formatter.
+- use the file properties factory in transformer.
+
+*** COMPLETED Create a class to generate file names                   :story:
+    CLOSED: [2015-02-03 Tue 22:29]
+    CLOCK: [2015-02-03 Tue 22:08]--[2015-02-03 Tue 22:28] =>  0:20
+
+Create a "file name generator" (name needs thinking) that will receive
+the settings as input and generate file names per formatter for each
+qname. It will use the postfixes for facet/formatter settings to
+generate the file name. It will take into account file name overrides
+in file name settings. We no longer need help from the formatter - the
+algorithm just uses the settings. Remove all file name related code
+from formatters.
+
+*** COMPLETED Add support for local settings                          :story:
+    CLOSED: [2015-02-03 Tue 22:30]
+
+*New Understanding*
+
+- local settings have: general, file name settings (for the file name
+  overrides), type settings, additional includes. Presumably all of
+  these need to be optional. We need to ensure general settings have a
+  scope of any.
+- we need a local settings factory. See the scratch pad for an example
+  using =sml::consumer_interface=.
+
+*Previous Understanding*
+
+- create a local settings class that is made up of file settings,
+  opaque settings and formatter settings. Entity to have a container
+  of local settings (map of formatter id to local settings).
+- create a local settings factory that takes on the work from workflow
+  in generating the file settings. It also takes on a container of
+  opaque settings factory by formatter id to generate the opaque
+  settings. Finally, it uses the formatter settings factory for the
+  overrides. These should be optional. If populated, they should take
+  on the global settings as defaults so that we don't have to worry
+  about global settings for formatters any more. This means the local
+  settings factory must have access to the global settings.
+
+*** COMPLETED Create a settings class                                 :story:
+    CLOSED: [2015-02-03 Tue 22:30]
+
+*New Understanding*
+
+We need a container for both local and global settings that gets
+passed around. It should really be called =settings= but given that it
+exists in the =settings= namespace, it may sound a bit
+"repetitive". Brainstorm on naming.
+
+*Previous Understanding*
+
+- create a settings class that has a map of formatter id to global
+  settings. It could also have a map of c++ entity name (produced with
+  name builder to include namespaces), to formatter id to local
+  settings. With this we can now move the settings away from entity
+  because we no longer require the qname.
+- pass the settings class to the includes builder.
+
+*** COMPLETED Create a class to generate file properties              :story:
+    CLOSED: [2015-02-03 Tue 23:00]
+    CLOCK: [2015-02-03 Tue 22:30]--[2015-02-03 Tue 23:00] =>  0:30
+
+Create a "file properties generator" (name needs thinking) that will
+receive the file names from the "file name generator" as well as the
+settings and produce the complete file properties per qname per
+formatter. It will delegate to each formatter for the includes
+generation. Formatters to take into account the additional includes
+settings.
+
+Notes:
+
+- consider passing in a container of includes builder (or formatters)
+  rather than querying the registrar directly.
+
+*** COMPLETED Create a formattables workflow                          :story:
+    CLOSED: [2015-02-03 Tue 23:44]
+    CLOCK: [2015-02-03 Tue 22:30]--[2015-02-03 Tue 23:44] =>  1:14
+    CLOCK: [2015-02-03 Tue 21:33]--[2015-02-03 Tue 22:06] =>  0:33
+    CLOCK: [2015-02-03 Tue 20:10]--[2015-02-03 Tue 20:19] =>  0:09
+
+We need to move across all code in the C++ workflow which is actually
+part of the formattables sub-workflow.
+
+*** COMPLETED Add global formatter settings support                   :story:
+
+A use case that is very well understood is the need to enable/disable
+optional formatters at the global level. For example, one should be
+able to disable all of the forward declarations at the top-level and
+then enable only those that are needed. We should check if formatters
+like serialisation etc already have a requirement on forward
+declarations.
+
+*** COMPLETED Create a transformation and formatting sub-workflow     :story:
+
+At present we have two template functions in the main workflow,
+linking the different steps of transformation and formatting. However,
+it may make more sense to plug in to the all types traversal. For this
+we need a sub-workflow that owns the model and the transformer and
+which overloads =operator()=. It produces files.
+
+It can receive a formatter dispatcher and a transformer on
+construction and keep references these. Execute returns the list of
+files.
+
+*** COMPLETED Create top-level initialisers                           :story:
+
+It would be nice if top-level models such as =knit= had their own
+static initialiser and consumers of that model didn't have to manually
+initialise every dependent model.
+
+*** COMPLETED Use formatting settings in formatters model             :story:
+
+We need to replace the references to the c++ settings directly with
+formatter settings.
+
+*** COMPLETED Facet and formatter settings factories to use definitions :story:
+    CLOSED: [2015-02-04 Wed 23:02]
+    CLOCK: [2015-02-04 Wed 22:44]--[2015-02-04 Wed 23:02] =>  0:18
+    CLOCK: [2015-02-04 Wed 21:08]--[2015-02-04 Wed 22:44] =>  1:36
+
+*Analysis*
+
+We need a way to obtain the set of facets and formatters "implied" by
+the registered field definitions. We could do this like we did with
+content extensions by adding a set of helper methods that process
+field definitions.
+
+Actually, since we need to build "indexes" it makes more sense to have
+some kind of class with state: =indexer=.
+
+We also need to fix the naming of facets and formatters in field
+definitions: we need to make use of traits.
+
+*Action Items*
+
+- rename =facet_id= and =formatter_id= to =facet_name= and
+  =formatter_name=.
+- use traits when generating field definitions (facet and formatter
+  names).
+- remove generation of default facet settings.
+- pass a list of facet names into facet factory. This is obtained by
+  querying the registered formatters (activity in workflow). Actually,
+  we don't really need this. We should just throw if a formatter looks
+  for a facet/formatter name in the settings that does not exist.
+- create a =dynamic::indexer= that indexes by facet name.
+- pass the indexer into facet factory, or just the results of the
+  indexer.
+- for each facet in the list, get all fields from default values from
+  the indexer; get the corresponding field instance if any; find the
+  matching property in facet settings and set it with either the field
+  instance or the default value.
+
+*** COMPLETED Split global settings by formatter and facet            :story:
+    CLOSED: [2015-02-04 Wed 23:08]
+    CLOCK: [2015-02-04 Wed 23:04]--[2015-02-04 Wed 23:08] =>  0:04
+
+*Analysis*
+
+Update formatter and facet settings to split them by qname, by
+formatter. This includes the work required to split the default
+settings too. Change global settings to have facet/formatter settings
+by qname, by formatter. We should probably also generate local
+overrides for general settings immediately. This means the formatter
+can go straight to the local settings.
+
+For defaults: at present we are manually generating default settings
+for both facets and formatters. We should do these from dynamic's
+field definitions.
+
+Dynamic could provide field definition aggregation services for
+formatter and facet.
+
+*** COMPLETED Create a settings facade for querying                   :story:
+    CLOSED: [2015-02-07 Sat 17:21]
+    CLOCK: [2015-02-07 Sat 15:55]--[2015-02-07 Sat 17:20] =>  1:25
+
+Now that we have global and local settings, we should be able to hide
+the overriding behind some kind of facade so that the formatter does
+not need to know if a setting is global or local; it should just query
+by some properties and get the desired settings.
+
+Name: =selector=?
+
+*** COMPLETED Implement file name factory                             :story:
+    CLOSED: [2015-02-07 Sat 20:49]
+    CLOCK: [2015-02-07 Sat 20:08]--[2015-02-07 Sat 20:47] =>  0:39
+    CLOCK: [2015-02-07 Sat 19:38]--[2015-02-07 Sat 19:43] =>  0:05
+    CLOCK: [2015-02-07 Sat 18:04]--[2015-02-07 Sat 19:37] =>  1:33
+    CLOCK: [2015-02-07 Sat 17:21]--[2015-02-07 Sat 17:45] =>  0:24
+    CLOCK: [2015-02-07 Sat 15:53]--[2015-02-07 Sat 15:55] =>  0:02
+    CLOCK: [2015-02-05 Thu 21:00]--[2015-02-05 Thu 21:56] =>  0:56
+
+*New Understanding*
+
+We should actually keep the formatters doing the file names. The
+problem is that we need to know if we are a header or not, etc. This
+logic could be added to the formatter interface, but it would be
+cumbersome. So pass in the settings selector to the =make_file_name=
+function, extract all of the relevant settings and make a call to name
+builder passing in all relevant flags. Builder does not know of
+settings.
+
+*Previous Understanding*
+
+There is no longer a need to go to the formatter to obtain the file
+path. We should remove this and use the settings directly within the
+file name factory.
+
+*** COMPLETED Add field for =supported=                               :story:
+    CLOSED: [2015-02-07 Sat 21:23]
+    CLOCK: [2015-02-07 Sat 20:49]--[2015-02-07 Sat 21:22] =>  0:33
+
+We have a patch for this, just needs to be dusted and applied.
+
+*** COMPLETED Rename =build= method on all factories to =make=        :story:
+    CLOSED: [2015-02-07 Sat 22:12]
+    CLOCK: [2015-02-07 Sat 21:22]--[2015-02-07 Sat 22:12] =>  0:50
+
+Since "builder" is a fairly well-known pattern, we should avoid
+confusion. Rename the method.
+
+*** COMPLETED Populate entity's identity during transformation        :story:
+    CLOSED: [2015-02-07 Sat 22:29]
+    CLOCK: [2015-02-07 Sat 22:21]--[2015-02-07 Sat 22:28] =>  0:07
+
+In order to use the settings selector, we need entities to have their
+identity properly populated.
+
+*** COMPLETED Analysis on formattable types and formatter integration :story:
+    CLOSED: [2015-02-08 Sun 17:36]
+    CLOCK: [2015-02-08 Sun 02:45]--[2015-02-08 Sun 03:58] =>  1:13
+
+- split file properties from includes. File properties must exist at
+  the formattable level because all formattables must have a relative
+  and absolute path; only entities require includes. We need two
+  separate containers, both by formatter name.
+- remove the includes factory interface and add it directly to the
+  formatter. includes factory then becomes responsible for generating
+  a container of qname to formatter name to includes.
+- have the file properties factory return a container by qname; have
+  the includes factory take that container in to generate the includes
+  with the formatters.
+- transformer receives both containers to populate formattables and
+  entities.
+- the file types allows us to make any decisions related to where to
+  place the file; we may need more file types to distinguish between
+  the different cmakefiles, etc. It must be sufficient to determine
+  the absolute path. We could also use them for public and private
+  includes.
+- the formatter must generate both the relative and absolute file
+  names. This is because we need to know if the file is to be placed
+  in include or source directory. This means that the formatter must
+  return the file properties rather than the file name. The existing
+  file names factory should be renamed file properties factory and the
+  file properties factory should be renamed includes factory. The
+  includes factory will receive a container of file property rather
+  than file name. Presumably the formatters will also receive the same
+  container.
+- we need to start using =formatters::file= on the legacy formatters
+  if we are not doing so already. We need to replace the files
+  generated by the legacy formatters with the files generated by the
+  new formatters. Once the new files are binary identical to the
+  legacy files we can leave them on. Eventually all files will be
+  replaced and this logic can be removed. The replacement will require
+  a map by absolute path; it is first populated by the legacy
+  formatters and then overriden by the new formatters. This is all in
+  the knit workflow. This logic means that we cannot move forwards
+  until we fix all issues for a given set of formatters. Also, it is
+  possible that the generated code is not binary identical (order of
+  includes for example) so we may need to risk-accept some
+  differences.
+- at present the formatter interface exists to provide the formattable
+  classes a way of generating formatter specific objects; in reality,
+  it would make much more sense for formattables to define some kind
+  of interface that creates the file properties and includes and has
+  facet and formatter information; and for there to be some kind of
+  top-level class that one could use to ask for this interface, given
+  some SML clues. For example, given an SML object and its object
+  type, return all of the instances of this interface. The formatters
+  could implement this interface. Where we are using the formatter
+  container, we would instead pass references to this top-level
+  class. We just need good names for both of these. Internally, the
+  top-level class could =dynamic_pointer_cast= a list of formatters to
+  the interface and return those for a given query. We should do all
+  of them in one go and then return the results for the queries rather
+  than do it on the fly. The top-level class should have =provider= on
+  its name. It may also be an interface which is implemented inside of
+  =formatters=. These types could also be used by the local
+  settings. This means we may need to place them at the
+  top-level. Local settings need formatter names. However, we used
+  field definitions for formatter's factory so this may also be enough
+  for local settings.
+- names: =details_provider=, =information_provider=, just =provider=?
+  and for top-level, =xxx_provider_selector=. Sample methods: select
+  providers for object, select providers for exception, etc.
+
+*** COMPLETED Split file properties from includes                     :story:
+    CLOSED: [2015-02-08 Sun 18:33]
+    CLOCK: [2015-02-08 Sun 17:42]--[2015-02-08 Sun 18:39] =>  0:57
+
+Split file properties from includes. File properties must exist at the
+formattable level because all formattables must have a relative and
+absolute path; only entities require includes. We need two separate
+containers, both by formatter name.
+
+*** COMPLETED Rename file name factory and file properties factory    :story:
+    CLOSED: [2015-02-08 Sun 18:33]
+
+The existing names factory should be renamed file properties factory
+and the file properties factory should be renamed includes
+factory. The includes factory will receive a container of file
+property rather than file name. Presumably the formatters will also
+receive the same container.
+
+*** COMPLETED Create provider and provider selector interfaces        :story:
+    CLOSED: [2015-02-08 Sun 23:47]
+    CLOCK: [2015-02-08 Sun 22:15]--[2015-02-08 Sun 23:47] =>  1:32
+
+As [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_61.org#analysis-on-formattable-types-and-formatter-integration][per analysis]], we need to move all properties in formatter interface
+to a provider interface in formattables; and to create a selector
+interface for those providers. We then need to implement that
+interface in formatters by using the formatter container and casting
+the types into the new interface. The main workflow will own the
+provider selector and pass it in to the formattables workflow.
+
+Ensure that the file properties factory return a container by qname
+and the includes factory take that container in to generate the
+includes with the formatters.
+
+*** COMPLETED Remove includes factory interface                       :story:
+    CLOSED: [2015-02-08 Sun 23:47]
+
+Remove the includes factory interface and add it directly to the
+formatter. includes factory then becomes responsible for generating a
+container of qname to formatter name to includes.
+
+*** COMPLETED Improve building of file names                          :story:
+    CLOSED: [2015-02-09 Mon 20:50]
+    CLOCK: [2015-02-09 Mon 19:55]--[2015-02-09 Mon 20:51] =>  0:56
+
+With the latest changes we started generating wonky file names:
+
+: 2015-02-08 18:33:37.215644 [DEBUG] [cpp.types.class_header_formatter] filename: types/..hpp
+
+We need a better way of knowing what is going into the file name
+builder. Split the file name builder parameters into its own type, and
+output the parameters when they get created by the factory. Pass those
+in to the builder as part of build.
+
+*** COMPLETED Consider using an abstract factory in formatters        :story:
+    CLOSED: [2015-02-09 Mon 20:51]
+
+*Rationale*: We don't need it, lets just use the provider interface.
+
+At present we have a number of interfaces (or quasi-interfaces) coming
+out of formatter:
+
+- file name generation
+- includes generation
+- opaque settings generation
+- opaque settings validator
+
+Perhaps it makes more sense to aggregate them all into a factory of
+factories. We should look into the abstract factory pattern as it
+seems particularly suitable for this. The factory should remember the
+id of the formatter it comes from.
+
+In terms of names, it is difficult to find a name for such an
+aggregate:
+
+- formatter components, e.g. =formatter_components_factory_interface=
+- formatter properties
+- formatter parts
+
+*** COMPLETED Support "cross-facet interference"                      :story:
+    CLOSED: [2015-02-09 Mon 20:52]
+
+*Rationale*: The new settings container supports this.
+
+In a few cases its useful to disable bits of a facet when another
+facet is switched off because those bits do not belong to the main
+facet the formatter is working on. At present this happens in the
+following cases:
+
+- Forward declaration of serialisation in domain when serialisation is
+  off
+- Friend of serialisation in domain when serialisation is
+  off
+- declaration and implementation of to_stream when IO is off
+- declaration and implementation of inserter when IO is off and
+  integrated IO is on.
+
+We need a way of accessing the on/off state of all facets from any
+formatter so that they can make cross facet decisions. A quick hack
+was to add yet another flag: =disable_io= which is disabled when the
+IO facet is not present and passed on to the relevant formatters. This
+needs to be replaced by a more general approach.
+
+*** COMPLETED Consider a more selective hashing generation             :epic:
+    CLOSED: [2015-02-09 Mon 20:52]
+
+*Rationale*: The new settings container supports this.
+
+At present we either generate hashing for all types or none at all. In
+practice, most users only need hashing for a few types. It would be
+great if we could have certain facets like hashing with a "disabled
+for all types except" approach. Users would then enable the types that
+they need.
+
+*** COMPLETED Use boilerplate to generate annotations                 :story:
+    CLOSED: [2015-02-09 Mon 20:53]
+
+*Rationale*: The new formatters will do this.
+
+#+begin_quote
+*Story*: As a dogen user, I want to be able to use my own licence and
+copyright attribution so that the generated code matches the general
+project choices.
+#+end_quote
+
+Remove all of the manual boilerplate and make use of the new
+class. This will involve bring across some dynamic extensions into the
+C++ model.
+
+*** COMPLETED Move all the fundamental configuration options into dynamic extensions :story:
+    CLOSED: [2015-02-09 Mon 20:53]
+
+*Rationale*: This is mostly done with the new settings.
+
+#+begin_quote
+*Story*: As a dogen user, I do not want to have to specify fundamental
+model options from the command line so that I do not forget to specify
+them and generate invalid models.
+#+end_quote
+
+There are a set of options that must not be supplied as command line
+arguments, such as backend and facet related properties etc. These
+should be attached to the diagram itself so that one does not need to
+supply it every time one code generates.
+
+**** Update all models and tests to use the new tags
+
+Once the config options are in we need to start making use of them to
+ensure they work exactly as before.
+
+**** Remove all C++ command line settings
+
+Once the overrides have been proven to work, we need to remove the
+command line options and make sure nothing breaks.
+
+**** Remove all of the config classes
+
+We have a number of settings in the =config= model that won't be used
+any longer:
+
+- =formatting_settings=
+- =annotation_settings=
+- =cpp_settings=
+- =code_generation_marker_settings=
+
+These should all be removed, with the corresponding command line
+arguments.
+
+*** COMPLETED Consider renaming config settings to options            :story:
+    CLOSED: [2015-02-10 Tue 20:41]
+    CLOCK: [2015-02-10 Tue 19:34]--[2015-02-10 Tue 20:41] =>  1:07
+
+Now that it is well understood that settings are type-safe
+representations of dynamic objects, it makes sense to stop calling the
+command line options sent into dogen "settings". We should probably
+call them "options". It is very confusing to have different kinds of
+say =cpp_settings= etc.
+
+Also delete all of the unused settings classes in config.
+
+*** COMPLETED Add absolute path support to path builder               :story:
+    CLOSED: [2015-02-11 Wed 22:08]
+    CLOCK: [2015-02-11 Wed 20:46]--[2015-02-11 Wed 22:08] =>  1:22
+    CLOCK: [2015-02-11 Wed 19:15]--[2015-02-11 Wed 20:10] =>  0:55
+    CLOCK: [2015-02-10 Tue 23:12]--[2015-02-10 Tue 23:33] =>  0:21
+    CLOCK: [2015-02-10 Tue 21:52]--[2015-02-10 Tue 23:11] =>  1:19
+    CLOCK: [2015-02-10 Tue 20:41]--[2015-02-10 Tue 21:50] =>  1:09
+
+We have extended the file properties to have absolute and relative
+paths. The file name builder can now be changed to read the relevant
+properties for this. We need to look at the locator code to figure out
+how to create the path.
+
+We had assumed that all settings in config would be moved to
+dynamic. In reality, the project directory cannot be moved. This is
+because it is not hard-codable to a given diagram, but it is instead
+likely relative to the position of the directory in each computer. Due
+to this we need to somehow pass the config settings into the settings
+factories and take this into account when generating the c++
+settings. The same applies to include and source directories.
+
+We need to pass the knitting settings into the backend for this to
+work.
+
+Problem: there are two "aspects" to source and include
+directories. First, users can supply full path to these. Second, when
+using project directories, we default the source and include
+directories to hard-coded names (=src= and =include=). We need to
+handle both of these scenarios.
+
+- rename project directory to project path;
+- create source and include directory fields again;
+- use these if split project is false.
+
+*** COMPLETED Populate the local settings                             :story:
+    CLOSED: [2015-02-12 Thu 21:15]
+    CLOCK: [2015-02-12 Thu 19:02]--[2015-02-12 Thu 22:08] =>  3:06
+
+We need to read the dynamic object for each SML entity and use it to
+populate all the various local settings.
+
+One slight complication: for local settings, we must not take into
+account default values. This is because otherwise we would end up
+overriding the "overriden" values globally with defaulted values. We
+need some kind of way of not creating any settings if the default
+values are being used, or of knowing that the default values were used
+and so not create local settings for those. This could be achieved by
+something similar to the "found" flags - =used_default= maybe; if all
+used defaults and "do not create defaults" is true, then do not add
+settings to container.
+
+Solution: return optional of settings; if no fields are present return
+nothing.
+
+*** COMPLETED Implement type settings                                 :story:
+    CLOSED: [2015-02-12 Thu 21:15]
+
+We need a class to represent the type related settings such as
+=family=, etc. We also need an associated factory. "type" may not be
+the best of names; we need to do some name-storming here.
+
+*** COMPLETED Create a toggable replacement with legacy and new formatters :story:
+    CLOSED: [2015-02-12 Thu 23:31]
+    CLOCK: [2015-02-12 Thu 23:03]--[2015-02-12 Thu 23:31] =>  0:28
+
+As [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_61.org#analysis-on-formattable-types-and-formatter-integration][per analysis]], we need to create a map of file from the output of
+the legacy formatters; we then need to overwrite those entries in the
+map that are produced by the new formatters. This should be easy to
+switch on and off since we will not be able to use the new formatters
+for a long while.
+
+This can be done in knit's cpp backend:
+
+: backend::value_type cpp_backend::generate()
+
+We just need to look at the map and update any values with the files
+from the new formatters.
+
+*** COMPLETED Add field definition group                              :story:
+    CLOSED: [2015-02-15 Sun 21:45]
+
+*Rationale*: This has been achieved by ownership hierarchy.
+
+Fields should be grouped. This could conceivably be achieved by the
+owner, or maybe we need a high-level entity to do this
+aggregation. This is useful when printing fields out to the shell.
+
+*** POSTPONED Clean-up hierarchical support in dynamic                :story:
+    CLOSED: [2015-02-15 Sun 23:36]
+    CLOCK: [2015-02-15 Sun 22:18]--[2015-02-15 Sun 23:28] =>  1:10
+    CLOCK: [2015-02-15 Sun 21:03]--[2015-02-15 Sun 22:09] =>  1:06
+
+At present there are a number of limitations on how we have
+implemented hierarchical support:
+
+- fields from one model will get mixed up with other models;
+- fields from one formatter in one facet will get mixed up with fields
+  from other formatters in other facets with the same name.
+
+We need to improve on the indexer. While we're at it, we should do a
+few other assorted clean-ups:
+
+- rename workflow (since we now have two);
+- rename content extensions since this is a selector in disguise;
+
+*** POSTPONED Implement include generation for class header formatter :story:
+    CLOSED: [2015-02-15 Sun 23:36]
+    CLOCK: [2015-02-15 Sun 20:46]--[2015-02-15 Sun 21:03] =>  0:17
+    CLOCK: [2015-02-13 Fri 21:53]--[2015-02-13 Fri 23:52] =>  1:59
+    CLOCK: [2015-02-13 Fri 21:10]--[2015-02-13 Fri 21:53] =>  0:43
+    CLOCK: [2015-02-12 Thu 22:08]--[2015-02-12 Thu 23:03] =>  0:55
+    CLOCK: [2015-02-11 Wed 22:08]--[2015-02-11 Wed 23:07] =>  0:59
+    CLOCK: [2015-02-11 Wed 22:10]--[2015-02-11 Wed 22:27] =>  0:17
+
+Now that we have finished generating the path spec details, we need to
+make sure includes generation works as expected. Add both formatter
+level includes as well as model level includes.
+
+We also need to deal with:
+
+- exposing formatter id as a static property so we can create
+  dependencies between formatters;
+- includes overrides via dynamic extensions, so we can start using
+  STL, Boost etc classes.
+- includes of STL, Boost etc that are formatter level dependencies -
+  this needs to be handled via traits.
+
+Notes:
+
+- rename header file to file name override or something else quite
+  distinct. We need to ensure it is obvious that this property is only
+  used for non-dogen models. Actually we can now just call it include
+  path.
+- however we still have a problem: when we compute the include path we
+  do not know if it is a system or user path. We need to change file
+  properties to take this into account. We need a include path class
+  with a include type: user or system. we could then use this.
+- add field definition =no_inclusion_required= and populate all
+  relevant primitives.
+
+We need to add the notion of aspects. This is because a lot of things
+we have dealt with individually are really all related to aspects. An
+aspect is a part of a formatter that can be enabled or disabled. For
+example:
+
+- manual move constructor
+- manual default constructor
+- inserter operator
+- swap function
+- etc.
+
+We could simply create aspect settings; local and global formatters
+would have a map of =aspect_settings= against an =aspect_name=. We
+need to remove the integrated facet approach and implement it in terms
+of this. We should go through the types formatter and figure out which
+aspects it has. For now we shall ignore relationships between aspects
+and facets (and any other kind of switching logic). For example, it is
+the responsibility of the user to ensure that if integrated io is
+used, the io facet is switched off. This is because it is very
+complicated to build in the generic logic of such dependencies. We
+have a story to handle this properly in the backlog, but it will
+require a lot of work.
+
+*** POSTPONED Create settings expander and switcher                   :story:
+    CLOSED: [2015-02-15 Sun 23:36]
+    CLOCK: [2015-02-07 Sat 15:15]--[2015-02-07 Sat 15:45] =>  0:30
+
+We need a class responsible for copying over all settings that exist
+both locally and globally. The idea is that, for those settings, the
+selector should be able to just query by formatter name locally and
+get the right values. This could be the expander.
+
+We also need a more intelligent class that determines what formatters
+are enabled and disabled. This is due to:
+
+- lack of support for a given formatter/facet by a type in the graph;
+  it must be propagated to all dependent types. We must be careful
+  with recursion (for example in the composite pattern).
+- a facet has been switched off. This must be propagated to all
+  formatters in that facet.
+- user has switched off a formatter. As with lack of support, this
+  must be propagated through the graph.
+
+This could be done by the switcher. We should first expand the
+settings then switch them.
+
+In some ways we can think of the switcher as a dependency
+manager. This may inform the naming of this class.
+
+One thing to take into account is the different kinds of behaviours
+regarding enabling facets and formatters:
+
+- for serialisation we want it to be on and if its on, all types
+  should be serialisable.
+- for hashing we want it to be off (most likely) and if the user makes
+  use of a hashing container we want the type that is the key of the
+  container to have hashing on; no other types should have it on. We
+  also may want the user to manually switch hashing on for a type.
+- for forward declarations: if another formatter requires it for a
+  type, we want it on; if no one requires it we want it off. The user
+  may want to manually switch it on for a type.
+
+** Deprecated
+*** CANCELLED Start using =formatters::file= from legacy formatters   :story:
+    CLOSED: [2015-02-10 Tue 20:42]
+
+*Rationale*: We don't actually need this; side-by-side can be achieved
+without changing existing formatters.
+
+We need to get the legacy formatters to return the new
+=formatters::file=.
+
+*** CANCELLED Towards a more generic use of dynamic extensions         :epic:
+    CLOSED: [2015-02-07 Sat 15:52]
+
+*New Understanding*: We have decided to limit the dynamic extensions
+usage to extensibility. Where required parameters will be made visible
+via dynamic extensions but this should be kept to just those
+parameters that users can sensibly control.
+
+*Previous Understanding*
+
+We should do an inventory of all dogen features which can be
+reimplemented as dynamic extensions. For example, immutability should
+result in a generic parameter being added to the type at the SML
+level:
+
+: immutable = true
+
+which then gets resolved into a set of language specific parameters:
+
+: cpp.copy_constructor.status = disabled
+: cpp.setters.status = disabled
+: ...
+
+The formatter then looks for these tags to decide whether to add a
+method or not. If we had more languages, they would have equivalent
+formatting commands.
+
+The same would apply to facets. These would have a top-level generic
+parameter such as =hashing=:
+
+: hashing = true
+
+Which then expands to implementation specific hashing:
+
+: cpp.hashing.std_hashing = true
+
+or
+
+: cpp.hashing.boost_hashing = true
+
+The facet is now just a short-hand for a set of implementation
+specific parameters. There is some default mapping applied in this
+grouping. The user can shortcut the process by disabling the mapping
+and supplying implementation specific parameters:
+
+: hashing = false
+: cpp.hashing.boost_hashing = true
+
+Assuming =std_hashing= as a default.
+
+In addition, depending on the parameter, it may be propagatable /
+expandable. For example, if hashing is set to false in a type at the
+bottom of a graph relationship, we must propagate it to all members of
+the graph. Similarly, if hashing is disabled in the model, we must
+propagate it to all types in the model.

@@ -1,0 +1,152 @@
+#+title: Sprint Backlog 82
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- finish implementing helper methods dynamically and using yarn types.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-06-17 Fri 11:02]
+| <75>                                                                        |        |      |      |       |
+| Headline                                                                    | Time   |      |      |     % |
+|-----------------------------------------------------------------------------+--------+------+------+-------|
+| *Total time*                                                                | *7:07* |      |      | 100.0 |
+|-----------------------------------------------------------------------------+--------+------+------+-------|
+| Stories                                                                     | 7:07   |      |      | 100.0 |
+| Active                                                                      |        | 7:07 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |        |      | 0:04 |   0.9 |
+| COMPLETED Manual updates and blog posts                                     |        |      | 0:33 |   7.7 |
+| COMPLETED Create a name pretty printer                                      |        |      | 2:35 |  36.3 |
+| COMPLETED Add unparsed type to name tree                                    |        |      | 1:27 |  20.4 |
+| COMPLETED Appveyor build is not finding conan file                          |        |      | 0:21 |   4.9 |
+| POSTPONED Add properties for helpers                                        |        |      | 2:07 |  29.7 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-06-17 Fri 11:02]
+    CLOCK: [2016-04-18 Mon 22:25]--[2016-04-18 Mon 22:26] =>  0:01
+    CLOCK: [2016-04-14 Thu 07:32]--[2016-04-14 Thu 07:35] =>  0:03
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Manual updates and blog posts
+    CLOSED: [2016-06-17 Fri 11:02]
+    CLOCK: [2016-04-14 Thu 06:58]--[2016-04-14 Thu 07:31] =>  0:33
+
+Time taken with blog posts and updates to the manual.
+
+*** COMPLETED Create a name pretty printer                            :story:
+    CLOSED: [2016-04-20 Wed 23:30]
+    CLOCK: [2016-04-20 Wed 22:40]--[2016-04-20 Wed 23:30] =>  0:50
+    CLOCK: [2016-04-19 Tue 20:33]--[2016-04-19 Tue 20:44] =>  0:11
+    CLOCK: [2016-04-19 Tue 20:12]--[2016-04-19 Tue 20:32] =>  0:20
+    CLOCK: [2016-04-19 Tue 19:41]--[2016-04-19 Tue 20:10] =>  0:29
+    CLOCK: [2016-04-19 Tue 07:55]--[2016-04-19 Tue 08:40] =>  0:45
+
+We need to reuse the code for "printing" names when generating name
+tree's unparsed type strings. Refactor this code into it's own
+class. Tidy-up yarn's diagram around name trees.
+
+*** COMPLETED Add unparsed type to name tree                          :story:
+    CLOSED: [2016-04-21 Thu 08:32]
+    CLOCK: [2016-04-21 Thu 07:55]--[2016-04-21 Thu 08:31] =>  0:36
+    CLOCK: [2016-04-18 Mon 23:11]--[2016-04-18 Mon 23:19] =>  0:08
+    CLOCK: [2016-04-18 Mon 22:27]--[2016-04-18 Mon 23:10] =>  0:43
+
+We need to compute the unparsed type at all levels of the name tree
+during the name tree building process. We can then use this for the
+helper methods generation.
+
+Note that we cannot move it out of property because we are using the
+unparsed type in property as an input for the name tree generation.
+
+*** COMPLETED Appveyor build is not finding conan file                :story:
+    CLOSED: [2016-05-18 Wed 22:59]
+    CLOCK: [2016-05-18 Wed 22:35]--[2016-05-18 Wed 22:56] =>  0:21
+
+We somehow managed to break the windows build even further: it is not
+even compiling the code any more. This is due to the renaming of the
+conan file. Get it back to the previous state of borkedness.
+
+*** POSTPONED Add properties for helpers                              :story:
+    CLOSED: [2016-06-17 Fri 11:02]
+    CLOCK: [2016-04-21 Thu 22:06]--[2016-04-21 Thu 22:25] =>  0:19
+    CLOCK: [2016-04-21 Thu 21:42]--[2016-04-21 Thu 22:05] =>  0:23
+    CLOCK: [2016-04-21 Thu 08:32]--[2016-04-21 Thu 08:41] =>  0:09
+    CLOCK: [2016-04-18 Mon 21:14]--[2016-04-18 Mon 22:25] =>  1:11
+    CLOCK: [2016-04-14 Thu 07:36]--[2016-04-14 Thu 07:41] =>  0:05
+
+We should pre-compute all of the required helper instances for a given
+element and have them ready for formatting. Create all of the types
+required for this.
+
+What we were trying to say in this terse form is this:
+
+- every type needs a set of helpers with zero or more elements. This
+  is a set in that there are no duplicates.
+- this set is computed on the basis of relationships with other types
+  which themselves have helper settings.
+- once we got this set, we can then loop through it and ask the
+  registrar for the helpers for each family.
+- however, we must also have the helper settings next to this
+  information as we will need these.
+- finally, a given helper may call other methods inside it. This is
+  why we need to have the associated helpers. At present this happens
+  only in hashing.
+
+Notes:
+
+- we must keep track of types done by complete name. This can be done
+  in main function.
+- we must remember the children's helper instance properties to
+  populate associated helpers (but just direct children). This can be
+  achieved by returning these in the recursive function.
+- we must build helper instances for all children. This requires
+  supplying a list by reference.
+- we must build the complete name.
+- we need the complete name in two places: helpers and properties. For
+  properties all we care about is the top-level complete name. We
+  don't really need identifiable names etc. For helpers we need the
+  child complete names and their identifiable versions. Since we are
+  using C++ syntax for the unparsed type, we could extend this logic
+  and move the unparsed type from the property into the name tree - at
+  all levels.
+
+*Previous Understanding*
+
+We need to store the identifiable name of the name tree, as well as
+the language specific representation of the type. The container should
+make use of the name tree index - e.g. use a vector. The only problem
+is that we do not know what the size of the container is without doing
+look ups. We could have a property nested name size in
+stateful. Naming it is not easy though. Nested name cardinality?
+
+*Previous Understanding*
+
+We need to store the identifiable name of the nested name, as well as
+the language specific representation of the type. These are properties
+at the level of the =yarn::property=. The container should make use of
+the index - e.g. use a vector of size of properties list.
+
+Note that these are not properties of the property, but instead
+properties of the property type.
+
+Actually this is not correct; we need the properties for each nested
+name and for each particular nested name structure, possibly unique to
+each property. An alternative is then to come up with an index that
+takes into account the nesting (effectively flattens the nested
+structure). The index starts at zero for a type and increments for
+every property for every level of nesting. Each nested name has an
+index. Then, nested name properties is a flat container for each name
+with the required properties. With this the helpers can continue to
+rely on just the nested name (plus the nested name properties via the
+assistant).
+
+** Deprecated

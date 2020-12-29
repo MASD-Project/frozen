@@ -1,0 +1,1024 @@
+#+title: Sprint Backlog 66
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- Refactor expansion and formattables and get them to cope with all
+  the use cases without any major architectural hacks.
+- Implement as many formatters as possible using the new cpp
+  architecture.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-05-25 Mon 09:08]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *60:58* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 60:58   |       |      |
+| Active                                                                      |         | 60:58 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:04 |
+| COMPLETED Add a validate JSON target                                        |         |       | 0:41 |
+| COMPLETED Add support for =inclusion_required= at formatter level           |         |       | 1:09 |
+| COMPLETED Remove duplicate includes                                         |         |       | 0:18 |
+| COMPLETED Ensure keys have =is_final= set in sml                            |         |       | 0:03 |
+| COMPLETED Improve field definition querying in schema's repository selector |         |       | 1:20 |
+| COMPLETED Analyse the correct way of implementing the formattables workflow |         |       | 3:34 |
+| CANCELLED Create a trivial "enabled" expander                               |         |       | 3:11 |
+| COMPLETED Merge expansion namespace with formattables                       |         |       | 0:40 |
+| COMPLETED Create the formatter properties                                   |         |       | 4:07 |
+| COMPLETED Remove unused classes and properties in cpp                       |         |       | 0:37 |
+| COMPLETED Move the inclusion dependencies workflow into formatables         |         |       | 3:25 |
+| COMPLETED Move the path derivatives workflow into formatables               |         |       | 0:52 |
+| COMPLETED Create a simple enabler in formattables                           |         |       | 1:41 |
+| COMPLETED Delete dynamic expansion                                          |         |       | 0:22 |
+| COMPLETED Rename dynamic schema back to dynamic                             |         |       | 1:19 |
+| COMPLETED Tidy-up cpp diagram                                               |         |       | 1:59 |
+| COMPLETED Consider refactoring formatter properties repository factory      |         |       | 0:08 |
+| COMPLETED Create the =aspect_settings= class                                |         |       | 2:31 |
+| COMPLETED Finish enablement support work                                    |         |       | 2:32 |
+| COMPLETED Implement types class header formatter using stitch               |         |       | 3:27 |
+| COMPLETED Implement types enumeration header formatter using stitch         |         |       | 2:00 |
+| COMPLETED Implement exception header formatter using stitch                 |         |       | 0:21 |
+| COMPLETED Implement namespace header formatter using stitch                 |         |       | 1:12 |
+| COMPLETED Implement visitor header formatter using stitch                   |         |       | 1:25 |
+| COMPLETED Validate that we are not generating unexpected files              |         |       | 0:52 |
+| COMPLETED Try to improve handling of loops in stitch templates              |         |       | 2:20 |
+| COMPLETED Implement a basic =needle= model with io support                  |         |       | 8:37 |
+| POSTPONED Implement class implementation formatter using stitch             |         |       | 3:00 |
+| POSTPONED Update legacy formatters to use needle for io                     |         |       | 4:11 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-05-25 Mon 08:52]
+    CLOCK: [2015-05-20 Wed 18:44]--[2015-05-20 Wed 18:52] =>  0:08
+    CLOCK: [2015-05-18 Mon 21:52]--[2015-05-18 Mon 22:08] =>  0:16
+    CLOCK: [2015-05-14 Thu 19:46]--[2015-05-14 Thu 19:48] =>  0:02
+    CLOCK: [2015-05-14 Thu 19:40]--[2015-05-14 Thu 19:46] =>  0:06
+    CLOCK: [2015-05-13 Wed 19:45]--[2015-05-13 Wed 20:08] =>  0:23
+    CLOCK: [2015-05-13 Wed 17:09]--[2015-05-13 Wed 17:58] =>  0:49
+    CLOCK: [2015-05-12 Tue 22:20]--[2015-05-12 Tue 22:40] =>  0:20
+    CLOCK: [2015-05-12 Tue 17:08]--[2015-05-12 Tue 17:14] =>  0:06
+    CLOCK: [2015-05-11 Mon 22:25]--[2015-05-11 Mon 22:35] =>  0:10
+    CLOCK: [2015-05-11 Mon 18:57]--[2015-05-11 Mon 19:28] =>  0:31
+    CLOCK: [2015-05-10 Sun 23:01]--[2015-05-10 Sun 23:14] =>  0:13
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-05-25 Mon 08:52]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Add a validate JSON target                              :story:
+    CLOSED: [2015-05-11 Mon 14:54]
+    CLOCK: [2015-05-11 Mon 14:12]--[2015-05-11 Mon 14:53] =>  0:41
+
+It would be nice to be able to validate all of the JSON we have in the
+library by running a single target. We could detect [[http://stedolan.github.io/jq/][jq]] and then use it
+to validate.
+
+*** COMPLETED Add support for =inclusion_required= at formatter level :story:
+    CLOSED: [2015-05-11 Mon 17:41]
+    CLOCK: [2015-05-11 Mon 16:29]--[2015-05-11 Mon 17:38] =>  1:09
+
+In order to support hashing properly we need to be able to exclude
+some includes. The inclusion required was implemented at the facet
+level, so its not fine grained enough for this. Add it at formatter
+level too.
+
+*** COMPLETED Remove duplicate includes                               :story:
+    CLOSED: [2015-05-11 Mon 17:56]
+    CLOCK: [2015-05-11 Mon 17:38]--[2015-05-11 Mon 17:56] =>  0:18
+
+At present we seem to have duplicate qnames in the relationships
+containers. There isn't any good reason for this so we need to remove
+them during SML workflow. This is not a problem at present because we
+copy the relationships into a set before we start creating includes
+for them.
+
+Actually the problem is not the qnames themselves, but the include
+files. Multiple qnames are pointing to the same include file. We need
+to remove duplicates on the includes container.
+
+*** COMPLETED Ensure keys have =is_final= set in sml                  :story:
+    CLOSED: [2015-05-11 Mon 18:01]
+    CLOCK: [2015-05-11 Mon 17:58]--[2015-05-11 Mon 18:01] =>  0:03
+
+At present we are not marking keys as final in the new world
+formatters. This is likely because we are not setting =is_final= for
+keys when we generate them.
+
+*** COMPLETED Populate property =is_original_parent_visitable= in SML :story:
+    CLOSED: [2015-05-11 Mon 19:06]
+
+*Rationale*: Story implemented in previous sprint.
+
+To make life easier in C++ model, we've added a new SML property:
+=is_original_parent_visitable=. We need to look at the SML
+transformation and ensure this property is populated correctly.
+
+*** COMPLETED Consider creating constants for common fields           :story:
+    CLOSED: [2015-05-11 Mon 19:30]
+
+*Rationale*: we are doing this already.
+
+Fields such as =enabled=, =postfix= etc are common to all formatters
+and facets. It may make more sense to define some string constants for
+them, perhaps in =traits=?
+
+*** COMPLETED Improve field definition querying in schema's repository selector :story:
+    CLOSED: [2015-05-12 Tue 17:09]
+    CLOCK: [2015-05-12 Tue 16:44]--[2015-05-12 Tue 17:08] =>  0:24
+    CLOCK: [2015-05-12 Tue 12:21]--[2015-05-12 Tue 13:17] =>  0:56
+
+Why do we loop through the field definitions to find a field? Surely
+it makes more sense to supply the desired field name plus the
+ownership hierarchy to the selector and ask for the field directly?
+We would have to tell it if its the model, facet or formatter's
+version we are looking for but the method name could imply that -
+"for facet", etc. This would clean up all the "found_" flags and
+associated madness.
+
+Actually, we still need to support the old linear search API. This is
+because the qualified field name is not always the prefix + simple
+name. For example, for general settings and for stitch, the qualified
+field names do not have a prefix. This requires a bit of thinking: we
+could just add a prefix (e.g. =formatters.copyright_notice=) but it
+would make the fields less readable, and this was the reason why we
+didn't add it in the first place. For now, we will leave stitch as it is.
+
+*** COMPLETED Analyse the correct way of implementing the formattables workflow :story:
+    CLOSED: [2015-05-13 Wed 17:09]
+    CLOCK: [2015-05-13 Wed 13:35]--[2015-05-13 Wed 17:09] =>  3:34
+
+Some thoughts on the current implementation of expansion (both dynamic
+and cpp), settings and formattables:
+
+- expansion does not add any value. The fact that expansion happens
+  during SML is not useful because no one else other than the language
+  model is interested in these expansions.
+- expansion makes things more complicated. The chaining of expanders -
+  rather than being a useful feature - is actually an unnecessary
+  complication. If two workflows A and B have a dependency, it is much
+  easier to have a top-level workflow C that calls A and then B with
+  the result of A. This is much clearer than the graph approach with
+  expanders, where we use the meta-data to communicate between A and
+  B. It is also a lot more efficient.
+- settings are not just meta-data mirrors. The original idea was that
+  the settings were just a strongly-typed version of the data in the
+  extensions. However, they soon got used directly by the factories
+  and by the formattables. At present, settings are driven by the
+  needs of the formatters rather than the meta-data; for example, in
+  several places we do post-processing of settings to obtain the
+  "final value". This "final value" may be totally different from the
+  original value in the meta-data.
+- it is not clear if inclusion provider adds sufficient value. We
+  originally thought of the include provider as a way of avoiding
+  circular dependencies between formattables and formatters:
+  formatters need formattables for the interface (and in general,
+  since they format formattables) but formattables do not need to know
+  of formatters. Without this interface, formattables would know of
+  formatters, closing the circle. In addition, the provider was also a
+  way of limiting the coupling between the two - one does not need all
+  the abilities of the formatter, just the ability to generate include
+  dependencies. Finally, it was also thought to be useful in case we
+  had other sources of inclusion dependencies. For the last two items,
+  the interface has not provided particularly useful. The formatter
+  interface is already pretty small and we have found no other source
+  of includes. It is also worth bearing in mind that we need a
+  provider registrar - this would not be necessary if we used the
+  formatters interface directly and had the formattables workflow
+  receive the formatter's container at construction.
+
+Another way to think of this problem is as follows:
+
+- Formattables and expansion are just one thing: formattables. The
+  expanders are just sub-workflows of the main formattables workflow,
+  some of which are dependent on other sub-workflows. Each of these
+  sub-workflows outputs "settings" in one form or other. Settings is
+  not a good name in the sense that we have taken it to mean a copy of
+  the meta-data (and we cannot change this since the main formatter's
+  model will continue to use it in this sense). We need a name that
+  evokes "switches that change the behaviour of the formatter".
+- Transformation is one such workflow. It should be broken down so
+  that we have more fine grained transformers; Perhaps one per SML
+  object type?
+- We need an additional workflow that handles enabled, supported,
+  etc. We need a good name for it. Its job is to compute the values of
+  various flags for each cpp entity, given the graph of dependencies
+  in SML and the values of the meta-data for the various
+  dependencies. Flags: enabled, supported, disable complete
+  constructor. In the future: is comparable. Names: deriver,
+  propagator, inferrer, toggler, deducer. For now it does not need a
+  graph as we rely only on root object and "target" object; in the
+  future we will need a graph. In effect we could say there are three
+  types of inference: inference that requires just dynamic, inference
+  that requires just SML and inference that requires both. Note that,
+  in transformer, we should not touch any of the logic around building
+  a complete name as well as the "family" logic (is string, is char
+  and so on). The latter will be removed once we have needle so we can
+  ignore it for now. The former will remain a job of the transformer.
+- Merged model should be immutable once it leaves the SML
+  workflow.
+- Settings are two things: the meta-data mirrors and the knobs to
+  control formatting. We need to split this. There is nothing wrong in
+  having formattables making use of the settings; we just need to make
+  sure that we are not further transforming the settings. Settings
+  that really qualify as settings: general settings, opaque settings,
+  path settings, type settings (with the "requires_*") and formatter
+  settings with just enabled and supported. We could have a settings
+  workflow that returns a bundle of settings - it reads all of these
+  settings in one go for a given dynamic object. However, it makes
+  more sense to use the settings factories directly in each
+  sub-workflow; we never really need all of the settings at once. This
+  means that the bundle concept does not make sense inside of
+  settings; it does make sense inside of formattables though - to
+  bundle up all the different settings we use directly. These are just
+  general settings and opaque settings.
+- Dynamic expansion does not exist. We should go back to calling
+  =dynamic::schema= just =dynamic=.
+
+Questions that the "inferrer" needs to answer (=inferred_properties=?):
+
+- enabled: per type, per formatter. Set on root object and/or
+  type. Nests, propagates and is affected by "supported".
+
+This means we no longer need a generic "inferrer"; just something to
+manage "enablement". Naming is still tricky:
+
+- [[http://english.stackexchange.com/questions/92781/what-term-describes-the-state-of-being-either-enabled-or-disabled][What term describes the state of being either enabled or disabled?]]
+- [[http://english.stackexchange.com/questions/22372/push-is-to-pushable-as-enable-disable-are-to-what?rq%3D1][“Push” is to “pushable” as “enable”/“disable” are to what?]]
+- [[http://english.stackexchange.com/questions/31878/noun-for-enable-enability-enabliness?rq%3D1][Noun for enable (“enability”, “enabliness”)?]]
+
+Since there are no easy names we could call it "enabler" for now - he
+who is responsible for enabling.
+
+These could be handled separately:
+
+- requires_stream_manipulators: per type. Does not propagate; nests.
+- requires_manual_move_constructor: per type. for certain types. Does
+  not propagate, does not nest.
+- requires_manual_default_constructor: per type. for certain
+  primitives. Does not propagate, does not nest.
+- inclusion_required: per type. Does not propagate, does not nest.
+
+For these we could simply build sets with all types that match and
+pass those to the transformer. We could have settings for them (all
+optional) with a factory that returns them by formatter name; a
+top-level class would use these to build the sets. Actually, in
+general it could be said that certain dynamic fields at the entity
+level have the property that we want to know of all of the qnames that
+have them. If we could mark these fields somehow and if the model
+could have a container by qualified field name to set of qnames, we
+could just query these sets in the transformer. We would need
+something in the SML workflow to handle this task.
+
+SML should help on these:
+
+- has_primitive_properties: can be answered in the language of
+  SML. However this seems unused.
+
+These can be simplified to only be set at root object level:
+
+- disable_complete_constructor: per type. can be set on a type or on
+  root object. Does not propagate or nest.
+- Related (figure out if we are using them, if not remove them from
+  command line options): cpp-disable-xml-serialization,
+  cpp-disable-eos-serialization, cpp-disable-versioning. They are in
+  use and they will also affect the generation of inclusion
+  dependencies.
+
+If we manage to do so we can create a settings class that has these
+properties, with a factory, and make them part of the
+bundle. Names: model_settings, global_settings,
+global_aspect_settings, aspect_settings (but then, its not all aspect
+settings).
+
+Tasks:
+
+- create a formattables class for the formatter properties: enabled,
+  file path, header guard, inclusion dependencies, integrated
+  facets. i.e. the formatter settings needs to move to
+  formattables. This class will be populated by looking at the output
+  of multiple sub-workflows.
+- create the global_aspect_settings class and associated classes
+  (factory etc). Add it to bundle using the same approach as general
+  settings.
+- add support in dynamic and SML for the "gathering" of fields
+  (i.e. mark a field as "gatherable" and then gather it into the
+  model). Mark all required fields as gatherable. Remove type settings
+  and related infrastructure. Note: we do not need to handle
+  inclusion_required this way; it already works well so leave it as
+  is.
+- create an enabler responsible for determining which formatters are
+  on and off. It uses settings to figure out what is enabled and
+  supported, both locally and globally. For now, implement a root
+  object based approach; later on we can try to see if we can quickly
+  hack the enabled/supported logic using the cycles
+  workaround. Enabler will return a map of qname per formatter name to
+  boolean - or perhaps we could return just the ones that are enabled?
+  e.g. if not found its disabled.
+- move path derivatives workflow into formattables. Must return the
+  path derivatives per qname per formatter name.
+- create a workflow step that takes the path derivatives and builds
+  the inclusion directives repository.
+- create a opaque settings workflow that takes in all the opaque
+  settings factories generated on the back of the formatters and uses
+  them to generate opaque settings.
+- move inclusion dependencies workflow into formattables. It must
+  output the inclusion dependencies per qname per formatter name. It
+  must also take in the inferer output to be able to determine which
+  formatters are enabled for which type.
+- create a transformer workflow (do we need a workflow?). It is
+  responsible for populating all properties that can be directly
+  inferred from SML without any look-ups.
+- create an assembler. It is responsible for taking the output of the
+  transformer and all other relevant sub-workflows and assembling it
+  into the final formattable. Or perhaps we could just give
+  transformer the components for assembly. Actually, lets leave it for
+  now and see how complicated the formattable workflow looks after all
+  the refactoring. If need be, it can be revisited.
+- delete dynamic expansion
+- rename dynamic schema back to dynamic.
+- remove all of the fields that are not settable from the outside
+  world from dynamic: file path.
+- remove new class info and associated classes.
+- remove type settings and related infrastructure.
+
+*** CANCELLED Create a trivial "enabled" expander                     :story:
+    CLOSED: [2015-05-13 Wed 17:45]
+    CLOCK: [2015-05-12 Tue 18:46]--[2015-05-12 Tue 19:47] =>  1:01
+    CLOCK: [2015-05-12 Tue 17:15]--[2015-05-12 Tue 18:46] =>  1:31
+    CLOCK: [2015-05-11 Mon 21:38]--[2015-05-11 Mon 22:17] =>  0:39
+
+*Rationale*: This story revealed a world of inadequacies in the design
+ of expanders, formattables, etc. We will address this after the
+ refactor on a new story.
+
+For now we just need a very simple expander that looks into the root
+object and switches the formatter's "enabled" flag at the entity level
+on/off. Implement this to allow us to get the disable facet knit tests
+to pass.
+
+Actually we have a big problem: after we implemented all the changes,
+the includes are still wrong. The problem is that the formatting
+assistant we are using to build the includes is making use of
+formatting settings; but we are still in the expansion phase, so the
+settings are not ready to be read yet. Worse, even if we looked at the
+meta-data, we couldn't get the information we need. This is because
+properties like =enabled= are set in the root object (by say the
+options copier or the enabled flag expander) not in the individual
+objects. So the code as it is won't work.
+
+However, we could this make it work if we move the logic of falling
+back to root object into the options copier or enabled flag
+expander. This would mean we would increase the size of the meta-data
+a lot (e.g. every single object would then have a formatter's enabled
+flag set). In addition, we need a provider's assistant that relies
+only on the meta-data when answering questions such as what formatters
+are enabled.
+
+This is not a problem for the other use case of the formatter's
+assistant (in stitch/formatters) because the settings have been setup
+by then.
+
+*** COMPLETED Merge expansion namespace with formattables             :story:
+    CLOSED: [2015-05-14 Thu 08:59]
+    CLOCK: [2015-05-14 Thu 07:44]--[2015-05-14 Thu 08:24] =>  0:40
+
+We should be able to edit the dia file and move all types from
+expansion to formattables. This just requires expanding (pun not
+intended) the formattables package area and updating all child
+nodes. We can then delete the expansion package.
+
+For code generation we then need to copy the files across and update
+the namespaces.
+
+- O0: formattables
+- O228: expansion
+
+*** COMPLETED Create the formatter properties                         :story:
+    CLOSED: [2015-05-16 Sat 00:50]
+    CLOCK: [2015-05-15 Fri 23:40]--[2015-05-16 Sat 00:28] =>  0:48
+    CLOCK: [2015-05-15 Fri 20:57]--[2015-05-15 Fri 21:56] =>  0:59
+    CLOCK: [2015-05-15 Fri 18:36]--[2015-05-15 Fri 18:59] =>  0:23
+    CLOCK: [2015-05-15 Fri 18:25]--[2015-05-15 Fri 18:34] =>  0:09
+    CLOCK: [2015-05-15 Fri 18:00]--[2015-05-15 Fri 18:24] =>  0:24
+    CLOCK: [2015-05-15 Fri 15:23]--[2015-05-15 Fri 15:27] =>  0:04
+    CLOCK: [2015-05-15 Fri 08:10]--[2015-05-15 Fri 09:15] =>  1:05
+    CLOCK: [2015-05-14 Thu 19:20]--[2015-05-14 Thu 19:35] =>  0:19
+
+Create a formattables class for the formatter properties: enabled,
+file path, header guard, inclusion dependencies, integrated facets -
+i.e. the formatter settings needs to move to formattables.
+
+This class will be populated by looking at the output of multiple
+sub-workflows. In fact, it probably makes sense to create a factory
+that handles the manufacturing of all path derivatives and inclusion
+dependencies gunk and then generates the formatter properties. We just
+need the enablement map as input (as well as the model) and we can
+then output qname to formatter name to formatter properties.
+
+This would be a good place to put the processing of integrated facets
+supplied in meta-data, as well as doing a hack for now of the command
+line options.
+
+We probably don't need settings support for this.
+
+Tasks:
+
+- add formatter properties to transformer.
+- start using formatter properties in formatters.
+
+*** COMPLETED Remove unused classes and properties in cpp             :story:
+    CLOSED: [2015-05-16 Sat 01:02]
+    CLOCK: [2015-05-16 Sat 00:50]--[2015-05-16 Sat 01:02] =>  0:12
+    CLOCK: [2015-05-16 Sat 00:32]--[2015-05-16 Sat 00:49] =>  0:17
+    CLOCK: [2015-05-15 Fri 09:17]--[2015-05-15 Fri 09:25] =>  0:08
+
+We have a few classes that were made for exploratory reasons but in
+reality we won't use them. Remove them:
+
+- remove new class info and associated classes.
+- remove type settings and related infrastructure.
+- has_primitive_properties: seems unused.
+- remove family types and all the family gunk.
+
+*** COMPLETED Move the inclusion dependencies workflow into formatables :story:
+    CLOSED: [2015-05-16 Sat 01:03]
+    CLOCK: [2015-05-15 Fri 16:21]--[2015-05-15 Fri 18:00] =>  1:39
+    CLOCK: [2015-05-15 Fri 15:04]--[2015-05-15 Fri 15:19] =>  0:15
+    CLOCK: [2015-05-15 Fri 10:38]--[2015-05-15 Fri 11:00] =>  0:22
+    CLOCK: [2015-05-15 Fri 09:47]--[2015-05-15 Fri 10:38] =>  0:51
+    CLOCK: [2015-05-15 Fri 09:29]--[2015-05-15 Fri 09:47] =>  0:18
+
+As per analysis, we need to move away from expansion. Get these
+classes in formattables and hook them in to workflow. It must output
+the inclusion dependencies per qname per formatter name.
+
+It must also:
+
+- take in the enabler output to be able to determine which formatters
+  are enabled for which type.
+- take in global aspect settings. Won't be used for now.
+
+At present the inclusion directives repository factory is reading the
+inclusion directives from the meta-data. We could easily change it to
+read it from the output of the path derivatives. Actually it makes
+more sense to make the inclusion directives selector work off of the
+output of the path derivatives; we do not need any transformations
+then.
+
+We need to read the inclusion dependencies from the dynamic object and
+merge that with the generated inclusion dependencies. At present this
+is done in the expander, so it needs to be moved to the workflow.
+
+Tasks:
+
+- delete the expander
+- inclusion dependencies is creating provider container, this should
+  be the responsibility of a workflow somewhere and passed in.
+- inclusion dependencies is creating directives - this can only be
+  removed when we get rid of expanders.
+
+*** COMPLETED Move the path derivatives workflow into formatables     :story:
+    CLOSED: [2015-05-16 Sat 01:03]
+    CLOCK: [2015-05-15 Fri 15:53]--[2015-05-15 Fri 16:20] =>  0:27
+    CLOCK: [2015-05-15 Fri 15:42]--[2015-05-15 Fri 15:53] =>  0:11
+    CLOCK: [2015-05-15 Fri 15:28]--[2015-05-15 Fri 15:42] =>  0:14
+
+As per analysis, we need to move away from expansion. Get these
+classes in formattables and hook them in to workflow. Must return the
+path derivatives per qname per formatter name.
+
+We need to also create a workflow step that takes the path derivatives
+and builds the inclusion directives repository.
+
+We just need to unhook the expander; everything else is useful exactly
+as is.
+
+- remove the directory path properties from path settings; these are
+  read from command line options and will continue to do so; they are
+  not settings.
+- add cpp options to the path derivatives workflow.
+- delete the expander
+
+*** COMPLETED Create a simple enabler in formattables                 :story:
+    CLOSED: [2015-05-16 Sat 01:03]
+    CLOCK: [2015-05-15 Fri 21:57]--[2015-05-15 Fri 23:38] =>  1:41
+
+Create an enabler responsible for determining which formatters are on
+and off. It may use settings to figure out what is enabled and
+supported, both locally and globally. It also uses the command line
+options to start off with.
+
+We may need to create settings like so:
+
+- global enablement: model enabled, facet enabled, formatter enabled.
+- local enablement: formatter enabled, formatter supported.
+
+Instead of creating settings, it may make more sense to just read
+these fields on the fly in enabler.
+
+For now, implement a root object based approach; later on we can try
+to see if we can quickly hack the enabled/supported logic using the
+cycles workaround. Enabler will return a map of qname per formatter
+name to boolean - or perhaps we could return just the ones that are
+enabled?  e.g. if not found its disabled.
+
+*Naming analysis*
+
+- [[http://english.stackexchange.com/questions/92781/what-term-describes-the-state-of-being-either-enabled-or-disabled][What term describes the state of being either enabled or disabled?]]
+- [[http://english.stackexchange.com/questions/22372/push-is-to-pushable-as-enable-disable-are-to-what?rq%3D1][“Push” is to “pushable” as “enable”/“disable” are to what?]]
+- [[http://english.stackexchange.com/questions/31878/noun-for-enable-enability-enabliness?rq%3D1][Noun for enable (“enability”, “enabliness”)?]]
+
+Since there are no easy names we could call it "enabler" for now - he
+who is responsible for enabling.
+
+Tasks:
+
+- update includes provider to take in enablement.
+
+*** COMPLETED Delete dynamic expansion                                :story:
+    CLOSED: [2015-05-16 Sat 01:26]
+    CLOCK: [2015-05-16 Sat 01:04]--[2015-05-16 Sat 01:26] =>  0:22
+
+As per analysis we do not need dynamic expansion so get rid of it.
+
+*** COMPLETED Rename dynamic schema back to dynamic                   :story:
+    CLOSED: [2015-05-16 Sat 02:45]
+    CLOCK: [2015-05-16 Sat 01:26]--[2015-05-16 Sat 02:45] =>  1:19
+
+Once we are back to just having =dynamic::schema=, it makes no sense
+to have nesting. Rename it back to just =dynamic=.
+
+*** COMPLETED Tidy-up cpp diagram                                     :story:
+    CLOSED: [2015-05-17 Sun 12:22]
+    CLOCK: [2015-05-17 Sun 12:31]--[2015-05-17 Sun 12:51] =>  0:20
+    CLOCK: [2015-05-17 Sun 10:45]--[2015-05-17 Sun 12:22] =>  1:37
+    CLOCK: [2015-05-15 Fri 09:26]--[2015-05-15 Fri 09:28] =>  0:02
+
+After all the new classes, expansion changes etc the cpp diagram
+became really messy. Make it reflect the new reality.
+
+*** COMPLETED Consider refactoring formatter properties repository factory :story:
+    CLOSED: [2015-05-17 Sun 12:29]
+    CLOCK: [2015-05-17 Sun 12:22]--[2015-05-17 Sun 12:30] =>  0:08
+
+At present we merged the containers at the qname level. However,
+we could merge them one level down - at the formatter level. This
+would mean that we may not even require a formatter properties
+factory. The merging and the generation of formatter properties could
+all be combined into one operation.
+
+Actually after some consideration, it was decided its not worth doing
+this refactor. Moving the loop one level down would not affect the
+overall number of times we loo through the container - we'd just be
+moving responsibilities around. And since we have a very consistent
+pattern of responsibilities for each factory (e.g. deal with formatter
+data) it makes sense to keep it like this.
+
+*** COMPLETED Create the =aspect_settings= class                      :story:
+    CLOSED: [2015-05-17 Sun 15:21]
+    CLOCK: [2015-05-17 Sun 15:06]--[2015-05-17 Sun 15:24] =>  0:18
+    CLOCK: [2015-05-17 Sun 12:52]--[2015-05-17 Sun 15:05] =>  2:13
+
+Create a class to manage the global aspect settings:
+
+- disable_complete_constructor:
+- cpp_disable_xml_serialization
+- cpp_disable_eos_serialization
+- cpp_disable_versioning
+
+These can only be set on the root object.
+
+Tasks:
+
+- add these settings to bundle using the same approach as general
+  settings.
+- create a factory for the settings.
+- update includes provider to take in global aspect settings.
+- update models that use these command line options to have the
+  meta-data set up.
+- update stitch templates to make use of them.
+
+*** COMPLETED Finish enablement support work                          :story:
+    CLOSED: [2015-05-17 Sun 19:36]
+    CLOCK: [2015-05-17 Sun 18:54]--[2015-05-17 Sun 19:35] =>  0:41
+    CLOCK: [2015-05-17 Sun 17:02]--[2015-05-17 Sun 18:53] =>  1:51
+
+We added the core of enablement but its not all done yet:
+
+- pass enablement settings to inclusion provision and use them to
+  determine if a formatter is enabled.
+- update all relevant diagrams with enablement settings.
+- add only if enabled
+- add if integrated and enabled
+
+*** COMPLETED Implement types class header formatter using stitch     :story:
+    CLOSED: [2015-05-18 Mon 15:17]
+    CLOCK: [2015-05-18 Mon 15:10]--[2015-05-18 Mon 15:17] =>  0:07
+    CLOCK: [2015-05-18 Mon 14:32]--[2015-05-18 Mon 15:09] =>  0:37
+    CLOCK: [2015-05-17 Sun 19:50]--[2015-05-17 Sun 19:52] =>  0:02
+    CLOCK: [2015-05-17 Sun 19:36]--[2015-05-17 Sun 19:49] =>  0:13
+    CLOCK: [2015-05-11 Mon 21:29]--[2015-05-11 Mon 21:37] =>  0:08
+    CLOCK: [2015-05-11 Mon 18:46]--[2015-05-11 Mon 18:57] =>  0:11
+    CLOCK: [2015-05-11 Mon 18:01]--[2015-05-11 Mon 18:18] =>  0:17
+    CLOCK: [2015-05-11 Mon 15:44]--[2015-05-11 Mon 15:59] =>  0:15
+    CLOCK: [2015-05-11 Mon 14:55]--[2015-05-11 Mon 15:43] =>  0:48
+    CLOCK: [2015-05-11 Mon 14:53]--[2015-05-11 Mon 14:55] =>  0:02
+    CLOCK: [2015-05-11 Mon 13:25]--[2015-05-11 Mon 14:12] =>  0:47
+
+We need to implement a stitch template for the class header formatter
+in types, plug it in and start working through the diffs.
+
+To test diff:
+
+: head -n50 /home/marco/Development/DomainDrivenConsulting/dogen/projects/test_models/all_primitives/include/dogen/test_models/all_primitives/types/a_class.hpp > expected.txt && grep -B20 -A25 -e "\#ifndef DOGEN_TEST_MODELS_ALL_PRIMITIVES_TYPES_A_CLASS_HPP" /home/marco/Development/DomainDrivenConsulting/output/dogen/clang-3.5/stage/bin/log/knit/workflow_spec/all_primitives_model_generates_expected_code.log > actual.txt && diff -u expected.txt actual.txt
+
+Notes:
+
+- we can't access disable complete constructor option. Figure out how
+  to.
+
+Remaining problems with trivial inheritance:
+
+- primitive types have includes; not honouring "requires include?"
+  flag.
+- leaf types do not have visitor methods. This is because
+  =is_original_parent_visitable= is not being populated.
+- too much space after end of namespaces and before end if.
+- no support for comments on classes and methods.
+- visitor includes in descendants.
+- class marked as service is being generated.
+
+Trivial inheritance is now green.
+
+Problems with std model:
+
+- dependencies on hashes are not included
+- duplicate includes. after sort we need some kind of distinct. Or
+  perhaps the SML indexer should only add distinct qnames.
+- keys are not final.
+
+Problems with stereotypes:
+
+- whitespace handling of immutability causes diffs.
+- we generate assignment operator even though immutability is on.
+- non-generatable stereotype is not being honoured.
+
+Problems with models that disable facets and disable full constructor
+model:
+
+- not honouring flags set in command line options.
+
+Next problems:
+
+- we can only determine if a formatter is enabled or a facet is
+  integrated if we have a qname. However, for headers such as =iosfwd=
+  we don't need a qname. The way to solve this is to remember the
+  settings for the current qname and apply them. Or we need to supply
+  the current qname every time we want to ask a question. We also need
+  to supply the formatter name of the facet that should be
+  integrated. This is a very convoluted API but we should just get it
+  to work and clean it up later.
+- also, we are not checking to see if the formatter is enabled when
+  checking for integration.
+
+*** COMPLETED Implement types enumeration header formatter using stitch :story:
+    CLOSED: [2015-05-18 Mon 17:20]
+    CLOCK: [2015-05-18 Mon 17:03]--[2015-05-18 Mon 17:20] =>  0:17
+    CLOCK: [2015-05-18 Mon 16:23]--[2015-05-18 Mon 17:02] =>  0:39
+    CLOCK: [2015-05-18 Mon 15:18]--[2015-05-18 Mon 16:22] =>  1:04
+
+We need to implement a stitch template for the enumeration header
+formatter in types, plug it in and start working through the diffs.
+
+*** COMPLETED Implement exception header formatter using stitch       :story:
+    CLOSED: [2015-05-18 Mon 17:46]
+    CLOCK: [2015-05-18 Mon 17:40]--[2015-05-18 Mon 17:46] =>  0:06
+    CLOCK: [2015-05-18 Mon 17:24]--[2015-05-18 Mon 17:39] =>  0:15
+
+We need to implement a stitch template for the exception header
+formatter in types, plug it in and start working through the diffs.
+
+*** COMPLETED Implement namespace header formatter using stitch       :story:
+    CLOSED: [2015-05-18 Mon 21:41]
+    CLOCK: [2015-05-18 Mon 21:42]--[2015-05-18 Mon 21:52] =>  0:10
+    CLOCK: [2015-05-18 Mon 21:39]--[2015-05-18 Mon 21:41] =>  0:02
+    CLOCK: [2015-05-18 Mon 21:29]--[2015-05-18 Mon 21:38] =>  0:09
+    CLOCK: [2015-05-18 Mon 21:21]--[2015-05-18 Mon 21:28] =>  0:07
+    CLOCK: [2015-05-18 Mon 20:22]--[2015-05-18 Mon 21:06] =>  0:44
+
+We need to implement a stitch template for the namespace header
+formatter in types, plug it in and start working through the diffs.
+
+*** COMPLETED Implement visitor header formatter using stitch         :story:
+    CLOSED: [2015-05-19 Tue 14:20]
+    CLOCK: [2015-05-19 Tue 14:26]--[2015-05-19 Tue 14:41] =>  0:15
+    CLOCK: [2015-05-19 Tue 14:21]--[2015-05-19 Tue 14:25] =>  0:04
+    CLOCK: [2015-05-19 Tue 14:12]--[2015-05-19 Tue 14:20] =>  0:08
+    CLOCK: [2015-05-19 Tue 13:53]--[2015-05-19 Tue 14:11] =>  0:18
+    CLOCK: [2015-05-19 Tue 13:40]--[2015-05-19 Tue 13:52] =>  0:12
+    CLOCK: [2015-05-19 Tue 13:11]--[2015-05-19 Tue 13:39] =>  0:28
+
+We need to implement a stitch template for the visitor header
+formatter in types, plug it in and start working through the diffs.
+
+*** COMPLETED Validate that we are not generating unexpected files    :spike:
+    CLOSED: [2015-05-19 Tue 16:27]
+    CLOCK: [2015-05-19 Tue 15:33]--[2015-05-19 Tue 16:25] =>  0:52
+
+At present we are only checking if a legacy file has a corresponding
+override version; however, it is entirely possible we are generating
+invalid overrides that are just getting ignored. Tighten the checks
+around this and deal with the fallout.
+
+*** COMPLETED Try to improve handling of loops in stitch templates    :story:
+    CLOSED: [2015-05-20 Wed 17:29]
+    CLOCK: [2015-05-20 Wed 16:24]--[2015-05-20 Wed 17:28] =>  1:04
+    CLOCK: [2015-05-20 Wed 15:08]--[2015-05-20 Wed 16:24] =>  1:16
+
+A pattern is emerging in stitch templates, like so:
+
+: <#+
+:                 unsigned int pos(0);
+:                 for (const auto p : c.properties()) {
+:                     if (!p.type().is_primitive() && !p.type().is_enumeration())
+:                         continue;
+: #>
+:     <#= (pos == 0 ? ": " : "  ") #><#= fa.make_member_variable_name(p) #>(static_cast<<#= p.type().complete_name() #>>(0))<#= fa.make_list_separator_text(c.properties().size(), pos) #><#= (pos == c.properties().size() - 1 ? " { }" : "") #>
+: <#+
+:                     ++pos;
+:                 }
+
+Basically:
+
+- there is a loop around some kind of container;
+- there may be things we do:
+  - at the beginning at the very first line (":")
+  - the beginning of every line ("  ");
+  - the end of every line, except for last (",");
+  - at the end of the last line ("{}").
+- there is the thing we would like to output for every line.
+
+It would be nice if we could do this with some help so we don't have
+to repeat this logic all over the place. This almost works with
+lambdas:
+
+: fa.for_each(c.properties(), ": ", "  ", " {} ", [](const std::string& prefix, const std::string& postfix, T p) {
+: #>
+:    <#= prefix #><#= fa.make_member_variable_name(p) #>(static_cast<<#= p.type().complete_name() #>>(0))<#= postfix #>
+: <#+
+: });
+
+There are a few problems:
+
+- we need generic lambdas so it requires C++ 14.
+- we may need to have a predicate for each line (e.g. is it applicable
+  to this T or not) so it means we need two lambdas.
+- the end result is a lot more readable but not a lot less verbose
+  than the original, especially with the two lambdas. It still looks
+  like there should be some fat to trim. We could for example pass in
+  all the parameters on construction and then have a =for_each= method
+  that just takes the lambdas - that should make it a bit more
+  readable. Or make it a builder:
+
+: x a.begin_prefix(": ").middle_prefix("  ").
+:  end_of_line(",").last_line(" {}");
+: a.predicate(...);
+: a.for_each(...);
+
+- its annoying to have to repeat the prefix and postfix parameters for
+  every single lambda. We could of course create a pair type, but
+  still, its not ideal.
+- we need to define some terminology: first line, all lines other than
+  first and last, last line, all lines other than last line. We also
+  need to isolate the case where there is only one line.
+
+An alternative is to have a "loop helper" that does not have
+lambdas. It has a constructor with container size, and all other
+configuration variables. It then has a =before()= and =after()=
+methods that are called in the loop. =after()= increments current
+position and returns the appropriate string. =before= returns the
+appropriate string. It could also have a infix_configuration class:
+
+- first: only first line.
+- first_if_many: only first line if there are 2 or more lines.
+- not_first: all lines other than first.
+- not_first_or_last: all lines other than first or last; only
+  applicable if line count > 2.
+- last: only last line.
+- last_if_many: only last line if there are 2 or more lines.
+- all: all lines.
+
+We could then supply the infix configuration for prefix and postfix or
+just return it builder style (e.g. prefix().first(" ").last(" "));
+
+*** COMPLETED Implement a basic =needle= model with io support        :story:
+    CLOSED: [2015-05-23 Sat 19:23]
+    CLOCK: [2015-05-23 Sat 17:21]--[2015-05-23 Sat 19:23] =>  2:02
+    CLOCK: [2015-05-23 Sat 16:54]--[2015-05-23 Sat 17:21] =>  0:27
+    CLOCK: [2015-05-23 Sat 16:20]--[2015-05-23 Sat 16:53] =>  0:33
+    CLOCK: [2015-05-22 Fri 17:55]--[2015-05-22 Fri 18:04] =>  0:09
+    CLOCK: [2015-05-22 Fri 17:35]--[2015-05-22 Fri 17:54] =>  0:19
+    CLOCK: [2015-05-22 Fri 17:32]--[2015-05-22 Fri 17:35] =>  0:03
+    CLOCK: [2015-05-22 Fri 16:30]--[2015-05-22 Fri 17:32] =>  1:02
+    CLOCK: [2015-05-22 Fri 15:34]--[2015-05-22 Fri 15:41] =>  0:07
+    CLOCK: [2015-05-22 Fri 15:01]--[2015-05-22 Fri 15:33] =>  0:32
+    CLOCK: [2015-05-22 Fri 14:47]--[2015-05-22 Fri 15:00] =>  0:13
+    CLOCK: [2015-05-22 Fri 11:55]--[2015-05-22 Fri 12:17] =>  0:22
+    CLOCK: [2015-05-22 Fri 11:43]--[2015-05-22 Fri 11:54] =>  0:11
+    CLOCK: [2015-05-22 Fri 10:47]--[2015-05-22 Fri 10:48] =>  0:01
+    CLOCK: [2015-05-22 Fri 10:38]--[2015-05-22 Fri 10:46] =>  0:08
+    CLOCK: [2015-05-22 Fri 09:54]--[2015-05-22 Fri 10:37] =>  0:43
+    CLOCK: [2015-05-22 Fri 09:48]--[2015-05-22 Fri 09:53] =>  0:05
+    CLOCK: [2015-05-22 Fri 09:24]--[2015-05-22 Fri 09:47] =>  0:23
+    CLOCK: [2015-05-21 Thu 19:10]--[2015-05-21 Thu 19:45] =>  0:35
+    CLOCK: [2015-05-21 Thu 07:24]--[2015-05-21 Thu 08:06] =>  0:42
+
+We need to create a model that provides helper functions for test data
+and streaming. We need to update the legacy formatters to use needle
+and stop the generation of all the helper functions. Commenting is
+sufficient since this code will be removed. We then need to ensure the
+new world formatters are correctly including the needle headers and
+generating the expected code.
+
+This model probably does not need to be a dogen model as it will have
+no domain types as such, just functions for test data, io and hashing.
+
+- add tests for containers of containers with a few permutations
+  (containing itself, containing pair, etc).
+- missing types: deque, variant, ptime, date, time_duration, path,
+  ptree.
+
+Actually, jsonify is kind of like a type function that is mapping the
+distinct behaviours of c++ types to their JSON representation. We
+should end up with only a few cases, roughly similar in number to the
+distinct JSON types:
+
+- strings
+- numbers
+- bools
+- chars
+- arrays
+- objects
+
+We will find that we need to define lots of specialisations that map
+to these. We should stop defining new =json_*_type= types and just
+reuse the core ones that represent the use cases above.
+
+Actually maybe it should be named after the "action" we take:
+
+- no transform
+- quoted, transformed
+- quoted, no transform
+- floating: formatted as float
+- char: formatted as hex
+- bool: formatted as truth values
+
+*** POSTPONED Implement class implementation formatter using stitch   :story:
+    CLOSED: [2015-05-25 Mon 08:52]
+    CLOCK: [2015-05-20 Wed 18:17]--[2015-05-20 Wed 18:44] =>  0:27
+    CLOCK: [2015-05-20 Wed 17:30]--[2015-05-20 Wed 18:08] =>  0:38
+    CLOCK: [2015-05-19 Tue 21:45]--[2015-05-19 Tue 22:08] =>  0:23
+    CLOCK: [2015-05-19 Tue 17:18]--[2015-05-19 Tue 17:26] =>  0:08
+    CLOCK: [2015-05-19 Tue 16:50]--[2015-05-19 Tue 17:17] =>  0:27
+    CLOCK: [2015-05-19 Tue 16:28]--[2015-05-19 Tue 16:42] =>  0:14
+    CLOCK: [2015-05-19 Tue 14:45]--[2015-05-19 Tue 15:28] =>  0:43
+
+We need to implement a stitch template for the class
+implementation formatter in types, plug it in and start working
+through the diffs.
+
+Problems:
+
+- includes will fail on stream manipulators. This is because we need
+  to check if we require them when generating dependencies, but we
+  have to do so manually since the class info doesn't exist yet. We
+  need to hack this for now - once we have "field gathering" support
+  this will be easier.
+- we need family back for tidy-up string. or perhaps we should have a
+  "requires tidying" property and then needle can provide adequate
+  overloads.
+- we can't implement this without needle support.
+
+*** POSTPONED Update legacy formatters to use needle for io           :story:
+    CLOSED: [2015-05-25 Mon 08:52]
+    CLOCK: [2015-05-24 Sun 22:30]--[2015-05-24 Sun 22:47] =>  0:17
+    CLOCK: [2015-05-23 Sat 22:38]--[2015-05-23 Sat 22:46] =>  0:08
+    CLOCK: [2015-05-23 Sat 21:18]--[2015-05-23 Sat 22:37] =>  1:19
+    CLOCK: [2015-05-23 Sat 19:24]--[2015-05-23 Sat 21:05] =>  1:41
+    CLOCK: [2015-05-22 Fri 15:44]--[2015-05-22 Fri 16:30] =>  0:46
+
+- add some hack to includer to pick up these header files.
+- remove io helpers from transformer and regenerate all models.
+
+This is actually quite a complicated thing we are trying to do
+here. The problem has to do with partial ordering of the template
+specialisations. It is very difficult (if not impossible) to order the
+specialisations correctly. We need to figure out a simpler of doing
+this.
+
+More thoughts:
+
+- the basic problem is that we tried to use a template function to
+  dispatch to the appropriate JSON formatting. The problem with this
+  is that we then enter the world of [[https://msdn.microsoft.com/en-us/library/zaycz069.aspx][partial ordering]], which means
+  that depending on the order in which functions are declared, we may
+  get different results. And since we declared the most general
+  function in the jsonify header, it was never going to work.
+- however, even placing it in a special header that is always last is
+  not sufficient; not quite sure why that is, but we still seem to
+  pick the wrong function in certain cases. Basically, relying on
+  ordering is very brittle and will result in hard-to-debug
+  problems. In addition, we don't really want to have complex rules of
+  ordering the includes because then we need to provide a way to
+  express those rules in the meta-data, adding a whole load of
+  complexity across the dogen stack for very little gain.
+- an alternative to this problem is to rely on overloading without
+  templates, a la =operator<<=. We don't actually need to make
+  =jsonify= a generic function; all we need is for the JSON formatting
+  types to be generic. We can then define a large number of
+  (non-generic) overloads that return instantiations of the JSON
+  formatting types. Overloading rules are a lot more amenable to
+  reasoning than partial ordering.
+
+** Deprecated
+*** CANCELLED Handling missing default facet settings                 :story:
+    CLOSED: [2015-05-11 Mon 19:08]
+
+*Rationale*: We don't have facet settings any more and we are checking
+this properly for the formatter settings.
+
+At present we are just logging a warning when the user supplies
+dynamic extensions for a facet that we do not have defaults
+for. However, it may make more sense to just throw if someone is
+assuming support for something which we do not support. We need to
+think about this use case properly.
+
+*** CANCELLED Create settings expander and switcher                   :story:
+    CLOSED: [2015-05-13 Wed 17:50]
+
+*Rationale*: This story has some early ideas on enablement but has
+ been superseded.
+
+*New Understanding*
+
+The expansion process now takes on this work. We need to refactor this
+story into an expander.
+
+*Previous Understanding*
+
+We need a class responsible for copying over all settings that exist
+both locally and globally. The idea is that, for those settings, the
+selector should be able to just query by formatter name locally and
+get the right values. This could be the expander.
+
+We also need a more intelligent class that determines what formatters
+are enabled and disabled. This is due to:
+
+- lack of support for a given formatter/facet by a type in the graph;
+  it must be propagated to all dependent types. We must be careful
+  with recursion (for example in the composite pattern).
+- a facet has been switched off. This must be propagated to all
+  formatters in that facet.
+- user has switched off a formatter. As with lack of support, this
+  must be propagated through the graph.
+
+This could be done by the switcher. We should first expand the
+settings then switch them.
+
+In some ways we can think of the switcher as a dependency
+manager. This may inform the naming of this class.
+
+One thing to take into account is the different kinds of behaviours
+regarding enabling facets and formatters:
+
+- for serialisation we want it to be on and if its on, all types
+  should be serialisable.
+- for hashing we want it to be off (most likely) and if the user makes
+  use of a hashing container we want the type that is the key of the
+  container to have hashing on; no other types should have it on. We
+  also may want the user to manually switch hashing on for a type.
+- for forward declarations: if another formatter requires it for a
+  type, we want it on; if no one requires it we want it off. The user
+  may want to manually switch it on for a type.
+
+*** CANCELLED Expand fields from command line options into dynamic    :story:
+    CLOSED: [2015-05-13 Wed 17:53]
+
+*Rationale*: Handled in other stories as part of refactoring.
+
+We need to ensure the following fields are populated, from the command
+line options:
+
+- integrated facets
+- enabled

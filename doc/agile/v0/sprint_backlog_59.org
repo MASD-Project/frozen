@@ -1,0 +1,200 @@
+#+title: Sprint Backlog 59
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Commentary
+
+** Mission
+
+Implement dynamic and start making use of it in SML.
+
+** Retrospective
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-01-20 Tue 23:32]
+
+| Headline                                                                 | Time    |       |      |
+|--------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                             | *10:28* |       |      |
+|--------------------------------------------------------------------------+---------+-------+------|
+| Active                                                                   |         | 10:28 |      |
+| COMPLETED Sprint and product backlog grooming                            |         |       | 0:43 |
+| COMPLETED Refactor comments processing code in dia to sml                |         |       | 4:01 |
+| COMPLETED Create a class to store the field definitions                  |         |       | 0:36 |
+| COMPLETED Inject dia fields =comment= and =identity_attribute=           |         |       | 2:47 |
+| COMPLETED Determine what fields need to be injected                      |         |       | 0:09 |
+| COMPLETED Remove build number                                            |         |       | 0:05 |
+| POSTPONED Add annotation fields and remove meta-data usage in formatters |         |       | 2:07 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-01-20 Tue 22:53]
+    CLOCK: [2015-01-13 Tue 00:13]--[2015-01-13 Tue 00:22] =>  0:09
+    CLOCK: [2015-01-12 Mon 23:00]--[2015-01-12 Mon 23:10] =>  0:10
+    CLOCK: [2015-01-11 Sun 23:22]--[2015-01-11 Sun 23:34] =>  0:12
+    CLOCK: [2015-01-05 Mon 23:28]--[2015-01-05 Mon 23:32] =>  0:04
+    CLOCK: [2015-01-05 Mon 23:10]--[2015-01-05 Mon 23:18] =>  0:08
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Refactor comments processing code in dia to sml         :story:
+    CLOSED: [2015-01-09 Fri 23:46]
+    CLOCK: [2015-01-08 Thu 22:40]--[2015-01-08 Thu 23:44] =>  1:04
+    CLOCK: [2015-01-08 Thu 22:29]--[2015-01-08 Thu 22:40] =>  0:11
+    CLOCK: [2015-01-08 Thu 21:34]--[2015-01-08 Thu 22:29] =>  0:55
+    CLOCK: [2015-01-07 Wed 21:52]--[2015-01-07 Wed 23:29] =>  1:37
+    CLOCK: [2015-01-06 Tue 22:14]--[2015-01-06 Tue 22:21] =>  0:07
+    CLOCK: [2015-01-05 Mon 23:32]--[2015-01-05 Mon 23:39] =>  0:07
+
+*New Understanding*
+
+- the comments parser job should be to convert the comments section
+  into the value of the =dia.comment= key, as well as parse any other
+  kvps.
+- use processed comment in processed object
+
+*Previous Understanding*
+
+In dia to sml; At present we are returning:
+
+: std::pair<std::string,
+:    std::list<
+:       std::pair<std::string, std::string>
+:    >
+: >
+
+Where the first string is the comments (sans kvps) and the second are
+the kvps. This is a bit confusing. We should probably have a class
+with fields that reflect this, e.g.:
+
+- =original_comments=
+- =key_value_pair=
+
+We need to reflect on these names.
+
+*** COMPLETED Create a class to store the field definitions           :story:
+    CLOSED: [2015-01-12 Mon 23:46]
+    CLOCK: [2015-01-12 Mon 23:39]--[2015-01-12 Mon 23:46] =>  0:07
+    CLOCK: [2015-01-12 Mon 23:10]--[2015-01-12 Mon 23:39] =>  0:29
+
+When querying for a field we need to have it's complete name. Instead
+of duplicating the complete name, we should probably have a central
+location for the field definitions. This is in effect a new take on
+the =tags= theme but this time with the field definitions. We can then
+use them like so:
+
+#+begin_example
+const auto s(o[field_definitions::identity_attribute().name().complete_name()]);
+#+end_example
+
+Its a tad verbose. A static variable is used in each of the static
+methods. Initialiser also uses this code to populate the
+registrar. Each model that defines fields has one of these classes (a
+la =tags=).
+
+To help with the verbosity we need a utility class in dynamic that
+takes a field definition and queries the object with it.
+
+*** COMPLETED Inject dia fields =comment= and =identity_attribute=    :story:
+    CLOSED: [2015-01-12 Mon 23:47]
+    CLOCK: [2015-01-10 Sat 00:48]--[2015-01-10 Sat 00:52] =>  0:04
+    CLOCK: [2015-01-09 Fri 23:42]--[2015-01-10 Sat 00:48] =>  1:06
+    CLOCK: [2015-01-09 Fri 23:22]--[2015-01-09 Fri 23:40] =>  0:18
+    CLOCK: [2015-01-09 Fri 23:18]--[2015-01-09 Fri 23:22] =>  0:04
+    CLOCK: [2015-01-06 Tue 22:21]--[2015-01-06 Tue 23:36] =>  1:15
+
+We need to implement dia.comment in terms of the dynamic object. We
+need to add the field definition and make sure we can replace the
+transformer processing with the new approach.
+
+Perhaps throwing whenever we find field that has no field definition
+is a bit excessive, at least for now. This means we need to add all
+the field definitions in one go rather than a few at a time. As a
+quick fix we can skip over undefined fields and re-evaluate this
+later.
+
+*** COMPLETED Add a dynamic workflow to dia to sml transformer        :story:
+    CLOSED: [2015-01-12 Mon 23:50]
+
+*New Understanding*
+
+With processed comments, we no longer require this. Having said that,
+we did add the dynamic workflow to transformer so considering this as
+a closed story.
+
+*Previous Understanding*
+
+We need to process the output of the comments parser using the dynamic
+workflow.
+
+*** COMPLETED Determine what fields need to be injected               :story:
+    CLOSED: [2015-01-13 Tue 00:20]
+    CLOCK: [2015-01-12 Mon 23:52]--[2015-01-13 Tue 00:01] =>  0:09
+
+Log whenever we are skipping a field because there is no associated
+field definition.
+
+From main models:
+
+#+begin_example
+$ cd ../output/dogen/clang-3.5/log
+$ grep -nH -e "Field definition not found" * | gawk '{print $NF}' | sort | uniq
+ODB_PRAGMA
+copyright
+licence
+modeline_group
+#+end_example
+
+And for unit tests:
+
+#+begin_example
+find . -iname '*log' -exec grep -nH -e "Field definition not found" {} \; | gawk '{print $NF}' | sort | uniq
+COPYRIGHT
+LICENCE
+MODELINE_GROUP
+key
+#+end_example
+
+Seems like we have a mix of cases on annotation fields.
+
+*** COMPLETED Create a top-level initialiser for knit                 :story:
+    CLOSED: [2015-01-13 Tue 23:14]
+
+At present we are duplicating the initialisation dependencies
+everywhere where knit is being used. We should just declare a knit
+initialiser that does the job and call that from the outside world.
+
+*** COMPLETED Remove build number                                     :story:
+    CLOSED: [2015-01-14 Wed 00:02]
+    CLOCK: [2015-01-13 Tue 23:57]--[2015-01-14 Wed 00:02] =>  0:05
+
+In sprint 50 we added the build number so we could distinguish between
+different builds. We have not yet found a case where this was useful
+and in the mean time, every time we rebuild, we need to re-link the
+work. Remove this until we have a use case.
+
+*** POSTPONED Add annotation fields and remove meta-data usage in formatters :story:
+    CLOSED: [2015-01-20 Tue 22:53]
+    CLOCK: [2015-01-15 Thu 12:10]--[2015-01-15 Thu 12:20] =>  0:10
+    CLOCK: [2015-01-14 Wed 21:23]--[2015-01-14 Wed 21:46] =>  0:23
+    CLOCK: [2015-01-13 Tue 22:20]--[2015-01-13 Tue 23:54] =>  1:34
+
+Add all required field definitions for the formatters field; rename
+meta-data namespace to dynamic and re-implement factory using dynamic
+fields instead of =ptree=.
+
+We need to inject:
+
+- copyright
+- licence
+- modeline_group
+
+We also need to sort out the upper case/lower case naming of these
+fields in various diagrams.
+
+** Deprecated

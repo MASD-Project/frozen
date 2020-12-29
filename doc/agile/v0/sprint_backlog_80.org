@@ -1,0 +1,377 @@
+#+title: Sprint Backlog 80
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- start implementing helper methods dynamically and using yarn types.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-03-14 Mon 21:45]
+| <75>                                                                        |         |       |      |       |
+| Headline                                                                    | Time    |       |      |     % |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| *Total time*                                                                | *30:09* |       |      | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+------+-------|
+| Stories                                                                     | 30:09   |       |      | 100.0 |
+| Active                                                                      |         | 30:09 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 6:08 |  20.3 |
+| COMPLETED Make context non-generatable                                      |         |       | 0:49 |   2.7 |
+| COMPLETED Setup logging syntax highlighting on emacs                        |         |       | 2:32 |   8.4 |
+| COMPLETED Create next interesting blog post                                 |         |       | 0:37 |   2.0 |
+| COMPLETED Rename =yarn::nested_name= to =yarn::name_tree=                   |         |       | 1:05 |   3.6 |
+| COMPLETED Rename =type= to =parsed_type=                                    |         |       | 0:14 |   0.8 |
+| COMPLETED Add index support for =yarn::name_tree=                           |         |       | 1:56 |   6.4 |
+| COMPLETED Create a context factory                                          |         |       | 1:13 |   4.0 |
+| COMPLETED Split dispatcher from formatters workflow and rename it           |         |       | 0:57 |   3.2 |
+| COMPLETED Create a contributing document for Github                         |         |       | 0:22 |   1.2 |
+| COMPLETED Sort out problems with main machine                               |         |       | 2:00 |   6.6 |
+| POSTPONED Help conan with strange warning                                   |         |       | 1:30 |   5.0 |
+| POSTPONED Add an helper method interface                                    |         |       | 6:56 |  23.0 |
+| POSTPONED Add properties for helpers                                        |         |       | 3:50 |  12.7 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-03-14 Mon 21:44]
+    CLOCK: [2016-02-18 Thu 07:52]--[2016-02-18 Thu 08:39] =>  0:47
+    CLOCK: [2016-02-17 Wed 11:03]--[2016-02-17 Wed 11:23] =>  0:20
+    CLOCK: [2016-02-17 Wed 10:34]--[2016-02-17 Wed 10:48] =>  0:14
+    CLOCK: [2016-02-17 Wed 06:04]--[2016-02-17 Wed 06:25] =>  0:21
+    CLOCK: [2016-02-06 Sat 19:00]--[2016-02-06 Sat 19:43] =>  0:43
+    CLOCK: [2016-02-13 Sat 23:43]--[2016-02-13 Sat 23:51] =>  0:08
+    CLOCK: [2016-02-12 Fri 17:50]--[2016-02-12 Fri 17:55] =>  0:05
+    CLOCK: [2016-02-10 Wed 23:15]--[2016-02-10 Wed 23:24] =>  0:09
+    CLOCK: [2016-02-09 Tue 22:16]--[2016-02-09 Tue 22:51] =>  0:35
+    CLOCK: [2016-02-06 Sat 13:45]--[2016-02-06 Sat 14:15] =>  0:30
+    CLOCK: [2016-02-06 Sat 12:40]--[2016-02-06 Sat 13:05] =>  0:25
+    CLOCK: [2016-02-06 Sat 12:35]--[2016-02-06 Sat 12:39] =>  0:04
+    CLOCK: [2016-02-06 Sat 12:09]--[2016-02-06 Sat 12:34] =>  0:25
+    CLOCK: [2016-02-06 Sat 11:15]--[2016-02-06 Sat 12:08] =>  0:53
+    CLOCK: [2016-02-06 Sat 10:10]--[2016-02-06 Sat 10:27] =>  0:17
+    CLOCK: [2016-02-01 Mon 20:40]--[2016-02-01 Mon 20:52] =>  0:12
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Make context non-generatable                            :story:
+    CLOSED: [2016-02-02 Tue 22:44]
+    CLOCK: [2016-02-02 Tue 21:55]--[2016-02-02 Tue 22:44] =>  0:49
+
+We need to extend context in a few ways dogen does not yet support:
+
+- make formatter properties and bundles by reference since we do not
+  need to copy them.
+- create a context generator that merges the containers and generates
+  a map of type to context. Supply this context to the formatters
+  workflow and to the formatters. Actually we left the generation code
+  as it is pretty trivial.
+
+*** COMPLETED Setup logging syntax highlighting on emacs              :story:
+    CLOSED: [2016-02-06 Sat 11:14]
+    CLOCK: [2016-02-06 Sat 10:28]--[2016-02-06 Sat 11:14] =>  0:46
+    CLOCK: [2016-02-05 Fri 23:38]--[2016-02-05 Fri 23:52] =>  0:14
+    CLOCK: [2016-02-05 Fri 22:05]--[2016-02-05 Fri 23:37] =>  1:32
+
+The Log4J mode is not highlighting syntax for a while now. It would be
+good to move to [[https://github.com/doublep/logview][LogView]], which is actively maintained. However, our
+log files do not work out of the box for some reason.
+
+- opened ticket in LogView: [[https://github.com/doublep/logview/issues/3][Problem detecting log file using boost log format]]
+- updated conventions to match SLF4J (removed FINE, using TRACE, etc).
+
+It is not easy to update boost to have milisecond timestamps:
+
+- [[http://stackoverflow.com/questions/27870064/how-to-truncate-boost-log-format-expression][How to truncate boost log format expression]]
+- [[http://stackoverflow.com/questions/5947018/how-to-customize-timestamp-format-of-boost-log][how to customize "TimeStamp" format of Boost.Log]]
+
+PR raised: [[https://github.com/doublep/logview/pull/4][Add support for timestamps with microseconds]]
+
+*** COMPLETED Create next interesting blog post                       :story:
+    CLOSED: [2016-02-08 Mon 22:29]
+    CLOCK: [2016-02-08 Mon 21:51]--[2016-02-08 Mon 22:28] =>  0:37
+
+Ship the latest links.
+
+*** COMPLETED Rename =yarn::nested_name= to =yarn::name_tree=         :story:
+    CLOSED: [2016-02-10 Wed 23:10]
+    CLOCK: [2016-02-10 Wed 22:36]--[2016-02-10 Wed 23:14] =>  0:38
+    CLOCK: [2016-02-09 Tue 22:52]--[2016-02-09 Tue 23:19] =>  0:27
+
+After a lot of faffing around with the naming for nested names, it is
+now obvious we should call it a "name tree". In effect, that is what
+it is: a tree structure of the names it contains. It also means we now
+have consistent terms for things such as index and height. Previous
+attempts to name this type were focused on the similarities with the
+composite pattern or with the main use for it (instantiated types). We
+now take the approach of naming it after the data structure it models.
+
+This rename will ripple across (builder, etc).
+
+See also the [[https://en.wikipedia.org/wiki/Tree_(data_structure)#Terminologies_used_in_Trees][related terminology]].
+
+*** COMPLETED Rename =type= to =parsed_type=                          :story:
+    CLOSED: [2016-02-10 Wed 23:38]
+    CLOCK: [2016-02-10 Wed 23:24]--[2016-02-10 Wed 23:38] =>  0:14
+
+For consistency purposes - since we already have a =unparsed_type= in
+=yarn::property= - we should rename =type= to =parsed_type=.
+
+*** COMPLETED Add index support for =yarn::name_tree=                 :story:
+    CLOSED: [2016-02-11 Thu 22:43]
+    CLOCK: [2016-02-11 Thu 21:59]--[2016-02-11 Thu 22:43] =>  0:44
+    CLOCK: [2016-02-11 Thu 21:38]--[2016-02-11 Thu 21:58] =>  0:20
+    CLOCK: [2016-02-11 Thu 21:05]--[2016-02-11 Thu 21:37] =>  0:32
+    CLOCK: [2016-02-11 Thu 20:44]--[2016-02-11 Thu 21:04] =>  0:20
+
+Add an index to =yarn::name_tree= and add a heigth too. Compute it as
+part of the existing yarn infrastructure - name tree builder is the
+best place. The index starts at zero for the root and increments by
+one as we walk the tree. We can go for depth first but it doesn't
+really matter what approach we use for naming provided the names are
+unique (for a given property) and go from 0 to the height of the tree.
+
+*** COMPLETED Create a context factory                                :story:
+    CLOSED: [2016-02-12 Fri 16:51]
+    CLOCK: [2016-02-12 Fri 16:15]--[2016-02-12 Fri 16:51] =>  0:36
+    CLOCK: [2016-02-11 Thu 22:44]--[2016-02-11 Thu 23:21] =>  0:37
+
+We should have a class responsible for generating the context given
+all the required inputs, doing filtering, etc.
+
+*** COMPLETED Split dispatcher from formatters workflow and rename it :story:
+    CLOSED: [2016-02-12 Fri 17:49]
+    CLOCK: [2016-02-12 Fri 16:52]--[2016-02-12 Fri 17:49] =>  0:57
+
+The dispatcher should be better named: element formatter perhaps? It
+is a class responsible for taking a =yarn::element= and generating all
+files it can generate. File factory? File list builder so it can have
+internal state? File collection factory? We could add the concept of a
+=fileset= to formatters and then have a =fileset_builder=. We could
+call it a group, but then we won't be able to follow the [[https://en.wikipedia.org/wiki/Group_(mathematics)][mathematical
+definition]] since we do not have the need for operation associated with
+it.
+
+This class can hide all of the dispatching logic in the cpp, providing
+a nice clean interface to clients (=make(context, yarn::element) :
+list<file>=).
+
+*** COMPLETED Create a contributing document for Github               :story:
+    CLOSED: [2016-02-12 Fri 18:47]
+    CLOCK: [2016-02-12 Fri 18:25]--[2016-02-12 Fri 18:47] =>  0:22
+
+We should copy one of the the standard "contributing" docos into
+Dogen. A good example is [[https://github.com/nlamirault/emacs-travis/blob/master/CONTRIBUTING.md][this]] one.
+
+*** COMPLETED Implement formatters workflow in terms of new classes   :story:
+    CLOSED: [2016-02-12 Fri 23:15]
+
+Update the workflow to use =context_factory= and =fileset_buider=.
+
+We decided against fileset builder in the end.
+
+*** COMPLETED Sort out problems with main machine                     :story:
+    CLOSED: [2016-02-17 Wed 21:47]
+    CLOCK: [2016-02-13 Sat 20:10]--[2016-02-13 Sat 22:10] =>  2:00
+
+Massive spike. Seems like debian unstable no longer has drivers for
+our graphics card so we need to move to legacy drivers.
+
+*** POSTPONED Help conan with strange warning                         :story:
+    CLOSED: [2016-03-14 Mon 21:44]
+    CLOCK: [2016-02-10 Wed 22:17]--[2016-02-10 Wed 22:35] =>  0:18
+    CLOCK: [2016-02-10 Wed 21:55]--[2016-02-10 Wed 22:16] =>  0:21
+    CLOCK: [2016-02-09 Tue 21:50]--[2016-02-09 Tue 22:15] =>  0:25
+    CLOCK: [2016-02-05 Fri 23:53]--[2016-02-06 Sat 00:19] =>  0:26
+
+We are getting a CMake warning on our builds:
+
+: CMake Warning (dev) in build/output/conanbuildinfo.cmake:
+:  Syntax Warning in cmake code at
+:    /home/travis/build/DomainDrivenConsulting/dogen/build/output/conanbuildinfo.cmake:142:88
+:  Argument not separated from preceding token by whitespace.
+: Call Stack (most recent call first):
+:  CMakeLists.txt:30 (include)
+: This warning is for project developers.  Use -Wno-dev to suppress it.
+
+Report it to conan.
+
+Actually, this is a bit trickier than expected, and the fix is now
+breaking the build:
+
+- [[https://github.com/conan-io/conan/issues/138][Warning in CMake file created by conan]]
+
+We will wait until conan comes up with a fix.
+
+*** POSTPONED Add an helper method interface                          :story:
+    CLOSED: [2016-03-14 Mon 21:44]
+    CLOCK: [2016-02-06 Sat 09:10]--[2016-02-06 Sat 10:09] =>  0:59
+    CLOCK: [2016-02-04 Thu 21:45]--[2016-02-04 Thu 23:19] =>  1:34
+    CLOCK: [2016-02-04 Thu 18:39]--[2016-02-04 Thu 19:27] =>  0:48
+    CLOCK: [2016-02-04 Thu 06:29]--[2016-02-04 Thu 07:16] =>  0:47
+    CLOCK: [2016-02-03 Wed 21:16]--[2016-02-03 Wed 22:57] =>  1:41
+    CLOCK: [2016-02-03 Wed 21:03]--[2016-02-03 Wed 21:15] =>  0:12
+    CLOCK: [2016-02-02 Tue 22:45]--[2016-02-02 Tue 23:40] =>  0:55
+
+We should also investigate on the need for the nested type info
+assistant.
+
+Tasks:
+
+- create interface.
+- add interface to registrar.
+- implement interface in at least one helper.
+- update assistant to query registrar for helpers based on type family
+  in context. Performs a recursive descent on nested name.
+- problem: io helpers in types should only be enabled if io is enabled
+  and if type is in an inheritance relationship. For this we need to
+  have access to formatter properties (potentially via assistant) but
+  we also need to have access to the type that owns the properties. We
+  could augment helper interface with the assistant - easy as we
+  already have it on the format method - and the element - harder; we
+  need to supply the object as part of helper method creation.
+- problem: we need to ask for complete and identifiable name N times
+  for a given formatter. It is not a good idea to dynamically compute
+  it or to store it in an associative container - it somehow needs to
+  be next to the nested name.
+
+*Previous Understanding*
+
+- create a registrar for interface with family and formatter name.
+- update all helpers to implement interface and to register
+  themselves.
+- it seems we have two use cases here: the formatter helper interface
+  for formatting purposes and the helper family interface that tells
+  us what formatter this helper belongs to. We do not want to leak
+  details of formatting into formattables. We need to find a name for
+  such an interface in formattables, a bit like the inclusion
+  dependencies provider. Formatter helper details provider? We can
+  then extend the existing formattables registrar and container to
+  store this interface; the formatter helper interface can extend this
+  interface; the main workflow returns all registered formatter
+  helpers in terms of the formatter helper details provider interface.
+- problem: we need additional properties related to the helper which
+  have been hard-coded:
+  - requires generic string; in a general form "string conversion
+    method";
+  - requires quoting;
+  - requires tidying up; in a general form "remove unprintable
+    characters";
+  - requires hashing helper method; in a general form: we need a way
+    to query the helper settings to figure out if a given type has an
+    associated helper method for a given formatter, and if we need to
+    call it implicitly or explicitly; and, if explicitly, we need to
+    ask the helper method formatter for the name of the helper method.
+  - requires dereferencing; for pointer types.
+- seems like yet again we found the wrong solution for this
+  problem. We need to create a top-level set of helper settings for
+  each type with all additional properties; propagate those into
+  formatters via context; and then use the assistant to loop through
+  the nested name (nested info for now) and pick the helper
+  settings. It should also consult the registrar to see if there are
+  any helpers available for this formatter and family.
+
+*** POSTPONED Add properties for helpers                              :story:
+    CLOSED: [2016-03-14 Mon 21:44]
+    CLOCK: [2016-02-13 Sat 23:51]--[2016-02-13 Sat 23:59] =>  0:08
+    CLOCK: [2016-02-13 Sat 22:10]--[2016-02-13 Sat 23:43] =>  1:33
+    CLOCK: [2016-02-13 Sat 12:13]--[2016-02-13 Sat 12:23] =>  0:10
+    CLOCK: [2016-02-13 Sat 11:58]--[2016-02-13 Sat 12:12] =>  0:14
+    CLOCK: [2016-02-13 Sat 00:33]--[2016-02-13 Sat 00:41] =>  0:08
+    CLOCK: [2016-02-12 Fri 23:41]--[2016-02-13 Sat 00:32] =>  0:51
+    CLOCK: [2016-02-12 Fri 22:55]--[2016-02-12 Fri 23:41] =>  0:46
+
+We should pre-compute all of the required helper instances for a given
+element and have them ready for formatting. Create all of the types
+required for this.
+
+*Previous Understanding*
+
+We need to store the identifiable name of the name tree, as well as
+the language specific representation of the type. The container should
+make use of the name tree index - e.g. use a vector. The only problem
+is that we do not know what the size of the container is without doing
+look ups. We could have a property nested name size in
+stateful. Naming it is not easy though. Nested name cardinality?
+
+*Previous Understanding*
+
+We need to store the identifiable name of the nested name, as well as
+the language specific representation of the type. These are properties
+at the level of the =yarn::property=. The container should make use of
+the index - e.g. use a vector of size of properties list.
+
+Note that these are not properties of the property, but instead
+properties of the property type.
+
+Actually this is not correct; we need the properties for each nested
+name and for each particular nested name structure, possibly unique to
+each property. An alternative is then to come up with an index that
+takes into account the nesting (effectively flattens the nested
+structure). The index starts at zero for a type and increments for
+every property for every level of nesting. Each nested name has an
+index. Then, nested name properties is a flat container for each name
+with the required properties. With this the helpers can continue to
+rely on just the nested name (plus the nested name properties via the
+assistant).
+
+** Deprecated
+*** CANCELLED Implement stitch with merging                            :epic:
+    CLOSED: [2016-02-18 Thu 08:24]
+
+*Rationale*: we don't need this now that we will have stitch
+meta-templates.
+
+When we have merging support we can actually implement stitch in a
+better way. We could mark the formatters with meta-data stating they
+have a method which is a stitch template. That then results in a c++
+operation which makes reference to stitch. When converting yarn into
+the CPP model we can add a "content" property to the stitchable
+operations that contains the expansion of the stitch
+template. Finally, when inside of the stitch template that is
+code-generating, we will loop through all of the operations. For the
+stitched ones, we can then dump the content property. Merge support is
+required because formatters are always expected to have a component of
+hand-crafting (include providers etc) and cannot be implemented
+without it.
+*** CANCELLED Use pimpl for a few "one-shot" services                 :story:
+    CLOSED: [2016-02-18 Thu 23:28]
+
+*Rationale*: we should refactor each class as we get to them; having a
+generic story is not helpful.
+
+We have quite a few services where it would be great to have
+transactional semantics. For example, when building a graph it would
+be great if one could have a list of objects to graph as an input and
+some kind of =grapher_result= as the output. From a potential
+=grapher_interface= it would look like a simple method in the
+interface, almost static. The problem with this approach of course is
+that it makes the =grapher_interface= implementations cumbersome
+because one has to pass all parameters to all internal methods instead
+of using class state. The present approach is to make it a "prepare"
+and then "use" sort of service, causing the usual nonsensical methods
+of "is it finished yet" and "are you trying to use the service a
+second time" (e.g. =is_built=, etc). Even if we pass in all the inputs
+in the constructor, its still not ideal. There are two options:
+
+- set member variables inside the "one-shot" function and then unset
+  them at the end;
+- have a =grapher= implementation which uses a =grapher_impl= that
+  does provide a sensible implementation. We used to do this inside
+  the =.cpp= files but then they became too big to manage.
+*** CANCELLED Replace Boolean attributes with flags                   :story:
+    CLOSED: [2016-02-18 Thu 23:36]
+
+*Rationale*: this story is too vague; what flags are these and how
+will this change make the code better? Looking at the model, nothing
+obvious comes to mind.
+
+We have a number of Boolean attributes in yarn which could easily be
+replaced by a single int and a flag enumeration. We would also need a
+set of utility methods to access the values.
+
+This story has a dependency on [[*Add%20support%20for%20bitsets][bitset support]].

@@ -1,0 +1,942 @@
+#+title: Sprint Backlog 07
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish moving file locator and dependencies into yarn.
+- Start sorting out object templates and profiles.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2018-01-01 Mon 09:41]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *83:58* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 83:58   |       |       | 100.0 |
+| Active                                                                      |         | 83:58 |       | 100.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  1:03 |   1.3 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  3:28 |   4.1 |
+| COMPLETED Remove remnants of upsilon                                        |         |       |  0:35 |   0.7 |
+| COMPLETED Create a well-defined set of stereotypes                          |         |       |  8:41 |  10.3 |
+| COMPLETED Fix rtags setup in laptop                                         |         |       | 13:43 |  16.3 |
+| COMPLETED Analysis on moving naming away from sewing terms                  |         |       |  2:21 |   2.8 |
+| COMPLETED Implement exomodel in terms of exoelements                        |         |       | 16:03 |  19.1 |
+| COMPLETED Fix JSON tests                                                    |         |       |  0:25 |   0.5 |
+| COMPLETED Remove all deprecated code after exomodels clean up               |         |       |  2:00 |   2.4 |
+| COMPLETED Add some kind of identity to exomodels                            |         |       |  0:12 |   0.2 |
+| COMPLETED Clean up tagged values                                            |         |       |  0:23 |   0.5 |
+| COMPLETED Simplify input model generation in cmake                          |         |       |  0:38 |   0.8 |
+| COMPLETED Create a =probing= model                                          |         |       |  1:22 |   1.6 |
+| COMPLETED Create the =external= model                                       |         |       |  5:07 |   6.1 |
+| COMPLETED Rename =yarn.json= to =external.json=                             |         |       |  1:51 |   2.2 |
+| COMPLETED Rename =yarn.dia= to =external.dia=                               |         |       |  2:43 |   3.2 |
+| COMPLETED Make =dogen= part of model modules                                |         |       |  3:27 |   4.1 |
+| COMPLETED Fix travis build                                                  |         |       |  0:03 |   0.1 |
+| COMPLETED Do a quick hack to fix name resolution                            |         |       |  1:20 |   1.6 |
+| COMPLETED Rename =formatters= to =formatting=                               |         |       |  1:45 |   2.1 |
+| COMPLETED Rename =yarn= to =modeling=                                       |         |       |  1:58 |   2.3 |
+| COMPLETED Rename =quilt.cpp= to =generation.cpp=                            |         |       |  2:04 |   2.5 |
+| COMPLETED Rename =quilt.csharp= to =generation.csharp=                      |         |       |  2:11 |   2.6 |
+| COMPLETED Create the =templating= model                                     |         |       |  1:15 |   1.5 |
+| COMPLETED Create the =generation= model                                     |         |       |  4:22 |   5.2 |
+| POSTPONED Finish setting up coveralls                                       |         |       |  2:57 |   3.5 |
+| POSTPONED Create a single binary for all of dogen                           |         |       |  1:03 |   1.3 |
+| POSTPONED Investigate current implementation of the origin transform        |         |       |  0:18 |   0.4 |
+| POSTPONED Remove exomodel and all deprecated classes                        |         |       |  0:40 |   0.8 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-11-06 Mon 21:40]
+    CLOCK: [2017-11-06 Mon 21:41]--[2017-11-06 Mon 21:59] =>  0:18
+    CLOCK: [2017-11-06 Mon 21:03]--[2017-11-06 Mon 21:40] =>  0:37
+    CLOCK: [2017-11-06 Mon 20:55]--[2017-11-06 Mon 21:03] =>  0:08
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.06, "Praia da Mariquita"
+
+#+begin_src markdown
+![Praia da Mariquita,](http://files.praiadamariquita.webnode.pt/200000109-50eaf52e2d/2015-10-17%2020.02.17.jpg)
+_Praia da Mariquita, Namibe, Angola. (C) Praia da Mariquita Lodge, 2014._
+
+Overview
+=======
+Our long road towards the clean up of the backends continued with another long and arduous sprint. The bulk of the work in this sprint was focused on two activities:
+
+- **File locators work**: clean up the backend-specific file locators and move them into yarn. In order to do this we needed to generalise a large number of data structures that were originally designed to be language-specific. This has proven to be quite a challenge, and we probably still have another full sprint ahead of us on this work.
+- **Additional exomodel work**: in the previous sprint we introduced the concept of _exomodels_; these originally used the regular meta-model elements such as ```yarn::object``` and so forth. This sprint it became obvious that a further round of simplification is still required, moving away from the core meta-model elements within the frontends. This work has only started but we can already see two obvious benefits: a) creating a frontend will be much easier, with very little code required b) the final JSON format will be quite trivial, making it easy for users to generate it or to map it from other tooling.
+
+In addition to this, a number of "fun" activities where also undertaken to break away from the monotony of refactoring. These also provided tangible benefits in terms of Dogen development:
+
+- **Consolidation of responsibilities in Yarn**: A number of classes were tidied up and moved into Yarn, making the meta-model more cohesive (file housekeeping, artefact writing, etc). Other classes already in Yarn were improved (better naming, remove classes that did not add any value, etc).
+- **Integration of CCache in Travis**: most of our builds are now much quicker (in the order of tens of minutes or less) due to caching of translation units. Unfortunately, this work does not extend to GCC's Debug build (for some not yet understood reason) nor to OSX (given the peculiarities of its many packaging systems, we still haven't quite figure out how to install CCache) nor to Windows (its not clear that AppVeyor and/or MSVC support CCache or a CCache like tool).
+- **Use of colour in Dia's UML diagrams**: as described below, we started colour-coding UML classes in Dia.
+- **Revamp of project logo**: Dogen now sports a slightly more professional project logo [in Github](https://github.com/DomainDrivenConsulting/dogen).
+
+User visible changes
+================
+The only user visible change this sprint is the introduction of a simple colour scheme for Dia UML Diagrams. This idea was largely copied from this paper: [Instinct: A Biologically Inspired Reactive Planner for Embedded Environments](http://www.robwortham.com/wp-content/uploads/2016/05/ICAPS-2016-PlanRob-Instinct-Planner.pdf). Note that the colours have no meaning to Dogen itself, but they do make interpreting diagrams a lot easier.
+
+![Coloured UML Diagrams](https://github.com/DomainDrivenConsulting/dogen/raw/master/doc/blog/images/colour_coded_uml_diagrams.png)
+
+Colouring is performed via a simple python script [available here](https://github.com/DomainDrivenConsulting/dogen/blob/master/projects/dia/python/colour.py), which can be executed in Dia's interactive python console.
+
+As always, for gory details on the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/v1/sprint_backlog_06.org).
+
+Next Sprint
+===========
+Next sprint we'll continue working on the new exomodel classes and resume the work on the backend-agnostic file locator.
+
+Binaries
+======
+You can download binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.06_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.06/dogen_1.0.06_amd64-applications.deb)
+- [dogen-1.0.06-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.06/dogen-1.0.06-Darwin-x86_64.dmg)
+- [dogen-1.0.06-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-1.0.06-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/927655421531361280][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6333421782644719616][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2018-01-01 Mon 09:40]
+    CLOCK: [2018-01-01 Mon 09:34]--[2018-01-01 Mon 09:40] =>  0:06
+    CLOCK: [2017-12-23 Sat 13:49]--[2017-12-23 Sat 14:20] =>  0:31
+    CLOCK: [2017-12-21 Thu 22:59]--[2017-12-21 Thu 23:04] =>  0:05
+    CLOCK: [2017-12-14 Thu 09:08]--[2017-12-14 Thu 09:12] =>  0:04
+    CLOCK: [2017-12-10 Sun 21:15]--[2017-12-10 Sun 21:34] =>  0:19
+    CLOCK: [2017-12-09 Sat 12:22]--[2017-12-09 Sat 12:32] =>  0:10
+    CLOCK: [2017-12-05 Tue 08:49]--[2017-12-05 Tue 08:54] =>  0:05
+    CLOCK: [2017-12-01 Fri 12:51]--[2017-12-01 Fri 13:14] =>  0:23
+    CLOCK: [2017-12-01 Fri 11:29]--[2017-12-01 Fri 11:46] =>  0:17
+    CLOCK: [2017-11-30 Fri 22:32]--[2017-11-30 Fri 23:02] =>  0:30
+    CLOCK: [2017-11-30 Thu 22:22]--[2017-11-30 Thu 22:55] =>  0:33
+    CLOCK: [2017-11-28 Tue 07:33]--[2017-11-28 Tue 07:46] =>  0:13
+    CLOCK: [2017-11-28 Tue 07:20]--[2017-11-28 Tue 07:32] =>  0:12
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Remove remnants of upsilon                              :story:
+    CLOSED: [2017-11-07 Tue 09:00]
+    CLOCK: [2017-11-07 Tue 08:39]--[2017-11-07 Tue 09:00] =>  0:21
+    CLOCK: [2017-11-07 Tue 08:25]--[2017-11-07 Tue 08:39] =>  0:14
+
+Originally we had removed upsilon as a frontend but it seems there are
+still some remnants around yarn. Delete them.
+
+*** COMPLETED Create a well-defined set of stereotypes                :story:
+    CLOSED: [2017-11-17 Fri 15:56]
+    CLOCK: [2017-11-17 Fri 17:15]--[2017-11-17 Fri 17:38] =>  0:23
+    CLOCK: [2017-11-17 Fri 15:23]--[2017-11-17 Fri 15:56] =>  0:33
+    CLOCK: [2017-11-17 Fri 15:12]--[2017-11-17 Fri 15:22] =>  0:10
+    CLOCK: [2017-11-17 Fri 14:51]--[2017-11-17 Fri 15:11] =>  0:20
+    CLOCK: [2017-11-17 Fri 14:02]--[2017-11-17 Fri 14:50] =>  0:48
+    CLOCK: [2017-11-17 Fri 10:47]--[2017-11-17 Fri 13:21] =>  2:34
+    CLOCK: [2017-11-17 Fri 10:10]--[2017-11-17 Fri 10:46] =>  0:36
+    CLOCK: [2017-11-17 Fri 09:15]--[2017-11-17 Fri 10:09] =>  0:54
+    CLOCK: [2017-11-09 Thu 20:12]--[2017-11-09 Thu 20:15] =>  0:03
+    CLOCK: [2017-11-09 Thu 20:04]--[2017-11-09 Thu 20:11] =>  0:07
+    CLOCK: [2017-11-09 Thu 19:35]--[2017-11-09 Thu 20:03] =>  0:28
+    CLOCK: [2017-11-09 Thu 07:55]--[2017-11-09 Thu 08:40] =>  0:45
+    CLOCK: [2017-11-07 Tue 18:09]--[2017-11-07 Tue 19:00] =>  0:51
+    CLOCK: [2017-11-07 Tue 09:02]--[2017-11-07 Tue 09:11] =>  0:09
+
+We should process the stereotypes that are hard-coded into yarn
+separately from those that are user supplied.
+
+*Previous understanding*
+
+Instead of mapping to yarn element types, we should be using the
+stereotypes directly.
+
+Actually the right way of doing this is to split out the well-known
+stereotypes from the other stereotypes.
+
+Tasks:
+
+- rename unknown stereotypes to something else like "non-well-known
+  stereotypes". Basically these may or may not be known. Or perhaps
+  even better: user-defined? Or we can just have static and dynamic
+  stereotypes.
+
+*** COMPLETED Fix rtags setup in laptop                               :story:
+    CLOSED: [2017-11-28 Tue 07:27]
+    CLOCK: [2017-11-10 Fri 09:10]--[2017-11-10 Fri 12:01] =>  2:51
+    CLOCK: [2017-11-10 Fri 14:05]--[2017-11-10 Fri 18:01] =>  3:56
+    CLOCK: [2017-11-11 Sat 09:05]--[2017-11-11 Sat 16:01] =>  6:56
+
+For some reason rtags is not working in the laptop.
+
+This was due to using symlinks to the SSD. We must make sure we setup
+the project in rtags using exactly the same path as we use in emacs.
+
+*** COMPLETED Analysis on moving naming away from sewing terms        :story:
+    CLOSED: [2017-12-01 Fri 13:18]
+    CLOCK: [2017-12-01 Fri 13:15]--[2017-12-01 Fri 13:52] =>  0:37
+    CLOCK: [2017-11-30 Thu 07:22]--[2017-11-30 Thu 08:11] =>  0:49
+    CLOCK: [2017-11-28 Tue 17:52]--[2017-11-28 Tue 18:47] =>  0:55
+
+Originally we came up with the sewing naming convention because there
+was this idea that we'd end up with a large number of little tools,
+each with their own model and binary. However, with the hindsight of
+several years of development and better understanding of the domain,
+it now seems that the big building blocks are as follows:
+
+- =frontend=: what we are calling =exomodel= at present and associated
+  types; its interface, registrar, etc; the dia and json frontends.
+- "middle-end": which we could call =modeling= core meta-model types,
+  transformations and helpers.
+- =backend=: effectively the =cpp= and =csharp= backends. Conceptually
+  these could make up the =quilt= kernel but this can just be a string
+  rather than a namespace. We are not even sure if we will ever
+  require more than one kernel. We could also call this component
+  =codegen= given its only concern is to generate code. Alternatively:
+  =generation=.
+- =templating=: wale and stitch.
+- =annotations=: this can stay as it is, though it would be nice to
+  have a class called tagged value, in keeping with the literature.
+- =formatters=: this can be renamed to =formatting=?
+- =utility=: stays as is.
+
+The big question to ask here though is what is the purpose of the code
+structure. In theory, one could be renaming and refactoring for ever,
+so there must be some kind of halting function that tells us when we
+reached some kind of stable state that is good enough. This could be
+achieved via criteria. We can come up with a laundry list of what the
+project structure should promote.
+
+Notes on project structure:
+
+- it should make it easy to add new frontends. A developer should not
+  need to know anything about the internals of yarn/modeling in order
+  to add a new frontend. The current structure fails on this regard
+  because we have merged the frontends with the middle-end.
+- it should make it easy to add new backends. This is already the
+  case, more or less, given the decoupling we've done of quilt and
+  yarn.
+- the names should provide a good indication of what the model does,
+  at least to someone familiar to the domain. We fail on this regard
+  due to the use of sewing terms which are not used commonly in the
+  model driven literature.
+- the dependencies between projects should not have cycles. This is
+  the case at present, but having said that we still have yarn
+  connected to both the frontends and the backends (even if this is
+  achieved via interfaces). An ideal world would be where the three
+  components would be linked in linear fashion only. However, one has
+  to be wary of foolish consistency here. In terms of the domain
+  literature, making everything a transform is the correct approach
+  and this is what we've achieved at present (e.g. frontends and
+  backends are merely transformations). Also the dependency is
+  cyclical only if one considers its run-time aspects rather than
+  compile time. The middle-end compiles fine in isolation, but one
+  cannot run its tests because they rely on the presence of frontends
+  and backends.
+- another way of looking at the problem is to say that we need a
+  mirror structure for frontends/middlened/backends: they all have a
+  meta-model and transforms. Each can expose transform chains. This in
+  effect moves us a bit backwards the old world where we had knit as a
+  top-level model but we don't have a good name for what "knit" would
+  be. Its responsibility would be to hook together the top-level
+  transforms. We moved away from it because knit was mainly an empty
+  model with only two or three classes, so the overhead did not
+  justify its existence.
+- if we were to move what we currently call =model= into a =backend=
+  project, and move all the associated transforms as well, we would
+  have a slightly meatier model (e.g. as opposed to =quilt= which had
+  only a couple of classes). This would also help in terms of
+  symmetry: three tiers, each with its meta-model and transforms. You
+  only need to know about the transforms on a given tier when you are
+  doing changes there. One slight wrinkle to this symmetric nirvana is
+  that we still have a =model= and a =text_model=, both of which would
+  live (presumably) in codegen. Or if not, then middleend would have a
+  similar issue (endomodel and model). The latter makes more sense. We
+  could probably get away with endomodel - in fact it becomes even
+  more meaningful, the model used for internal purposes only. All
+  other models can be rename to just "model".
+- all of this leaves us with the perennial question of who guards the
+  guardians. We need a top-level model that glues together the other
+  three. This is knit by another name. The engineering decision that
+  has to be made is whether having a trivial model like knit (for
+  which we do not have a good name) and making the project structure
+  clean outweighs having little "modelets" with very little
+  responsibility.
+- the model that sits at the top could be called =orchestrator= or
+  =orchestration= because it orchestrates all components.
+
+In conclusion, we'd have the following libraries:
+
+- =annotations=: unchanged.
+- =formatting=: simple rename. No longer =formatters= as this is not
+  the place where all formatters are defined, but instead provides the
+  primitives for formatting.
+- =dia=: unchanged.
+- =exogenous=, including =exogenous.dia= and =exogenous.json=:
+  frontends and associated transforms. With this name, we don't have
+  to worry about finding a good name for middle-end. Also frontend and
+  backend imply there is only one way to hook together the components,
+  which is not right.
+- =modeling=: endomodel and all associated transforms and
+  helpers.
+- =codegen=, including =codegen.cpp= and =codegen.csharp=. model and
+  all associated transforms and helpers move to =codegen=. Model now
+  becomes more like formattables model; we probably need to introduce
+  a class like augmented element that aggregates element and element
+  properties.
+- =templates=: merges stitch and wale; these become namespaces.
+- =orchestration=: top-level transforms (e.g. knit, tailor). Depends
+  on all other libraries.
+
+And the following binaries:
+
+- =cli=: (producing =dogen.cli=): command-line interface for all
+  functionality.
+- =web=: wt based site.
+- =http=: beast based api.
+- =server=: raw sockets api.
+
+*** COMPLETED Implement exomodel in terms of exoelements              :story:
+    CLOSED: [2017-12-05 Tue 08:37]
+    CLOCK: [2017-12-04 Mon 22:47]--[2017-12-04 Mon 23:46] =>  0:59
+    CLOCK: [2017-12-04 Mon 22:42]--[2017-12-04 Mon 22:46] =>  0:04
+    CLOCK: [2017-12-04 Mon 22:35]--[2017-12-04 Mon 22:41] =>  0:06
+    CLOCK: [2017-12-04 Mon 20:41]--[2017-12-04 Mon 22:34] =>  1:53
+    CLOCK: [2017-12-03 Sun 08:07]--[2017-12-03 Sun 08:44] =>  0:37
+    CLOCK: [2017-12-03 Sun 00:22]--[2017-12-03 Sun 00:45] =>  0:23
+    CLOCK: [2017-12-02 Sat 23:49]--[2017-12-03 Sun 00:21] =>  0:32
+    CLOCK: [2017-12-02 Sat 23:18]--[2017-12-02 Sat 23:48] =>  0:30
+    CLOCK: [2017-12-02 Sat 23:09]--[2017-12-02 Sat 23:17] =>  0:08
+    CLOCK: [2017-12-02 Sat 22:01]--[2017-12-02 Sat 23:08] =>  1:07
+    CLOCK: [2017-12-02 Sat 21:48]--[2017-12-02 Sat 22:00] =>  0:12
+    CLOCK: [2017-12-02 Sat 21:16]--[2017-12-02 Sat 21:47] =>  0:31
+    CLOCK: [2017-12-02 Sat 20:55]--[2017-12-02 Sat 21:15] =>  0:20
+    CLOCK: [2017-12-02 Sat 20:44]--[2017-12-02 Sat 20:47] =>  0:03
+    CLOCK: [2017-12-02 Sat 20:37]--[2017-12-02 Sat 20:43] =>  0:06
+    CLOCK: [2017-12-02 Sat 20:29]--[2017-12-02 Sat 20:36] =>  0:07
+    CLOCK: [2017-12-02 Sat 19:32]--[2017-12-02 Sat 20:28] =>  0:56
+    CLOCK: [2017-12-02 Sat 17:06]--[2017-12-02 Sat 17:45] =>  0:39
+    CLOCK: [2017-12-02 Sat 16:55]--[2017-12-02 Sat 17:05] =>  0:10
+    CLOCK: [2017-12-02 Sat 15:40]--[2017-12-02 Sat 16:54] =>  1:14
+    CLOCK: [2017-12-02 Sat 12:24]--[2017-12-02 Sat 12:28] =>  0:04
+    CLOCK: [2017-12-02 Sat 12:05]--[2017-12-02 Sat 12:23] =>  0:18
+    CLOCK: [2017-12-02 Sat 11:31]--[2017-12-02 Sat 12:04] =>  0:33
+    CLOCK: [2017-12-01 Fri 23:29]--[2017-12-01 Fri 23:31] =>  0:02
+    CLOCK: [2017-12-01 Fri 23:21]--[2017-12-01 Fri 23:28] =>  0:07
+    CLOCK: [2017-12-01 Fri 23:06]--[2017-12-01 Fri 23:20] =>  0:14
+    CLOCK: [2017-12-01 Fri 22:46]--[2017-12-01 Fri 23:05] =>  0:19
+    CLOCK: [2017-12-01 Fri 22:35]--[2017-12-01 Fri 22:45] =>  0:10
+    CLOCK: [2017-12-01 Fri 21:14]--[2017-12-01 Fri 22:34] =>  1:20
+    CLOCK: [2017-12-01 Fri 21:03]--[2017-12-01 Fri 21:13] =>  0:10
+    CLOCK: [2017-12-01 Fri 18:42]--[2017-12-01 Fri 18:51] =>  0:09
+    CLOCK: [2017-12-01 Fri 15:58]--[2017-12-01 Fri 16:06] =>  0:08
+    CLOCK: [2017-12-01 Fri 14:25]--[2017-12-01 Fri 15:46] =>  1:21
+    CLOCK: [2017-12-01 Fri 13:53]--[2017-12-01 Fri 14:24] =>  0:31
+
+For details on the analysis, see the comments in the previous sprint.
+
+Notes:
+
+- now that there is no longer a mismatch between dia's model and
+  yarn's model we can probably do away with the processed object and
+  processed comment, and simply map dia directly into yarn.
+
+Tasks:
+
+- change yarn.dia to remember the "contained by" name rather than the
+  module name. Construct the object names from the contained by
+  name. Actually this won't work; the reason why we remember the
+  entire module is because we need to do a lookup in order to find the
+  module so we can update the documentation. We will still have this
+  problem when it comes to exoelements. Best to just create another
+  map this time to exoelement and follow the pattern. Actually, we can
+  clean this up slightly: create a map of exoelements
+- add exoelement, exoattribute.
+- create a parallel infrastructure in dia that populates the
+  exoelements.
+- create a new transform that converts exoelements into
+  endomodels. Somehow isolate the dia part of the pipeline so we can
+  switch between new world and old world. Actually we could very
+  simply check the exoelements container; if not empty use that,
+  otherwise use legacy.
+- once we get the dia side of the pipeline working, delete all classes
+  related to old world in yarn.dia.
+- create an hydrator that reads the new json and creates
+  exoelements. Add some basic feature switch so we can alternate
+  between new world and old world.
+
+Problems:
+
+- modules do not have a stereotype
+- add yarn element types enum to yarn and a method that given a
+  container of strings, returns the types. Use these in yarn.dia
+- add string constants for element stereotypes and use these to mark
+  the exoelements. Use this method in the stereotypes transforms in
+  yarn.
+- name does not have the module (e.g. contained by is not working).
+
+Tasks:
+
+- add a new boolean flag to switch between new world and old
+  world. Set it only on yarn.dia for now.
+- move naming transform to endomodels.
+- add code in exomodel to endomodel transform to convert exolements
+  into elements. Look at yarn.dia for this.
+- handle root module in terms of exoelements.
+- handle annotations. We need to create some kind of factory that uses
+  the annotation groups factory logic but just for a single
+  annotation.
+- create new JSON format for exomodels. Update JSON parser to
+  read/write it. Set flag to true in JSON.
+- JSON needs to explicitly contain fallback stereotype or else tailor
+  roundtrip will fail. We should check that fallback is not default,
+  if so do not bother outputting it.
+
+*** COMPLETED Fix JSON tests                                          :story:
+    CLOSED: [2017-12-05 Tue 08:48]
+    CLOCK: [2017-12-05 Tue 08:38]--[2017-12-05 Tue 08:48] =>  0:10
+    CLOCK: [2017-12-05 Tue 08:22]--[2017-12-05 Tue 08:37] =>  0:15
+
+After implementing the exomoel in terms of exoelements, we broke the
+JSON tests.
+
+*** COMPLETED Remove all deprecated code after exomodels clean up     :story:
+    CLOSED: [2017-12-05 Tue 21:12]
+    CLOCK: [2017-12-05 Tue 20:55]--[2017-12-05 Tue 21:16] =>  0:21
+    CLOCK: [2017-12-05 Tue 20:31]--[2017-12-05 Tue 20:54] =>  0:23
+    CLOCK: [2017-12-05 Tue 19:25]--[2017-12-05 Tue 19:41] =>  0:16
+    CLOCK: [2017-12-05 Tue 18:22]--[2017-12-05 Tue 18:45] =>  0:23
+    CLOCK: [2017-12-05 Tue 18:16]--[2017-12-05 Tue 18:21] =>  0:05
+    CLOCK: [2017-12-05 Tue 18:11]--[2017-12-05 Tue 18:15] =>  0:04
+    CLOCK: [2017-12-05 Tue 17:53]--[2017-12-05 Tue 18:10] =>  0:17
+    CLOCK: [2017-12-05 Tue 09:01]--[2017-12-05 Tue 09:07] =>  0:06
+    CLOCK: [2017-12-05 Tue 08:55]--[2017-12-05 Tue 09:00] =>  0:05
+
+Remove all deprecated code:
+
+- yarn.json: hydrator related classes
+- yarn: drop exoelement properties, drop new code logic, groups in
+  context, annotations transform, nameable/metanameable from exomodel.
+- annotations: scribble groups and related classes.
+- stitch: drop usage of scribbles
+
+*** COMPLETED Add some kind of identity to exomodels                  :story:
+    CLOSED: [2017-12-05 Tue 21:30]
+    CLOCK: [2017-12-05 Tue 21:17]--[2017-12-05 Tue 21:29] =>  0:12
+
+We need some way of identifying exomodels. We cannot use the name
+"name" given that this is computed based on meta-data. However, we
+could use either "id" or filename.
+
+*** COMPLETED Clean up tagged values                                  :story:
+    CLOSED: [2017-12-05 Tue 21:55]
+    CLOCK: [2017-12-05 Tue 21:37]--[2017-12-05 Tue 21:55] =>  0:18
+    CLOCK: [2017-12-05 Tue 21:31]--[2017-12-05 Tue 21:36] =>  0:05
+
+Tasks:
+
+- rename entries in annotations to tagged values.
+- rename key value pairs to tagged values in yarn.dia processed
+  object.
+
+*** COMPLETED Simplify input model generation in cmake                :story:
+    CLOSED: [2017-12-07 Thu 08:59]
+    CLOCK: [2017-12-07 Thu 08:23]--[2017-12-07 Thu 09:01] =>  0:38
+
+At present we have copy and pasted the input model targets in cmake,
+for both JSON and dia. This is not ideal:
+
+- its a pain to add new targets
+- JSON and dia options can start to diverge over time.
+
+Factor out all the common code and create targets using a loop.
+
+*** COMPLETED Create a =probing= model                                :story:
+    CLOSED: [2017-12-09 Sat 12:28]
+    CLOCK: [2017-12-09 Sat 12:14]--[2017-12-09 Sat 12:21] =>  0:07
+    CLOCK: [2017-12-09 Sat 12:02]--[2017-12-09 Sat 12:13] =>  0:11
+    CLOCK: [2017-12-09 Sat 11:45]--[2017-12-09 Sat 12:01] =>  0:16
+    CLOCK: [2017-12-09 Sat 11:29]--[2017-12-09 Sat 11:44] =>  0:15
+    CLOCK: [2017-12-09 Sat 11:01]--[2017-12-09 Sat 11:28] =>  0:27
+    CLOCK: [2017-12-07 Thu 09:01]--[2017-12-07 Thu 09:07] =>  0:06
+
+We need to move the probing logic into a transforms model, so we can
+use it outside of yarn. We should also move:
+
+- context, context factory
+- options
+
+Actually it makes more sense to just have the probing infrastructure.
+
+We need a way to generalise the "initial input" dumping. In effect,
+what we are really saying is that within a transform we may need to
+dump more state than just the initial inputs. We need a way to express
+this in the probing API.
+
+*** COMPLETED Create the =external= model                             :story:
+    CLOSED: [2017-12-09 Sat 16:47]
+    CLOCK: [2017-12-09 Sat 16:20]--[2017-12-09 Sat 16:38] =>  0:18
+    CLOCK: [2017-12-09 Sat 16:02]--[2017-12-09 Sat 16:19] =>  0:17
+    CLOCK: [2017-12-09 Sat 15:23]--[2017-12-09 Sat 16:01] =>  0:38
+    CLOCK: [2017-12-09 Sat 14:34]--[2017-12-09 Sat 15:22] =>  0:48
+    CLOCK: [2017-12-09 Sat 12:48]--[2017-12-09 Sat 13:02] =>  0:14
+    CLOCK: [2017-12-09 Sat 12:33]--[2017-12-09 Sat 12:47] =>  0:14
+    CLOCK: [2017-12-06 Wed 20:43]--[2017-12-06 Wed 23:21] =>  2:38
+
+Create a new model called =external= and move all exogenous model
+related class to it.
+
+Consider naming it =codec=.
+
+We should also split the model into the usual transforms, helpers,
+meta-model etc split. The top level transforms should be:
+
+- to dia diagram
+- to processed object
+- to model
+
+Notes:
+
+- we should have a dia to codec model chain.
+- rename adapter to factory to match processed object.
+
+*** COMPLETED Rename =yarn.json= to =external.json=                   :story:
+    CLOSED: [2017-12-10 Sun 00:16]
+    CLOCK: [2017-12-10 Sun 00:10]--[2017-12-10 Sun 00:16] =>  0:06
+    CLOCK: [2017-12-09 Sat 23:36]--[2017-12-10 Sun 00:09] =>  0:33
+    CLOCK: [2017-12-09 Sat 21:46]--[2017-12-09 Sat 22:16] =>  0:30
+    CLOCK: [2017-12-09 Sat 21:24]--[2017-12-09 Sat 21:45] =>  0:21
+    CLOCK: [2017-12-09 Sat 21:05]--[2017-12-09 Sat 21:23] =>  0:18
+    CLOCK: [2017-12-09 Sat 21:01]--[2017-12-09 Sat 21:04] =>  0:03
+
+As per analysis story, we are moving away from the sewing terms.
+
+*** COMPLETED Rename =yarn.dia= to =external.dia=                     :story:
+    CLOSED: [2017-12-10 Sun 15:02]
+    CLOCK: [2017-12-10 Sun 20:55]--[2017-12-10 Sun 21:14] =>  0:19
+    CLOCK: [2017-12-10 Sun 15:00]--[2017-12-10 Sun 15:02] =>  0:02
+    CLOCK: [2017-12-10 Sun 14:51]--[2017-12-10 Sun 14:59] =>  0:08
+    CLOCK: [2017-12-10 Sun 00:56]--[2017-12-10 Sun 01:12] =>  0:16
+    CLOCK: [2017-12-10 Sun 00:17]--[2017-12-10 Sun 00:55] =>  0:38
+    CLOCK: [2017-12-09 Sat 23:21]--[2017-12-09 Sat 23:35] =>  0:14
+    CLOCK: [2017-12-09 Sat 22:17]--[2017-12-09 Sat 22:38] =>  0:21
+    CLOCK: [2017-12-09 Sat 17:26]--[2017-12-09 Sat 17:28] =>  0:02
+    CLOCK: [2017-12-09 Sat 17:01]--[2017-12-09 Sat 17:25] =>  0:24
+    CLOCK: [2017-12-09 Sat 16:59]--[2017-12-09 Sat 17:00] =>  0:01
+    CLOCK: [2017-12-09 Sat 16:54]--[2017-12-09 Sat 16:58] =>  0:04
+    CLOCK: [2017-12-09 Sat 16:48]--[2017-12-09 Sat 16:53] =>  0:05
+    CLOCK: [2017-12-09 Sat 16:38]--[2017-12-09 Sat 16:47] =>  0:09
+
+As per analysis story, we are moving away from the sewing terms.
+
+*** COMPLETED Make =dogen= part of model modules                      :story:
+    CLOSED: [2017-12-12 Tue 23:12]
+    CLOCK: [2017-12-12 Tue 20:25]--[2017-12-12 Tue 23:12] =>  2:47
+    CLOCK: [2017-12-12 Tue 19:44]--[2017-12-12 Tue 20:24] =>  0:40
+
+Whilst we are renaming the models, we should perform a long-standing
+task from the early days of dogen: to make =dogen= part of the model
+modules rather than the external modules. This makes the folder
+structure cleaner under projects. This needs to be done all in one go
+for it to work or else it will break resolution.
+
+Tasks:
+
+- rename input models
+- drop external module from input models, add to model modules
+- rename project folders
+- code-generate; expectation is that no files will change (after
+  folder rename).
+
+*** COMPLETED Fix travis build                                        :story:
+    CLOSED: [2017-12-13 Wed 08:29]
+    CLOCK: [2017-12-13 Wed 08:26]--[2017-12-13 Wed 08:29] =>  0:03
+
+- C# cannot locate solution
+- hello world cannot locate diagram
+
+*** COMPLETED Do a quick hack to fix name resolution                  :story:
+    CLOSED: [2017-12-14 Thu 09:09]
+    CLOCK: [2017-12-14 Thu 08:49]--[2017-12-14 Thu 09:07] =>  0:18
+    CLOCK: [2017-12-14 Thu 08:27]--[2017-12-14 Thu 08:48] =>  0:21
+    CLOCK: [2017-12-13 Wed 08:30]--[2017-12-13 Wed 09:11] =>  0:41
+
+Even since we did the external modules / model modules change we broke
+code generation; this is because we do not go up the model modules
+during name resolution. Add this to resolver.
+
+Add a quick hack just to get the code generator working. We will fix
+this properly later.
+
+*** COMPLETED Rename =formatters= to =formatting=                     :story:
+    CLOSED: [2017-12-19 Tue 11:30]
+    CLOCK: [2017-12-19 Tue 11:14]--[2017-12-19 Tue 11:32] =>  0:18
+    CLOCK: [2017-12-19 Tue 08:31]--[2017-12-19 Tue 08:43] =>  0:12
+    CLOCK: [2017-12-19 Tue 08:23]--[2017-12-19 Tue 08:30] =>  0:07
+    CLOCK: [2017-12-19 Tue 07:37]--[2017-12-19 Tue 08:22] =>  0:45
+    CLOCK: [2017-12-19 Tue 07:20]--[2017-12-19 Tue 07:36] =>  0:16
+    CLOCK: [2017-12-19 Tue 06:58]--[2017-12-19 Tue 07:05] =>  0:38
+
+As per analysis story, we are moving away from the sewing terms.
+
+*** COMPLETED Rename =yarn= to =modeling=                             :story:
+    CLOSED: [2017-12-21 Thu 22:39]
+    CLOCK: [2017-12-21 Thu 22:40]--[2017-12-21 Thu 22:58] =>  0:18
+    CLOCK: [2017-12-21 Thu 22:21]--[2017-12-21 Thu 22:39] =>  0:18
+    CLOCK: [2017-12-21 Thu 22:03]--[2017-12-21 Thu 22:20] =>  0:17
+    CLOCK: [2017-12-21 Thu 20:57]--[2017-12-21 Thu 22:02] =>  1:05
+
+As per analysis story, we are moving away from the sewing terms.
+
+Tasks:
+
+- rename endomodel to just model.
+- simplify the transform options to contain only modeling specific
+  things.
+
+*** COMPLETED Rename =quilt.cpp= to =generation.cpp=                  :story:
+    CLOSED: [2017-12-22 Fri 14:19]
+    CLOCK: [2017-12-22 Fri 14:02]--[2017-12-22 Fri 14:19] =>  0:17
+    CLOCK: [2017-12-22 Fri 10:33]--[2017-12-22 Fri 12:20] =>  1:47
+
+As per analysis story, we are moving away from the sewing terms.
+
+*** COMPLETED Rename =quilt.csharp= to =generation.csharp=            :story:
+    CLOSED: [2017-12-22 Fri 17:32]
+    CLOCK: [2017-12-22 Fri 15:05]--[2017-12-22 Fri 16:32] =>  1:27
+    CLOCK: [2017-12-22 Fri 14:20]--[2017-12-22 Fri 15:04] =>  0:44
+
+As per analysis story, we are moving away from the sewing terms.
+
+*** COMPLETED Create the =templating= model                           :story:
+    CLOSED: [2017-12-22 Fri 21:49]
+    CLOCK: [2017-12-22 Fri 21:43]--[2017-12-22 Fri 21:49] =>  0:06
+    CLOCK: [2017-12-22 Fri 21:03]--[2017-12-22 Fri 21:42] =>  0:39
+    CLOCK: [2017-12-22 Fri 17:15]--[2017-12-22 Fri 17:45] =>  0:30
+
+As per analysis story, we are moving away from the sewing terms.
+
+Merge stitch and wale into a new model called =templating=.
+
+*** COMPLETED Create the =generation= model                           :story:
+    CLOSED: [2018-01-01 Mon 09:41]
+    CLOCK: [2017-12-24 Sun 12:49]--[2017-12-24 Sun 12:53] =>  0:04
+    CLOCK: [2017-12-24 Sun 12:31]--[2017-12-24 Sun 12:48] =>  0:17
+    CLOCK: [2017-12-23 Sat 23:28]--[2017-12-23 Sat 23:48] =>  0:20
+    CLOCK: [2017-12-23 Sat 23:01]--[2017-12-23 Sat 23:27] =>  0:26
+    CLOCK: [2017-12-23 Sat 15:28]--[2017-12-23 Sat 15:47] =>  0:19
+    CLOCK: [2017-12-23 Sat 14:21]--[2017-12-23 Sat 15:27] =>  1:06
+    CLOCK: [2017-12-23 Sat 11:48]--[2017-12-23 Sat 12:16] =>  0:28
+    CLOCK: [2017-12-23 Sat 10:25]--[2017-12-23 Sat 11:47] =>  1:22
+
+Create a new model called =generation= and move all code-generation
+related class to it.
+
+We need to create classes for element properties and make model have a
+collection that is a pair of element and element properties. We need a
+good name for this pair:
+
+- extended element
+- augmented element
+- decorated element: though not using the decorator pattern; also, we
+  already have decoration properties so this is confusing.
+
+Alternatively we could just call it =element= and make it contain a
+modeling element.
+
+Approach:
+
+- create a new generation model, copying across all of the meta-model
+  and transform classes from yarn. Get the model to transform from
+  endomodel to generation model.
+- augment formattables with the new element properties. Supply this
+  data via the context or assistant.
+
+*** POSTPONED Finish setting up coveralls                             :story:
+    CLOSED: [2018-01-01 Mon 09:41]
+    CLOCK: [2017-11-29 Wed 23:48]--[2017-11-30 Thu 00:21] =>  0:33
+    CLOCK: [2017-11-29 Wed 22:45]--[2017-11-29 Wed 23:47] =>  1:02
+    CLOCK: [2017-11-29 Wed 21:50]--[2017-11-29 Wed 22:20] =>  0:30
+    CLOCK: [2017-11-29 Wed 19:02]--[2017-11-29 Wed 19:54] =>  0:52
+
+Remaining issues:
+
+- we are generating far too much output. We need to keep it quieter or
+  we will break travis.
+- we are not filtering out non-project files from initial
+  processing. There must be a gcov option to ignore files.
+
+: Process: /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc-5/Debug/projects/quilt/spec/CMakeFiles/quilt.spec.dir/main.cpp.gcda
+: ------------------------------------------------------------------------------
+: File '../../../../projects/quilt/spec/main.cpp'
+: Lines executed:62.50% of 8
+: Creating '^#^#^#^#projects#quilt#spec#main.cpp.gcov'
+:
+: File '/usr/local/personal/include/boost/smart_ptr/detail/sp_counted_impl.hpp'
+: Lines executed:60.00% of 20
+: Creating '#usr#local#personal#include#boost#smart_ptr#detail#sp_counted_impl.hpp.gcov'
+
+See also:
+
+- [[https://github.com/JoakimSoderberg/coveralls-cmake-example/blob/master/CMakeLists.txt][example use of coveralls-cmake]]
+- [[https://github.com/SpinWaveGenie/SpinWaveGenie/blob/master/libSpinWaveGenie/CMakeLists.txt][SpinWaveGenie's support for Coveralls]]
+- maybe we should just use a different coverage provider. [[https://codecov.io/gh/DomainDrivenConsulting/dogen][CodeCov]]
+  seems to be used by the kool kids. Example: [[https://github.com/ChaiScript/ChaiScript/blob/develop/CMakeLists.txt][ChaiScript]]. Example repo
+  [[https://github.com/codecov/example-cpp11][here]] and for CMake specifically, [[https://github.com/codecov/example-cpp11-cmake][here]].
+- we should generate coverage from the clang debug build only since
+  that is the fastest build we have. We should use the clang coverage
+  tool. See [[https://clang.llvm.org/docs/SourceBasedCodeCoverage.html][this document]].
+
+Previous story [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_84.org#add-initial-support-for-coveralls][here]].
+
+Notes:
+- problems with python dependencies: [[https://github.com/micropython/micropython/issues/3246][cpp-coveralls 0.4.0 came and
+  broke Travis build]]
+
+*** POSTPONED Create a single binary for all of dogen                 :story:
+    CLOSED: [2018-01-01 Mon 09:41]
+    CLOCK: [2017-12-01 Fri 11:47]--[2017-12-01 Fri 12:50] =>  1:03
+
+As per analysis, we need to create a single dogen binary, like so:
+
+: dogen.cli COMMAND COMMAND_SPECIFIC_OPTIONS
+
+Where =COMMAND= is:
+
+- =transform=: functionality that is currently in tailor.
+- =generate=: functionality that is currently in knitter.
+- =expand=: functionality that is currently in stitcher plus expansion
+  of wale templates.
+- =make=: functionality in darter: create project, structure etc.
+
+In order to support sub-commands we need to do a lot of hackery with
+program options:
+
+- [[https://gist.github.com/randomphrase/10801888][cmdoptions.cpp]]: Demonstration of how to do subcommand option
+  processing with boost program_options
+- [[https://stackoverflow.com/questions/15541498/how-to-implement-subcommands-using-boost-program-options][How to implement subcommands using Boost.Program_options?]]
+
+*** POSTPONED Investigate current implementation of the origin transform :story:
+    CLOSED: [2018-01-01 Mon 09:41]
+    CLOCK: [2017-12-06 Wed 20:25]--[2017-12-06 Wed 20:43] =>  0:18
+
+Do we need to have the origin expansion? can we not just supply the
+origin type to the exomodel adapter directly?
+
+Actually this cannot be done. The problem is we still need to
+distinguish between dogen models and non-dogen models; we need to
+register all dogen models. This is done via meta-data. We cannot use
+the meta-data until we have converted into an endomodel. We could
+consider having a flag at the exomodel level for this - it is a
+concept at this level - but we still need to map it to origin
+types. However, it is perhaps cleaner to express this concept at the
+exomodel level rather than the endomodel level given we are saying
+there are two different kinds of exomodels: proxyness is a fundamental
+property of an exomodel. If we do this we can then do the mapping in
+flight as we transform from exomodel to endomodel.
+
+*** POSTPONED Remove exomodel and all deprecated classes              :story:
+    CLOSED: [2018-01-01 Mon 09:41]
+    CLOCK: [2017-12-09 Sat 23:03]--[2017-12-09 Sat 23:20] =>  0:17
+    CLOCK: [2017-12-09 Sat 22:39]--[2017-12-09 Sat 23:02] =>  0:23
+
+Once the =external= model has been created, we need to replace the
+legacy exomodel related transforms; and once that is done, we need to
+remove all of the legacy code.
+
+** Deprecated
+*** CANCELLED Move some of the more verbose logging to trace          :story:
+    CLOSED: [2017-11-30 Thu 22:41]
+
+We have a category for finer debug logging (=TRACE=) but we are not
+making use of it. There is some rather verbose logging that could be
+moved to it. Go through all the logging and move some to =TRACE=.
+
+One strategy would be to put in the final object of each workflow as
+=DEBUG= (say the expanded model, etc) but the intermediate steps as
+=TRACE=. This mirrors the way we investigate the problem: we
+could check if each sub-system has done it's job correctly, and spot
+the one that didn't; we can then just enable that one sub-system's
+=TRACE= (when that is supported).
+
+We probably should only do this at the end, as we want to make sure
+that the code generator is usable with full logging on. Or perhaps set
+the default to =TRACE=. We should also add a command line option,
+perhaps really verbose or extra verbose.
+
+*** CANCELLED Create a "utility" model like formatters for frontends  :story:
+    CLOSED: [2017-11-30 Thu 22:42]
+
+We have a number of utilities that are common to several backends,
+similar to what happened to formatters. We should probably extract
+those into a common model. At present we have:
+
+- =identifier_parser=: in dia to sml but should also be used from JSON
+when we support full models.
+- "method identifier": this will be used by the merger to identify
+methods and to link them back to language specific methods. Not
+quite frontend, but not far.
+*** CANCELLED Remove new lines from all text to be logged             :story:
+    CLOSED: [2017-11-30 Thu 22:43]
+
+We should strive to write to the log one line per "record". This makes
+grepping etc much easier. We should create a method to convert new
+lines to a marker (say =<new_line>= or whatever we are already doing
+for JSON output). This should be applied to all cases where there is a
+potential to have new lines (comments, etc).
+
+*** CANCELLED Remove references to namespace when within namespace    :story:
+    CLOSED: [2017-11-30 Thu 22:44]
+
+Due to moving classes around, we seem to have lots of cases where code
+in a namespace (say =sml=) refers to types in that namespace with
+qualification (say =sml::qname=). We need to do a grep in each project
+to look for instances of a namespace and ensure they are valid.
+
+*** CANCELLED Use diagram files to setup test models in cmakefile     :story:
+    CLOSED: [2017-11-30 Thu 22:48]
+
+In the CMakeLists for the test models we are already looping through
+all the diagrams:
+
+: foreach(dia_model ${all_dia_test_models})
+
+We should take advantage of this to define =include_directories= and
+=add_subdirectory=. At present we are doing these manually.
+
+*** CANCELLED Setup containing module correctly in mock factory       :story:
+    CLOSED: [2017-11-30 Thu 22:49]
+
+We did not update the yarn mock model factory to populate the
+containing type. We also did not setup the members of the module.
+*** CANCELLED Make features optional at compile time                  :story:
+    CLOSED: [2017-11-30 Thu 22:50]
+
+#+begin_quote
+*Story*: As a dogen user, I want to ignore all facets in a model that
+I don't need so that I don't have to install unnecessary third-party
+dependencies.
+#+end_quote
+
+One scenario we haven't accounted for is for compile time
+optionality. For example, say we have several serialisation facets,
+all of them useful to a general model; however, individual users of
+that model may only be interested in one of the several
+alternatives. In these cases, users should be able to opt out from
+compiling some of the facets and only include those that they are
+interested in. This is different from the current optionality we
+support in that we allow the user to determine what to code
+generate. In this case, the mainline project wants to code generate
+all facets, but the users of the model may choose to compile only a
+subset of the facets.
+
+To implement this we need a trait - say =optional= - that when set
+results in a set of macros that get defined to protect the facet. The
+user can then pass in that macro to cmake to disable the facet. This
+is not the same as the "feature" macros we use for ODB and EOS. These
+are actually not Dogen macros, just hand-crafted macros we put in to
+allow users to compile Dogen without support for EOS and ODB.
+
+The macros should follow the standard notation of =MODEL.FACET= or
+perhaps =MODEL.FACET.FEATURE=, e.g. =cpp.boost_serialization= to make
+the whole of serialisation optional or
+=cpp.boost_serialization.main_header= to make the header optional. Not
+sure if the latter has any use.
+
+*** CANCELLED Move test model diagrams into main diagrams directory   :story:
+    CLOSED: [2017-11-30 Thu 22:52]
+
+For some reason - lost in the mists of time - we decided to split the
+test model diagrams from the main models; the first is in the =diagrams=
+directory, the latter is in the rather non-obvious location of
+=test_data/dia_sml/input/=. All source code goes into =projects=
+though, so this seems like a spurious split. Also, the test data
+directory should really only have data that we generate as part of
+testing (e.g. where there is a pairing of expected and actual) and
+the test model diagrams are not of this kind - we never output dia
+diagrams, at least at present.
+
+The right thing to do is to move them into the =diagrams=
+directory. This is not an easy undertaking because:
+
+- there is hard-coding in the test model sets pointing to these
+- the CMake scripts rely on the location of the diagrams to copy them
+  across
+
+We should create =production= and =test= sub-directories for
+diagrams. Or we could just create a sub-directory of test models like
+we did in projects.
+
+*** CANCELLED Forward declaration is not always correct for services  :story:
+    CLOSED: [2017-11-30 Thu 22:53]
+
+In cases where we used a service as a way of declaring a stand alone
+function (such as the traversals in yarn), the forward declarations do
+not match the header file at all. In this cases we should use
+=nongeneratable= rather than =service= stereotypes, and perhaps when
+that happens we should switch off forward declarations?
+
+In addition, in some cases we may want to use a =struct= rather than a
+=class=. At present we are always forward declaring as =class= but
+sometimes declaring as =struct=.
+
+*** CANCELLED Refactor node according to composite pattern in dia to sml :story:
+    CLOSED: [2017-11-30 Thu 22:54]
+
+This is not required if we decide to [[*Add%20composite%20stereotype][implement]] the composite
+pattern. We should just follow the composite pattern.
+
+*** CANCELLED Use dogen models to test dogen                          :story:
+    CLOSED: [2017-11-30 Thu 22:54]
+
+We should really use the dogen models in the dogen unit tests. The
+rationale is as follows:
+
+- if somebody changes a diagram but forgets to code generate, we want
+  the build to break;
+- if somebody changes the code generator but forgets to regenerate all
+  the dogen models and verify that the code generator still works, we
+  want the build to break.
+
+This will cause some inconvenience during development because it will
+mean that some tests will fail until a feature is finished (or that
+the developer will have to continuously rebase the dogen models), but
+the advantages are important.
+*** CANCELLED Adding new knit tests is hard                           :story:
+    CLOSED: [2017-12-01 Fri 11:41]
+
+In order to test models at the knit level one needs to first generate
+the dia input. This can be done as follows:
+
+: ./dogen_knitter --save-dia-model xml --stop-after-merging
+: -t ../../../../dogen/test_data/dia_sml/input/boost_model.dia
+
+From the bin directory. We need to make these steps a bit more
+obvious. Why do we even need this?
+
+*** CANCELLED Check if we've replaced =assert_object= with =assert_file= :story:
+    CLOSED: [2017-12-01 Fri 11:42]
+
+Assert file is now able to do intelligent comparisons based on the
+extension of the file. From a cursory look, all the usages we have of
+assert object can be replaced by assert file. If that's the case we
+can also remove this function.
+
+*** CANCELLED Replace old style for iterations in IO                  :story:
+    CLOSED: [2017-12-01 Fri 11:43]
+
+At present we are still doing C++-03 iterations in the STL IO files
+such as =vector_io=, =list_io=, etc. We should be using the new =for=
+syntax for C++-11.

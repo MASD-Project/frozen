@@ -1,0 +1,49 @@
+#+title: dogen.palette
+#+options: <:nil c:nil todo:nil ^:nil d:nil date:nil author:nil
+:PROPERTIES:
+:masd.codec.dia.comment: true
+:masd.codec.model_modules: dogen.palette
+:masd.codec.reference: cpp.builtins
+:masd.codec.reference: masd
+:masd.codec.reference: masd.variability
+:masd.codec.reference: dogen.profiles
+:masd.variability.profile: dogen.profiles.base.default_profile
+:END:
+
+Exercises all dogen-defined stereotypes that have an impact in
+colour, so we can see how the entire palette looks like.
+
+This model does not need to be code generated, though it
+should remain a valid Dogen model. It must be updated with
+any changes to the colour scheme. To make a change, first
+update the colour.py script then run it in this model. If
+it looks good, then run it against all other dogen models.
+
+We should try to keep all elements in one screen as much
+as possible, so we can evaluate how they work together.
+
+* palette_test_one_one                                         :masd_element:
+  :PROPERTIES:
+  :masd.codec.stereotypes: dogen::handcrafted::typeable
+  :END:
+* palette_test_one_two                                         :masd_element:
+  :PROPERTIES:
+  :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
+  :END:
+* palette_test_one_three                                       :masd_element:
+  :PROPERTIES:
+  :masd.codec.stereotypes: dogen::handcrafted::typeable::implementation_only
+  :END:
+* package                                                       :masd_module:
+** palette_test_one_one                                        :masd_element:
+   :PROPERTIES:
+   :masd.codec.stereotypes: dogen::handcrafted::typeable
+   :END:
+** palette_test_one_two                                        :masd_element:
+   :PROPERTIES:
+   :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
+   :END:
+** palette_test_one_three                                      :masd_element:
+   :PROPERTIES:
+   :masd.codec.stereotypes: dogen::handcrafted::typeable::implementation_only
+   :END:

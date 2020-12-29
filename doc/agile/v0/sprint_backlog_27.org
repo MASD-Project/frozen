@@ -1,0 +1,331 @@
+#+title: Sprint Backlog 27
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 27.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:02]
+
+| Headline                                                | Time    |       |       |
+|---------------------------------------------------------+---------+-------+-------|
+| *Total time*                                            | *33:33* |       |       |
+|---------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                         |         | 33:33 |       |
+| COMPLETED Sprint and product backlog grooming           |         |       |  1:41 |
+| COMPLETED Make inclusion lists in includer a model type |         |       |  0:15 |
+| COMPLETED Clean up the SML to C++ transformer           |         |       | 23:16 |
+| COMPLETED Rename =enumeration_info= to =enum_info=      |         |       |  0:30 |
+| COMPLETED Use content descriptors in includer           |         |       |  2:08 |
+| COMPLETED Remove location request                       |         |       |  1:57 |
+| COMPLETED Create a basic skeleton for manual            |         |       |  1:18 |
+| COMPLETED Update C++ dia model to reflect code changes  |         |       |  1:08 |
+| COMPLETED Tidy-up workflow class                        |         |       |  0:20 |
+| COMPLETED Visitor header file not included in includer  |         |       |  0:24 |
+| CANCELLED Move services into their own type             |         |       |  0:36 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2013-06-02 Sun 22:57]
+    CLOCK: [2013-05-30 Thu 08:28]--[2013-05-30 Thu 08:38] =>  0:10
+    CLOCK: [2013-05-30 Thu 07:47]--[2013-05-30 Thu 08:18] =>  0:31
+    CLOCK: [2013-05-29 Wed 22:36]--[2013-05-29 Wed 23:36] =>  1:00
+
+*** COMPLETED Make inclusion lists in includer a model type           :story:
+    CLOSED: [2013-05-23 Thu 23:16]
+    CLOCK: [2013-05-23 Thu 23:05]--[2013-05-23 Thu 23:20] =>  0:15
+
+We created a class inlined in the header for no good reason. make it a
+model type.
+
+*** COMPLETED Clean up the SML to C++ transformer                     :story:
+    CLOSED: [2013-05-27 Mon 21:24]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+**** COMPLETED Create =file_info_factory=
+     CLOSED: [2013-05-25 Sat 23:39]
+     CLOCK: [2013-05-23 Thu 23:20]--[2013-05-24 Fri 00:35] =>  1:15
+     CLOCK: [2013-05-23 Thu 22:00]--[2013-05-23 Thu 23:05] =>  1:05
+     CLOCK: [2013-05-23 Thu 07:50]--[2013-05-23 Thu 08:15] =>  0:25
+     CLOCK: [2013-05-22 Wed 18:27]--[2013-05-22 Wed 18:52] =>  0:25
+     CLOCK: [2013-05-22 Wed 18:24]--[2013-05-22 Wed 18:27] =>  0:03
+     CLOCK: [2013-05-22 Wed 18:09]--[2013-05-22 Wed 18:18] =>  0:09
+     CLOCK: [2013-05-22 Wed 08:29]--[2013-05-22 Wed 08:40] =>  0:11
+     CLOCK: [2013-05-22 Wed 07:54]--[2013-05-22 Wed 08:18] =>  0:24
+     CLOCK: [2013-05-21 Tue 23:41]--[2013-05-21 Tue 23:53] =>  0:12
+     CLOCK: [2013-05-21 Tue 23:22]--[2013-05-21 Tue 23:41] =>  0:19
+     CLOCK: [2013-05-21 Tue 22:30]--[2013-05-21 Tue 23:22] =>  0:52
+     CLOCK: [2013-05-21 Tue 18:10]--[2013-05-21 Tue 18:42] =>  0:32
+     CLOCK: [2013-05-21 Tue 17:57]--[2013-05-21 Tue 18:04] =>  0:07
+     CLOCK: [2013-05-21 Tue 08:30]--[2013-05-21 Tue 08:32] =>  0:02
+     CLOCK: [2013-05-21 Tue 08:23]--[2013-05-21 Tue 08:26] =>  0:08
+     CLOCK: [2013-05-21 Tue 07:56]--[2013-05-21 Tue 08:15] =>  0:19
+     CLOCK: [2013-05-20 Mon 23:10]--[2013-05-20 Mon 23:20] =>  0:10
+     CLOCK: [2013-05-20 Mon 22:54]--[2013-05-20 Mon 23:10] =>  0:16
+     CLOCK: [2013-05-20 Mon 22:42]--[2013-05-20 Mon 22:54] =>  0:12
+     CLOCK: [2013-05-20 Mon 22:22]--[2013-05-20 Mon 22:41] =>  0:19
+     CLOCK: [2013-05-20 Mon 22:08]--[2013-05-20 Mon 22:21] =>  0:13
+     CLOCK: [2013-05-20 Mon 21:24]--[2013-05-20 Mon 22:06] =>  0:42
+     CLOCK: [2013-05-20 Mon 18:07]--[2013-05-20 Mon 18:42] =>  0:35
+     CLOCK: [2013-05-20 Mon 18:01]--[2013-05-20 Mon 18:05] =>  0:04
+     CLOCK: [2013-05-20 Mon 17:46]--[2013-05-20 Mon 17:53] =>  0:07
+     CLOCK: [2013-05-20 Mon 08:29]--[2013-05-20 Mon 08:37] =>  0:08
+     CLOCK: [2013-05-20 Mon 08:26]--[2013-05-20 Mon 08:28] =>  0:02
+     CLOCK: [2013-05-20 Mon 07:53]--[2013-05-20 Mon 08:15] =>  0:22
+     CLOCK: [2013-05-19 Sun 22:53]--[2013-05-20 Mon 00:04] =>  1:11
+
+**** COMPLETED Plug =file_info_factory= into workflow
+     CLOSED: [2013-05-26 Sun 20:02]
+     CLOCK: [2013-05-26 Sun 19:02]--[2013-05-26 Sun 20:02] =>  1:00
+     CLOCK: [2013-05-26 Sun 01:37]--[2013-05-26 Sun 03:33] =>  1:56
+     CLOCK: [2013-05-26 Sun 01:27]--[2013-05-26 Sun 01:37] =>  0:10
+     CLOCK: [2013-05-25 Sat 23:39]--[2013-05-26 Sun 01:27] =>  1:48
+     CLOCK: [2013-05-25 Sat 22:29]--[2013-05-25 Sat 23:39] =>  1:10
+     CLOCK: [2013-05-22 Wed 22:20]--[2013-05-22 Wed 22:56] =>  0:36
+
+**** COMPLETED Create workflow tests and fix new code
+     CLOSED: [2013-05-27 Mon 00:02]
+     CLOCK: [2013-05-26 Sun 23:36]--[2013-05-26 Sun 23:58] =>  0:22
+     CLOCK: [2013-05-26 Sun 23:05]--[2013-05-26 Sun 23:36] =>  0:31
+     CLOCK: [2013-05-26 Sun 22:43]--[2013-05-26 Sun 23:05] =>  0:22
+     CLOCK: [2013-05-26 Sun 22:10]--[2013-05-26 Sun 22:38] =>  0:28
+     CLOCK: [2013-05-26 Sun 20:37]--[2013-05-26 Sun 20:48] =>  0:11
+     CLOCK: [2013-05-26 Sun 20:17]--[2013-05-26 Sun 20:37] =>  0:20
+     CLOCK: [2013-05-26 Sun 20:08]--[2013-05-26 Sun 20:16] =>  0:08
+     CLOCK: [2013-05-26 Sun 20:02]--[2013-05-26 Sun 20:03] =>  0:01
+
+**** COMPLETED Add support for inheritance in workflow
+     CLOSED: [2013-05-27 Mon 01:17]
+     CLOCK: [2013-05-27 Mon 01:02]--[2013-05-27 Mon 01:17] =>  0:15
+     CLOCK: [2013-05-27 Mon 00:03]--[2013-05-27 Mon 01:01] =>  0:58
+
+**** COMPLETED Add support for visitor
+     CLOSED: [2013-05-27 Mon 03:00]
+     CLOCK: [2013-05-27 Mon 01:17]--[2013-05-27 Mon 02:27] =>  1:10
+
+**** COMPLETED Remove legacy transformer
+     CLOSED: [2013-05-27 Mon 03:01]
+     CLOCK: [2013-05-27 Mon 02:27]--[2013-05-27 Mon 03:01] =>  0:34
+**** COMPLETED Add namespace files to includers
+     CLOSED: [2013-05-27 Mon 03:19]
+     CLOCK: [2013-05-27 Mon 03:11]--[2013-05-27 Mon 03:43] =>  0:32
+
+*** COMPLETED Registrar is not included in serialisation includer     :story:
+    CLOSED: [2013-05-27 Mon 03:18]
+
+For some reason we are not including the registrar on the includer for
+serialisation.
+
+Implemented as part of the clean up of cpp model.
+
+*** COMPLETED Rename =enumeration_info= to =enum_info=                :story:
+    CLOSED: [2013-05-27 Mon 21:50]
+    CLOCK: [2013-05-27 Mon 21:40]--[2013-05-27 Mon 21:50] =>  0:10
+    CLOCK: [2013-05-27 Mon 21:32]--[2013-05-27 Mon 21:40] =>  0:08
+    CLOCK: [2013-05-27 Mon 21:20]--[2013-05-27 Mon 21:32] =>  0:12
+
+Slight modeling error, we should have used the C++ name for the type.
+
+*** COMPLETED Use content descriptors in includer                     :story:
+    CLOSED: [2013-05-28 Tue 00:02]
+
+Instead of passing the facets, etc into includer we should just pass a
+whole content descriptor in one go. We should also move the includer
+calls into workflow.
+
+**** COMPLETED Fix enumerations
+     CLOSED: [2013-05-27 Mon 22:13]
+     CLOCK: [2013-05-27 Mon 21:50]--[2013-05-27 Mon 22:13] =>  0:23
+
+**** COMPLETED Fix exceptions
+     CLOSED: [2013-05-27 Mon 22:23]
+     CLOCK: [2013-05-27 Mon 22:14]--[2013-05-27 Mon 22:23] =>  0:09
+
+**** COMPLETED Fix classes
+     CLOSED: [2013-05-27 Mon 22:51]
+     CLOCK: [2013-05-27 Mon 22:23]--[2013-05-27 Mon 23:00] =>  0:37
+
+**** COMPLETED Fix visitor
+     CLOSED: [2013-05-27 Mon 23:21]
+     CLOCK: [2013-05-27 Mon 23:12]--[2013-05-27 Mon 23:21] =>  0:09
+     CLOCK: [2013-05-27 Mon 23:00]--[2013-05-27 Mon 23:12] =>  0:12
+
+**** COMPLETED Fix namespaces
+     CLOSED: [2013-05-27 Mon 23:29]
+     CLOCK: [2013-05-27 Mon 23:22]--[2013-05-27 Mon 23:29] =>  0:07
+
+**** COMPLETED Fix registrar
+     CLOSED: [2013-05-27 Mon 23:40]
+     CLOCK: [2013-05-27 Mon 23:38]--[2013-05-27 Mon 23:40] =>  0:02
+     CLOCK: [2013-05-27 Mon 23:29]--[2013-05-27 Mon 23:38] =>  0:09
+
+**** COMPLETED Fix includer
+     CLOSED: [2013-05-27 Mon 23:56]
+     CLOCK: [2013-05-27 Mon 23:41]--[2013-05-27 Mon 23:56] =>  0:15
+
+**** COMPLETED Tidy-up factory
+     CLOSED: [2013-05-28 Tue 00:02]
+     CLOCK: [2013-05-27 Mon 23:56]--[2013-05-28 Tue 00:01] =>  0:05
+
+*** COMPLETED Remove location request                                 :story:
+    CLOSED: [2013-05-28 Tue 22:49]
+
+Now we have content descriptor, the location request is no longer required.
+
+**** COMPLETED Update all private methods in includer to use content descriptor
+     CLOSED: [2013-05-28 Tue 22:48]
+     CLOCK: [2013-05-28 Tue 18:37]--[2013-05-28 Tue 18:44] =>  0:07
+     CLOCK: [2013-05-28 Tue 18:25]--[2013-05-28 Tue 18:37] =>  0:12
+     CLOCK: [2013-05-28 Tue 18:09]--[2013-05-28 Tue 18:23] =>  0:14
+     CLOCK: [2013-05-28 Tue 17:50]--[2013-05-28 Tue 18:02] =>  0:12
+     CLOCK: [2013-05-28 Tue 08:28]--[2013-05-28 Tue 08:38] =>  0:10
+     CLOCK: [2013-05-28 Tue 08:14]--[2013-05-28 Tue 08:18] =>  0:04
+     CLOCK: [2013-05-28 Tue 08:05]--[2013-05-28 Tue 08:14] =>  0:09
+
+**** COMPLETED Update locator to use content descriptor
+     CLOSED: [2013-05-28 Tue 22:49]
+     CLOCK: [2013-05-28 Tue 22:00]--[2013-05-28 Tue 22:49] =>  0:49
+
+*** COMPLETED Create a basic skeleton for manual                      :story:
+    CLOSED: [2013-05-28 Tue 23:05]
+    CLOCK: [2013-05-31 Fri 07:35]--[2013-05-31 Fri 08:10] =>  0:35
+    CLOCK: [2013-05-30 Thu 19:33]--[2013-05-30 Thu 19:51] =>  0:18
+    CLOCK: [2013-05-28 Tue 22:49]--[2013-05-28 Tue 23:04] =>  0:15
+    CLOCK: [2013-05-28 Tue 07:55]--[2013-05-28 Tue 08:05] =>  0:10
+
+Copy a basic skeleton structure from the ODB manual and define basic
+org to HTML formatting.
+
+See: [[http://www.codesynthesis.com/products/odb/doc/manual.xhtml][C++ Object Persistence with ODB]]
+
+*** COMPLETED Update C++ dia model to reflect code changes            :story:
+    CLOSED: [2013-05-29 Wed 00:03]
+    CLOCK: [2013-05-29 Wed 07:50]--[2013-05-29 Wed 08:00] =>  0:10
+    CLOCK: [2013-05-28 Tue 23:07]--[2013-05-29 Wed 00:05] =>  0:58
+
+*** COMPLETED Tidy-up workflow class                                  :story:
+    CLOSED: [2013-05-29 Wed 08:29]
+    CLOCK: [2013-05-29 Wed 08:23]--[2013-05-29 Wed 08:29] =>  0:06
+    CLOCK: [2013-05-29 Wed 08:05]--[2013-05-29 Wed 08:19] =>  0:14
+
+*** COMPLETED Move includer out of file info factory
+    CLOSED: [2013-05-29 Wed 21:37]
+
+We should be able to pass in the inclusion lists into the factory
+rather than having it collaborate with the includer.
+
+*** COMPLETED Move extractor out of includer
+    CLOSED: [2013-05-29 Wed 21:37]
+
+We should be able to pass in a list of qnames plus the target qname
+into the includer.
+
+*** COMPLETED Add C++ model XML tests
+    CLOSED: [2013-05-29 Wed 21:38]
+
+We should take an SML model, convert it into a list of =file_info= and
+save that down as XML. This will be our expected. We should then load
+the file, convert it into a =std::unordered_map= where the file name
+is the key and the =file_info= is the value. We do the same thing with
+current code and then compare the two.
+
+*** COMPLETED Use leaves to determine visitor accept methods
+    CLOSED: [2013-05-29 Wed 21:52]
+
+At present we implemented visitor in terms of the full inheritance
+graph. In reality, we only need the leafs because for all the
+non-leafs, we will not have implementations for accept (which makes
+sense as these classes cannot be instantiated). We should try to
+implement the visitor class only in terms of leaves, removing most of
+the inheritance graph functionality.
+
+The same logic applies to includes of course. We probably don't even
+need a different method in extractor.
+
+*** COMPLETED Refactor =transform_string_attribute=                   :story:
+    CLOSED: [2013-05-29 Wed 21:57]
+
+This was done as part of previous refactoring.
+
+At present we have a copy and paste job in modeling for
+=transform_string_attribute=. We should add a service to the dia
+model: =string_parser= or something along this lines, copy all the
+duplicated code into it and add tests.
+
+*** COMPLETED Create a class with file information
+    CLOSED: [2013-05-29 Wed 22:05]
+
+This was implemented as content descriptor.
+
+Previous understanding:
+
+In C++ model we use four parameters that get passed all over the
+place: facet, aspect, file type and category. We should:
+
+- rename file type to file kind (interface, implementation)
+- create a class containing the four bits of information called file
+  type
+- replace all the API calls with file type
+- change the view model to take a file type
+
+The class could be called =context= or something of the like.
+
+*** COMPLETED Replace manual exception checks with =BOOST_CHECK_EXCEPTION=
+    CLOSED: [2013-05-29 Wed 22:09]
+
+Closed by RP in the past.
+
+In the past we were testing for exceptions by doing a try and catch:
+
+:     try {
+:         std::generate_n(std::back_inserter(terms), beyond_end, sequence);
+:         BOOST_FAIL("Expected sequence_exhausted exception to be thrown.");
+:     } catch (const kitanda::utility::test_data::sequence_exhausted& e) {
+:         BOOST_TEST_MESSAGE("Exception thrown as expected: " << e.what());
+:         BOOST_CHECK(true);
+:     }
+
+We have now found out about =BOOST_CHECK_EXCEPTION=, so we should
+replace the manual checks on all specs that have them. Example usage:
+
+:     BOOST_CHECK_EXCEPTION(
+:         reader.get_attribute_as_string(label_non_existent_attribute),
+:         exception,
+:         std::bind(check_exception, _1, message_error_get_attribute)
+:         );
+
+*** COMPLETED Visitor header file not included in includer
+    CLOSED: [2013-05-29 Wed 22:36]
+    CLOCK: [2013-05-29 Wed 22:12]--[2013-05-29 Wed 22:36] =>  0:24
+
+At present the visitor header file is not being added to the main
+includer. We need a common solution for all system files including
+keys, etc.
+
+*** CANCELLED Move services into their own type                       :story:
+    CLOSED: [2013-06-02 Sun 22:57]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+**** IMPLEMENTATION Move all of the existing pod code to use new type
+     CLOCK: [2013-05-29 Wed 18:26]--[2013-05-29 Wed 18:42] =>  0:16
+     CLOCK: [2013-05-29 Wed 18:03]--[2013-05-29 Wed 18:17] =>  0:14
+     CLOCK: [2013-05-29 Wed 17:56]--[2013-05-29 Wed 18:02] =>  0:06
+
+*** CANCELLED Use explicit casting for versioned to unversioned conversions :story:
+    CLOSED: [2013-06-02 Sun 22:57]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+*** CANCELLED Add =extract_key= function                              :story:
+    CLOSED: [2013-06-02 Sun 22:57]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+** Deprecated Development Stories

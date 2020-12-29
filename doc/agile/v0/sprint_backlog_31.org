@@ -1,0 +1,105 @@
+#+title: Sprint Backlog 31
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 31.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:03]
+
+| Headline                                                      | Time   |      |      |
+|---------------------------------------------------------------+--------+------+------|
+| *Total time*                                                  | *4:32* |      |      |
+|---------------------------------------------------------------+--------+------+------|
+| Development Stories Implemented                               |        | 4:32 |      |
+| COMPLETED Sprint and product backlog grooming                 |        |      | 0:06 |
+| COMPLETED Update C++ model after latest SML changes           |        |      | 2:39 |
+| COMPLETED Get all unit tests to pass after latest SML changes |        |      | 1:47 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-05-27 Tue 13:03]
+    CLOCK: [2013-07-15 Mon 07:50]--[2013-07-15 Mon 07:56] =>  0:06
+
+*** COMPLETED Update C++ model after latest SML changes               :story:
+    CLOSED: [2013-07-22 Mon 07:47]
+**** IMPLEMENTATION Update workflow
+     CLOCK: [2013-07-16 Tue 18:38]--[2013-07-16 Tue 18:42] =>  0:04
+     CLOCK: [2013-07-16 Tue 18:08]--[2013-07-16 Tue 18:36] =>  0:28
+     CLOCK: [2013-07-16 Tue 08:20]--[2013-07-16 Tue 08:36] =>  0:16
+     CLOCK: [2013-07-16 Tue 07:34]--[2013-07-16 Tue 08:15] =>  0:41
+     CLOCK: [2013-07-15 Mon 18:15]--[2013-07-15 Mon 18:42] =>  0:27
+     CLOCK: [2013-07-15 Mon 18:00]--[2013-07-15 Mon 18:11] =>  0:11
+     CLOCK: [2013-07-15 Mon 08:28]--[2013-07-15 Mon 08:38] =>  0:10
+     CLOCK: [2013-07-15 Mon 07:58]--[2013-07-15 Mon 08:20] =>  0:22
+
+*** COMPLETED Get all unit tests to pass after latest SML changes     :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+**** COMPLETED Fix inclusion of model namespace documentation file
+     CLOSED: [2013-07-22 Mon 08:11]
+     CLOCK: [2013-07-22 Mon 07:48]--[2013-07-22 Mon 08:11] =>  0:23
+
+**** IMPLEMENTATION Fix visitor generation
+     CLOCK: [2013-07-22 Mon 21:56]--[2013-07-22 Mon 22:48] =>  0:52
+     CLOCK: [2013-07-22 Mon 18:26]--[2013-07-22 Mon 18:45] =>  0:19
+     CLOCK: [2013-07-22 Mon 08:26]--[2013-07-22 Mon 08:35] =>  0:09
+     CLOCK: [2013-07-22 Mon 08:12]--[2013-07-22 Mon 08:16] =>  0:04
+
+*** CANCELLED Create a =key_extractor= service                        :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+
+Continuing from Sprint 26.
+
+We need a way to automatically extract a key for a =keyed_entity=.
+The right solution is to create a service to represent this
+concept.
+
+Injector creates objects for these just like it does with keys; the
+C++ transformer intercepts them and generates the correct view models.
+
+*** CANCELLED Add content to the introduction in manual               :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+*** CANCELLED Rename implementation specific parameters               :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+
+These should really be called back end specific parameters at the SML
+level. At the dia level, if a parameter is passed in which has a
+representation at the SML level it should simply be converted to this
+representation instead of being added to the KVP.
+
+Actually, these are more like generic parameters:
+
+- at the dia level they are used to fill in gaps in dia (e.g. packages
+  and diagrams do not have comments)
+- at the SML level, they are used to add information which does not
+  make sense for it to be in dia: is property key.
+- at the backend level, they are used to provide information which
+  does not make sense to live in SML: for example the ODB parameters.
+
+Also, when the string table support has been added, we need to create
+a string table with all valid values for the parameter keys.
+
+Name choices:
+
+- opaque parameters
+- untyped parameters
+
+*** CANCELLED Use explicit casting for versioned to unversioned conversions :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+
+Continuing from previous iteration, see description in Sprint 26.
+
+*** CANCELLED Consider not creating unversioned keys for single property :story:
+    CLOSED: [2013-08-05 Mon 23:23]
+
+If a key is made up of a single property, its a bit nonsensical to
+create an unversioned key. We should only generate the versioned
+key. However, it does make life easier. Wait for real world use cases
+to decide.
+
+** Deprecated Development Stories

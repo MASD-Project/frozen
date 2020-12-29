@@ -1,0 +1,638 @@
+#+title: Sprint Backlog 97
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Work on Upsilon support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-02-13 Mon 12:02]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *51:24* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 51:24   |       |       | 100.0 |
+| Active                                                                      |         | 51:24 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  1:13 |   2.4 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:43 |   1.4 |
+| COMPLETED Add support for configurable enumerations types                   |         |       |  4:10 |   8.1 |
+| COMPLETED Allow disabling =invalid= value in enumerations                   |         |       |  0:12 |   0.4 |
+| COMPLETED Add support for configurable enumeration values                   |         |       |  5:26 |  10.6 |
+| COMPLETED Test data for booleans is not oscillating correctly               |         |       |  1:15 |   2.4 |
+| COMPLETED Inclusion directive logic is too complex                          |         |       |  1:20 |   2.6 |
+| COMPLETED Handle "special includes" generically                             |         |       | 10:34 |  20.6 |
+| POSTPONED Partial matching of built-ins doesn't work for certain types      |         |       |  0:50 |   1.6 |
+| COMPLETED Try to improve compilation times                                  |         |       |  1:39 |   3.2 |
+| COMPLETED Add support for primitives across the pipeline                    |         |       | 19:48 |  38.5 |
+| COMPLETED Drop "inclusion" prefix in quilt.cpp                              |         |       |  0:40 |   1.3 |
+| COMPLETED Mark elements that are valid enumeration underlying elements      |         |       |  0:19 |   0.6 |
+| COMPLETED Refactor yarn model validators                                    |         |       |  1:10 |   2.3 |
+| COMPLETED Split indices out of the intermediate model                       |         |       |  0:40 |   1.3 |
+| COMPLETED Add validation rules for primitives and enumerations              |         |       |  0:34 |   1.1 |
+| COMPLETED Add validation for C# keywords                                    |         |       |  0:16 |   0.5 |
+| POSTPONED Map upsilon primitives to intrinsics                              |         |       |  0:35 |   1.1 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-02-13 Mon 12:02]
+    CLOCK: [2017-02-04 Sat 14:15]--[2017-02-04 Sat 15:27] =>  1:12
+    CLOCK: [2017-01-30 Mon 09:22]--[2017-01-30 Mon 09:23] =>  0:01
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-01-30 Mon 09:44]
+    CLOCK: [2017-01-30 Mon 20:45]--[2017-01-30 Mon 21:08] =>  0:23
+    CLOCK: [2017-01-30 Mon 09:24]--[2017-01-30 Mon 09:44] =>  0:20
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.96.0, "Praia das Miragens"
+
+#+begin_src markdown
+![alt text](http://static.panoramio.com/photos/large/820003.jpg)
+Praia das Miragens, Namibe, Angola. (C) Ivo Cardoso, 2007. Sourced from Panoramio.
+
+Overview
+=======
+The main theme of the sprint was infrastructural work to enable multi-language support in yarn. This was done mainly for the customer-specific upsilon model but it will be reused in a more general form to provide support for Language Agnostic Models.
+
+The only other area of interest in this sprint was the start of the work on "primitives". What was previously called "primitives" are now "built-ins", to best reflect their nature; a new meta-model concept of primitive was introduced. The idea is that users can create their own primitive types. Work on this has only started and the next sprint will provide clarity around the implementation.
+
+User visible changes
+===============
+In this sprint, a small number of user visible changes were made:
+
+- **Log level is now settable**: Command line utilities no longer use the deprecated ```verbose``` parameter. Instead, ```log_level``` was introduced. It maps to the existing levels of logging in Dogen.
+- **JSON format was tidied up**: A few inconsistencies around naming of attributes in JSON were resolved. Please look at the [example models](https://github.com/DomainDrivenConsulting/dogen/tree/master/test_data/yarn.json/input) if you need to update your own models.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_96.org).
+
+Next Sprint
+========
+The next sprint will continue to focus on Upsilon and C#.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_0.96.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.96.0/dogen_0.96.0_amd64-applications.deb)
+- [dogen-0.96.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.96.0/dogen-0.96.0-Darwin-x86_64.dmg)
+- [dogen-0.96.0-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-0.96.0-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/820962437465866241][Tweet]]
+
+*** COMPLETED Add support for configurable enumerations types         :story:
+    CLOSED: [2017-01-30 Mon 14:30]
+    CLOCK: [2017-01-30 Mon 14:30]--[2017-01-30 Mon 14:39] =>  0:09
+    CLOCK: [2017-01-30 Mon 14:10]--[2017-01-30 Mon 14:29] =>  0:19
+    CLOCK: [2017-01-30 Mon 13:38]--[2017-01-30 Mon 14:09] =>  0:31
+    CLOCK: [2017-01-30 Mon 13:16]--[2017-01-30 Mon 13:37] =>  0:21
+    CLOCK: [2017-01-30 Mon 12:39]--[2017-01-30 Mon 13:15] =>  0:36
+    CLOCK: [2017-01-30 Mon 11:28]--[2017-01-30 Mon 12:01] =>  0:33
+    CLOCK: [2017-01-30 Mon 10:49]--[2017-01-30 Mon 11:27] =>  0:38
+    CLOCK: [2017-01-30 Mon 09:45]--[2017-01-30 Mon 10:48] =>  1:03
+
+#+begin_quote
+*Story*: As a dogen user, I need to configure the built-in type of my
+enumerations so that I model my domain accurately.
+#+end_quote
+
+We've updated the =builtins= model with a "default enumeration value"
+field. This allows us to dynamically determine which built-in to use
+as the type of enumerations. However:
+
+- we didn't follow it through in the formatters; we are hard-coding
+  this at present in C++. In a cross-language world, we should
+  dynamically detect the default enumeration type. This is not quite
+  as trivial as it seems (what would happen if we loaded multiple
+  programming languages?). Supporting this properly may require adding
+  a programming language to the model.
+- it is not possible to override this from JSON/Dia. We could do this
+  by supplying a type via dynamic extensions.
+
+Tasks:
+
+- add meta-data parameter to enumeration expander
+- add resolver support to resolve name
+- add meta-data flag for using language default type
+
+*** COMPLETED Allow disabling =invalid= value in enumerations         :story:
+    CLOSED: [2017-01-30 Mon 14:49]
+    CLOCK: [2017-01-30 Mon 14:40]--[2017-01-30 Mon 14:51] =>  0:11
+    CLOCK: [2017-01-30 Mon 14:30]--[2017-01-30 Mon 14:31] =>  0:01
+
+#+begin_quote
+*Story*: As a dogen user, I may not want to allow invalid values in
+enumerations because they do not model my problem domain accurately.
+#+end_quote
+
+At present all enumerations must have an invalid value. One can
+conceive cases where that is not a useful thing. We should have a
+dynamic extension flag that disables it.
+
+*** COMPLETED Add support for configurable enumeration values         :story:
+    CLOSED: [2017-01-30 Mon 23:01]
+    CLOCK: [2017-01-30 Mon 23:02]--[2017-01-30 Mon 23:06] =>  0:04
+    CLOCK: [2017-01-30 Mon 21:08]--[2017-01-30 Mon 23:01] =>  1:53
+    CLOCK: [2017-01-30 Mon 18:20]--[2017-01-30 Mon 18:23] =>  0:03
+    CLOCK: [2017-01-30 Mon 17:51]--[2017-01-30 Mon 18:19] =>  0:28
+    CLOCK: [2017-01-30 Mon 17:38]--[2017-01-30 Mon 17:50] =>  0:12
+    CLOCK: [2017-01-30 Mon 16:31]--[2017-01-30 Mon 17:37] =>  1:06
+    CLOCK: [2017-01-30 Mon 15:23]--[2017-01-30 Mon 16:31] =>  1:08
+    CLOCK: [2017-01-30 Mon 14:50]--[2017-01-30 Mon 15:22] =>  0:32
+
+At present we generate the enumeration value as part of the
+transformation process in =yarn.dia=, based on the relative position
+of the enumerator. This is not ideal:
+
+- it does not allow users to supply their own values;
+- it does not allow users to disable enumeration values altogether and
+  rely on language defaults instead.
+
+We could:
+
+- add meta-data for users to supply their own values;
+- add meta-data to disable setting the enumerator value altogether.
+
+*** COMPLETED Test data for booleans is not oscillating correctly     :story:
+    CLOSED: [2017-02-02 Thu 15:51]
+    CLOCK: [2017-02-02 Thu 16:52]--[2017-02-02 Thu 16:53] =>  0:01
+    CLOCK: [2017-02-02 Thu 16:30]--[2017-02-02 Thu 16:52] =>  0:22
+    CLOCK: [2017-02-02 Thu 15:54]--[2017-02-02 Thu 16:29] =>  0:35
+    CLOCK: [2017-02-02 Thu 15:36]--[2017-02-02 Thu 15:53] =>  0:17
+
+We are not handling correctly zero and one, both producing
+false. Ideally we should have a true, false, ... sequence across the
+board rather than false, false, true, ... This can cause tests to fail
+spuriously because we rely on generators where g(0) != g(1). If a
+class has only a property of type bool this (should) be a problem. Why
+it hasn't been thus far is not clear.
+
+Huge amount of time was spent chasing a red-herring: its not possible
+to have just a single boolean on a base class. This causes the canned
+tests to break. The reason why is because of the way the tests are
+executed and the way boolean works:
+
+- we always throw away the first output of the generator; this was
+  done to avoid it being equal to the default constructed instance of
+  a type.
+- however, the default constructed boolean is false whereas the first
+  sequence of the generator is actually true;
+- but the second value of the generator is false, which is equal to
+  the default. So whilst this technique works for non-oscillating
+  types, it breaks on booleans.
+- this problem will manifest itself whenever there is a boolean and no
+  other type (to force differences). The reason why we didn't notice
+  this before is because the types in trivial inheritance with
+  booleans are not currently being tested.
+- the problem was solved by ensuring the oscillations of the bools do
+  match the expectations of the tests.
+
+*** COMPLETED Inclusion directive logic is too complex                :story:
+    CLOSED: [2017-02-02 Thu 18:15]
+    CLOCK: [2017-02-02 Thu 18:14]--[2017-02-02 Thu 18:17] =>  0:03
+    CLOCK: [2017-02-02 Thu 18:02]--[2017-02-02 Thu 18:13] =>  0:11
+    CLOCK: [2017-02-02 Thu 17:25]--[2017-02-02 Thu 18:01] =>  0:36
+    CLOCK: [2017-02-02 Thu 16:54]--[2017-02-02 Thu 17:24] =>  0:30
+
+At present we have a number of flags handling inclusion directive
+generation:
+
+- =quilt.cpp.inclusion_required=: if true, the type requires inclusion
+  across the board; defaults to true.
+- =quilt.cpp.hash.class_header.inclusion_required=: i.e. formatter
+  specific inclusion required; if true this specific formatter
+  requires an inclusion directive. Defaults to true.
+
+The logic is then as follows:
+
+- if the top-level inclusion directive is true and there are no
+  "overrides", we generate the inclusion directives ourselves.
+- if the top-level inclusion directive is true and there are
+  "overrides", we use the overrides.
+- if the top-level inclusion directive is false, no inclusion
+  directives are used for this type.
+
+Now in practice, the use cases are a bit more limited:
+
+- either the type is a code-generator type, in which case, all flags
+  are true and all overrides are unused.
+- or the type belongs to a proxy model and has one or more
+  overrides. In this case, for the archetypes where there is an
+  override, we use that, for all other archetypes we do not require
+  inclusion. An additional case is where we just don't support the
+  archetype but we're ignoring that for now.
+
+So it seems the key problem is in distinguishing the origin of the
+type: if it comes from a proxy model, we should never generate the
+directives, and use overrides where available; if it comes from a
+reference or target model we shuld always generate the directives.
+
+This could be achieved by flagging proxy types somehow.
+
+Another interesting point is that if we somehow could know if there is
+at least one overridden directive for any of the formatters, we could
+then not bother having a field for the formatter level
+=inclusion_required=; we could simply default them all to
+false. This could be achieved by a meta-data API that checks to see if
+a field exists by name (we probably have this already).
+
+Cases:
+
+| Scenario                                    | Example     | Action                       |
+|---------------------------------------------+-------------+------------------------------|
+| Proxy model that does not require overrides | int         | inclusion_required is false. |
+| Proxy model that requires some overrides    | std::string | detect presence of override. |
+| Non-proxy model                             |             | Generate directives          |
+
+*** COMPLETED Handle "special includes" generically                   :story:
+    CLOSED: [2017-02-02 Thu 23:23]
+    CLOCK: [2017-02-02 Thu 23:19]--[2017-02-02 Thu 23:23] =>  0:04
+    CLOCK: [2017-02-02 Thu 23:06]--[2017-02-02 Thu 23:18] =>  0:12
+    CLOCK: [2017-02-02 Thu 22:55]--[2017-02-02 Thu 23:05] =>  0:10
+    CLOCK: [2017-02-02 Thu 22:41]--[2017-02-02 Thu 22:54] =>  0:13
+    CLOCK: [2017-02-02 Thu 22:15]--[2017-02-02 Thu 22:40] =>  0:25
+    CLOCK: [2017-02-02 Thu 20:37]--[2017-02-02 Thu 21:00] =>  0:23
+    CLOCK: [2017-02-02 Thu 20:33]--[2017-02-02 Thu 20:36] =>  0:03
+    CLOCK: [2017-02-02 Thu 20:15]--[2017-02-02 Thu 20:32] =>  0:17
+    CLOCK: [2017-02-02 Thu 18:18]--[2017-02-02 Thu 18:27] =>  0:09
+    CLOCK: [2017-02-02 Thu 15:09]--[2017-02-02 Thu 15:35] =>  0:26
+    CLOCK: [2017-02-02 Thu 15:04]--[2017-02-02 Thu 15:08] =>  0:04
+    CLOCK: [2017-02-02 Thu 14:03]--[2017-02-02 Thu 15:03] =>  1:00
+    CLOCK: [2017-02-02 Thu 10:33]--[2017-02-02 Thu 12:01] =>  1:28
+    CLOCK: [2017-02-02 Thu 10:28]--[2017-02-02 Thu 10:32] =>  0:04
+    CLOCK: [2017-02-02 Thu 10:24]--[2017-02-02 Thu 10:27] =>  0:03
+    CLOCK: [2017-02-02 Thu 09:49]--[2017-02-02 Thu 10:23] =>  0:34
+    CLOCK: [2017-02-02 Thu 09:21]--[2017-02-02 Thu 09:48] =>  0:27
+    CLOCK: [2017-02-02 Thu 09:10]--[2017-02-02 Thu 09:20] =>  0:10
+    CLOCK: [2017-02-02 Thu 09:04]--[2017-02-02 Thu 09:09] =>  0:05
+    CLOCK: [2017-02-02 Thu 08:53]--[2017-02-02 Thu 09:03] =>  0:10
+    CLOCK: [2017-02-02 Thu 08:02]--[2017-02-02 Thu 08:52] =>  0:50
+    CLOCK: [2017-02-02 Thu 06:48]--[2017-02-02 Thu 07:32] =>  0:44
+    CLOCK: [2017-02-01 Wed 16:54]--[2017-02-01 Wed 17:43] =>  0:49
+    CLOCK: [2017-02-01 Wed 15:09]--[2017-02-01 Wed 16:53] =>  1:44
+
+We did a quick hack to handle "special includes": we simply "detected"
+them in include builder and then did the appropriate action in each of
+the include providers. In order to make this work dynamically, we need
+somehow to have "associated includes" on a per type basis. For
+example:
+
+- type =x= requires include =y= in formatter =f=.
+
+This can easily be achieved via an "additional inclusion directive"
+which is a container. For example:
+
+:        "extensions" : {
+:                "quilt.cpp.helper.family" : "Dereferenceable",
+:                "quilt.cpp.types.class_header_formatter.inclusion_directive" : "<boost/weak_ptr.hpp>",
+
+Could have:
+
+:                "quilt.cpp.types.class_header_formatter.additional_inclusion_directive" : "<some_include.hpp>",
+
+If multiple are provided then they are all added. This highlights an
+important point: we need a way to inject type specific includes from a
+formatter. It makes no sense to declare all of these up front in a
+library since we do not know what all possible formatters are, nor
+what requirements they may have for inclusion. At the same time,
+formatters cannot be expected to declare types. The solution is to be
+able to "inject" these dependencies from a JSON file associated with
+the formatter. We could supply the qualified name and the properties
+to inject. This problem can be solved later on - create a separate
+story for this.
+
+Tasks:
+
+- move to the repository/factory pattern for dependencies;
+- rename meta-data to =inclusion_directive.principal=;
+- add =inclusion_directive.auxiliary=;
+- change code to also include auxiliary directives.
+
+*** POSTPONED Partial matching of built-ins doesn't work for certain types :story:
+    CLOSED: [2017-02-03 Fri 10:29]
+    CLOCK: [2017-02-03 Fri 09:37]--[2017-02-03 Fri 10:27] =>  0:50
+
+We introduced a fix that allows users to create types that partially
+match built-ins types such as =in= or =integer=. The fix was copied
+from the spirit documentation:
+
+[[http://www.boost.org/doc/libs/1_52_0/libs/spirit/repository/doc/html/spirit_repository/qi_components/directives/distinct.html][- Qi Distinct Parser Directive]]
+- [[http://www.boost.org/doc/libs/1_52_0/libs/spirit/repository/test/qi/distinct.cpp][distinct.cpp]]
+
+However, we still haven't solved the following cases:
+
+: BOOST_CHECK(test_builtin("longer"));
+: BOOST_CHECK(test_builtin("unsigneder"));
+
+As these are not so common they have been left for later.
+
+Seems like the thing to do here is to create a keyword parser and nest
+it with the existing parsers:
+
+- [[http://stackoverflow.com/questions/21960167/prevent-the-boost-spirit-symbol-parser-from-accepting-a-keyword-too-early][Prevent the Boost Spirit Symbol parser from accepting a keyword too early]]
+- [[http://www.boost.org/doc/libs/1_53_0/libs/spirit/repository/doc/html/spirit_repository/qi_components/directives/kwd.html][Qi Keyword Parser Directive]]
+
+*** COMPLETED Add support for template classes                        :story:
+    CLOSED: [2017-02-04 Sat 14:53]
+
+*Rationale*: the parser is already able to cope with this use case and
+we already have number of type parameters.
+
+At present we can create classes in dia that require template
+parameters; however, when we try to create member variables that
+instantiate that class the parser fails to parse. For example,
+=expansion::inclusion_dependencies_provider= has a template parameter:
+
+: std::forward_list<boost::shared_ptr<expansion::inclusion_dependencies_provider<sml::module>>
+
+The parser fails:
+
+: 2015-04-02 15:55:02.084366 [ERROR] [dia_to_sml.identifier_parser] Failed to parse string: std::forward_list<boost::shared_ptr<expansion::inclusion_dependencies_provider<sml::module>>
+: 2015-04-02 15:55:02.086929 [FATAL] [knitter] Error: /home/marco/Development/DomainDrivenConsulting/dogen/projects/dia_to_sml/src/types/identifier_parser.cpp(197): Throw in function sml::nested_qname dogen::dia_to_sml::identifier_parser::parse_qname(const std::string &) const
+: Dynamic exception type: N5boost16exception_detail10clone_implIN5dogen10dia_to_sml13parsing_errorEEE
+: std::exception::what: Failed to parse string: std::forward_list<boost::shared_ptr<expansion::inclusion_dependencies_provider<sml::module>>
+: [P12tag_workflow] = Code generation failure.
+
+In addition, even if the parser succeeded, we still need a way to tell
+dogen that the class has a template parameter; this is hard-coded at
+the moment for containers (we determine if the type is an associative
+container, etc). We need it to be dynamically determined when
+inspecting the yarn type. For example, we could have a "number of
+template parameters" in the type. This could be set in the meta-data
+for STL containers. Or we could actually specify the template
+parameters as "type arguments" just like we do with operations and
+properties (preferred). The parser would then use this info.
+
+*** COMPLETED Try to improve compilation times                        :story:
+    CLOSED: [2017-02-04 Sat 17:55]
+    CLOCK: [2017-02-04 Sat 17:49]--[2017-02-04 Sat 17:52] =>  0:03
+    CLOCK: [2017-02-04 Sat 17:43]--[2017-02-04 Sat 17:48] =>  0:05
+    CLOCK: [2017-02-04 Sat 17:40]--[2017-02-04 Sat 17:42] =>  0:02
+    CLOCK: [2017-02-04 Sat 17:32]--[2017-02-04 Sat 17:37] =>  0:05
+    CLOCK: [2017-02-04 Sat 17:28]--[2017-02-04 Sat 17:31] =>  0:03
+    CLOCK: [2017-02-04 Sat 17:25]--[2017-02-04 Sat 17:27] =>  0:02
+    CLOCK: [2017-02-04 Sat 17:23]--[2017-02-04 Sat 17:24] =>  0:01
+    CLOCK: [2017-02-04 Sat 16:37]--[2017-02-04 Sat 17:22] =>  0:45
+    CLOCK: [2017-02-04 Sat 16:35]--[2017-02-04 Sat 16:36] =>  0:01
+    CLOCK: [2017-02-04 Sat 16:29]--[2017-02-04 Sat 16:34] =>  0:05
+    CLOCK: [2017-02-04 Sat 16:01]--[2017-02-04 Sat 16:28] =>  0:27
+
+At present on GCC we are just about coping with the compilation time
+limit of 50 mins; occasionally we get red builds due to this. However,
+we need to add a lot more code so this is not sustainable in the
+medium term. We should try to remove all the facets which we don't
+really need from the core models to see if we can reduce the build
+time by a fair bit (5 mins or more).
+
+*** COMPLETED Add support for primitives across the pipeline          :story:
+    CLOSED: [2017-02-05 Sun 10:54]
+    CLOCK: [2017-02-05 Sun 09:51]--[2017-02-05 Sun 10:54] =>  1:03
+    CLOCK: [2017-02-04 Sat 23:11]--[2017-02-04 Sat 23:31] =>  0:20
+    CLOCK: [2017-02-04 Sat 22:47]--[2017-02-04 Sat 23:10] =>  0:23
+    CLOCK: [2017-02-04 Sat 21:12]--[2017-02-04 Sat 22:46] =>  1:34
+    CLOCK: [2017-02-04 Sat 08:15]--[2017-02-04 Sat 08:26] =>  0:11
+    CLOCK: [2017-02-03 Fri 12:48]--[2017-02-03 Fri 12:55] =>  0:07
+    CLOCK: [2017-02-03 Fri 12:24]--[2017-02-03 Fri 12:47] =>  0:23
+    CLOCK: [2017-02-03 Fri 11:14]--[2017-02-03 Fri 12:23] =>  1:09
+    CLOCK: [2017-02-03 Fri 11:00]--[2017-02-03 Fri 11:13] =>  0:13
+    CLOCK: [2017-02-03 Fri 09:38]--[2017-02-03 Fri 10:59] =>  1:21
+    CLOCK: [2017-02-03 Fri 09:02]--[2017-02-03 Fri 09:37] =>  0:35
+    CLOCK: [2017-02-02 Thu 23:24]--[2017-02-02 Thu 23:38] =>  0:14
+    CLOCK: [2017-02-01 Wed 14:02]--[2017-02-01 Wed 15:08] =>  1:06
+    CLOCK: [2017-02-01 Wed 11:40]--[2017-02-01 Wed 12:01] =>  0:21
+    CLOCK: [2017-02-01 Wed 11:06]--[2017-02-01 Wed 11:39] =>  0:33
+    CLOCK: [2017-02-01 Wed 11:01]--[2017-02-01 Wed 11:05] =>  0:04
+    CLOCK: [2017-02-01 Wed 10:55]--[2017-02-01 Wed 11:01] =>  0:06
+    CLOCK: [2017-02-01 Wed 10:43]--[2017-02-01 Wed 10:54] =>  0:11
+    CLOCK: [2017-02-01 Wed 09:25]--[2017-02-01 Wed 10:42] =>  1:17
+    CLOCK: [2017-01-31 Tue 17:10]--[2017-01-31 Tue 17:46] =>  0:36
+    CLOCK: [2017-01-31 Tue 16:43]--[2017-01-31 Tue 16:49] =>  0:06
+    CLOCK: [2017-01-31 Tue 16:37]--[2017-01-31 Tue 16:42] =>  0:05
+    CLOCK: [2017-01-31 Tue 16:28]--[2017-01-31 Tue 16:36] =>  0:08
+    CLOCK: [2017-01-31 Tue 16:20]--[2017-01-31 Tue 16:27] =>  0:07
+    CLOCK: [2017-01-31 Tue 16:01]--[2017-01-31 Tue 16:19] =>  0:18
+    CLOCK: [2017-01-31 Tue 15:55]--[2017-01-31 Tue 16:00] =>  0:05
+    CLOCK: [2017-01-31 Tue 15:40]--[2017-01-31 Tue 15:54] =>  0:14
+    CLOCK: [2017-01-31 Tue 15:31]--[2017-01-31 Tue 15:39] =>  0:08
+    CLOCK: [2017-01-31 Tue 15:10]--[2017-01-31 Tue 15:30] =>  0:20
+    CLOCK: [2017-01-31 Tue 14:50]--[2017-01-31 Tue 15:09] =>  0:19
+    CLOCK: [2017-01-31 Tue 14:12]--[2017-01-31 Tue 14:49] =>  0:37
+    CLOCK: [2017-01-31 Tue 13:25]--[2017-01-31 Tue 13:52] =>  0:27
+    CLOCK: [2017-01-31 Tue 12:45]--[2017-01-31 Tue 13:24] =>  0:39
+    CLOCK: [2017-01-31 Tue 11:53]--[2017-01-31 Tue 12:00] =>  0:07
+    CLOCK: [2017-01-31 Tue 11:46]--[2017-01-31 Tue 11:52] =>  0:06
+    CLOCK: [2017-01-31 Tue 10:55]--[2017-01-31 Tue 11:35] =>  0:40
+    CLOCK: [2017-01-31 Tue 10:28]--[2017-01-31 Tue 10:40] =>  0:12
+    CLOCK: [2017-01-31 Tue 10:09]--[2017-01-31 Tue 10:27] =>  0:18
+    CLOCK: [2017-01-31 Tue 09:46]--[2017-01-31 Tue 10:08] =>  0:22
+    CLOCK: [2017-01-31 Tue 09:16]--[2017-01-31 Tue 09:45] =>  0:29
+    CLOCK: [2017-01-31 Tue 07:45]--[2017-01-31 Tue 09:15] =>  1:30
+    CLOCK: [2017-01-31 Tue 07:08]--[2017-01-31 Tue 07:11] =>  0:03
+    CLOCK: [2017-01-31 Tue 06:59]--[2017-01-31 Tue 07:07] =>  0:08
+    CLOCK: [2017-01-31 Tue 06:31]--[2017-01-31 Tue 06:58] =>  0:27
+    CLOCK: [2017-01-31 Tue 05:31]--[2017-01-31 Tue 05:37] =>  0:06
+
+- add a new yarn element: primitive. Add an attribute of type name
+  called =underlying_type=.
+- add an is nullable flag, settable from meta-data. If true, the
+  primitive can be null.
+- add a stereotype for primitive.
+- add a meta-data parameter for the underlying type. Make it the same
+  as for enumerations. Add it to the parsing expander.
+- add a primitive expander, similar to the enumeration expander in
+  intermediate model expansion.
+- add formatters for primitive across all facets and languages.
+- add a test model for each language with primitives that test all
+  built-ins, string and date.
+
+*Previous Understanding*
+
+One extremely useful feature would be to create "aliases" for types
+which could be implemented as strongly-typed aliases where there is
+language support. The gist of the problem is as described in here:
+
+[[http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3515.pdf][Toward Opaque Typedefs for C++1Y]]
+
+This is also similar to the problem space of boost dimensions,
+although their problem is more generic. The gist of it is that one
+should be able to "conceptually" sub-class primitives such as int and
+even types such as string and have the code generator create some
+representation of that type that has the desired properties (including
+a "to underlying" function). These types would not be interchangeable
+with their aliased types. For example, if we define a "book id" as an
+unsigned int, it should not be interchangeable with unsigned
+int. Potentially it should also not have certain int abilities such as
+adding/multiplication and so forth.
+
+Links:
+
+- [[http://www.boost.org/doc/libs/1_37_0/boost/strong_typedef.hpp][Boost Strong Typedef]]
+- [[http://stackoverflow.com/questions/23726038/how-can-i-create-a-new-primitive-type-using-c11-style-strong-typedefs][How can I create a new primitive type using C++11 style strong
+  typedefs?]]
+- [[http://stackoverflow.com/questions/28916627/strong-typedefs][Strong typedefs]]
+- [[http://programmers.stackexchange.com/questions/243154/c-strongly-typed-typedef][C++ strongly typed typedef]]
+- [[http://www.ilikebigbits.com/blog/2014/5/6/type-safe-identifiers-in-c][Type safe handles in C++]]
+3
+Note: the other stories in the backlog about typedefs are just about
+the C++ feature, not this extension to it. Hence we called it "type
+aliasing" to avoid confusion.
+
+The implementation is fairly similar to enumerations:
+
+- add a stereotype for this concept.
+- add a yarn element.
+- add a meta-data parameter for the underlying type. Make it the same
+  as for enumerations. Add validation to ensure the element is always
+  a primitive. Actually, this is fine for enumerations but not for
+  "primitives". We need an additional parameter on each element (can
+  be the underlying element of a primitive?).
+- add formatters.
+
+The first problem is what to call it. Type alias is not a good name
+because an alias implies they are interchangeable; this is what one is
+trying to avoid. One sneaky way out is to call primitives "builtins"
+and call these "primitives". This somewhat reflects the truth in that
+builtins are supposed to be hardware level concepts.
+
+*** COMPLETED Drop "inclusion" prefix in quilt.cpp                    :story:
+    CLOSED: [2017-02-05 Sun 11:36]
+    CLOCK: [2017-02-05 Sun 11:35]--[2017-02-05 Sun 11:36] =>  0:01
+    CLOCK: [2017-02-05 Sun 10:55]--[2017-02-05 Sun 11:34] =>  0:39
+
+The inclusion related classes in quilt.cpp have really long names. We
+probably don't really need them to have the "inclusion" prefix as we
+know what they are doing by looking at just
+"directive/dependencies". Drop the inclusion prefix across the board.
+
+*** COMPLETED Mark elements that are valid enumeration underlying elements :story:
+    CLOSED: [2017-02-05 Sun 11:52]
+    CLOCK: [2017-02-05 Sun 11:53]--[2017-02-05 Sun 11:57] =>  0:04
+    CLOCK: [2017-02-05 Sun 11:37]--[2017-02-05 Sun 11:52] =>  0:15
+
+The following are the valid types for enumerations:
+
+- C#: byte, sbyte, short, ushort, int, uint, long, or ulong.
+- C++: int, unsigned int, long, unsigned long, long long, or unsigned long long
+
+We need to populate =can_be_enumeration_underlier= and add these types
+to the indices. We then need to update the validator to check the user
+has selected a valid underlying type.
+
+*** COMPLETED Mark elements that are valid primitive underlying elements :story:
+    CLOSED: [2017-02-05 Sun 11:52]
+
+The following are the valid types for primitives:
+
+- all built-ins;
+- string types.
+- date, time, etc.
+
+Read to =can_be_primitive_underlier=.
+
+*** COMPLETED Refactor yarn model validators                          :story:
+    CLOSED: [2017-02-05 Sun 17:31]
+    CLOCK: [2017-02-05 Sun 17:06]--[2017-02-05 Sun 17:22] =>  0:16
+    CLOCK: [2017-02-05 Sun 16:45]--[2017-02-05 Sun 17:05] =>  0:20
+    CLOCK: [2017-02-05 Sun 16:10]--[2017-02-05 Sun 16:44] =>  0:34
+
+In truth we do not need =model= validation, just =intermediate_model=
+validation; the transformation between the two is trivial. What we do
+need is two kinds of =intermediate_model= validation:
+
+- after the "single" =intermediate_model= is generated.
+- after the merged, resolved, etc =intermediate_model= is generated.
+
+We could call these "stages" and have two methods:
+
+- =validate_first_stage=
+- =validate_second_stage=
+
+Actually the problem is this class is going to become too messy. Maybe
+we do need to classes, but reflecting the stages rather than the model
+types:
+
+- first stage validator
+- second stage validator
+
+Both validate =intermediate_model=.
+
+Tasks:
+
+- move =abstract_elements= to indices
+- decomposer now operates on intermediate models
+- rename validators
+
+*** COMPLETED Split indices out of the intermediate model             :story:
+    CLOSED: [2017-02-05 Sun 18:03]
+    CLOCK: [2017-02-05 Sun 17:56]--[2017-02-05 Sun 18:03] =>  0:07
+    CLOCK: [2017-02-05 Sun 17:22]--[2017-02-05 Sun 17:55] =>  0:33
+
+For some reason, we decided to include the indices directly into the
+intermediate model. Whilst this made life easier at the time, it
+doesn't make a lot of sense. We should split it out and supply the
+indices as arguments where they are used. It will make the
+intermediate model smaller and will also make it clear where we need
+the indices.
+
+*** COMPLETED Add validation rules for primitives and enumerations    :story:
+    CLOSED: [2017-02-05 Sun 22:25]
+    CLOCK: [2017-02-05 Sun 21:51]--[2017-02-05 Sun 22:25] =>  0:34
+
+We need to add all of the rules related to validation of primitives
+and enumerations to the validators. This can only be done after the
+indices have been populated.
+
+*** COMPLETED Add validation for C# keywords                          :story:
+    CLOSED: [2017-02-05 Sun 22:42]
+    CLOCK: [2017-02-05 Sun 22:26]--[2017-02-05 Sun 22:42] =>  0:16
+
+At present we are checking the model does not contain C++ keywords but
+we're not doing the same for C#.
+
+- [[https://en.wikibooks.org/wiki/C_Sharp_Programming/Keywords][C# Programming/Keywords]]
+
+We should also ensure models in LAM are checked for both C# and C++
+keywords - or actually always check all keywords for all languages.
+
+*** POSTPONED Map upsilon primitives to intrinsics                    :story:
+    CLOSED: [2017-02-13 Mon 12:01]
+    CLOCK: [2017-02-06 Mon 20:45]--[2017-02-06 Mon 21:20] =>  0:35
+
+Upsilon allows users to create "strong typedefs" around primitve
+types. We need to unpack these into their intrinsic counterparts and
+them map the intrinsics to native types.
+
+Slight mistake: we mapped the primitive types themselves but in
+reality what needs to be mapped are the fields making references to
+the primitive types. We should just filter out all primitives.
+
+Additional wrinkle: what the end users want is to unpack "real
+primitives" into intrinsics, but "other" primitives should be mapped
+to objects. This can be achieved by hard-coding =Plaform= primitives
+into the mapping layer. However, some non-platform primitives may also
+be candidates too. We need to create a list of these to see how
+widespread the problem is.
+
+Another alternative is to apply hard-coded regexes:
+
+- if the name matches any of the intrinsic names
+
+Finally, the last option may be to have yet another mapping data file
+format that lists the primitives to unbox.
+
+** Deprecated

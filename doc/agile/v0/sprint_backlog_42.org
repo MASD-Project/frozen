@@ -1,0 +1,669 @@
+#+title: Sprint Backlog 42
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 42.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:05]
+
+| Headline                                                                | Time    |       |       |
+|-------------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                            | *48:03* |       |       |
+|-------------------------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                                         |         | 48:03 |       |
+| COMPLETED Sprint and product backlog grooming                           |         |       |  2:11 |
+| COMPLETED Investigate availability of boost 1.55 for debian             |         |       |  0:18 |
+| COMPLETED Add more valgrind suppressions                                |         |       |  0:06 |
+| COMPLETED Add absolute path support to =om=                             |         |       |  2:40 |
+| COMPLETED Add plumbing to engine to toggle =om= on or off               |         |       |  1:53 |
+| COMPLETED Ensure OM header files are at the expected location           |         |       |  0:35 |
+| COMPLETED Fix differences in code generation between =om= and C++ model |         |       |  6:45 |
+| COMPLETED Investigate why clang is not producing code coverage          |         |       |  0:13 |
+| COMPLETED Solve the new lines issue in formatters                       |         |       | 13:42 |
+| COMPLETED Add include file support to main type formatter               |         |       |  1:13 |
+| COMPLETED Design a cleaner meta-data API                                |         |       |  0:49 |
+| COMPLETED Update all tests to use =om= formatter                        |         |       | 15:57 |
+| CANCELLED Create a blog post on dogen's development methodology         |         |       |  1:41 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-05-27 Tue 13:05]
+    CLOCK: [2014-01-10 Fri 18:40]--[2014-01-10 Fri 18:53] =>  0:13
+    CLOCK: [2014-01-10 Fri 07:56]--[2014-01-10 Fri 08:06] =>  0:10
+    CLOCK: [2014-01-04 Sat 22:17]--[2014-01-04 Sat 22:23] =>  0:06
+    CLOCK: [2014-01-04 Sat 22:10]--[2014-01-04 Sat 22:17] =>  0:07
+    CLOCK: [2014-01-04 Sat 22:05]--[2014-01-04 Sat 22:10] =>  0:05
+    CLOCK: [2013-12-30 Mon 11:59]--[2013-12-30 Mon 12:29] =>  0:30
+    CLOCK: [2013-12-30 Mon 11:53]--[2013-12-30 Mon 11:58] =>  0:05
+    CLOCK: [2013-12-30 Mon 10:29]--[2013-12-30 Mon 11:05] =>  0:36
+    CLOCK: [2013-12-30 Mon 10:00]--[2013-12-30 Mon 10:10] =>  0:10
+    CLOCK: [2013-12-30 Mon 09:50]--[2013-12-30 Mon 09:59] =>  0:09
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Investigate availability of boost 1.55 for debian        :task:
+    CLOSED: [2013-12-30 Mon 12:59]
+    CLOCK: [2013-12-30 Mon 12:31]--[2013-12-30 Mon 12:49] =>  0:18
+
+We need to retest the PFH changes when boost 1.55 becomes available in
+debian. Checked the [[https://wiki.debian.org/Teams/DebianBoostTeam][team page]] - there is no open bug yet. Subscribed
+to the [[http://packages.qa.debian.org/b/boost-defaults.html][package feed]].
+
+*** COMPLETED Add more valgrind suppressions                           :task:
+    CLOSED: [2013-12-30 Mon 13:54]
+    CLOCK: [2013-12-30 Mon 13:48]--[2013-12-30 Mon 13:54] =>  0:06
+
+After the move to boost 1.55, we increased dramatically the number of
+valgrind's errors. It looks like the vast majority of it is just boost
+log, and postgres. Update all of the suppressions.
+
+*** COMPLETED Add absolute path support to =om=                       :story:
+    CLOSED: [2013-12-30 Mon 16:37]
+    CLOCK: [2013-12-30 Mon 13:56]--[2013-12-30 Mon 16:36] =>  2:40
+
+We have no way of generating full paths from within =om=. To do so we
+need the following changes:
+
+- use settings to compute the key paths in engine workflow: project
+  directory, source directory, include directory
+- supply key paths to the OM workflow and formatter factory
+- supply required paths to the applicable formatters
+- make header guards configurable
+
+*** COMPLETED Add plumbing to engine to toggle =om= on or off         :story:
+    CLOSED: [2013-12-30 Mon 19:03]
+    CLOCK: [2013-12-30 Mon 18:28]--[2013-12-30 Mon 19:03] =>  0:35
+    CLOCK: [2013-12-30 Mon 17:10]--[2013-12-30 Mon 18:28] =>  1:18
+
+We need a way to create models with =om= files superimposed on top of
+=cpp_formatter= files; this would allow us to work through the diffs
+quickly. To do so:
+
+- create a flag in workflow to enable/disable OM. default it to false.
+- pass it to backend factory.
+- update a test to have the flag set to true.
+
+*** COMPLETED Ensure OM header files are at the expected location     :spike:
+    CLOSED: [2013-12-30 Mon 19:38]
+    CLOCK: [2013-12-30 Mon 19:03]--[2013-12-30 Mon 19:38] =>  0:35
+
+We seem to be creating =om= files in an incorrect directory. We need
+to fix this before we can start looking at the diffs.
+
+*** COMPLETED Fix differences in code generation between =om= and C++ model :story:
+    CLOSED: [2014-01-01 Wed 14:00]
+    CLOCK: [2013-12-30 Mon 19:38]--[2013-12-30 Mon 19:46] =>  0:08
+
+Problems have been detected by the diff, and attached to this story as
+tasks. One item won't be handled by this story:
+
+-  missing includes: already covered by this [[*Add%20include%20file%20support%20to%20main%20type%20formatter][story]].
+
+**** COMPLETED Missing licence                                         :task:
+     CLOSED: [2013-12-31 Tue 13:21]
+     CLOCK: [2013-12-31 Tue 12:24]--[2013-12-31 Tue 13:29] =>  1:05
+
+Licence not coming out, need to add appropriate meta data.
+
+**** COMPLETED Type of the variables is blank                          :task:
+     CLOSED: [2013-12-31 Tue 15:41]
+     CLOCK: [2013-12-31 Tue 13:53]--[2013-12-31 Tue 15:41] =>  1:48
+     CLOCK: [2013-12-31 Tue 13:30]--[2013-12-31 Tue 13:53] =>  0:23
+
+Problems:
+
+- instead of =int= we're getting nothing at all.
+- member variables are public
+
+We were missing the entire story of tagging properties with required
+meta-data.
+
+**** COMPLETED Default constructor is compiler generated               :task:
+     CLOSED: [2013-12-31 Tue 16:28]
+     CLOCK: [2013-12-31 Tue 15:54]--[2013-12-31 Tue 16:28] =>  0:34
+
+It should have been manually generated as we have an int member
+variable.
+
+**** COMPLETED =to_stream= and - =operator== have been added           :task:
+     CLOSED: [2013-12-31 Tue 16:38]
+     CLOCK: [2013-12-31 Tue 16:34]--[2013-12-31 Tue 16:50] =>  0:07
+
+Should only be added in inheritance scenarios.
+
+Partially fixes the swap issue, but more work still required.
+
+**** COMPLETED No external =std::swap=                                 :task:
+     CLOSED: [2014-01-01 Wed 14:00]
+     CLOCK: [2014-01-01 Wed 13:09]--[2014-01-01 Wed 14:00] =>  0:51
+     CLOCK: [2014-01-01 Wed 11:59]--[2014-01-01 Wed 13:07] =>  1:08
+     CLOCK: [2014-01-01 Wed 10:29]--[2014-01-01 Wed 10:33] =>  0:04
+
+The swap function is not being generated.
+
+**** COMPLETED Broke the build whilst fixing a diff in std namespace  :spike:
+     CLOSED: [2014-01-01 Wed 14:30]
+     CLOCK: [2014-01-01 Wed 14:21]--[2014-01-01 Wed 14:29] =>  0:08
+     CLOCK: [2014-01-01 Wed 14:01]--[2014-01-01 Wed 14:21] =>  0:20
+
+- first get the build green
+- then fix the diff properly
+
+*** COMPLETED Investigate why clang is not producing code coverage    :story:
+    CLOSED: [2014-01-04 Sat 11:20]
+    CLOCK: [2014-01-03 Fri 13:01]--[2014-01-03 Fri 13:14] =>  0:13
+
+We are not producing any code coverage numbers for clang. In the past
+this was thought to be due to incompatibilities in the GCov
+format. However, this post seems to imply its just a matter of setting
+the correct flags:
+
+[[http://clang-developers.42468.n3.nabble.com/Code-coverage-on-clang-td4033066.html][Code coverage on clang]]
+
+Do a quick investigation as to what flags we are using on clang.
+
+- added flags to Clang compilation, will check Nightly tomorrow.
+
+Actually, these flags are only available for recent clangs. We need to
+comment it out for now and revisit it later.
+
+*** COMPLETED Solve the new lines issue in formatters                 :spike:
+    CLOSED: [2014-01-04 Sat 22:05]
+
+We did a number of hacks to get the newlines to work correctly but in
+reality all of these approaches are really bad. The problem is that
+its not possible to know, when formatting one block, if there is a
+need for a whitespace after or before it; only someone that has
+visibility of both the current block, the previous and the one after
+can make that decision. The best way of doing this is to create a
+list of blocks and then use that to decide where to put in the new
+lines.
+
+**** COMPLETED Analysis of the problem                                 :task:
+     CLOSED: [2014-01-03 Fri 01:30]
+     CLOCK: [2014-01-02 Thu 12:18]--[2014-01-02 Thu 13:28] =>  1:10
+     CLOCK: [2014-01-02 Thu 12:00]--[2014-01-02 Thu 12:18] =>  0:18
+     CLOCK: [2014-01-01 Wed 17:53]--[2014-01-01 Wed 18:20] =>  0:24
+     CLOCK: [2014-01-01 Wed 17:34]--[2014-01-01 Wed 17:42] =>  0:08
+     CLOCK: [2014-01-01 Wed 16:55]--[2014-01-01 Wed 17:34] =>  0:39
+
+Result of white-boarding session:
+
+- we need a class that acts as an interface in between the streaming
+  and discretises the stream into "blocks". perhaps
+  =stream_discretizer=? we could of course create a =discrete_stream=
+  which is a specialised =ostream=.
+- blocks are a logical construct, determined by the formatters
+  themselves; they need to decide when a block starts and ends.
+- this discretiser class then has an =assemble= method that can be
+  called at the end to construct a string from all the blocks, adding
+  new lines as required.
+
+These are the options when it comes to joining blocks:
+
+- do not add a new line before block: first block, doxygen comments.
+- do not add line after block: last block, licence
+- add line before block
+- add line after block
+
+Maybe an enumeration can model this:
+
+- always add line before block
+- add line before block if there is a previous block
+- never add line before block
+- same for after block
+
+Actually what we really need is to create a new stream. All of these
+could be modeled as manipulators. In addition we could also add most
+of the members of utility and re-implement them as
+manipulators. Internally, the device would be doing the chunking. At
+the end it would provide access to the internal data structure so that
+an assembler could create a single contiguous stream from the chunks.
+
+Read up on the following:
+
+- [[http://www.boost.org/doc/libs/1_55_0/libs/iostreams/doc/index.html][Boost IOStreams library]]
+- [[http://comments.gmane.org/gmane.comp.lib.boost.devel/171399][Manipulators for ostreaming_streams]]
+
+To check out Larry Evans code:
+
+: svn co http://svn.boost.org/svn/boost/sandbox-branches/cppljevans
+
+The end conclusion is we need to define our own =ostream= class and
+provide it with an interface that suits our needs:
+
+- indent in, indent out: ideally via the ++ and -- operators
+- divisor: some way of stating that there is a split in the stream;
+  the split is then interpreted depending on whether there is content
+  before it, content after it, etc.
+- we won't be able to add a lot of the utility stuff into the stream.
+
+Actually, managed blank lines is far too simplistic to work with all
+the permutations we have in real life. We need to go back to the
+drawing board and design a state machine that takes into account all
+known states; state transitions are triggered by the manipulators.
+
+After doing a state machine, it seems that we have all cases covered
+after all. The only problem is the terminology we chose is terrible,
+but the state machine concepts are all modeled in there somewhere.
+
+#+caption: State machine for stream
+[[https://raw.github.com/kitanda/dogen/master/doc/misc/indenting_stream_state_diagram.jpeg]]
+
+Also, we should consider hard-coding the new line characters as per
+this post:
+
+[[http://stackoverflow.com/questions/6864759/determining-the-newline-character-for-the-environment-a-c-program-is-being-com][- Determining the Newline character for the environment a C++ program
+is being compiled on]]
+
+**** COMPLETED Add classes modeling stream and blocks                  :task:
+     CLOSED: [2014-01-03 Fri 01:30]
+     CLOCK: [2014-01-03 Fri 01:10]--[2014-01-03 Fri 01:30] =>  0:20
+     CLOCK: [2014-01-03 Fri 00:21]--[2014-01-03 Fri 01:10] =>  0:49
+     CLOCK: [2014-01-02 Thu 23:23]--[2014-01-03 Fri 00:21] =>  0:58
+     CLOCK: [2014-01-02 Thu 23:11]--[2014-01-02 Thu 23:22] =>  0:11
+     CLOCK: [2014-01-02 Thu 16:09]--[2014-01-02 Thu 18:59] =>  2:50
+
+Create the classes as per analysis.
+
+**** COMPLETED Replace existing =om= code with new ostream filter      :task:
+     CLOSED: [2014-01-04 Sat 22:05]
+     CLOCK: [2014-01-04 Sat 21:39]--[2014-01-04 Sat 22:05] =>  0:26
+     CLOCK: [2014-01-04 Sat 20:02]--[2014-01-04 Sat 21:14] =>  1:12
+     CLOCK: [2014-01-04 Sat 12:50]--[2014-01-04 Sat 12:52] =>  0:02
+     CLOCK: [2014-01-03 Fri 17:58]--[2014-01-03 Fri 18:46] =>  0:48
+     CLOCK: [2014-01-03 Fri 17:06]--[2014-01-03 Fri 17:58] =>  0:52
+     CLOCK: [2014-01-03 Fri 16:16]--[2014-01-03 Fri 17:05] =>  0:49
+     CLOCK: [2014-01-03 Fri 14:40]--[2014-01-03 Fri 16:16] =>  1:36
+     CLOCK: [2014-01-03 Fri 01:31]--[2014-01-03 Fri 01:38] =>  0:07
+
+Switch plain =ostringstreams= to the new indent filter in =om=.
+
+*** COMPLETED Add include file support to main type formatter         :story:
+    CLOSED: [2014-01-04 Sat 22:23]
+
+Inclusion support needs to be moved to the formatters. SML provides
+all the required information at the model level in terms of type
+dependencies, but only the formatter itself knows what includes it
+needs because these are related to the implementation. Even
+determining which facets of a type one should include is formatter
+dependent. We need to distribute the logic of the includer into each
+formatter.
+
+**** COMPLETED Add initial inclusion processing support                :task:
+     CLOSED: [2014-01-01 Wed 15:44]
+     CLOCK: [2014-01-01 Wed 14:59]--[2014-01-01 Wed 15:43] =>  0:44
+     CLOCK: [2014-01-01 Wed 14:35]--[2014-01-01 Wed 14:59] =>  0:24
+
+Drill through all the layers to ensure the C++ inclusion class is
+populated when we format the file.
+
+**** COMPLETED Fix modeling errors in terms of forward declaration files :task:
+     CLOSED: [2014-01-01 Wed 17:33]
+     CLOCK: [2014-01-01 Wed 16:50]--[2014-01-01 Wed 16:55] =>  0:05
+
+We need to be able to support forward declaration files at the facet
+level; we incorrectly modeled this as if there was only one forward
+declaration file for all the facets.
+
+Actually, this was modeled correctly, we were just looking at the
+wrong place.
+
+**** COMPLETED Add includes for standard library types                 :task:
+     CLOSED: [2014-01-04 Sat 22:05]
+
+This will be hard-coded as it is the simplest and cleanest way of
+doing it.
+
+*** COMPLETED Design a cleaner meta-data API                          :story:
+    CLOSED: [2014-01-08 Wed 22:46]
+    CLOCK: [2014-01-08 Wed 22:36]--[2014-01-08 Wed 22:46] =>  0:10
+    CLOCK: [2014-01-08 Wed 18:01]--[2014-01-08 Wed 18:17] =>  0:16
+    CLOCK: [2014-01-07 Tue 23:50]--[2014-01-08 Wed 00:02] =>  0:12
+    CLOCK: [2014-01-07 Tue 07:53]--[2014-01-07 Tue 08:04] =>  0:11
+
+Latest understanding:
+
+Actually, after some thinking, it seems like adding these classes to
+SML is not the right thing at all. This is because SML is still
+(fairly) language neutral. The right place has to be the output
+model. It just seems like we are trying to create a set of classes
+that have some common properties with SML (most, really), and an
+additional set of properties which are language specific. We have
+tried in the past to create an entire output model, totally divorced
+from SML, and found out that it had far too much in common with SML to
+justify its existence. At the same time, creating a set of classes to
+augment SML in OM without adding properties directly to SML seems a
+bit strange - we will end up having to pass the OM class plus the SML
+class on every method.
+
+There are a few clear cut statements that can be made here:
+
+- the missing data structures are language specific; that is, we will
+  need separate ones for each programming language we target such as
+  C++, C#, etc.
+- the formatters of a given programming language will require the SML
+  types plus the missing data structures in order to create a
+  representation. This is not just formatter configuration, its more
+  like the language-specific information that SML does not carry.-
+- There is a large degree of nesting in these data structures. For
+  instance, properties inside of objects have their own C++ specific
+  data, and even types within a property. Wrapping this is non-trivial
+  - without duplicating a lot of SML data.
+- We already tried making a C++ specific model only to find out that
+  more than 70% of that model was a copy of SML with slight
+  variations.
+
+Final decision: lets port everything to the new formatters model and
+remove all of the legacy code; once the dust settles we'll decide on
+the best approach to model the meta-data.
+
+Old understanding:
+
+- use =ptree= internally in dia to sml transformer and JSON
+  hydrator. Populate =ptree= with values read from the input. There is
+  no direct connection between the owner of the =ptree= and the
+  =ptree= population.
+- create classes in SML to model the meta-data as defined by the
+  hierarchical structure in tags. Lets call this the meta-data object
+  model.
+- create a SML transformer that takes in a =ptree= and returns the
+  appropriate meta-data object model. Name: =meta_data_transformer=,
+  =meta_data_factory=? Actually a factory makes more sense, we could
+  have a simple build method that takes in a =ptree= and returns the
+  meta-data.
+- dia to sml transformer and JSON transformer use the SML meta-data
+  transformer to convert the =ptree= into meta-data and populate the
+  taggable with it.
+- delete the meta-data reader and writer.
+- update meta-data tagger and all other classes that use =ptree= to
+  use the new meta-data object model. Tagger needs to be renamed:
+  =meta_data_expander=, =meta_data_updator=?
+- tags remains public; although we only use it internally in meta-data
+  transformer, we are still making it a public API (e.g. users need to
+  know what tags are available in Dia/JSON). We need a better way to
+  do this.
+- create a new package: =meta_data=. Create a top-level class to
+  contain all of the meta-data. We need a good name for it.
+
+Older understanding:
+
+At present we have a lot of ugly copy and paste code in
+=meta_data_tagger=. This was done so we could collect all of the use
+cases for the API. This story captures what we think would be a good
+API to cater for all the use cases.
+
+- we need a way of locating a top-level node in the tree. At present
+  we only have paths to specific nodes where there are values, but its
+  not possible to get a top-level node such as say a
+  =header_file=. This would allow for more generic code that handles
+  top-level nodes with similar shapes. We could replace all of the
+  file handling code with one generic function for example.
+- =meta_data_writer= and =meta_data_reader= are very strange
+  concepts. We need to search the net for patterns on how to populate
+  =ptree=, there must be a more generic solution for this. We should
+  also look at the STL algorithms for ideas - perhaps we can replace a
+  lot of this functionality with existing algorithms such as =copy_if=
+  or create new ones along the same lines as the STL.
+- We have spotted the following algorithms:
+  - add if a key does not exist: used for defaulting; the user may
+    have already supplied a value, in which case we do not want to
+    override it.
+  - copy if a key does not exist: used when we want to take a source
+    =ptree= and copy across a set of values to a target =ptree=; for
+    instance, when we want to copy a set of values from the model to
+    all objects. Needs a variation that does nothing if the key does
+    not exist in the source - at present we do a lot of has key to
+    solve this.
+  - has key: returns true if a key exists. May not be required - see
+    get key below.
+  - get key: returns a value, optionally castable to a type other than
+    string. We often do has key followed by get key, so a try get key
+    would be a useful variation - returning perhaps a pair of bool,
+    value.
+  - is true: and other checks such as is false, is supported
+    etc. Basically helpers to check if a key exists and if its value
+    matches some predefined value.
+- More fundamentally: is =ptree= actually being overused? That is,
+  should we not just model all of this data as first-class citizens in
+  SML using the type system? The reason why we chose =ptree= is
+  because the data supplied by the front-end (e.g. dia or JSON) will
+  always come in key-value-pairs and adding a tree like structure to
+  those KVPs makes them more intelligible to the end user. Thus it
+  follows that =ptree= is a good way of bringing all of that data in
+  from the front-end into the middle-end (e.g. SML). But perhaps once
+  the data hits SML we should then type it; we could create data
+  structures that model the shape of the tags tree and read all of the
+  =ptree= data into those. Once that is done we can then start
+  "tagging" - e.g. we operate on those data structures rather than on
+  the =ptree= for defaulting, copying stuff across, etc. Life would be
+  much easier because now we have the type-system on our side (copy
+  constructors, containers, etc). Taggables would then have perhaps
+  =raw_meta_data= for the =ptree= and =meta_data= for the new
+  classes. We could place all of them in a =meta_data= namespace to
+  avoid polluting SML too much. This also means that we would recover
+  a lot of lost performance - instead of the multiple reads we do all
+  over the place, we'd be using first-class domain objects with
+  getters.
+
+*** COMPLETED Update all tests to use =om= formatter                  :story:
+    CLOSED: [2014-01-12 Sun 18:27]
+    CLOCK: [2014-01-04 Sat 22:07]--[2014-01-04 Sat 22:08] =>  0:01
+
+Go through every single engine test, enable =om= formatting and fix
+all the issues until the test goes green.
+
+In order for om to match the C++ model we need to make sure we are
+passing in the correct meta-data such as licences, etc.
+
+**** COMPLETED Model =class_in_a_package=                              :task:
+     CLOSED: [2014-01-04 Sat 22:25]
+
+Basic model with int properties.
+
+**** COMPLETED Models that do not exercise =om=                        :task:
+     CLOSED: [2014-01-04 Sat 22:37]
+     CLOCK: [2014-01-04 Sat 22:23]--[2014-01-04 Sat 22:41] =>  0:18
+
+The following models were updated without requiring any changes:
+
+- =two_empty_layers=
+- =class_without_name=
+- =empty_model=
+- =empty_package=
+
+**** COMPLETED Models that require just adding minor meta-data         :task:
+     CLOSED: [2014-01-04 Sat 23:05]
+     CLOCK: [2014-01-04 Sat 22:58]--[2014-01-04 Sat 23:05] =>  0:07
+     CLOCK: [2014-01-04 Sat 22:44]--[2014-01-04 Sat 22:58] =>  0:14
+
+We need to set meta-data such as licence, etc for these models.
+
+- =two_layers_with_objects=
+- =compressed=
+- =classes_inout_package=
+- =class_without_package=
+- =stand_alone_class=
+- =classes_in_a_package=
+- =classes_without_package=
+
+**** COMPLETED Model =class_without_attributes=                        :task:
+     CLOSED: [2014-01-04 Sat 23:14]
+     CLOCK: [2014-01-04 Sat 23:07]--[2014-01-04 Sat 23:24] =>  0:17
+
+Empty class. Caused formatting differences.
+
+Formatting differences are actually features, not bugs, so rebaselined
+model.
+
+**** COMPLETED Model =trivial_association=                             :task:
+     CLOSED: [2014-01-07 Tue 08:13]
+     CLOCK: [2014-01-07 Tue 08:07]--[2014-01-07 Tue 08:13] =>  0:06
+     CLOCK: [2014-01-06 Mon 23:54]--[2014-01-06 Mon 23:56] =>  0:02
+
+Simple association, should be easy to get it to pass.
+
+**** COMPLETED Model =trivial_inheritance=                             :task:
+     CLOSED: [2014-01-12 Sun 18:26]
+     CLOCK: [2014-01-06 Mon 07:48]--[2014-01-06 Mon 08:19] =>  0:31
+     CLOCK: [2014-01-04 Sat 23:30]--[2014-01-04 Sat 23:39] =>  0:09
+
+All aspects related to inheritance. A lot of non-obvious diffs.
+
+***** COMPLETED Make pointer associations behave like previous implementation
+      CLOSED: [2014-01-06 Mon 22:45]
+      CLOCK: [2014-01-06 Mon 21:10]--[2014-01-06 Mon 22:44] =>  1:34
+      CLOCK: [2014-01-06 Mon 17:53]--[2014-01-06 Mon 18:41] =>  0:48
+
+- rename =pointer_associations= to =weak_associations= to make it less
+  connected to C++; tidy-up variable names too.
+- remove associations where there is both a regular association and a
+  pointer/weak association so this makes us lie less about the
+  intent - e.g. weak associations disappear in the presence of a
+  regular association against the same type. Add tests.
+
+***** COMPLETED Add support for relationships in include processing
+      CLOSED: [2014-01-06 Mon 23:27]
+      CLOCK: [2014-01-06 Mon 22:50]--[2014-01-06 Mon 23:53] =>  1:03
+
+We need to add includes via relationships to types formatter.
+
+***** COMPLETED Fix incorrect inclusion of =iosfwd= without checking io status
+      CLOSED: [2014-01-07 Tue 07:20]
+      CLOCK: [2014-01-07 Tue 07:10]--[2014-01-07 Tue 07:20] =>  0:10
+
+***** COMPLETED Investigate the need for includes of =iosfwd= and =algorithm=
+      CLOSED: [2014-01-08 Wed 18:20]
+      CLOCK: [2014-01-08 Wed 08:01]--[2014-01-08 Wed 08:37] =>  0:36
+      CLOCK: [2014-01-07 Tue 21:50]--[2014-01-07 Tue 23:50] =>  2:00
+      CLOCK: [2014-01-07 Tue 17:52]--[2014-01-07 Tue 18:32] =>  0:40
+      CLOCK: [2014-01-07 Tue 08:35]--[2014-01-07 Tue 08:44] =>  0:09
+
+At present we seem to always be including these two headers if
+inheritance is present. Is this required?
+
+Actually, we need to split the swap meta-data into internal and
+external, and only add includes if external swap is required.
+
+Also, it seems we are always including =algorithm= but we only need it
+when swap is enabled. This will be fixed in OM and rebaselined.
+
+***** COMPLETED Generate pure virtual destructors
+      CLOSED: [2014-01-08 Wed 19:23]
+      CLOCK: [2014-01-08 Wed 18:17]--[2014-01-08 Wed 18:45] =>  0:28
+
+We need to respect the destructor generation set in C++ formatters.
+
+***** COMPLETED Cope with multiple object types in formatter
+      CLOSED: [2014-01-12 Sun 18:26]
+      CLOCK: [2014-01-12 Sun 17:00]--[2014-01-12 Sun 18:26] =>  1:26
+      CLOCK: [2014-01-12 Sun 11:30]--[2014-01-12 Sun 12:48] =>  1:18
+      CLOCK: [2014-01-10 Fri 08:07]--[2014-01-10 Fri 08:20] =>  0:28
+      CLOCK: [2014-01-10 Fri 07:08]--[2014-01-10 Fri 07:21] =>  0:13
+      CLOCK: [2014-01-09 Thu 23:11]--[2014-01-10 Fri 00:05] =>  0:54
+      CLOCK: [2014-01-09 Thu 22:56]--[2014-01-09 Thu 23:11] =>  0:15
+      CLOCK: [2014-01-09 Thu 22:28]--[2014-01-09 Thu 22:56] =>  0:28
+      CLOCK: [2014-01-09 Thu 18:08]--[2014-01-09 Thu 18:50] =>  0:42
+      CLOCK: [2014-01-08 Wed 22:46]--[2014-01-09 Thu 00:01] =>  1:15
+
+At present OM has only one file formatter and it formats all objects
+the exact same way. We need to be able to format visitors differently
+from regular objects, etc.
+
+We need to add a "enable legacy behaviour" flag to remove spurious
+diffs.
+
+*** CANCELLED Create a blog post on dogen's development methodology   :story:
+    CLOSED: [2014-01-12 Sun 18:33]
+    CLOCK: [2014-01-10 Fri 18:53]--[2014-01-10 Fri 19:26] =>  0:33
+    CLOCK: [2014-01-10 Fri 08:20]--[2014-01-10 Fri 08:36] =>  0:16
+    CLOCK: [2014-01-09 Thu 07:51]--[2014-01-09 Thu 08:43] =>  0:52
+
+We should do a write up of how we develop dogen.
+
+** Deprecated Development Stories
+*** CANCELLED Refactor Licence formatter                              :story:
+    CLOSED: [2013-12-30 Mon 10:35]
+
+Note: Implemented as part of =om=.
+
+- year is hard-coded to 2012: At present the licence formatter has an
+  hard-coded year of 2012. It should really be a parameter passed in.
+- we should really only have one formatter that understands different
+  commenting syntaxes (e.g. cmake comments, c++ comments).
+- we should support multiple licences.
+
+*** CANCELLED Add a code generation marker                            :story:
+    CLOSED: [2013-12-30 Mon 10:35]
+
+Note: Implemented as part of =om=.
+
+Now that we've started to mix-and-match hand-crafted code with
+code-generated code, we should really have an easy way to distinguish
+which files are which. A simple comment at the top for files generated
+by dogen (with the corresponding dogen version) would suffice. This
+could be done in a similar fashion to the licence formatter. It should
+either be after the licence or at the very top and take on the
+responsibilities of emacs/vi headers.
+
+We should also add a model level version which will be stamped on the
+marker.
+
+In addition, we should also stamp the dogen version too. However, this
+will make all our tests break every time there is a new commit so
+perhaps we need to have this switched off by default.
+
+*** CANCELLED Stereotypes to disable facets                           :story:
+    CLOSED: [2013-12-30 Mon 10:37]
+
+Note: =om= provides a better way of implementing this functionality.
+
+At present we do not generate files for all facets in a service other
+than types. However, the correct fix is to have stereotypes to disable/enable
+facets:
+
+- =nonhashable=, =hashable=: hashing support
+- =nontestable=, =testable=: test data support
+- =nonserializable=, =serializable=: serialisation support
+- =nonimplementable=, =implementable=: service does not have a CPP file
+- =nonstreamable=, =streamable=: IO support
+
+These stereotypes can then be combined:
+
+: service,nonimplementable,serializable
+
+Results in a service for which there will only be a header file and
+serialization support.
+
+By default services would have all aspects other than domain disabled,
+entities and values would have all aspects enabled.
+
+*** CANCELLED Create an SML level concept for facets                  :story:
+    CLOSED: [2013-12-30 Mon 10:42]
+
+Note: with the meta-data approach, this is no longer needed.
+
+In reality, "facets" are not a C++ thing; they are language
+neutral. They are, however, expressed differently in different
+languages. For example:
+
+- types: same on all languages
+- debug_printing: overloaded operator<< in C++, toString() in Java,
+  ToString() in C#, etc.
+- serialisation: slightly less obvious, but effectively the most
+  "native" serialisation available for the given programming
+  language. For C++ this is boost serialisation.
+- hashing: language specific support for hashing, in C++ either std
+  hash or boost hash, in Java/C# overloading of hash functions.
+- test_data: some facilities for test data generation
+- relational: bindings for relational databases. ODB in C++.
+
+We can introduce these concepts at the SML level, probably at the
+=model= and =abstract_object= level; we can then do further
+translation at the language level, as required.

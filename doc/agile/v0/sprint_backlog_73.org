@@ -1,0 +1,326 @@
+#+title: Sprint Backlog 73
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- Continue the yarn refactors.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-11-09 Mon 21:33]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *25:54* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 25:54   |       |      |
+| Active                                                                      |         | 25:54 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 2:12 |
+| COMPLETED Split "full" models from "partial" models                         |         |       | 8:37 |
+| COMPLETED Frontend model refactor                                           |         |       | 1:39 |
+| COMPLETED Improve references management                                     |         |       | 1:02 |
+| COMPLETED Move property type generation to expander                         |         |       | 0:50 |
+| COMPLETED Yarn refactor around partial model construction                   |         |       | 2:24 |
+| COMPLETED Create a "final model" class                                      |         |       | 0:19 |
+| POSTPONED Compute qualified name                                            |         |       | 8:00 |
+| POSTPONED Model should not be an element                                    |         |       | 0:18 |
+| POSTPONED Rename nested qname to composite qname                            |         |       | 0:33 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-11-09 Mon 21:32]
+    CLOCK: [2015-11-01 Sun 23:31]--[2015-11-01 Sun 23:45] =>  0:14
+    CLOCK: [2015-11-01 Sun 22:49]--[2015-11-01 Sun 23:30] =>  0:41
+    CLOCK: [2015-10-31 Sat 22:01]--[2015-10-31 Sat 22:37] =>  0:36
+    CLOCK: [2015-10-27 Tue 19:01]--[2015-10-27 Tue 19:08] =>  0:07
+    CLOCK: [2015-10-27 Tue 07:59]--[2015-10-27 Tue 08:22] =>  0:23
+    CLOCK: [2015-10-22 Thu 08:44]--[2015-10-22 Thu 08:50] =>  0:06
+    CLOCK: [2015-10-21 Wed 17:51]--[2015-10-21 Wed 17:56] =>  0:05
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Consider renaming module path to internal module path   :story:
+    CLOSED: [2015-10-27 Tue 18:58]
+
+Since we have got a external module path, it would make sense for the
+other to be the internal module path. This may be taking the symmetry
+too far, so we need to have a think.
+
+*** COMPLETED Split "full" models from "partial" models               :story:
+    CLOSED: [2015-10-31 Sat 22:04]
+    CLOCK: [2015-10-31 Sat 17:47]--[2015-10-31 Sat 18:35] =>  0:48
+    CLOCK: [2015-10-31 Sat 17:41]--[2015-10-31 Sat 17:46] =>  0:05
+    CLOCK: [2015-10-31 Sat 17:15]--[2015-10-31 Sat 17:40] =>  0:25
+    CLOCK: [2015-10-31 Sat 14:14]--[2015-10-31 Sat 16:15] =>  2:01
+    CLOCK: [2015-10-31 Sat 00:13]--[2015-10-31 Sat 00:33] =>  0:20
+    CLOCK: [2015-10-30 Fri 23:11]--[2015-10-31 Sat 00:12] =>  1:01
+    CLOCK: [2015-10-30 Fri 14:01]--[2015-10-30 Fri 16:00] =>  1:59
+    CLOCK: [2015-10-27 Tue 22:43]--[2015-10-27 Tue 23:30] =>  0:47
+    CLOCK: [2015-10-27 Tue 22:11]--[2015-10-27 Tue 22:42] =>  0:31
+    CLOCK: [2015-10-27 Tue 19:09]--[2015-10-27 Tue 19:22] =>  0:13
+    CLOCK: [2015-10-27 Tue 18:33]--[2015-10-27 Tue 19:00] =>  0:27
+
+This story is a new take on an old idea covered in [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_70.org#split-a-fully-formed-model-from-partial-models][sprint 70]]. For a
+ideas on naming etc see that story. However this time round we will
+just concern ourselves with the top-level model type rather than the
+name look-ups etc. We just want to have two distinct types:
+
+- full model: the model that is outputted from the SML workflow
+- partial model: model obtained from the importers.
+
+Tasks:
+
+- create and element base class.
+- create a model with a single hash map of element.
+- rename existing model to =partial_model=.
+- update =cpp= to use new model.
+
+Notes:
+
+- create a full yarn workflow that takes a list of resource locations
+  and produces a final model. This is the current front end to middle
+  end workflow, minus the input description generation - this stays in
+  knit - plus the assembly work.
+- input descriptor: resource location (locator? see URL).
+- file importer: frontend; produces an intermediate model.
+- importer: frontend workflow; produces a list of intermediate moddels.
+- file importer registrar: frontend registrar.
+- nested name: instantiated type? instantiated name? children:
+  parameters, type parameters. type: name. is pointer: instance type,
+  kind?  enumeration of pointer, reference, stack.
+
+*** COMPLETED Frontend model refactor                                 :story:
+    CLOSED: [2015-11-02 Mon 21:15]
+    CLOCK: [2015-11-02 Mon 21:01]--[2015-11-02 Mon 21:13] =>  0:12
+    CLOCK: [2015-10-31 Sat 22:59]--[2015-11-01 Sun 00:04] =>  1:05
+    CLOCK: [2015-10-31 Sat 22:37]--[2015-10-31 Sat 22:59] =>  0:22
+
+*New understanding*:
+
+Actually, we can't call it a frontend model because it is not specific
+to just frontend processes; we still need this representation for the
+assembly workflow or else we will have to sort objects by type etc.
+
+*Previous Understanding*
+
+Incredibly enough we still didn't get the models in the right shape
+after the full/partial refactor. The correct shape is:
+
+- create frontend model. This is used only by the frontends and the
+  merger. Ensure it has a single element collection, keyed by
+  qualified ID (string).
+- merger takes a frontend model and generates a model. All other
+  processes in yarn work off of this model.
+
+*** COMPLETED Improve references management                           :story:
+    CLOSED: [2015-11-05 Thu 23:05]
+    CLOCK: [2015-11-05 Thu 22:03]--[2015-11-05 Thu 23:05] =>  1:02
+
+At present, we compute model references as follows:
+
+- in dia to sml we first loop through all types and figure out the
+  distinct model names. This is done by creating a "shallow" qname
+  with just the model name and setting its origin type to unknown.
+- when we merge, we take the references of target - the only ones we
+  care about - and then we check that against the list of the models
+  we are about to merge. If there are any missing models we complain
+  (see comments below). We then loop through the list of references
+  and "resolve" the origin type of the model.
+
+Note: We could actually also complain if there are too many models, or
+more cleverly avoid merging those models which are not required. Or
+even more cleverly, we could avoid loading them in the first place, if
+only we could load target first.
+
+A slightly better way of doing this would be:
+
+- in SML create a references updater that takes a model and computes
+  its reference requirements. It could also receive a list of "other"
+  models from which to get their origin types to avoid using =unknown=
+  at all, and checks that all reference requirements have been met.
+- the current step =update_references= is just a call to the
+  references updater, prior to merging, with the target model.
+
+Note:
+
+It seems that the references are incorrect at present; on rebuild, we
+see serialisation's registrar moving for no reason:
+
+: -    dogen::config::register_types(ar);
+:      dogen::sml::register_types(ar);
+: -    dogen::dynamic::schema::register_types(ar);
+: +    dogen::config::register_types(ar);
+
+The references have not changed at all in the dogen invocation:
+
+:    --reference ${CMAKE_SOURCE_DIR}/diagrams/config.dia,dogen
+:    --reference ${CMAKE_SOURCE_DIR}/diagrams/sml.dia,dogen
+:    --reference ${CMAKE_SOURCE_DIR}/diagrams/formatters.dia,dogen
+:    --reference ${CMAKE_SOURCE_DIR}/diagrams/schema.dia,dogen::dynamic
+
+We need to fix this with the refactor.
+
+*** COMPLETED Move property type generation to expander               :story:
+    CLOSED: [2015-11-06 Fri 22:29]
+    CLOCK: [2015-11-06 Fri 21:38]--[2015-11-06 Fri 22:28] =>  0:50
+
+- add unparsed name to nested name.
+- update frontends to read the unparsed name and not expand it.
+- create a "property expander" that parses the unparsed name and
+  expands it to a proper nested name.
+
+*** COMPLETED Yarn refactor around partial model construction         :story:
+    CLOSED: [2015-11-06 Fri 22:51]
+    CLOCK: [2015-11-06 Fri 22:30]--[2015-11-06 Fri 22:51] =>  0:21
+    CLOCK: [2015-11-02 Mon 17:01]--[2015-11-02 Mon 18:16] =>  1:15
+    CLOCK: [2015-10-21 Wed 20:50]--[2015-10-21 Wed 21:38] =>  0:48
+
+There are a number of activities done in the frontends which really
+belong to the main meta-model. We should create a single workflow for
+"post-processing" with these activities and move them away from the
+importers.
+
+Notes:
+
+- add a module post processor that computes owner (containing
+  module?), members, is top level. Seems like we already have a
+  top-level module: containing module is null.
+- reference expander to compute references.
+- add some enumeration post-processing that assigns it a underlying
+  type. Should be done with merged model (look for a primitive type with
+  property =is_default_enumeration_type=).
+
+*** COMPLETED Create a "final model" class                            :story:
+    CLOSED: [2015-11-09 Mon 21:33]
+    CLOCK: [2015-11-02 Mon 21:24]--[2015-11-02 Mon 21:35] =>  0:11
+    CLOCK: [2015-11-02 Mon 21:17]--[2015-11-02 Mon 21:23] =>  0:06
+    CLOCK: [2015-11-02 Mon 21:14]--[2015-11-02 Mon 21:16] =>  0:02
+
+We should create a model that has a single container of elements
+rather than elements by type.
+
+*** POSTPONED Compute qualified name                                  :story:
+    CLOSED: [2015-11-09 Mon 21:33]
+    CLOCK: [2015-11-07 Sat 22:21]--[2015-11-07 Sat 23:46] =>  1:25
+    CLOCK: [2015-11-06 Fri 23:54]--[2015-11-06 Fri 23:58] =>  0:04
+    CLOCK: [2015-11-06 Fri 23:21]--[2015-11-06 Fri 23:53] =>  0:32
+    CLOCK: [2015-11-06 Fri 22:52]--[2015-11-06 Fri 23:20] =>  0:28
+    CLOCK: [2015-11-06 Fri 21:21]--[2015-11-06 Fri 21:38] =>  0:17
+    CLOCK: [2015-11-04 Wed 21:24]--[2015-11-04 Wed 22:07] =>  0:43
+    CLOCK: [2015-11-03 Tue 22:28]--[2015-11-04 Wed 00:07] =>  1:39
+    CLOCK: [2015-11-03 Tue 21:01]--[2015-11-03 Tue 22:27] =>  1:26
+    CLOCK: [2015-11-02 Mon 21:36]--[2015-11-02 Mon 23:02] =>  1:26
+
+We added qualified name to name but never populated it. This is also a
+good time to clean up the usage of name as a hash. We could use
+qualified name as the key for all of the containers in intermediate
+model. The resolve then has to compute the possible qualified names:
+
+- use the properties of the owning type to create the fully qualified
+  name, including internal module path - trying all values of internal
+  module path;
+- use every model's properties to create qualified names, starting
+  with target then references.
+
+This is all made much easier by having a single container of
+element. In fact, at present, we do not have any use cases for
+multiple containers by type.
+
+Notes:
+
+- all names must be constructed via the name builder.
+- model names appear to be different from all other names in that the
+  simple name and module path have the model name. It may make more
+  sense to have the model name empty. However, do we even need this at
+  all? The model name is useful for references.
+- we should not update references inside the transformer. It is not
+  possible to tell if something is a reference to a model or to a
+  model's module, e.g. =yarn::dia= is this the model =yarn.dia= or a
+  =dia= module inside of the model =yarn=? The resolver can handle
+  this. This wasn't a problem before because we relied on top-level
+  modules to determine if a reference was to a module in current model
+  or to another model.
+- FIXME: we broke serialisation registrar with merger change - need to
+  see how qualified name impacts this.
+- internal module path -> must be current model
+- model path -> must be reference
+- types such as =int= etc must be handled differently from other
+  types. The idea here is that these types are part of a model but
+  declared directly into the global namespace. Effectively they exist
+  in a point in element space where everything but simple name is
+  empty. In practice this would mean that we could not distinguish the
+  origin of such types so we must still keep track of the model that
+  declared them. One way of achieving this is to have a "declared in
+  global namespace" flag in the element itself and have the resolver
+  check this when a match occurs. This is only required for the match
+  where no model name is provided (e.g. take the model name provided
+  by the reference). The final problem is that there are "backend"
+  specific elements in element space (includers, registrar, forward
+  declarations, etc). These must be somehow injected into yarn. The
+  key question here is what exactly is a modeling element? do we
+  consider cmakelists as modeling elements? if so we could say they
+  can be expressed in the "include" and "src" "facets". However, this
+  would then imply one could have relationships between say a class
+  modeling element and a cmakelists modeling element, which in
+  practice is not possible. Also, some modeling elements of this kind
+  only have an expression for one facet; should they take a point in
+  element space still? e.g. I can't create a class called cmakelists
+  now because there is a cmakelists element. Seems intuitively like
+  there are multiple dimensions to element space which do not
+  intersect. The end game of this is for formatters to work directly
+  on yarn elements (or backend specific derivations) and for the
+  backend to have a element name mapping to additional properties that
+  are passed in at formatting time (or to create a structure that
+  contains an expansion of element + formatter properties, forsaking
+  type safety).
+
+*** POSTPONED Model should not be an element                          :story:
+    CLOSED: [2015-11-09 Mon 21:33]
+    CLOCK: [2015-10-27 Tue 08:22]--[2015-10-27 Tue 08:40] =>  0:18
+
+We need to move all functionality from the model into the model module
+such that the model no longer needs to be an element (documentation,
+etc). It can remain as a nameable.
+
+- keep the concepts; they are still telling the truth.
+
+*** POSTPONED Rename nested qname to composite qname                  :story:
+    CLOSED: [2015-11-09 Mon 21:33]
+    CLOCK: [2015-10-22 Thu 08:10]--[2015-10-22 Thu 08:43] =>  0:33
+
+*New understanding*:
+
+This story requires further analysis. Blindly following the composite
+pattern was tried but it resulted in a lot of inconsistencies because
+we then had to follow MEC-33 and create =abstract_qname=; however, the
+nested qname does not really behave like a composite qname; its more
+like the difference between a type in isolation and a type
+instantiated as an argument of a function. For example, whilst the
+type in isolation may have unknown template parameters, presumably, as
+an argument of a function these have been instantiated with real
+types.
+
+One way to solve this is just to make the type name a bit more
+explicit rather than try to imply the composite pattern
+(e.g. "nested"). We need a name that signifies "instantiated
+type". Look at the C++ standard for the difference between defining a
+generic type and instantiating a generic type.
+
+No good names yet (type reference, type instantiation, instantiated
+name). What are we trying to represent: an identifier which points to
+a complete definition of a name such that the name can be instantiated
+as a type in the underlying language. By "instantiated" we mean used
+to define variables of this type. In this light: instantiable name,
+definable name? If we choose instantiable name, we could then rename
+"children" to type arguments.
+
+*Previous understanding*:
+
+We should just follow the composite pattern in the naming.
+
+** Deprecated

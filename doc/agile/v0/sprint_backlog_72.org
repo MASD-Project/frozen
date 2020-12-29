@@ -1,0 +1,569 @@
+#+title: Sprint Backlog 72
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- Perform the main refactors to yarn and cpp;
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-10-21 Wed 17:53]
+| <75>                                                                        |         |       |       |
+| Headline                                                                    | Time    |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                                | *19:44* |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| Stories                                                                     | 19:44   |       |       |
+| Active                                                                      |         | 19:44 |       |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  0:24 |
+| COMPLETED Rename =tack= to =yarn=                                           |         |       |  1:46 |
+| COMPLETED Modernise boost, etc                                              |         |       |  2:50 |
+| POSTPONED Refactor qname                                                    |         |       | 10:32 |
+| POSTPONED Refactor code around model origination                            |         |       |  0:08 |
+| POSTPONED Remove primitive model handling in tack dia transformer           |         |       |  0:13 |
+| POSTPONED Tack refactor around partial model construction                   |         |       |  3:51 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-10-21 Wed 17:51]
+    CLOCK: [2015-08-10 Mon 15:04]--[2015-08-10 Mon 15:10] =>  0:06
+    CLOCK: [2015-08-10 Mon 14:45]--[2015-08-10 Mon 15:03] =>  0:18
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Rename =tack= to =yarn=                                 :story:
+    CLOSED: [2015-10-15 Thu 20:28]
+    CLOCK: [2015-10-15 Thu 19:21]--[2015-10-15 Thu 20:28] =>  1:07
+    CLOCK: [2015-10-15 Thu 07:51]--[2015-10-15 Thu 08:30] =>  0:39
+
+We were a bit too trigger happy by settling on =tack= as the name for
+the "temporary" meta-model. As it turns out, we don't need two
+meta-models and as such the name =tack= is no longer suitable. The
+right thing to do is to rename the model to =yarn=.
+
+*** COMPLETED Modernise boost, etc                                    :story:
+    CLOSED: [2015-10-21 Wed 17:51]
+    CLOCK: [2015-10-21 Wed 15:01]--[2015-10-21 Wed 17:51] =>  2:50
+
+Move to latest versions of everything.
+
+*** POSTPONED Refactor qname                                          :story:
+    CLOSED: [2015-10-21 Wed 17:51]
+    CLOCK: [2015-08-20 Thu 07:52]--[2015-08-20 Thu 08:36] =>  0:44
+    CLOCK: [2015-08-18 Tue 14:24]--[2015-08-18 Tue 14:39] =>  0:15
+    CLOCK: [2015-08-15 Sat 13:45]--[2015-08-15 Sat 14:38] =>  0:53
+    CLOCK: [2015-08-15 Sat 12:01]--[2015-08-15 Sat 12:36] =>  0:35
+    CLOCK: [2015-08-14 Fri 20:34]--[2015-08-14 Fri 21:20] =>  0:46
+    CLOCK: [2015-08-14 Fri 19:20]--[2015-08-14 Fri 20:33] =>  1:13
+    CLOCK: [2015-08-14 Fri 14:51]--[2015-08-14 Fri 16:55] =>  2:04
+    CLOCK: [2015-08-13 Thu 08:02]--[2015-08-13 Thu 08:48] =>  0:46
+    CLOCK: [2015-08-10 Mon 16:51]--[2015-08-10 Mon 18:30] =>  1:39
+    CLOCK: [2015-08-10 Mon 16:46]--[2015-08-10 Mon 16:50] =>  0:04
+    CLOCK: [2015-08-10 Mon 16:43]--[2015-08-10 Mon 16:45] =>  0:02
+    CLOCK: [2015-08-10 Mon 15:11]--[2015-08-10 Mon 16:42] =>  1:31
+
+Split qname into name and location; location is made up of model name,
+external module path, model path, internal module path.
+
+Notes:
+
+- populate model path as module name by default unless supplied by
+  field.
+- deal with the fallout in terms of file paths creation, etc.
+- fix hardware model to supply model name but to have a blank model
+  path.
+- split model names with dots into multiple model paths.
+- do not populate model path and qualified until resolution is done -
+  these properties do not add any value. After resolution - perhaps
+  as a last pass of the resolver - go through every single qname and
+  compute these properties. This means that all calls to qualified
+  prior to this need to be replaced to direct calls to qualified name
+  builder.
+
+More notes:
+
+- within a partial model, there are two stages of processing: an
+  initial pass in which we can identify all of the names of the
+  elements declared in a model; and a second pass in which we can
+  resolve all properties that belong to that model. By "resolve" we
+  mean we can figure out if a property is referring to an element in a
+  module inside the model or if its referring to an element in a
+  different model. This can only be done when we have all the names of
+  all the modules in the model.
+- there is such a thing as a location: an object which allows one to
+  figure out where a type is located in an imaginary "element
+  space". In addition to the location, the element space has another
+  dimension, given by the element "simple" name (from now on just
+  name). The pair =(location, name)= corresponds to a unique point in
+  the element space.
+- there is such a thing as a unique element identifier: it is a string
+  representation of the pair =(location, name)= according to a
+  well-defined syntax.
+- the pair =(location, name)= is an element identifier, because it
+  uniquely identifies elements in the element space.
+- the external module path is required to allow us to represent
+  external containment; that is, cases where the model is contained in
+  one or more namespaces, but we do not want to represent these inside
+  the model.
+- the internal module path is required to allow us to represent
+  internal containment; that is, the element is contained in one or
+  more modules, represented in the model.
+- the model path represents containment inferred from the model name
+  itself; that is, a composite model name such as =a.b.c=.
+- the model name does not always contribute to the model path. For
+  models such as hardware, the model has to have a name (it cannot be
+  in a nameless file) but the types are in the global space. This
+  means that we need to switch on/off the ability to have the model
+  name contribute to the model namespace.
+- model names are only relevant initially. We could store them in
+  model class, but they will be thrown away during merging.
+- references are used for several purposes: a) to determine that we
+  have loaded all required models. b) to generate code dependencies
+  against dependent models: at present just linking and registrar in
+  serialisation. In order to figure out what to do with the reference
+  we need to know its "kind". For dogen models, we need to generate
+  registrars; for non-dogen models we do not. We always need to
+  link. At present this is done via the origin types property. A
+  better way of modeling this may be "is dogen model" or something
+  along these lines.
+- one model may have more than one set of link instructions. These are
+  more related to the types than with the model itself. For example,
+  in boost we need to link potentially against multiple
+  libraries. This could be modeled by a dynamic property at the type
+  level or model level. For dogen models it would be model level. The
+  property may be empty (hardware, std).
+- from a element identifier it is not possible to determine its model
+  name. It may or may not be reconstructible from the model
+  path. However, if one were to have a map of location to model name,
+  one could at least figure out if the type is on any of the loaded
+  models. We could keep track of all locations which are not within
+  the model. Those must match the referenced models or else there is a
+  type resolution failure.
+- there is such a thing as a element instance identifier. We call it
+  nested name at present. The element instance identifier identifies
+  instantiations of types. It models two cases: for the case where the
+  type has no type parameters, the instance identifier is equal to the
+  element identifier; for all other cases, it is a hierarchical
+  collection of element identifiers, modeling the type parameter
+  structure.
+- a model should have: an element identifier which is identical to the
+  root module (the module that represents the model). A model is
+  itself an element.
+
+ a location; a name (meaning the original,
+  possibly composite, model name); a
+
+the
+  types pace is hierarchical: its made up of the global namespace at
+  the top (where types in the hardware model live), and then followed
+  by all other namespaces "declared" at the top-level.
+- there are four distinct cases of locations in the type space
+
+Merged stories:
+
+*Consider renaming qname*
+
+As part of dynamic we came up with a better way of modeling names:
+type is name, fields:
+
+- simple
+- qualified
+
+This is a better way of modeling, as opposed to the SML way with a
+=qname= which then contains a =simple_name=. We should use this
+approach in SML to.
+
+*Split model name from "contributing model name" in qname*
+
+We need to find a way to model qnames such that there are two model
+names: one which contributes to the namespaces and another which
+doesn't. The specific use case is the primitives model where the model
+has to have a name but we don't want the type names to have the model
+name. Perhaps we need some kind of flag: model name contributes to
+namespacing.
+
+With this we can then remove the numerous hacks around the primitives
+model name such as:
+
+- // FIXME: mega hack to handle primitive model.
+
+See comment in 'dot' story - we can have a model name and a model
+package.
+
+*** POSTPONED Refactor code around model origination                  :story:
+    CLOSED: [2015-10-21 Wed 17:51]
+    CLOCK: [2015-08-18 Tue 14:39]--[2015-08-18 Tue 14:47] =>  0:08
+
+- remove origin types and generation types, replacing it with just a
+  boolean for is target.
+- at present we are using origin type to determine whether to create a
+  registrar, etc in cpp model. There is no other use case for
+  this. This is done in several places due to the bad handling of C++
+  specific types. Grep for =references= in =cpp= to find all
+  locations.
+
+*Previous Understanding*
+
+In the past we added a number of knobs around generation, all with
+their own problems:
+
+- =origin_types=: was the model/type created by the user or the
+  system. in reality this means did the model come from Dia or
+  JSON. this is confusing as the user can also add JSON files (their
+  own model library) and in the future the user can use JSON
+  exclusively without needed Dia at all.
+
+- =generation_types=: if the model is target, all types are to be
+  generated /unless/ they are not properly supported, in which case
+  they are to be "partially" generated (as is the case with
+  services). This is a formatter decision and SML should not know
+  anything about it.
+
+These can be replaced by a single enumeration that indicates if the
+type/model is target or not.
+
+This work should be integrated with the model types story.
+
+*** POSTPONED Remove primitive model handling in tack dia transformer :story:
+    CLOSED: [2015-10-21 Wed 17:51]
+    CLOCK: [2015-08-18 Tue 14:48]--[2015-08-18 Tue 15:01] =>  0:13
+
+We seem to be doing some handling for primitives which is no longer
+required. The handling of current model is also very dodgy. All in
+transformer's update model reference.
+
+Actually this is nothing at all to do with the primitive model but all
+to do with computing the correct name. We need to start using the
+builder here.
+
+*** POSTPONED Tack refactor around partial model construction         :story:
+    CLOSED: [2015-10-21 Wed 17:52]
+    CLOCK: [2015-08-19 Wed 14:51]--[2015-08-19 Wed 15:37] =>  0:46
+    CLOCK: [2015-08-19 Wed 14:23]--[2015-08-19 Wed 14:50] =>  0:27
+    CLOCK: [2015-08-18 Tue 16:55]--[2015-08-18 Tue 17:41] =>  0:46
+    CLOCK: [2015-08-18 Tue 16:32]--[2015-08-18 Tue 16:54] =>  0:22
+    CLOCK: [2015-08-18 Tue 15:02]--[2015-08-18 Tue 16:32] =>  1:30
+
+There are a number of activities done in the file importers which
+really belong to the main meta-model. We should create a single
+workflow for "post-processing" with these activities and move them
+away from the importers.
+
+Notes:
+
+- add a module post processor that computes owner (containing
+  module?), members, is top level. Seems like we already have a
+  top-level module: containing module is null.
+- add unparsed name to nested name. Update importers to read the
+  unparsed name and not expand it. Create a "property expander" that
+  parses the unparsed name and expands it to a proper nested
+  name. Compute qualified for property types.
+- reference expander to compute references.
+- add some enumeration post-processing that assigns it a underlying
+  type. Should be done with merged model (look for a primitive type with
+  property =is_default_enumeration_type=).
+
+** Deprecated
+*** CANCELLED Create knitter options for each frontend                :story:
+    CLOSED: [2015-08-05 Wed 17:14]
+
+*Rationale*: not required after latest refactor.
+
+At present some knitting options are specific to a frontend
+(particularly in troubleshooting). We should create different classes
+to represent options on a per fronend basis.
+*** CANCELLED Add identity management to =sml::property_indexer=      :story:
+    CLOSED: [2015-08-07 Fri 15:40]
+
+*Rationale*: identity was removed.
+
+At present we are populating the identity properties in dia to sml. We
+need to move this to property indexer in SML.
+
+We found a problem with moving this: we need the identity properties
+to be in the object before we inject system types (they are used to
+generate keys) but property indexing happens after injection. We
+cannot move property indexing to be before injection (we need system
+types to exist). We probably need to split property indexing into
+two. The other problem is that if we take into account concepts, the
+identity properties should only be indexing after concepts have been
+indexed. This requires a bit of thinking.
+
+See [[https://github.com/DomainDrivenConsulting/dogen/blob/master/patches/move_identity_attribute_to_sml.patch][the patch]] for the latest on this.
+*** CANCELLED Support ordering of includes                            :story:
+    CLOSED: [2015-08-07 Fri 16:57]
+
+*Rationale*: we already have a function to order includes more or less
+along these lines. There is no use case for further configurability.
+
+One of my personal preferences has always been to group includes by
+"library". Normally first come the C includes, then the standard
+library ones, then boost, then utilities and finally types of the same
+model. Each of these can be thought of as a group. Inside each group
+the file names are normally ordered by size, smallest first. It would
+be nice to have support for such a feature in Dogen.
+
+Formatters would then push their includes into the correct
+group. Group names could be the model name (=std=, etc).
+
+A bit of a nitpick but nice nonetheless.
+
+*** CANCELLED Consider renaming =knit= to =weave=                     :story:
+    CLOSED: [2015-08-07 Fri 17:03]
+
+*Rationale*: term reserved for AOP. Added story to keep track of terms.
+
+We seem to have missed an obvious term: weaving. We can either save it
+for later or perhaps rename =knit= to =weave=.
+
+Actually, since weave is a well-known term in AOP, we should save it
+for if/when we decide to support AOP.
+
+*** CANCELLED Adding a dependency to a non-existent expander crashes dogen :story:
+    CLOSED: [2015-08-07 Fri 17:17]
+
+*Rationale*: expanders have long since been removed.
+
+We are not checking that all dependencies exist when building the
+graph. If we add a dependency to a expander that does not exist we
+crash and burn:
+
+: /home/marco/Development/DomainDrivenConsulting/dogen/projects/knit/spec/workflow_spec.cpp(550): last checkpoint
+: dogen_knit_spec: /usr/include/boost/smart_ptr/shared_ptr.hpp:653: typename boost::detail::sp_member_access<T>::type boost::shared_ptr<dogen::dynamic::expansion::expander_interface>::operator->() const [Y = dogen::dynamic::expansion::expander_interface]: Assertion `px != 0' failed.
+: unknown location(0): fatal error in "all_primitives_model_generates_expected_code": signal: SIGABRT (application abort requested)
+
+The cause of this is that we may end up creating vertices for
+dependencies (initialised with a null shared pointer) but never
+actually =add= the expander that corresponds to that expander name to
+the graph. We then visit the graph and assume all vertices have valid
+expanders, which results in the error above.
+
+We can do two things:
+
+- validate that all dependencies exist by placing all expanders in a
+  set and resolving the dependencies; this can be done before the
+  graph.
+- checking that the expander pointer points to not null or throw.
+
+*** CANCELLED Consider introducing =archetypes= to simplify output models :story:
+    CLOSED: [2015-08-07 Fri 17:38]
+
+*Rationale*: this story is far too complicated and confusing. We need
+to continue thinking around this area (and take some ideas from this)
+but the entire thing is unusable.
+
+We haven't quite arrived at the ideal configuration for the cpp
+model. We are close, but not there yet. The problem we have at the
+moment is that the formatters drive a lot of the work in
+formattables, resulting in a circular dependency. This is happening
+because we are missing some entities. This story is just a random set
+of thoughts in this space, trying to clear up the terminology across
+the board.
+
+*Random thoughts*
+
+What is probably needed is to have facets, aspects and "file kinds" as
+top-level concepts rather than just strings with which we label
+formatters. In addition, we need a good name for "file kinds". This is
+a meta-concept, something akin to a file template. The formatter
+produces a physical representation of that meta-concept. As part of
+the formatter registration, we can also register this meta-concept
+(provided it relies on an existing formattable). And in effect, these
+are the pieces of the puzzle:
+
+- you define a "file kind".
+- a facet and a model are groupings of "file kinds". These happen to
+  be hierarchical groupings. There are others: header and
+  implementation, or class header formatter. Those are
+  non-hierarchical.
+- you bind a transformer to a SML type to generate a formattable.
+- a formattable is associated with one or more "file kinds" or better
+  yet a file kind is associated with a formattable. It is also
+  associated with formatting properties and settings. It is those
+  tuples that we pass to the formatters.
+- you bind a formatter to a "file" and process the associated
+  formattable.
+
+Perhaps we can call these "file kinds" file archetypes or just
+archetypes.
+
+What can be said about an archetype:
+
+- conceptual notion of something we want to generate.
+- one SML entity can map to zero or many archetypes. Concept at
+  present maps to zero. Object maps to many.
+- a representation of the archetype as source code is done by the
+  formatter. It uses a template to help it generate that
+  representation.
+- a given archetype maps to one and only one SML entity.
+- a given archetype maps to one and only one CPP entity.
+- archetypes can be grouped in many ways. One way is facets and
+  models.
+- archetypes have definitions: name of the archetype, what groups it
+  belongs to.
+- archetypes have associated data: formattables, settings,
+  properties. This is an entity and needs a name.
+- formatters work on one and only one archetype.
+- archetypes have qualified names; this is (mostly) what we called
+  ownership hierarchy. Qualified names can be represented as separate
+  fields or using the dot notation.
+- archetypes have labels: this is what we called groups.
+- dynamic is a model designed to augment SML with some archetype
+  data. This is not true in the dia case. Check all fields to see if
+  it is true everywhere else.
+- an aspect is a property of one or more archetypes; it is a knob that
+  affects the generation of the source code representation.
+- an archetype instance belongs to an archetype.
+- we should remove the concept of "integrated facets". It just happens
+  that a facet such as types may have aspects that enable features
+  similar to aspects in other facets. There may be rules that
+  determine that when certain aspects are enabled, certain facets must
+  be switched off because they are incompatible.
+- facet is a good name for grouping archetypes, but model isn't. We
+  need a better name for a set of facets. Aspect is also a good
+  name. In addition, a model group is also a bad name. A "model" is a
+  cohesive group of archetypes that are meant to be used together. A
+  "model group" is a cohesive group of models that provide the same
+  conceptual representations in different programming languages. Maybe
+  we should use a more "random" name such as: pod. Then perhaps a
+  model group could become a "pod family": a family of related pods. A
+  given model can be represented by one pod family or another - they
+  are mutually exclusive. Of course, from a command line perspective,
+  its better to think of "modes". Each mode corresponds to choosing
+  one "pod family" over another. This does not map very cleanly.
+- archetypes have an associated programming language - a grammar.
+- a facet may exist in more than one programming language and an
+  aspect too.
+- pods are programming language specific.
+- formattables are kind of like an archetype friendly representation
+  of the domain types. We need a good name for this.
+- internal and external now make slightly more sense, at least once we
+  got a good name for formatters. We still need a good name for it
+  though. If the archetype instance is generated because of the
+  presence of the domain type, it is external. If the archetype has no
+  sensitivity to domain types (but may have sensitivity to other
+  things such as options) it is internal. The naming around this is
+  not totally clear.
+- internal formatters may not be allowed to be disabled. For example,
+  if serialisation is on, registrar must be generated. With
+  CMakeLists, we may want do disable them altogether.
+- in the thrift story in the backlog we mention the existence of
+  mutually exclusive groups of facets. We should also come up with a
+  name for these.
+- archetype may not quite be the right name. See [[http://www.pearsonhighered.com/samplechapter/032111230X.pdf][Archetypes and
+  archetype patterns]]. See also:
+  - [[http://www.step-10.com/SoftwareDesign/ModellingInColour/ColourCoding.html][Class Archetypes, UML and Colour]]
+  - [[http://www.step-10.com/SoftwareDesign/ModellingInColour/index.html][Peter Coad's 'Modeling in Color']]
+  - [[http://www.step-10.com/Books/JMCUBook.html][Java Modeling in Color with UML]]
+- the process of mapping domain types to archetypes could be called
+  "expansion" because its a one to many relationship in most cases.
+- its not quite correct to call CPP types "formattables". The
+  archetype has to have an ordered container of inputs to the
+  formatter. This is sort of the "payload" for formatting; the
+  archetype is a container of such entities. Taking into account the
+  cases where more than one type is placed in the same file, this
+  would result in the includes being merged. Or perhaps these things
+  are really formattables, but then we need a way to distinguish
+  between "top-level formatters" that generate archetypes from
+  "partial" formatters that can be combined.
+- with "facet specific types" we go one level deeper: it should be
+  possible to add an enumeration definition to say test data. This
+  would mean that archetypes and facets are not quite so aligned as we
+  first thought. Potentially, one should be able to ask for say a
+  formattable at facet X in an artchetype at facet Y.
+- One way to look at it is as follows: there is the modeling
+  dimension, in which we have an entity, say entity =A=; and there is
+  the implementation dimension, in which =a= can be represented by
+  =A1, A2, ..., An= archetypes. In effect, the implementation
+  dimension has multiple dimensions, one for each pod (and of course
+  the pod families would be an extra dimension and so on). Actually,
+  we probably have 3 steps: the modeling dimension, the translation of
+  that into a language-specific representation and then finally the
+  archetype dimension.
+- a good name for the top-level container of archetypes is
+  "kernel". This was inspired (loosely) in some ideas from EMF. So
+  we'd have say the "quilt kernel", with support for multiple
+  programming languages such as cpp, java etc. We we'd have the "pleat
+  kernel" and so forth. Each kernel has a set of languages and the
+  languages have archetypes. Archetypes have a collection of
+  properties such as the formattables they need, the formatters and so
+  on. The job of a model such as =quilt::cpp= is to implement this
+  binding.
+- dynamic fields can be owned by archetypes or by other types of
+  owners (e.g. dia). We should have a way of expressing this
+  ownership.
+- we haven't used the word "feature" anywhere yet (properly; we
+  mentioned it in the manual and so on, but not given it any good
+  meaning).
+- we created a split between "internal" and "external" formatters, but
+  its interesting to notice that we have "internal" formatters that
+  are "regular" formatters - in that we need to create a qname for
+  them and the formatter properties will work correctly; whereas some
+  others are "irregular" formatters - they have strange filenames that
+  cannot be generated without some fiddling. Actually, ODB options is
+  the main problematic one. If we could place it in a sensible
+  location we could probably get rid of irregular formatters
+  altogether.
+- we need to have "special" facets; cmake files for example should not
+  really have a facet but it seems having an empty facet name breaks a
+  lot of stuff.
+- we need a map between types/states in SML and enablement. For
+  example, if a type is "non-generatable" that is taken to mean
+  "generate types if file does not exist, default all else to
+  disabled". We need a way to express this sort of logic. This is akin
+  to an "enablement map". For example, users could define these maps
+  somewhere, given them a name and then assign a type to a map. In
+  addition, we need a way to express "generate but don't override" and
+  "generate and override".
+
+*Merged with other stories*
+
+It is important not to confuse formatters with archetypes. A formatter
+(or at least, a "top-level formatter"; those that generate files) is
+in a sense a "category" of archetypes. In other words, for a given
+formatter many archetypes will be generated. This may mean that the
+"archetype" is not a very good choice because it may imply some kind
+of meta-class-ness. In a sense, we are dealing with arch-entities
+("entity" being SML's base class for all modeled domain types). So
+fundamentally, the correct workflow is vaguely like this:
+
+- we create a model for some problem domain. We represent this model
+  in SML. All objects are identifiable by a qname.
+- we apply a transformation of this model into something which is
+  closer to the programming language that we wish to generate; these
+  we choose to call formattables.
+- we may also inject some formattables which do not have a mapping to
+  the original domain objects. These have synthetic qnames.
+- we apply a function that takes the qname, the SML entity, the
+  formattable and generates an archetype skeleton. To start off with,
+  this is made up of only a file name and a top-level formatter. The
+  structure exists in memory as a map of qnames to formatter names to
+  archetypes.
+- we then fill in the blanks: compute includes, enablement, etc. The
+  final blank that needs to be filled in is the generation of the
+  file, which is done by applying a formatter to a number of the
+  archetype properties.
+
+Another point of interest is that we may be able to move some of the
+archetype processing to common code. For example, file name
+generation, enablement, and so on are not language specific. However,
+we need to have a representation of the archetype which is specific to
+a model (e.g. =quilt::cpp= say) because not all properties will be
+common. We could, possibly, have an archetype base class, which then
+would imply a formatter's base class and so on - but then we hit the
+visitor across models problem.
+
+In this approach we do have an advantage which is we can parallelise a
+lot of work across each stage in the "pipeline". For instance we can
+run transformation from SML to formattables in parallel. We could
+conceivably even have futures for each of the archetype
+properties. None of this is a concern for the foreseable future, of
+course.
+
+FIXME: improve references by having models inside of models; we should
+be able to keep only the types that we refer in the final model.

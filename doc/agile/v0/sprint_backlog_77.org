@@ -1,0 +1,553 @@
+#+title: Sprint Backlog 77
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- wrap things up with yarn refactor and start quilt refactor.
+- get continuous builds working again.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2016-01-04 Mon 21:41]
+| <75>                                                                        |         |       |       |
+| Headline                                                                    | Time    |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                                | *37:30* |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| Stories                                                                     | 37:30   |       |       |
+| Active                                                                      |         | 37:30 |       |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  2:16 |
+| COMPLETED Update manual                                                     |         |       |  0:43 |
+| POSTPONED Update Linux CDash agent                                          |         |       |  0:09 |
+| COMPLETED Add support for conan.io                                          |         |       |  3:06 |
+| COMPLETED Create a blog post on conan                                       |         |       |  3:00 |
+| COMPLETED Investigate AppVeyor's windows support for builds                 |         |       |  2:02 |
+| COMPLETED Remove utilities for serialisation of unordered containers        |         |       |  0:38 |
+| CANCELLED Add "field propagation" support to dynamic                        |         |       |  1:52 |
+| COMPLETED Add =iconv.h= to include path on windows                          |         |       |  0:44 |
+| COMPLETED Improve names in yarn around model element location               |         |       |  3:39 |
+| COMPLETED Add qualified name to yarn properties                             |         |       |  1:26 |
+| COMPLETED Update settings bundle to include property settings               |         |       |  1:33 |
+| COMPLETED Use qualified name as keys for repositories in cpp                |         |       |  0:34 |
+| COMPLETED Re-read MDSD book                                                 |         |       | 15:00 |
+| POSTPONED Supply formatter properties and settings directly to formatter    |         |       |  0:48 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-01-04 Mon 21:32]
+    CLOCK: [2016-01-01 Fri 17:30]--[2016-01-01 Fri 18:05] =>  0:35
+    CLOCK: [2015-12-30 Wed 23:00]--[2015-12-30 Wed 23:27] =>  0:27
+    CLOCK: [2015-12-30 Wed 22:30]--[2015-12-30 Wed 22:59] =>  0:29
+    CLOCK: [2015-12-29 Tue 19:50]--[2015-12-29 Tue 20:20] =>  0:30
+    CLOCK: [2015-12-23 Wed 15:42]--[2015-12-23 Wed 15:54] =>  0:12
+    CLOCK: [2015-12-21 Mon 23:38]--[2015-12-21 Mon 23:41] =>  0:03
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Update manual
+    CLOSED: [2016-01-04 Mon 21:32]
+    CLOCK: [2015-12-29 Tue 20:21]--[2015-12-29 Tue 21:04] =>  0:43
+
+Updates to manual.
+
+*** POSTPONED Update Linux CDash agent                                :story:
+    CLOSED: [2016-01-04 Mon 21:32]
+    CLOCK: [2015-12-21 Mon 23:46]--[2015-12-21 Mon 23:55] =>  0:09
+
+We need to get the build green on the Linux agent again.
+
+- built boost 1.59, copied scripts into PFH.
+
+*** COMPLETED Add support for conan.io                                :story:
+    CLOSED: [2015-12-22 Tue 14:07]
+    CLOCK: [2015-12-22 Tue 10:06]--[2015-12-22 Tue 11:06] =>  1:00
+    CLOCK: [2015-12-22 Tue 02:02]--[2015-12-22 Tue 02:07] =>  0:05
+    CLOCK: [2015-12-22 Tue 01:50]--[2015-12-22 Tue 02:01] =>  0:11
+    CLOCK: [2015-12-22 Tue 01:40]--[2015-12-22 Tue 01:50] =>  0:10
+    CLOCK: [2015-12-22 Tue 01:33]--[2015-12-22 Tue 01:39] =>  0:06
+    CLOCK: [2015-12-22 Tue 01:27]--[2015-12-22 Tue 01:32] =>  0:05
+    CLOCK: [2015-12-22 Tue 01:20]--[2015-12-22 Tue 01:26] =>  0:06
+    CLOCK: [2015-12-21 Mon 23:56]--[2015-12-22 Tue 01:19] =>  1:23
+
+[[https://www.conan.io/][Conan.io]] could be a solution for our long standing problems with
+packaging and Travis builds. It also seems less intrusive when
+compared to biicode. We should try a simple conan setup and see if it
+builds with boost as per [[http://docs.conan.io/en/latest/examples/boost.html][this example]].
+
+Notes:
+
+- conan packages available [[https://www.conan.io/downloads][from here]].
+- needs boost 1.60 due to find boost wrapper missing on 1.59 (it seems)
+- need to apply patches to boost graph (but not serialisation):
+
+: $ cd  ~/.conan/data/Boost/1.60.0/lasote/stable/package/ebdc9c0c0164b54c29125127c75297f6607946c5/include/
+: $ patch -p0 < ~/Development/DomainDrivenConsulting/dogen/patches/boost_1_59_graph.patch
+
+- example with travis available [[http://conanio.readthedocs.org/en/latest/integrations/travisci.html][here]].
+- ninja fails to build but works with make. Open ticket for this [[https://github.com/conan-io/conan/issues][in issues]].
+
+: ninja: error: '/home/marco/.conan/data/Boost/1.60.0/lasote/stable/package/ebdc9c0c0164b54c29125127c75297f6607946c5/lib/libboost_system.so', needed by 'stage/bin/dogen_utility_spec', missing and no known rule to make it
+
+- test data errors when running utility spec more than once
+- path to downloads is not correct. submit PR.
+
+: https://s3-eu-west-1.amazonaws.com/conanio/downloads/conan-ubuntu-64_0_3_0.deb
+
+should be:
+
+: https://s3-eu-west-1.amazonaws.com/conanio-production/downloads/conan-ubuntu-64_0_5_0.deb
+
+*** COMPLETED Create a blog post on conan                             :story:
+    CLOSED: [2015-12-22 Tue 14:07]
+    CLOCK: [2015-12-22 Tue 11:07]--[2015-12-22 Tue 14:07] =>  3:00
+
+Create a post narrating how conan support was added to dogen and the
+failures in the attempt of adding biicode support.
+
+*** COMPLETED Investigate AppVeyor's windows support for builds       :story:
+    CLOSED: [2015-12-22 Tue 23:11]
+    CLOCK: [2015-12-22 Tue 22:31]--[2015-12-22 Tue 23:11] =>  0:40
+    CLOCK: [2015-12-22 Tue 21:32]--[2015-12-22 Tue 22:00] =>  0:28
+    CLOCK: [2015-12-22 Tue 20:47]--[2015-12-22 Tue 20:55] =>  0:08
+    CLOCK: [2015-12-22 Tue 20:29]--[2015-12-22 Tue 20:46] =>  0:17
+    CLOCK: [2015-12-22 Tue 20:15]--[2015-12-22 Tue 20:28] =>  0:13
+    CLOCK: [2015-12-22 Tue 19:38]--[2015-12-22 Tue 19:54] =>  0:16
+
+These guys seem to have good windows support:
+
+http://www.appveyor.com/
+
+Similar to travis. Used by RxCpp:
+
+https://github.com/Reactive-Extensions/RxCpp
+
+YML:
+
+https://github.com/Reactive-Extensions/RxCpp/blob/master/appveyor.yml
+
+Since Conan does not support libxml2 yet, we need to find another way
+to install it. One possible solution is to mix-and-match with
+nuget. Example from [[https://github.com/libimobiledevice-win32/libplist/tree/1a62450b787690658d4fa078e828fff020be35b1][libplist]].
+
+Include directories for libxml2 (=CMAKE_INCLUDE_PATH=):
+
+- C:\projects\dogen\packages\libxml2.2.7.8.7\build\native\include\
+- C:\projects\dogen\packages\libiconv.1.14.0.11\build\native\include
+
+Library directories for libxml2 (=CMAKE_LIBRARY_PATH=):
+
+- C:\projects\dogen\packages\libxml2.redist.2.7.8.7\build\native\bin\v110\x64\Release\dynamic\cdecl\libxml2.dll
+- C:\projects\dogen\packages\libiconv.redist.1.14.0.11\build\native\bin\v110\x64\Release\dynamic\cdecl\libiconv.dll
+
+*** COMPLETED Remove utilities for serialisation of unordered containers :story:
+    CLOSED: [2015-12-23 Wed 00:42]
+    CLOCK: [2015-12-23 Wed 00:04]--[2015-12-23 Wed 00:42] =>  0:38
+
+It seems these are now supported directly by boost, so we do not need
+carry our own code.
+
+*** CANCELLED Add "field propagation" support to dynamic              :story:
+    CLOSED: [2015-12-23 Wed 15:41]
+    CLOCK: [2015-12-23 Wed 15:04]--[2015-12-23 Wed 15:40] =>  0:36
+    CLOCK: [2015-12-23 Wed 13:47]--[2015-12-23 Wed 15:03] =>  1:16
+
+*Rationale*
+
+Once we start using yarn types in c++ we will be able to compute most
+of the fields for which this was useful. The only one left is
+enablement. There is no need for a generic solution. Also, when we
+looked into implementing this, there are conceptual problems: requires
+default constructor should be set on a primitive, but then is computed
+for an object; how does a composite object know that it should look at
+its primitive constituents but ignore non-primitives?  There are
+conceptual holes in this approach which are non-trivial to solve. A
+much simpler approach is to rely on the yarn type using a special
+purpose function to compute the values for these flags and then
+populate a settings class with them. This can be done right now.
+
+*Previous Understanding*
+
+- add a graph to yarn that allows external users to set
+  dependencies. The graph is not known to be acyclic. Normally we keep
+  track of all the orphans and link those to the root. This won't work
+  for cycles. We need a way to arbitrarily define one "end" of the
+  cycle as the starting point.
+- graph must distinguish between vertices that arise by expanding
+  generics from those that arise by other means.
+- add propagation type to fields and add enumeration.
+- add a "propagator" that is responsible for walking the graph and
+  setting the fields accordingly. The propagator is used from yarn's
+  workflow. We need to have the ability of sending in references to
+  dynamic objects into the graph so that the propagator can update
+  them.
+
+*** COMPLETED Add =iconv.h= to include path on windows                :story:
+    CLOSED: [2015-12-30 Wed 22:56]
+    CLOCK: [2015-12-23 Wed 13:26]--[2015-12-23 Wed 13:46] =>  0:20
+    CLOCK: [2015-12-23 Wed 13:01]--[2015-12-23 Wed 13:25] =>  0:24
+
+At present the windows build is failing on an iconv error:
+
+: (ClCompile target) ->
+:  C:\projects\dogen\packages\libxml2.2.7.8.7\build\native\include\libxml/encoding.h(28): fatal error C1083: Cannot open include file: 'iconv.h': No such file or directory [C:\projects\dogen\build\output\projects\utility\src\utility.vcxproj]
+
+This is due to the fact that the libxml include path is defined but
+not the iconv include path (due to the nuget rigmarole):
+
+: /IC:\Users\appveyor\.conan\data\zlib\1.2.8\lasote\stable\package\c85f9b402dd4d46acdf074e1c63b768a41181d7a\include
+: /IC:\projects\dogen\packages\libxml2.2.7.8.7\build\native\include
+: /IC:\projects\dogen\build\output\stage\include
+: <snip>
+
+The problem appears to be that when we find libxml we manually add it
+to the include and lib path:
+
+: find_package(LibXml2 REQUIRED)
+: if(LIBXML2_FOUND)
+:    include_directories(SYSTEM ${LIBXML2_INCLUDE_DIR})
+:    set(LIBS ${LIBS} ${LIBXML2_LIBRARY_DIR})
+: endif()
+
+We need something similar for iconv.
+
+Conan has also added packages for libxml, which we now depend on.
+
+*** COMPLETED Improve names in yarn around model element location     :story:
+    CLOSED: [2015-12-31 Thu 13:35]
+    CLOCK: [2015-12-31 Thu 12:37]--[2015-12-31 Thu 13:35] =>  0:58
+    CLOCK: [2015-12-31 Thu 12:05]--[2015-12-31 Thu 12:36] =>  0:31
+    CLOCK: [2015-12-30 Wed 23:28]--[2015-12-31 Thu 01:08] =>  1:40
+    CLOCK: [2015-12-23 Wed 16:27]--[2015-12-23 Wed 16:57] =>  0:30
+
+*New Understanding*
+
+After a great deal of thinking, it was decided to broadly leave these
+terms as they are. The new names do not add huge amounts of
+clarity. Instead, documentation was improved to explain the concepts
+behind these terms and minor modifications were done to location:
+avoid the word path since this is a concrete syntax reference, whereas
+location is talking about the abstract syntax of the concept.
+
+*Previous Understanding*
+
+Now that we have a clear conceptual model for yarn, we should rename
+the types to fit it:
+
+- =name=: this is an address of a modeling element in yarn modeling
+  space.
+- =location=: this is the module path component of the address.
+- =name::simple=: this is the name.
+- =name::qualified=: this is the unique identifier for a given
+  modeling element.
+- =nested_name=: nestable address.
+
+*** COMPLETED Add qualified name to yarn properties                   :story:
+    CLOSED: [2015-12-31 Thu 18:47]
+    CLOCK: [2015-12-31 Thu 17:53]--[2015-12-31 Thu 18:48] =>  0:55
+    CLOCK: [2015-12-23 Wed 15:55]--[2015-12-23 Wed 16:26] =>  0:31
+
+We need to uniquely identify a property in order to attach settings
+for it. To do so we can use the owning element's qualfied name
+together with the property's simple name.
+
+Actually it makes sense to generalise and make properties also
+modeling elements with a position in modeling space. This means we can
+use names and locations and also means that this infrastructure will
+(hopefully) be reused to implement inner classes.
+
+*** COMPLETED Update settings bundle to include property settings     :story:
+    CLOSED: [2016-01-01 Fri 23:14]
+    CLOCK: [2016-01-01 Fri 22:11]--[2016-01-01 Fri 23:14] =>  1:03
+    CLOCK: [2016-01-01 Fri 18:10]--[2016-01-01 Fri 18:40] =>  0:30
+
+We need to split settings from element in cpp in preparation for using
+yarn types. This means updating settings bundle to be a stand alone
+class with all settings including opaque settings for properties.
+
+*** COMPLETED Use qualified name as keys for repositories in cpp      :story:
+    CLOSED: [2016-01-02 Sat 00:10]
+    CLOCK: [2016-01-01 Fri 23:58]--[2016-01-02 Sat 00:09] =>  0:11
+    CLOCK: [2016-01-01 Fri 23:50]--[2016-01-01 Fri 23:58] =>  0:08
+    CLOCK: [2016-01-01 Fri 23:34]--[2016-01-01 Fri 23:49] =>  0:15
+
+When we migrated yarn to use qualified name rather than names, we did
+not update the cpp repositories. We need to do this now in order to be
+able to query the settings bundle and formatter properties from a
+formattable.
+
+- this cannot be done for path derivatives at the moment for at least
+  one reason: the way we are building the master include files
+  requires the yarn name. However, this is a massive hack. Story
+  raised for this.
+
+*** COMPLETED Re-read MDSD book                                       :story:
+    CLOSED: [2016-01-04 Mon 21:32]
+    CLOCK: [2015-12-29 Tue 00:00]--[2015-12-29 Tue 15:00] => 15:00
+
+A few sprints ago [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_70.org#read-model-driven-software-development-book-and-papers][we read Model Driven Software Development]], providing
+most of the theoretical foundations for Dogen. We need to re-read it
+with the objective of summarising it into a chapter in the manual.
+
+Clock manually adjusted to reflect reading time.
+
+*** POSTPONED Supply formatter properties and settings directly to formatter :story:
+    CLOSED: [2016-01-04 Mon 21:32]
+    CLOCK: [2016-01-02 Sat 00:11]--[2016-01-02 Sat 00:41] =>  0:30
+    CLOCK: [2016-01-01 Fri 23:15]--[2016-01-01 Fri 23:33] =>  0:18
+
+In preparation for removing the cpp formattables, we need to supply
+the formatter properties and settings in the format method, rather
+than via the cpp type.
+
+** Deprecated
+*** CANCELLED Add support for pulling dependencies from biicode       :story:
+    CLOSED: [2015-12-22 Tue 01:10]
+
+*Rationale*: We are going with Conan since it was so easy to setup.
+
+[[https://www.biicode.com/][Biicode]] is a nuget-like repo for c++. We should look into both
+consuming dependencies from it and pushing dogen into it. In addition
+there are associated emblems:
+
+https://github.com/Manu343726/snail
+
+We should also look into [[https://www.biicode.com/biicode-open-source-challenge][the challenge]].
+
+We should push both the C++ libraries as well as the dogen binary.
+
+We should take the least intrusive possible approach to start with, by
+creating a split setup for biicode.
+
+*** CANCELLED Create a blog post on biicode                           :story:
+    CLOSED: [2015-12-22 Tue 01:10]
+
+*Rationale*: We are going with Conan since it was so easy to setup.
+
+Investigate adding biicode support since we need to add a RapidJson
+dependency. Create a blog post about it.
+
+Post has [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/blog/biicode.org][already been started]].
+*** CANCELLED Add relationship types to handle "requires"             :story:
+    CLOSED: [2015-12-23 Wed 15:44]
+
+*Rationale*: This solution is too complicated now that there is no
+need to make it generic. We need to revisit the problem and focus only
+on enablement.
+
+*New Understanding*
+
+- we could solve this problem if in dynamic fields could have a
+  "propagation type" that results in propagating field instances
+  across the element graph.
+- this can only be done as the last step in yarn because we need all
+  properties to have been indexed, merging, resolution etc.
+- at this point we could generate a graph. Vertices are the dynamic
+  objects; edges are obtained by looking at the relevant
+  relationships: regular associations, weak associations, parents. We
+  perhaps should have one graph per relationship type to make things
+  easier.
+- the graph starts at a root, and the next vertex is the first dynamic
+  object that needs to be "computed". We look at all the fields in
+  that object that require "computation" and at the "computation
+  type".
+- cycles are the big problem. However, it seems one cannot have cycles
+  in C++ as this would cause inclusion problems. This is normally
+  resolved by weak relationships. We need to confirm this for cycles
+  with more than 2 edges. If this is true, we could force all
+  languages to declare relationships as weak when there is a cycle
+  somehow (note that we do not have the concept of pointers in java/c#
+  so perhaps the relationship itself would have to be annotated). We
+  could then have a default behaviour for weak relationships such as
+  never follow, etc.
+- at present we are handling the inclusion of non-existing formatters
+  in master includers by manually filtering these. See factory for
+  master includers. This should all be handled by enablement and the
+  graph.
+
+*Previous Understanding*
+
+This story needs to be named properly, once we actually understand
+what it is that it is about.
+
+Moment of realisation: we could describe all relationships between
+types as relations in the form a R b. We are already doing these, its
+just that we model them in a variety of ways (properties, relationship
+types, etc). This is fine because the driver for the modeling is the
+"language" model (e.g. =cpp=). However, there is a class of use cases
+that we have yet failed to solve. The general form of these use cases
+is as follows:
+
+- type b has some meta-data m;
+- type b is related to type a via some relation R;
+- type a should also be treated as having m.
+
+Another variation is where a is related to multiple types b0, b1, bn
+and we want to perform some computation on m0, m1, mn to determine the
+value for a.
+
+It seems that both of these use cases could be solved if only we had a
+way to represent a R b in =tack::model=. We have spotted the following
+Rs:
+
+- non-transitive aggregation, not "expanding" generics: all types
+  aggregated with a type; if a type is a generic type, we ignore the
+  type parameters. It is non-transitive in the following sense: if
+  type a aggregates type b and type b aggregates type c, it does not
+  mean that type a aggregates type c. Use cases: requires manual move
+  constructor, requires manual default constructor.
+- non-transitive aggregation, "expanding" generics: all types
+  aggregated with a type; if a type is a generic type, then all of the
+  type parameters are considered to also be associated. Use cases:
+  requires stream manipulators.
+- transitive association, "expanding" generics: all types aggregated
+  to a type and all types that those types aggregate to; all types
+  that this type inherits from and their parents. Use cases:
+  enablement.
+
+Note that we still haven't solved the fundamental enablement problem,
+as we can still have cycles on the graph (e.g. a is related to
+a). However, we can now create the traversal with cycles algorithm: it
+follows R and remembers the original type (e.g. a); when we spot that
+type again (e.g. y depends on a and a depends on y) we add all types
+that depend on it (y) to a "blocked" pile. We do process all other
+dependencies of y. The pile would have the form of: a blocks y. Even
+though y is blocked, we can still answer a. Once we answered a we can
+then answer all types blocked by a (they may have more than one block
+though). The key thing here is if a type has a cycle on itself its not
+a problem, we can just skip it. If a type has a dependency on a type
+which has a cycle, we must first sort out the type with the cycle.
+
+This story still needs a lot of work but its just a dump of all of the
+ideas at this point in time.
+
+Notes:
+
+- we need a "requires" repository, factory etc in formattables that
+  handles all of the "requires xyz" cases. We may need two of these,
+  per relation type.
+- we need to expand enablement to perform the algorithm above.
+- we need to expand relationship management in tack, adding these new
+  relationship types and populating them.
+- includes builder needs access to the "requires" data in order to
+  compute includes.
+
+Merged stories:
+
+*Add support for the relationships graph in enabler*
+
+*Note*: this story needs refactoring. It is basically here to cover
+the support for a graph with cycles in enabler but has not yet been
+updated.
+
+This needs a bit more analysis. The gist of it is that not all types
+support all formatters. We need a way to determine if a formatter is
+not supported. This probably should be inferred by a "is dogen model"
+property (see backlog); e.g. non-dogen models need their types to have
+an inclusion setup in order to be "supported", otherwise they should
+default to "not-supported". However the "supported" flag is populated,
+we then need to take into account relationships and propagate this
+flag across the model such that, if a type =A= in a dogen model has a
+property of a type =B= from a non-dogen model which does not support a
+given formatter =f=, then =A= must also not support =f=.
+
+In order to implement this feature we need to:
+
+- update the SML grapher to take into account relationships
+  (properties that the class has) as well as inheritance.
+- we must only visit related types if we ourselves do not have values
+  for all supported fields.
+- we also need a visitor that detects cycles; when a cycle is found we
+  simply assume that the status of the revisited class is true (or
+  whatever the default value of "supported" is) and we write a warning
+  to the log file. We should output the complete path of the cycle.
+- users can override this by setting supported for all formatters
+  where there are cycles.
+- we could perhaps have a bitmask by qname; we could start by
+  generating all bitmasks for all qnames and setting them to default
+  value. We could then find all qnames that have supported set to
+  false and update the corresponding bitmasks. Then we could use the
+  graph to loop through the qnames and "and" the bitmasks of each
+  qname with the bitmasks of their related qnames. The position of
+  each field is allocated by the algorithm (e.g. the first "supported"
+  field is at position 0 and so on). Actually the first position of
+  the bitmask could be used to indicate if the bitmask has already
+  been processed or not. In the presence of a cycle force it to true.
+- we need a class that takes the SML model and computes the supported
+  bitmasks for each qname; the supported expander then simply takes
+  this (perhaps as part of the expansion context), looks up for the
+  current qname and uses the field list to set the flags
+  appropriately.
+- we should remove all traces of supported from a settings
+  perspective; supported and multi-level enabled are just artefacts of
+  the meta-data. From a settings perspective, there is just a
+  formatter level (common formatter settings) enabled which determines
+  whether the formatter is on or off. How that flag came to be
+  computed is not relevant outside the expansion process. This also
+  means we can have simpler or more complex policies as time allows us
+  improve on this story; provided we can at least set all flags to
+  enabled we can move forward.
+
+Solution for cycles:
+
+- detect the cycle and then remember the pair (a, b) where b is the
+  start of the cycle and a is the last vertex before the cycle. We
+  should assume that a is (true, true) for the edge (a, b) and compute
+  all other edges. Finally, once the graph has been processed we
+  should check all of the pairs in a cycle; for these we should simply
+  look at the values of b, and update a accordingly.
+
+Other notes:
+
+- we need some validation to ensure that some types will be generated
+  at all. The existing "generatable types" logic will have to be
+  removed or perhaps updated; we should take the opportunity to make
+  it reflect whether a type belongs to the target model or not. This
+  has no bearing on generatability (other that non-target types are
+  always not generated). So at the middle-end level we need to check
+  if there are any target types at all, and if not, just want the user
+  and exit. Then, a second layer is required at the model group /
+  language level to determine if there are any types to generate. It
+  is entirely possible that we end up not generating anything at all
+  because once we went through the graph everything got
+  disabled. Users will have to somehow debug this when things go
+  wrong.
+- following on from this, we probably need a "dump info" option that
+  explains the enabled/supported decisions for a given model, for all
+  target types; possibly, users could then supply regexes to filter
+  this info (e.g. why did you not generate =hash= for type =xyz=? can
+  I see all types for formatter =abc=?). It may be useful to have an
+  option to toggle between "target only types" and "all types",
+  because the system types may be the ones causing the problem.
+- the enabled supported logic applies to all formatters across all
+  model groups.
+
+*Capture enablement validation rules*
+
+Enablement requires some validation. This story captures all the rules
+we need to check for.
+
+- integrated IO must not be enabled if IO is enabled and vice-versa
+  (opaque settings validator). actually it seems this is possible, we
+  need to investigate the current implementation.
+- types must be enabled
+- if serialisation is enabled, types forward declaration of the
+  serialisation classes must be enabled
+*** CANCELLED Use clang to extract stitch template header             :story:
+    CLOSED: [2016-01-01 Fri 17:50]
+
+*Rationale*: this is far too complicated. Instead we will use the
+meta-templates approach.
+
+Once we integrate clang, we could look at the expanded stitch template
+and infer the required header file. For the current use case, this is
+just a case of extracting the function signature. This may not work so
+well for more complicated scenarios such as with a class.
+
+We should keep in mind that stitch templates will not be stand-alone
+in a world where merging is supported, so this story may not make a
+whole lot of sense.

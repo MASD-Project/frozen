@@ -1,0 +1,960 @@
+#+title: Sprint Backlog 16
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- implement the variability model.
+- use the new variability model types.
+- implement profiles in terms of the new meta-model types.
+
+* Stories
+
+** Active
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-05-05 Sun 21:11]
+| <75>                                                   |         |       |       |       |
+| Headline                                               | Time    |       |       |     % |
+|--------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                           | *81:35* |       |       | 100.0 |
+|--------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                | 81:35   |       |       | 100.0 |
+| Active                                                 |         | 81:35 |       | 100.0 |
+| Edit release notes for previous sprint                 |         |       |  2:40 |   3.3 |
+| Sprint and product backlog grooming                    |         |       |  3:54 |   4.8 |
+| Create a video demo for the previous sprint's features |         |       |  1:55 |   2.3 |
+| Read variability papers                                |         |       |  1:04 |   1.3 |
+| Emacs maintenance and exploration work                 |         |       |  0:20 |   0.4 |
+| Fix issues with nightly build and CI                   |         |       |  0:39 |   0.8 |
+| Finish implementing the variability model              |         |       | 10:49 |  13.3 |
+| Trim down stitch's use of annotations                  |         |       |  1:30 |   1.8 |
+| Read meta-data using configurations                    |         |       | 24:24 |  29.9 |
+| Remove uses of annotations                             |         |       |  7:44 |   9.5 |
+| Stitch is still using artefact writer                  |         |       |  0:04 |   0.1 |
+| Exclude profiles from stereotypes processing           |         |       |  2:41 |   3.3 |
+| Profiles as meta-model elements                        |         |       | 13:54 |  17.0 |
+| Add support for composable stereotypes                 |         |       |  6:06 |   7.5 |
+| Code generate all contexts                             |         |       |  0:38 |   0.8 |
+| Consider renaming orchestration to "engine"            |         |       |  0:38 |   0.8 |
+| Code generate feature infrastructure                   |         |       |  2:35 |   3.2 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-04-22 Mon 11:24]
+    :LOGBOOK:
+    CLOCK: [2019-04-22 Mon 16:01]--[2019-04-22 Mon 16:37] =>  0:36
+    CLOCK: [2019-04-22 Mon 12:21]--[2019-04-22 Mon 12:29] =>  0:08
+    CLOCK: [2019-04-22 Mon 11:27]--[2019-04-22 Mon 11:47] =>  0:20
+    CLOCK: [2019-04-22 Mon 09:50]--[2019-04-22 Mon 11:26] =>  1:36
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.15, "Quinzinho"
+
+#+begin_src markdown
+![Joaquim Alberto da Silva](https://pbs.twimg.com/media/D4vvToKWkAEN1Ri.png:large)
+
+_Joaquim Alberto da Silva ("Quinzinho") playing for the Angolan national team, the Palancas Negras. (C) 2001 Getty Images._
+
+# Prelude
+
+This release is named in memory of "Quinzinho", who [scored Angola's first goal in the Africa Cup of Nations](https://www.bbc.co.uk/sport/football/47987342). _Xala Kiambote, Guerreiro._
+
+# Introduction
+
+The key objective this sprint was to make inroads with regards to variability management in Dogen models [1]. Readers won't fail to notice that we've started to get more and more technical as we try to align Dogen with the PhD thesis. This trend is only set to increase, because we are approaching the business end of the research project. Also, as expected, the technical work was much harder than expected (if you pardon the pun), so we didn't get as far as exposing variability management to the end user. We are now hoping to reach this significant milestone next sprint.
+
+# User visible changes
+
+There were only a few minor user visible changes:
+
+- a rather dodgy bug in C# code generation was found and fixed, whereby we somehow were not generating code for C# models. How this was missed is a veritable comedy of errors, from the way we had designed the system tests to the way diffs were being made. Suffices to say that many lessons were learned and a tightening of the process was put into place to avoid this particular problem from happening again.
+- CMake files now use the correct tab variable for emacs, i.e. ```cmake-tab-width``` instead of ```tab-width```.
+- CMake files are no longer hard-coded to generate static libraries. You can generate a shared library by using the CMake variable ```-DBUILD_SHARED_LIBS=ON```. This change was also made to the Dogen codebase itself, but due to a problem with the Boost.Log build supplied by vcpkg, we can't yet build Dogen using shared libraries [2].
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see the [sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_15.org).
+
+## Significant Internal Stories
+
+The bulk of the work was taken by redesigning the annotations model. We have spent some time re-reading the [MDE](https://en.wikipedia.org/wiki/Model-driven_engineering) theory on this subject to make sure we have aligned all terminology with the terms used by domain experts. The final result was the creation of the variability model, composed of a number of transforms. This model has not yet been fully implemented and integrated with the core.
+
+A second significant story this sprint was the reactivation of the boilerplate tests, which was a mop-up effort left from the previous sprint.
+
+## Resourcing
+
+Over 54% of the sprint was taken by stories related to its mission statement. We spent around 16% of the total time on process, with just shy of 10% for backlog grooming, and the remainder related to release notes and demo. We've also had a number of interesting spikes, which were rather expensive:
+
+- 10% of the time was spent changing our Emacs configuration. On the plus side, we are now using [clangd](https://clang.llvm.org/extra/clangd/index.html) instead of [cquery](https://github.com/cquery-project/cquery), whose development has slowed considerably. Given that Google and many other large enterprises contribute to clangd's development, it seems like the right decision. As a bonus, we've also updated clang to v8 - though, sadly, not via Debian's package management, as it is still only in unstable. Let's hope it hits testing soon.
+- the bug with C# code generation cost us 5.3% of the total ask.
+- we've had a number of issues with our nightly builds, costing us 2.5% of the total ask.
+
+The complete story breakdown is as follows:
+
+![Story Pie Chart](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/agile/v1/sprint_14_pie_chart.jpg)
+
+## Planning
+
+Due to the variability work being harder than expected, the project plan was bumped back by a sprint. At the end of sprint 15, the plan looks like this:
+
+![Project Plan](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/agile/v1/sprint_14_project_plan.png)
+
+![Resource Allocation Graph](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/agile/v1/sprint_14_resource_allocation_graph.png)
+
+# Next Sprint
+
+The focus on Sprint 15 is to finish the variability model, and replace the legacy classes with the new, transform-based approach. If all goes according to plan, this will finally mean we can expose our variability profiles to end users.
+
+# Binaries
+
+Please note that we are now shipping clang binaries on Linux rather than the GCC-generated ones. Due to the current refactorings, our GCC builds are taking too long to complete. This does mean that we are now using clang for all our builds.
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.15_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.15/dogen_1.0.15_amd64-applications.deb)
+- [dogen-1.0.15-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.15/dogen-1.0.15-Darwin-x86_64.dmg)
+- [dogen-1.0.15-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.15-Windows-AMD64.msi)
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+
+Happy Modeling!
+
+# Footnotes
+
+[1]  If this is not a topic you are familiar with and you'd like to understand it better, JM Jézéquel's review paper on the subject is probably of interest: ["Model-Driven Engineering for Software Product Lines"](http://downloads.hindawi.com/journals/isrn.software.engineering/2012/670803.pdf).
+[2] [vcpkg #6148: Errors building shared library due to Boost Log and PIC](https://github.com/Microsoft/vcpkg/issues/6148)
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/1115302519067090947][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6526115847252041728][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-05-05 Sun 21:10]
+    :LOGBOOK:
+    CLOCK: [2019-05-05 Sun 20:55]--[2019-05-05 Sun 21:11] =>  0:16
+    CLOCK: [2019-05-04 Sat 09:21]--[2019-05-04 Sat 09:32] =>  0:11
+    CLOCK: [2019-05-03 Fri 11:28]--[2019-05-03 Fri 11:33] =>  0:05
+    CLOCK: [2019-05-02 Thu 13:59]--[2019-05-02 Thu 14:12] =>  0:18
+    CLOCK: [2019-05-02 Thu 12:54]--[2019-05-02 Thu 13:04] =>  0:10
+    CLOCK: [2019-04-30 Tue 10:08]--[2019-04-30 Tue 10:41] =>  0:33
+    CLOCK: [2019-04-30 Tue 09:40]--[2019-04-30 Tue 09:57] =>  0:17
+    CLOCK: [2019-04-30 Tue 08:05]--[2019-04-30 Tue 08:34] =>  0:29
+    CLOCK: [2019-04-29 Mon 10:17]--[2019-04-29 Mon 10:28] =>  0:11
+    CLOCK: [2019-04-29 Mon 07:03]--[2019-04-29 Mon 07:19] =>  0:16
+    CLOCK: [2019-04-28 Sun 14:40]--[2019-04-28 Sun 14:56] =>  0:16
+    CLOCK: [2019-04-28 Sun 14:24]--[2019-04-28 Sun 14:39] =>  0:15
+    CLOCK: [2019-04-26 Fri 08:25]--[2019-04-26 Fri 08:45] =>  0:20
+    CLOCK: [2019-04-22 Mon 09:38]--[2019-04-22 Mon 09:48] =>  0:10
+    CLOCK: [2019-04-22 Mon 09:25]--[2019-04-22 Mon 09:37] =>  0:12
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Create a video demo for the previous sprint's features  :story:
+    CLOSED: [2019-04-22 Mon 14:36]
+    :LOGBOOK:
+    CLOCK: [2019-04-22 Mon 12:41]--[2019-04-22 Mon 14:36] =>  1:55
+    :END:
+
+Demo the delete empty directories feature.
+
+*** COMPLETED Clean up annotation scope types                         :story:
+    CLOSED: [2019-04-25 Thu 09:29]
+
+*Rationale*: this work was carried out as part of the variability model
+redesign.
+
+As part of the attribute rename (which used to be called property) we
+should have renamed the annotation scope as well to attribute.
+
+In addition, we have a scope type of "entity" but the yarn meta-model
+type is really "element".
+
+We should also check if "not applicable" scope is in use, and if not
+delete it.
+
+*** COMPLETED Read variability papers                                 :story:
+    CLOSED: [2019-05-05 Sun 21:10]
+    :LOGBOOK:
+    CLOCK: [2019-04-22 Mon 17:39]--[2019-04-22 Mon 17:54] =>  0:15
+    CLOCK: [2019-04-22 Mon 16:50]--[2019-04-22 Mon 17:39] =>  0:49
+    :END:
+
+We still have a couple of variability papers we need to read to make
+sure our approach is aligned with the literature.
+
+- we are simultaneously a user of SPLE and a enabler of SPLE for end
+  users of MASD.
+- we also make use of weaving between the user model and the modeling
+  of variability.
+- MASD models and manages technical variability, leaving essential
+  variability to the end user to handle.
+- we only care about internal variability. External variability is
+  left to the end user.
+- the SRAP process also has a variability process. This needs to be
+  documented.
+- the multidimensional approach makes variation points hidden from the
+  modeling. However, their application is limited to the topology of
+  archetype space; it is not available to application engineering,
+  only to the MASD use of domain engineering.
+- we make use of binding times to bind configurations to modeling
+  elements.
+- we need feature groups to represent:
+  - windows support
+  - visual studio support
+- alternatively, we need to figure out if we can't just use profiles
+  to simulate configuration groups.
+- feature selection is done at two levels: profiles and
+  configuration. This is why we cannot name =configuration= class
+  =selection=.
+- we have two asset models: product and component. They both project
+  into archetype space, and both bind into the same variability model.
+
+*** COMPLETED Emacs maintenance and exploration work                  :story:
+    CLOSED: [2019-05-05 Sun 21:10]
+    CLOCK: [2019-04-30 Tue 08:35]--[2019-04-30 Tue 08:55] =>  0:20
+
+Any time spent improving emacs, exploring new modes, fixing snags, etc.
+
+- fix integration with bookmarks mode which had bit-rotted with the
+  latest prelude update.
+
+*** COMPLETED Fix issues with nightly build and CI                    :story:
+    CLOSED: [2019-05-05 Sun 21:10]
+    :LOGBOOK:
+    CLOCK: [2019-05-02 Thu 06:31]--[2019-05-02 Thu 07:10] =>  0:39
+    :END:
+
+Time spent fixing build issues with either nightlies and/or CI.
+
+- seems like we are not uploading OSX or windows packages to bintray.
+
+*** COMPLETED Finish implementing the variability model               :story:
+    CLOSED: [2019-04-28 Sun 08:16]
+    :LOGBOOK:
+    CLOCK: [2019-04-24 Wed 18:45]--[2019-04-24 Wed 18:49] =>  0:04
+    CLOCK: [2019-04-24 Wed 17:47]--[2019-04-24 Wed 18:44] =>  0:57
+    CLOCK: [2019-04-24 Wed 17:30]--[2019-04-24 Wed 17:46] =>  0:16
+    CLOCK: [2019-04-24 Wed 17:10]--[2019-04-24 Wed 17:29] =>  0:19
+    CLOCK: [2019-04-24 Wed 16:29]--[2019-04-24 Wed 17:09] =>  0:40
+    CLOCK: [2019-04-24 Wed 15:56]--[2019-04-24 Wed 16:12] =>  0:16
+    CLOCK: [2019-04-24 Wed 15:45]--[2019-04-24 Wed 15:55] =>  0:10
+    CLOCK: [2019-04-24 Wed 15:14]--[2019-04-24 Wed 15:44] =>  0:30
+    CLOCK: [2019-04-24 Wed 14:16]--[2019-04-24 Wed 14:55] =>  0:39
+    CLOCK: [2019-04-24 Wed 13:44]--[2019-04-24 Wed 14:15] =>  0:31
+    CLOCK: [2019-04-24 Wed 13:14]--[2019-04-24 Wed 13:43] =>  0:29
+    CLOCK: [2019-04-24 Wed 11:55]--[2019-04-24 Wed 12:07] =>  0:12
+    CLOCK: [2019-04-24 Wed 11:11]--[2019-04-24 Wed 11:54] =>  0:43
+    CLOCK: [2019-04-24 Wed 10:58]--[2019-04-24 Wed 11:10] =>  0:12
+    CLOCK: [2019-04-24 Wed 10:53]--[2019-04-24 Wed 10:57] =>  0:04
+    CLOCK: [2019-04-24 Wed 09:01]--[2019-04-24 Wed 10:52] =>  1:51
+    CLOCK: [2019-04-23 Tue 13:42]--[2019-04-23 Tue 14:06] =>  0:24
+    CLOCK: [2019-04-23 Tue 11:00]--[2019-04-23 Tue 11:52] =>  0:52
+    CLOCK: [2019-04-23 Tue 10:36]--[2019-04-23 Tue 10:59] =>  0:23
+    CLOCK: [2019-04-23 Tue 09:51]--[2019-04-23 Tue 10:35] =>  0:44
+    CLOCK: [2019-04-23 Tue 07:21]--[2019-04-23 Tue 07:54] =>  0:33
+    :END:
+
+On the back of the redesign of the annotations model, which was
+completed last sprint, we now have to implement all classes and then
+hook them up to the engine.
+
+*** COMPLETED Supply decorations as a stitch parameter                :story:
+    CLOSED: [2019-04-28 Sun 14:23]
+
+*Rationale*: this was implemented as part of the decorations in
+meta-model work.
+
+As explained in other story at present we are creating the decoration
+inside the stitch template. This won't work with new world. We need to
+supply it as KVP. For now we will leave everything else as is.
+
+Notes:
+
+- factor out commonalities between wale and stitch into object
+  template regarding keys.
+- add validation to ensure all expected keys have been found. Look at
+  how that's done in wale.
+- add a way to supply KVPs from the outside world into stitch template
+  instantiation.
+- no decoration for root module
+- cmake files are not going via boilerplate.
+
+*** COMPLETED Trim down stitch's use of annotations                   :story:
+    CLOSED: [2019-04-28 Sun 16:54]
+     :LOGBOOK:
+     CLOCK: [2019-04-28 Sun 16:38]--[2019-04-28 Sun 16:53] =>  0:15
+     CLOCK: [2019-04-28 Sun 15:42]--[2019-04-28 Sun 16:14] =>  0:32
+     CLOCK: [2019-04-28 Sun 15:19]--[2019-04-28 Sun 15:41] =>  0:22
+     CLOCK: [2019-04-28 Sun 14:57]--[2019-04-28 Sun 15:18] =>  0:21
+     :END:
+
+ - remove weaving: configuration, weaver, command line options, cmake
+   targets.
+ - remove profile field from stitch templates. Should not break
+   anything.
+ - remove annotations expander from workflow. Actually we can't do this
+   yet because we are still relying on the profile for the stream name
+   variable. Actually we need to hack out profiles because otherwise we
+   would have to somehow support profile bindings inside of
+   stitch. This is really far too complicated to even contemplate. We
+   need to manually set the stream variable on every template and then
+   remove the profile.
+ - add variability parameters to workflow, supply them from formatters.
+
+*** COMPLETED Read meta-data using configurations                     :story:
+    CLOSED: [2019-04-28 Sun 17:20]
+    :LOGBOOK:
+    CLOCK: [2019-04-28 Sun 16:54]--[2019-04-28 Sun 17:20] =>  0:26
+    CLOCK: [2019-04-28 Sun 16:15]--[2019-04-28 Sun 16:37] =>  0:22
+    CLOCK: [2019-04-28 Sun 14:01]--[2019-04-28 Sun 14:23] =>  0:22
+    CLOCK: [2019-04-28 Sun 10:32]--[2019-04-28 Sun 10:51] =>  0:19
+    CLOCK: [2019-04-28 Sun 09:53]--[2019-04-28 Sun 10:04] =>  0:11
+    CLOCK: [2019-04-28 Sun 09:33]--[2019-04-28 Sun 09:52] =>  0:19
+    CLOCK: [2019-04-28 Sun 07:42]--[2019-04-28 Sun 08:15] =>  0:33
+    CLOCK: [2019-04-28 Sun 06:40]--[2019-04-28 Sun 07:29] =>  0:49
+    CLOCK: [2019-04-27 Sat 18:50]--[2019-04-27 Sat 18:59] =>  0:09
+    CLOCK: [2019-04-27 Sat 18:24]--[2019-04-27 Sat 18:49] =>  0:25
+    CLOCK: [2019-04-27 Sat 18:12]--[2019-04-27 Sat 18:23] =>  0:11
+    CLOCK: [2019-04-27 Sat 17:50]--[2019-04-27 Sat 18:11] =>  0:21
+    CLOCK: [2019-04-27 Sat 17:17]--[2019-04-27 Sat 17:49] =>  0:32
+    CLOCK: [2019-04-27 Sat 16:57]--[2019-04-27 Sat 17:16] =>  0:19
+    CLOCK: [2019-04-27 Sat 16:14]--[2019-04-27 Sat 16:54] =>  0:40
+    CLOCK: [2019-04-27 Sat 15:37]--[2019-04-27 Sat 16:13] =>  0:36
+    CLOCK: [2019-04-27 Sat 09:24]--[2019-04-27 Sat 09:28] =>  0:04
+    CLOCK: [2019-04-27 Sat 09:05]--[2019-04-27 Sat 09:23] =>  0:18
+    CLOCK: [2019-04-27 Sat 06:45]--[2019-04-27 Sat 07:35] =>  0:50
+    CLOCK: [2019-04-27 Sat 06:26]--[2019-04-27 Sat 06:44] =>  0:18
+    CLOCK: [2019-04-27 Sat 05:42]--[2019-04-27 Sat 06:25] =>  0:43
+    CLOCK: [2019-04-26 Fri 17:56]--[2019-04-26 Fri 18:48] =>  0:52
+    CLOCK: [2019-04-26 Fri 17:00]--[2019-04-26 Fri 17:29] =>  0:29
+    CLOCK: [2019-04-26 Fri 16:41]--[2019-04-26 Fri 16:59] =>  0:18
+    CLOCK: [2019-04-26 Fri 16:31]--[2019-04-26 Fri 16:40] =>  0:09
+    CLOCK: [2019-04-26 Fri 16:23]--[2019-04-26 Fri 16:30] =>  0:07
+    CLOCK: [2019-04-26 Fri 16:15]--[2019-04-26 Fri 16:22] =>  0:07
+    CLOCK: [2019-04-26 Fri 16:03]--[2019-04-26 Fri 16:14] =>  0:11
+    CLOCK: [2019-04-26 Fri 13:46]--[2019-04-26 Fri 14:47] =>  1:01
+    CLOCK: [2019-04-26 Fri 13:36]--[2019-04-26 Fri 13:45] =>  0:09
+    CLOCK: [2019-04-26 Fri 13:14]--[2019-04-26 Fri 13:35] =>  0:21
+    CLOCK: [2019-04-26 Fri 11:50]--[2019-04-26 Fri 12:10] =>  0:20
+    CLOCK: [2019-04-26 Fri 11:36]--[2019-04-26 Fri 11:49] =>  0:13
+    CLOCK: [2019-04-26 Fri 10:55]--[2019-04-26 Fri 11:35] =>  0:40
+    CLOCK: [2019-04-26 Fri 10:42]--[2019-04-26 Fri 10:54] =>  0:12
+    CLOCK: [2019-04-26 Fri 10:05]--[2019-04-26 Fri 10:41] =>  0:36
+    CLOCK: [2019-04-26 Fri 09:33]--[2019-04-26 Fri 10:04] =>  0:31
+    CLOCK: [2019-04-26 Fri 09:17]--[2019-04-26 Fri 09:32] =>  0:15
+    CLOCK: [2019-04-26 Fri 08:51]--[2019-04-26 Fri 09:16] =>  0:25
+    CLOCK: [2019-04-26 Fri 07:22]--[2019-04-26 Fri 07:25] =>  1:17
+    CLOCK: [2019-04-26 Fri 06:31]--[2019-04-26 Fri 07:21] =>  0:50
+    CLOCK: [2019-04-25 Thu 22:09]--[2019-04-25 Thu 22:12] =>  0:03
+    CLOCK: [2019-04-25 Thu 21:05]--[2019-04-25 Thu 22:08] =>  1:03
+    CLOCK: [2019-04-25 Thu 20:19]--[2019-04-25 Thu 21:04] =>  0:45
+    CLOCK: [2019-04-25 Thu 19:02]--[2019-04-25 Thu 19:04] =>  0:02
+    CLOCK: [2019-04-25 Thu 16:54]--[2019-04-25 Thu 16:59] =>  0:05
+    CLOCK: [2019-04-25 Thu 15:27]--[2019-04-25 Thu 16:53] =>  1:26
+    CLOCK: [2019-04-25 Thu 14:54]--[2019-04-25 Thu 15:26] =>  0:32
+    CLOCK: [2019-04-25 Thu 14:31]--[2019-04-25 Thu 14:53] =>  0:22
+    CLOCK: [2019-04-25 Thu 11:32]--[2019-04-25 Thu 11:55] =>  0:23
+    CLOCK: [2019-04-25 Thu 11:20]--[2019-04-25 Thu 11:31] =>  0:11
+    CLOCK: [2019-04-25 Thu 11:13]--[2019-04-25 Thu 11:19] =>  0:06
+    CLOCK: [2019-04-25 Thu 11:04]--[2019-04-25 Thu 11:12] =>  0:08
+    CLOCK: [2019-04-25 Thu 10:55]--[2019-04-25 Thu 11:03] =>  0:08
+    CLOCK: [2019-04-25 Thu 10:13]--[2019-04-25 Thu 10:54] =>  0:41
+    CLOCK: [2019-04-25 Thu 10:05]--[2019-04-25 Thu 10:12] =>  0:07
+    CLOCK: [2019-04-25 Thu 09:54]--[2019-04-25 Thu 10:04] =>  0:10
+    CLOCK: [2019-04-25 Thu 09:37]--[2019-04-25 Thu 09:53] =>  0:16
+    CLOCK: [2019-04-25 Thu 08:57]--[2019-04-25 Thu 09:36] =>  0:39
+    CLOCK: [2019-04-25 Thu 07:06]--[2019-04-25 Thu 07:20] =>  0:14
+    CLOCK: [2019-04-25 Thu 06:38]--[2019-04-25 Thu 07:05] =>  0:27
+    :END:
+
+Make use of the new variability model classes to read annotations.
+
+Order of tasks:
+
+- for the initial test of the changes, we need to obtain the feature
+  model as part of the context generation in orchestration's context
+  factory. We then add the feature model to injection. We then create
+  a =Configurable= element in injection, side by side with
+  annotation. We then use the configuration factory to create the
+  configuration. Finally, we read fields using the configuration
+  selector. This will prove that basic features and
+  configurations work. Note that we need to duplicate all code
+  creating "type groups" etc. We should probably add a flag in the
+  context that determines whether to use new world or legacy and then
+  populate it within orchestration.
+- the second change is to add the feature model to the coding
+  model. We then add a Configurable element, side-by-side
+  Annotable. We then create the configuration model from a coding
+  model, and execute the profile binding chain transform on it. We
+  then read all features from the configuration. This will prove that
+  profile binding works.
+- actually we need to do all of the processing for profiles at the
+  orchestration level. This is because we need access to the
+  variability context, but also because it makes sense as we are
+  trying to orchestrate between variability transforms and coding
+  transforms (this keeps the coding model more or less clean from
+  calling transforms in other models).
+- finally we add feature model to generation context, and read
+  remaining fields from the configuration.
+- when all is working, we remove all references to annotation in
+  injection, coding and generation.
+- we then remove all legacy types from variability.
+
+Notes:
+
+- qualified name of attributes is not being added. This is probably a
+  bug in adaptor.
+- fabric types are not part of the profile expansion. By sheer luck,
+  this is ok. At present we are also performing annotation expansion
+  at the pre-assembly stage, well before fabric is injected. This
+  makes sense: since we cannot configure fabric elements (they are
+  injected), there is no need to process their configuration. This
+  will be addressed in the future as we make them explicit meta-model
+  elements.
+- as a test to make sure we've caught all uses of annotation, we
+  should set the pointer to null in the adapter and see if anything
+  breaks.
+- make configuration model =Nameable=.
+- archetype location transform has forward decls disabled on input,
+  but still seems to be generating it.
+
+*** COMPLETED Remove uses of annotations                              :story:
+    CLOSED: [2019-04-29 Mon 16:40]
+    :LOGBOOK:
+    CLOCK: [2019-04-29 Mon 17:01]--[2019-04-29 Mon 17:13] =>  0:12
+    CLOCK: [2019-04-29 Mon 15:29]--[2019-04-29 Mon 16:40] =>  1:11
+    CLOCK: [2019-04-29 Mon 12:58]--[2019-04-29 Mon 15:28] =>  2:30
+    CLOCK: [2019-04-29 Mon 10:57]--[2019-04-29 Mon 12:12] =>  4:31
+    CLOCK: [2019-04-29 Mon 10:38]--[2019-04-29 Mon 10:56] =>  0:18
+    CLOCK: [2019-04-29 Mon 10:34]--[2019-04-29 Mon 10:37] =>  0:03
+    CLOCK: [2019-04-29 Mon 10:29]--[2019-04-29 Mon 10:33] =>  0:04
+    CLOCK: [2019-04-29 Mon 10:12]--[2019-04-29 Mon 10:16] =>  0:04
+    CLOCK: [2019-04-29 Mon 08:56]--[2019-04-29 Mon 10:11] =>  1:15
+    CLOCK: [2019-04-29 Mon 08:35]--[2019-04-29 Mon 08:55] =>  0:20
+    CLOCK: [2019-04-29 Mon 07:20]--[2019-04-29 Mon 07:25] =>  0:05
+    CLOCK: [2019-04-29 Mon 06:35]--[2019-04-29 Mon 07:02] =>  0:44
+    :END:
+
+- disable population of annotation to prove the new code is working
+  everywhere.
+- remove all legacy types from variability model.
+
+*** COMPLETED Stitch is still using artefact writer                   :story:
+    CLOSED: [2019-04-29 Mon 17:47]
+    :LOGBOOK:
+    CLOCK: [2019-04-29 Mon 17:43]--[2019-04-29 Mon 17:47] =>  0:04
+    :END:
+
+Create a templating transform that is similar to the approach used by
+extraction - in fact, stitch should probably be using a transform in
+extraction.
+
+Delete artefact writer.
+
+*** COMPLETED Move all formatters in extraction to generation         :story:
+    CLOSED: [2019-04-30 Tue 10:34]
+
+*Rationale*: done as part of the extraction clean-up.
+
+Since we only need these during generation, seems like the more
+logical place. This should be done when (after) we move all of the
+meta-elements that live in formatter into coding.
+
+*** CANCELLED Remove dynamic stereotypes from coding                  :story:
+    CLOSED: [2019-05-01 Wed 14:18]
+
+*Rationale*: this is wrong - we still need to find the object
+templates.
+
+Now that we are intercepting the dynamic stereotypes coming in from
+injection and directly populating the configuration, there is no need
+to store them in the modeling element.
+
+*** COMPLETED Exclude profiles from stereotypes processing            :story:
+    CLOSED: [2019-05-01 Wed 16:52]
+    :LOGBOOK:
+    CLOCK: [2019-05-01 Wed 16:36]--[2019-05-01 Wed 16:52] =>  0:16
+    CLOCK: [2019-05-01 Wed 16:31]--[2019-05-01 Wed 16:35] =>  0:04
+    CLOCK: [2019-05-01 Wed 14:33]--[2019-05-01 Wed 16:30] =>  1:57
+    CLOCK: [2019-05-01 Wed 14:08]--[2019-05-01 Wed 14:32] =>  0:24
+    :END:
+
+At present we are manually excluding profiles from the stereotypes
+transform. This was just a quick hack to get us going. We need to
+replace this with a call to annotations to get a list of profile names
+and exclude those.
+
+We should also rename =is_stereotype_handled_externally= to something
+more like "is profile" or "matches profile name".
+
+Actually the right thing may even be to just remove all of the profile
+stereotypes during annotations processing. However, we should wait
+until we complete the exomodel work since that will remove scribble
+groups, etc. Its all in the annotations transform.
+
+Once we have the profiles in the model set it should be easy to supply
+them to the annotations transform.
+
+*** COMPLETED Profiles as meta-model elements                         :story:
+    CLOSED: [2019-05-02 Thu 12:53]
+    :LOGBOOK:
+    CLOCK: [2019-05-02 Thu 12:01]--[2019-05-02 Thu 12:53] =>  0:52
+    CLOCK: [2019-05-02 Thu 11:11]--[2019-05-02 Thu 11:28] =>  0:17
+    CLOCK: [2019-05-02 Thu 10:37]--[2019-05-02 Thu 11:10] =>  0:33
+    CLOCK: [2019-05-02 Thu 09:31]--[2019-05-02 Thu 10:36] =>  1:05
+    CLOCK: [2019-05-01 Wed 16:53]--[2019-05-01 Wed 18:28] =>  1:35
+    CLOCK: [2019-05-01 Wed 13:32]--[2019-05-01 Wed 14:07] =>  0:35
+    CLOCK: [2019-05-01 Wed 13:14]--[2019-05-01 Wed 13:31] =>  0:17
+    CLOCK: [2019-05-01 Wed 11:40]--[2019-05-01 Wed 12:04] =>  0:24
+    CLOCK: [2019-05-01 Wed 09:59]--[2019-05-01 Wed 11:39] =>  1:40
+    CLOCK: [2019-04-30 Tue 18:44]--[2019-04-30 Tue 18:49] =>  0:05
+    CLOCK: [2019-04-30 Tue 18:39]--[2019-04-30 Tue 18:43] =>  0:04
+    CLOCK: [2019-04-30 Tue 18:19]--[2019-04-30 Tue 18:38] =>  0:19
+    CLOCK: [2019-04-30 Tue 16:19]--[2019-04-30 Tue 17:39] =>  1:20
+    CLOCK: [2019-04-30 Tue 15:37]--[2019-04-30 Tue 16:18] =>  0:41
+    CLOCK: [2019-04-30 Tue 14:20]--[2019-04-30 Tue 15:36] =>  1:16
+    CLOCK: [2019-04-30 Tue 13:45]--[2019-04-30 Tue 13:55] =>  0:10
+    CLOCK: [2019-04-30 Tue 11:12]--[2019-04-30 Tue 12:08] =>  0:56
+    CLOCK: [2019-04-30 Tue 10:46]--[2019-04-30 Tue 11:11] =>  0:25
+    CLOCK: [2019-04-30 Tue 09:58]--[2019-04-30 Tue 10:07] =>  0:09
+    CLOCK: [2019-04-29 Mon 18:10]--[2019-04-29 Mon 18:19] =>  0:09
+    CLOCK: [2019-04-29 Mon 17:59]--[2019-04-29 Mon 18:09] =>  0:10
+    CLOCK: [2019-04-29 Mon 17:56]--[2019-04-29 Mon 17:58] =>  0:02
+    CLOCK: [2019-04-29 Mon 17:48]--[2019-04-29 Mon 17:55] =>  0:07
+    CLOCK: [2019-04-29 Mon 17:18]--[2019-04-29 Mon 17:42] =>  0:24
+    CLOCK: [2019-04-29 Mon 16:41]--[2019-04-29 Mon 17:00] =>  0:19
+    :END:
+
+Initially we separated the notion of annotations and profiles from the
+metamodel. This is a mistake. Profiles are metamodel
+elements. Annotations are just a way to convey profiles in UML.
+
+In the same fashion, there is a distinction between a facet (like say
+types) and a facet configuration (enable types, enable default
+constructors, etc). These should also be metamodel elements. User
+models should create facet configurations (this is part of the profile
+machinery) and then associate them with elements.  This means we could
+provide out of the box configurations such as =Serialisable= which
+come from dogen profiles. We could also have =JsonSerialisable=. Users
+can use these or override them in their own profiles. However,
+crucially, modeling elements should not reference facets directly
+because this makes the metamodel very messy.
+
+In this view of the world, the global profile could then have
+associations between these facet configurations and metamodel element
+types, e.g.
+
+: object -> serialisable, hashable
+
+These can then be overridden locally.
+
+In effect we are extending the notion of traits from Umple. However,
+we also want traits to cover facets, not just concepts.
+
+Terminology clarification:
+
+- traits: configuration of facets. [Actually these are now understood
+  to be configurations. Traits will be the object templates, though we
+  need to re-read the umple paper.]
+- profile: mapping of traits to metamodel elements, with
+  defaults. E.g. =object -> serialisable, hashable=. []Actually these
+  are just the stereotypes.]
+
+Actually there is a problem: traits as used in MOP are close to our
+templates. We should rename templates to traits to make it
+consistent. However, we still need the notion of named collections of
+facet configurations with inheritance support.
+
+*Thoughts on Features*
+
+There is a facet in dogen called "features". The facet can have
+multiple backends:
+
+- dogen/UML: special case when adding new features to dogen
+  itself. Any features added to this backend will be read out by dogen
+  and made available to facets.
+- file based configuration: property tree or other simple system to
+  read configuration from file.
+- database based configuration: a database schema (defined by the
+  facet) is code-generated.
+- etcd: code to read and write configuration from etcd is generated.
+
+The feature facet can be used within a component model or on its own
+model. Features are specifically only product features, not properties
+of users etc. They can be dynamically updated if the backend supports
+it. Generated code must handle event notification.
+
+*Thoughts on Terminology*
+
+- traits should be used in the MOP sense.
+- profiles/collections of settings/configurations should be called
+  =capabilities=. This is because they normally have names like
+  =serialisable= etc. When not used in the context of modeling
+  elements it should be called just configuration (in keeping with
+  feature modeling). A capability is a named configuration for
+  reuse. The only slight snag is that there are named configurations
+  that should not be called capabilities (say licensing details,
+  etc). These are required for product/product line support. Perhaps
+  we should just call them "named configurations". Crucially, named
+  configurations should inherit the namespace of the model and there
+  should not be any clashes (e.g. dogen should error). Users are
+  instructed to define their product line configuration in a model
+  with the name of the product line (e.g. =dogen::serialisable=
+  becomes the stereotype). To make the concept symmetric, we need the
+  notion of a "model level stereotype". This can easily be achieved by
+  conceiving the model as a package. For the purposes of dia we can
+  simply add a =dia.stereotype= which conveys the model
+  stereotypes. With these we can now set named configurations at the
+  model level. This then means the following:
+  - define a model for dogen (the product) with all named
+    configurations. These are equivalent to what we call "profiles" at
+    present and may even have the same names. the only difference is
+    that because they are model elements, we now call them
+    =dogen::PROFILE=, e.g. =dogen::disable_odb_cmake=. We should also
+    add all of the missing features to the named configurations
+    (disable VS, disable C#, etc).
+  - add stereotypes to each model referencing the named configuration.
+- with this approach, product lines become really easy - you just need
+  to create a shared model for the product line (its own git repo and
+  then git submodules). Because named configurations can use
+  inheritance you can easily override at the product level as well as
+  at the component level.
+- when a named configuration is applied to a model element, the
+  features it contains must match the scope. We should stop calling
+  these global/local features and instead call them after the types of
+  modeling elements: model, package, element, etc.
+- traits are now only used for the purposes intended by MOP.
+- features are integrated with UML by adding features to the
+  metamodel.
+- =profiles= should be used in the UML sense only.
+
+*Thoughts on code generation*
+
+- create a stereotype for =dogen::feature_group=. The name of the
+  feature (e.g. the path for the kvp) will be given by the model name
+  and location plus package plus feature group name plus feature
+  name. example =dogen.language.input= instead of
+  =yarn.input_languages=.
+- the UML class's attributes become the features. The types must match
+  the types we use in annotation, except these are also real dogen
+  types and thus must be defined in a model and must be fully
+  qualified. We must reference this model. Default value of the
+  attribute is the UML value.
+- any properties of the feature that cannot be supplied directly are
+  supplied via features:
+
+:    "template_kind": "instance",
+:    "scope": "root_module"
+
+- note that these are features too, so there will be a feature group
+  for feature properties. Interestingly, we can now solve the
+  enumeration problem because we can define a
+  =dogen::features::enumeration= that can only be used for features
+  and can be used to check that the values are correct. One of the
+  values of the type is any element who's meta-type is
+  =feature_enumeration=. Actually we don't even need this, it can be a
+  regular enumeration (provided it knows how to read itself from a
+  string). Basically a valid type for a feature is any dogen
+  enumeration.
+- annotations become a very simple model. There are no types in
+  annotation itself, just functions to cast strings. These will be
+  used by generated code. The profile merging code remains the same,
+  but now it has no notion of artefact location; it simply merges KVPs
+  based on a graph of inheritance (this time given by model
+  relationships, but with exactly the same result as the JSON
+  approach).
+- annotation merging still takes place, both at the named
+  configuration levels, and then subsequently at the element
+  level. Named configurations are just meta-model entities so we can
+  locate them by name, and literally copy across any key that we do
+  not have (as we do now).
+- code generation creates a factory for the feature group containing:
+  - a registration method. We still need some kind of registration of
+    key to scope so that we can validate that a key was not used in
+    the wrong scope.
+  - a class with all the members of the feature group in c++ types;
+  - a factory method that takes in a KVP or an annotation and returns
+    the class.
+- there are no templates any longer; we need to manually create each
+  feature in the appropriate feature group. Also, at present we are
+  reading features individually in each transform. Going forward this
+  is inefficient because we'd end up creating the configuration many
+  times. We need some kind of way of caching features against
+  types. At present we do this via properties. We could create
+  something like a "configuration" class and then just initialise all
+  features in one go. The transforms can then use these. Model
+  elements are associated with configurations. The easiest way is to
+  have a base class for configurations and then cast them as required
+  (or even have a visitor, since we know of the types). Alternatively,
+  we need to change the transforms so that we process a feature group
+  all in one go. This would be the cleanest way of doing it but
+  perhaps quite difficult given the current structure of the code.
+- we could also always set the KVP value to be string and use a
+  separator for containers and make it invalid to use it in strings
+  (something like |). Then we could split the string on the fly when
+  time comes for creating a vector/list.
+
+Notes:
+
+- loading profiles as meta-model elements is going to be a challenge,
+  especially in a world where any model can make use of them. The
+  problem is we must have access to all profile data before we perform
+  an annotation expansion; at present this is done during the creation
+  of the context in a very non-obvious way (the annotation_factory
+  loads up profiles on construction). We either force users to have
+  configuration models (CMs, configuration models?) in which case we
+  can simply load all of these up first or we need a two-pass approach
+  in which we load up the models but only process the mappings,
+  initialise the annotation factory and then do the regular
+  processing. The other problem is that we are only performing
+  resolution later on, whereas we are now saying we need to expand the
+  stereotype into a full blown annotation by resolving the stereotype
+  into a name quite early in the pipeline. In the past this worked
+  because we were only performing a very shallow resolution (string
+  matching and always in the same model?) whereas now we are asking
+  for full location resolution, across models. This will also be a
+  problem for mappings as meta-model elements.
+- a possible solution is to split processing into the following
+  phases:
+  1. load up target model.
+  2. read references from target, load references. Need also to
+     process model name via annotations. This means its not possible
+     to use external modules as a named configuration (or else its
+     recursive, we cannot find a configuration because its missing
+     EMs, and its missing EMs because we did not process the named
+     configuration). In a world where external modules are merged with
+     model modules, this becomes cleaner since the model module must
+     be unique for each model.
+  3. collect all elements that need pre-processing and pre-process
+     them: mappings, licences, named configurations/profiles. Not
+     traits/object templates. All initialised structures are placed in
+     the context. Note that we are actually processing only these
+     elements into the endomodel, everything else is untouched. Also
+     we need to remove these elements from the model as well so that
+     they are not re-processed on the second phase. In addition, we
+     need resolution for the meta-elements on the first phase, so we
+     need to prime the resolver with these entities somehow,
+     independently of the model merging. Or better, we need to create
+     a first phase model-merge that only contains entities for the
+     first phase and process that. So: load target, collect all
+     first-phase meta-elements and remove from target, add target to
+     cache. Then repeat process with references. Then merge this model
+     and process it.
+  4. Second phase is as at present, except we no longer load the
+     models, we reuse them from an in-memory cache, after the
+     filtering has taken place.
+- note that the new meta-model elements are marked as non-generatable
+  so a model that only contains these is non-generatable. Same with
+  object templates/traits.
+- the only slight problem with this approach is that we wanted the
+  context to be const. This way we need to do all of these transforms
+  before we can initialise the context. One possible solution is to
+  split out first pass from second pass (different namespaces) so that
+  "context" means different things. We can then say that the second
+  phase context depends on first phase transform chain (in fact the
+  input for the second phase is the output of the first phase,
+  including cached models etc).
+
+Links:
+
+- https://cruise.eecs.uottawa.ca/umple/Traits.html
+
+Notes:
+
+- on a first pass, add the dot names (dogen.enable_all_facets). Remove
+  this as soon as we get things to work. We should only rely on model
+  names (e.g. masd::enable_all_facets). We should also remove labels.
+- move generation of profile repository outside of annotation
+  expander.
+- remove uses of annotations expander from stitch, if any are still
+  left.
+- move annotation expansion from adaptor into its own transform. It is
+  done against the model set.
+- profile repository appears deprecated, remove it?
+- we probably should rename =coding::configuration= to "unbound
+  configuration" or some other name to make it distinct from
+  =variability::configuration=.
+
+Mop-up tasks:
+
+- create a clean profile model for dogen. Get all models to use this
+  profile cleanly. Remove all profiles in masd that are dogen
+  specific. Tidy-up profile names.
+- bug in conversion: we are not exporting field values into
+  JSON. profiles conversion model is broken because of this.
+- Repeat the exercise for all test profiles. Create separate ones for
+  C++ and C#.
+- reference profiles by name rather than by label and remove
+  labels. Actually we do need labels. The profile names are just too
+  unwieldy. However, the right name is =alias=. Rename this property.
+
+*** COMPLETED Add support for composable stereotypes                  :story:
+    CLOSED: [2019-05-03 Fri 14:09]
+    :LOGBOOK:
+    CLOCK: [2019-05-03 Fri 12:32]--[2019-05-03 Fri 12:50] =>  0:18
+    CLOCK: [2019-05-03 Fri 11:55]--[2019-05-03 Fri 12:31] =>  0:36
+    CLOCK: [2019-05-03 Fri 11:39]--[2019-05-03 Fri 11:54] =>  0:15
+    CLOCK: [2019-05-03 Fri 11:34]--[2019-05-03 Fri 11:38] =>  0:04
+    CLOCK: [2019-05-03 Fri 08:50]--[2019-05-03 Fri 11:28] =>  2:38
+    CLOCK: [2019-05-02 Thu 14:29]--[2019-05-02 Thu 16:16] =>  1:47
+    CLOCK: [2019-05-02 Thu 14:13]--[2019-05-02 Thu 14:28] =>  0:15
+    CLOCK: [2019-05-02 Thu 13:45]--[2019-05-02 Thu 13:58] =>  0:13
+    :END:
+
+We need to be able to add more than one profile to an element. We have
+most of the parts needed for this now.
+
+Tasks:
+
+- add support to element level profiles, so that we can apply a "base
+  layer". If no base profile is supplied, we should just assume the
+  global base profile. Doing nothing should be sufficient for this
+  behaviour to emerge given the current implementation. Test this with
+  name hashing. Actually for this to be practical we need to support
+  the base layer in the profile itself; and we need to ensure that all
+  profiles we are merging have the same base layer, which is applied
+  only once. At present this is needed for handcrafted.
+- context can be used as a test for manual ioable.
+- add support for multiple binds per element.
+
+Merged stories:
+
+*Add "ioable" handcrafted types*
+
+Whenever we need to mix and match generated types with handcrafted
+types, it would be really useful to create the missing facets. The
+main one is IO, but we probably also need test data support because
+the tests would fail. We could simply handcraft the types on those
+facets. It would be nice to have profiles like:
+
+: masd::handcrafted_types
+: masd::handcrafted_io
+: masd::handcrafted_test_data
+
+We could do with a simpler word for handcrafted. Check the literature.
+
+Once this is in place, we could have some top-level stereotype that
+aggregates all three (=masd::???=) and we can then tag types with it.
+
+*** COMPLETED Code generate all contexts                              :story:
+    CLOSED: [2019-05-03 Fri 14:41]
+    :LOGBOOK:
+    CLOCK: [2019-05-03 Fri 14:24]--[2019-05-03 Fri 14:41] =>  0:17
+    CLOCK: [2019-05-03 Fri 14:11]--[2019-05-03 Fri 14:23] =>  0:12
+    CLOCK: [2019-05-03 Fri 14:09]--[2019-05-03 Fri 14:10] =>  0:01
+    CLOCK: [2019-05-03 Fri 14:01]--[2019-05-03 Fri 14:09] =>  0:08
+    :END:
+
+At present we are manually generating the transform contexts across
+all models. The main reason for this is that tracer does not support
+IO. There may be other reasons such as the annotations factory and
+annotation expander. We should just add IO support for all types that
+need it and code generate the contexts.
+
+*** COMPLETED Consider renaming orchestration to "engine"             :story:
+    CLOSED: [2019-05-03 Fri 15:20]
+    :LOGBOOK:
+    CLOCK: [2019-05-03 Fri 14:42]--[2019-05-03 Fri 15:20] =>  0:38
+    :END:
+
+Orchestration is a bit of a vague name; after all we do orchestration
+pretty much everywhere. This model really represents the code
+generation engine of dogen. Its still very vague but slightly less so.
+
+*** POSTPONED Code generate feature infrastructure                    :story:
+    CLOSED: [2019-05-05 Sun 21:10]
+    :LOGBOOK:
+    CLOCK: [2019-05-03 Fri 17:00]--[2019-05-03 Fri 17:58] =>  0:58
+    CLOCK: [2019-05-03 Fri 16:53]--[2019-05-03 Fri 16:59] =>  0:06
+    CLOCK: [2019-05-03 Fri 15:21]--[2019-05-03 Fri 16:52] =>  1:31
+    :END:
+
+Dogen should generate code for the following:
+
+- definition of a feature template, as per the existing data
+  files. The approach should be very similar to what we did with
+  profiles. With this we have features as a meta-model element.
+- a concrete class to represent the feature group.
+- code to read the concrete class out of the dynamic configuration
+  (e.g. a "feature deserialiser" if you like).
+
+Problems:
+
+- we are defining a new binding point rather than binding; this means
+  that the logic for checking the bindings no longer works. For
+  example, we could be creating a new global binding point in a
+  property.
+
+: #DOGEN masd.variability.binding_point=global
+
+** Deprecated
+*** CANCELLED Move generation element properties back into formattables :story:
+    CLOSED: [2019-04-30 Tue 10:28]
+
+*Rationale*: these will now be moved into archetypes.
+
+We moved a number of properties out of formattables. Move them
+back. By the end of this refactor we should end up with no references
+to facets in coding.
+
+*** CANCELLED Move formattables into generation                       :story:
+    CLOSED: [2019-04-30 Tue 10:30]
+
+*Rationale*: these will now be moved into archetypes.
+
+- first, update the generation model with formattable properties from
+  cpp: add a formattable type to the generation model and container
+  for it, add the formattable population logic. Then remove the
+  formattable logic from cpp.
+- repeat the exercise with csharp. We should end up with two new
+  namespaces in generation handling the fabric meta-types and their
+  processing.
+- by the end of this refactor, cpp and csharp should contain only the
+  formatters.
+
+*** CANCELLED Create =generation.extraction= model                    :story:
+    CLOSED: [2019-04-30 Tue 10:31]
+
+*Rationale*: actually, once we move out most of the stuff in
+generation into archetypes, generation.cpp more or less becomes
+=coding.cpp=? Needs more thinking. But not what this story originally
+envisioned.
+
+- rename =generation.cpp= to =generation.extraction=.
+- rename =formatters= namespace to =cpp=.
+- ensure the logic for processing one tech space will work for
+  multiple tech spaces. For example, we could move the existing
+  workflow into the =cpp= namespace and register the text generation
+  chain from there.
+- repeat the exercise with the csharp model.
+- by the end of this refactor we should end up with a single
+  =generation.extraction= containing both the csharp and cpp
+  formatters.
+- consider renaming formatters to model to text transforms.
+
+Actually, the name of this model is not clear. We need to wait for the
+product model clean up before we tackle this rename.
+
+*** CANCELLED Move facet properties into generation                   :story:
+    CLOSED: [2019-04-30 Tue 10:39]
+
+*Rationale*: this will be handled with the archetypes clean up. It
+won't be into generation.
+
+We should be able to handle these generically in yarn.
+
+*** CANCELLED Move helpers into generation                            :story:
+    CLOSED: [2019-04-30 Tue 10:40]
+
+*Rationale*: all helpers will be removed when we implement PDMs correctly.
+
+Looking at helpers, it is clear that they are common to all
+languages. We just need to rename the terminology slightly -
+particularly wrt to streaming properties - and then move this code
+across into yarn.

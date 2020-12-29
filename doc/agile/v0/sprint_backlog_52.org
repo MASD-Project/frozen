@@ -1,0 +1,456 @@
+#+title: Sprint Backlog 52
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+#+tags: { refactor(r) bug(b) feature(f) vision(v) }
+#+tags: { meta_data(m) tests(a) packaging(q) media(h) build(u) validation(x) diagrams(w) frontend(c) backend(g) }
+#+tags: dia(y) sml(l) cpp(k) config(o) formatters(d)
+
+* Stories
+
+This file contains all stories that were closed during sprint 52.
+
+The *Mission Statement* for this sprint is to make inroads in
+implementing the frontend and backend models.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-10-06 Mon 08:19]
+
+| Headline                                                          | Time    |       |      |
+|-------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                      | *28:39* |       |      |
+|-------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                   |         | 28:39 |      |
+| COMPLETED Sprint and product backlog grooming                     |         |       | 1:35 |
+| COMPLETED Rethink meta-data subsystem in light of latest analysis |         |       | 2:06 |
+| COMPLETED Create the =frontend= model                             |         |       | 7:41 |
+| COMPLETED Replace knit frontend logic with =frontend= model       |         |       | 3:50 |
+| COMPLETED Finish the end-to-end architectural analysis            |         |       | 3:44 |
+| COMPLETED Refactor the =frontend= model                           |         |       | 2:16 |
+| COMPLETED Move flat name builder to CPP model                     |         |       | 0:11 |
+| COMPLETED Refactor module containment graphing in SML             |         |       | 3:20 |
+| POSTPONED Implement the =backend= model                           |         |       | 2:49 |
+| POSTPONED Refactor types header formatter                         |         |       | 1:07 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-10-06 Mon 08:03]
+    CLOCK: [2014-10-01 Wed 15:32]--[2014-10-01 Wed 15:44] =>  0:12
+    CLOCK: [2014-09-29 Mon 01:25]--[2014-09-29 Mon 01:36] =>  0:11
+    CLOCK: [2014-09-29 Mon 01:10]--[2014-09-29 Mon 01:25] =>  0:15
+    CLOCK: [2014-09-27 Sat 10:47]--[2014-09-27 Sat 10:50] =>  0:03
+    CLOCK: [2014-09-27 Sat 10:33]--[2014-09-27 Sat 10:47] =>  0:14
+    CLOCK: [2014-09-25 Thu 10:21]--[2014-09-25 Thu 10:40] =>  0:19
+    CLOCK: [2014-09-24 Wed 22:15]--[2014-09-24 Wed 22:36] =>  0:21
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files             :task:media:
+    CLOSED: [2014-10-06 Mon 08:03]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Rethink meta-data subsystem in light of latest analysis  :task:
+    CLOSED: [2014-09-28 Sun 17:22]
+    CLOCK: [2014-09-23 Tue 21:18]--[2014-09-23 Tue 21:27] =>  0:09
+    CLOCK: [2014-09-22 Mon 13:10]--[2014-09-22 Mon 13:44] =>  0:34
+
+After the analysis performed in the actual use cases we have for
+meta-data, it became apparent that the current architecture is far
+more complicated than what is required to fulfil our use cases. We now
+aim to design an architecture that fulfils the use cases and nothing
+more.
+
+**** COMPLETED Consequences of the use case analysis
+     CLOSED: [2014-09-23 Tue 21:50]
+     CLOCK: [2014-09-23 Tue 21:37]--[2014-09-23 Tue 21:50] =>  0:13
+     CLOCK: [2014-09-23 Tue 21:28]--[2014-09-23 Tue 21:37] =>  0:09
+
+There are several points of worthy of note:
+
+- we do not need meta-data for internal purposes. originally we did
+  this because we thought it was easier, but actually it complicates
+  things without any obvious benefits. In reality, it makes more sense
+  to use strongly-typed data structures for all the data that is
+  inferred internally and reserve the meta-data purely for input
+  purposes - data supplied by the user. This means we do not need
+  "enrichers" as such because we want the meta-data to be
+  read-only. However we still need something akin to it.
+- we can built the internal data-structures on the fly as we visit the
+  SML containment graph. These types were previously called enrichers
+  but should be renamed to say "builders" - this is a consequence of
+  the previous point whereby the builders use internal types to keep
+  state rather than pushing it into the meta-data. Another interesting
+  consequence is that the responsibilities of these types may not
+  necessarily be the determinant characteristic in naming the
+  interface. In reality, the interface is just providing us a way to
+  iterate through the SML graph of containment. This is not at all
+  related to meta-data, or to enrichment. The implementers of the
+  interface are responsible for the building. We still need
+  dependencies between the builders and we still need multiple
+  passes. Basically we should move all of these classes away from the
+  meta-data namespace, into the main SML namespace. We need to read up
+  on the right name for this - seems like a variation of visitor, but
+  without double-dispatch. Boost graph may be a good source of
+  inspiration. Compiler terminology may also be of assistance (the
+  iterators of the AST in clang for instance).
+
+**** COMPLETED Static initialisation and a cleaner architecture
+     CLOSED: [2014-09-24 Wed 22:37]
+     CLOCK: [2014-09-24 Wed 21:45]--[2014-09-24 Wed 21:46] =>  0:01
+     CLOCK: [2014-09-24 Wed 21:27]--[2014-09-24 Wed 21:31] =>  0:04
+     CLOCK: [2014-09-24 Wed 20:30]--[2014-09-24 Wed 21:26] =>  0:56
+
+As a result of the implementation of the enrichers, we found out the
+joys of using static initialisation. It is actually a useful approach
+because it means we can minimise coupling; however, we need to be
+careful on how we set it up to avoid problems with order of
+initialisation, or just plain forgetting to initialise things.
+
+One way of thinking about this is to split =knit= into three:
+frontend, backend and the rest.
+
+Frontend contains just the interface for the front end and a
+workflow. The workflow allows implementers of the frontend interface
+to register. The registration process takes a file extension and a
+shared pointer to the interface. The worfklow receives a list of boost
+file paths, and against each a flag: is target. For each of these, it
+looks for the appropriate frontend in a unordered map, calls the
+frontend with the file name and the flag, and receives back an SML
+model. The result of the workflow is a set of SML models. The SML
+models have a "is target" flag set on them somewhere.
+
+Backend is in some ways similar: It provides a backend interface that
+receives an SML model and a map of qname to formatter settings. It
+returns a list of files (as per =formatters= model).
+
+Knit makes use of these models, effectively creating the complete
+pipeline between frontends and backends. The disabling and enabling of
+the backends is done via the meta-data.
+
+The static initialisation is now more straightforward: we need to
+register backends and frontends against each workflow. These are the
+only two points of static initialisation. The two workflows on
+construction validate their state (e.g. we need at least one frontend
+and one backend). Dia to SML and SML itself are used to implement the
+two front ends; CPP implements the one backend.
+
+The "builders" are as follows:
+
+- one for the formatters model (owned by the backend model, since the
+  formatter settings will be common to all backends). This satisfies
+  use case *annotation settings*. Owned by the =backend= model; its
+  result is provided to the workflow of each individual backend.
+- one for each individual backend (the C++ builder will process
+  generic C++ settings). This satisfies use case *backend settings*.
+- one for each facet (use case *facet settings*). Owned by the
+  individual backend. Result supplied to each formatter.
+- one for each formatter (use case *formatter settings*). These are
+  responsible for naming the files and for determining the inclusion
+  lists. The formatter should own the builder and retrieve its product
+  just prior to formatting.
+
+This means the builders must implement two interfaces: one for
+visiting the SML data structures and one for producing the
+settings. We should also abandon any dependency management between
+formatters for now as the use cases do not show a need for it yet.
+
+Finally, we pass in all of the settings to the formatters. The
+formatters must return =std::optional<formatter:file>= in case the
+formatter is disabled in the formatter settings. The =backend= model
+will return all the files produced by all formatters on all backend
+models. These are then passed to an outputter in =knit=.
+
+*** COMPLETED Create the =frontend= model                     :task:refactor:
+    CLOSED: [2014-09-28 Sun 18:21]
+    CLOCK: [2014-09-28 Sun 17:21]--[2014-09-28 Sun 18:20] =>  0:59
+    CLOCK: [2014-09-28 Sun 13:40]--[2014-09-28 Sun 13:46] =>  0:06
+    CLOCK: [2014-09-28 Sun 11:57]--[2014-09-28 Sun 12:45] =>  0:48
+    CLOCK: [2014-09-28 Sun 11:09]--[2014-09-28 Sun 11:37] =>  0:28
+    CLOCK: [2014-09-28 Sun 11:02]--[2014-09-28 Sun 11:07] =>  0:05
+    CLOCK: [2014-09-27 Sat 19:09]--[2014-09-27 Sat 20:40] =>  1:31
+    CLOCK: [2014-09-27 Sat 16:16]--[2014-09-27 Sat 16:35] =>  0:19
+    CLOCK: [2014-09-27 Sat 15:01]--[2014-09-27 Sat 15:25] =>  0:24
+    CLOCK: [2014-09-27 Sat 11:53]--[2014-09-27 Sat 12:15] =>  0:22
+    CLOCK: [2014-09-27 Sat 10:01]--[2014-09-27 Sat 10:28] =>  0:27
+    CLOCK: [2014-09-27 Sat 09:59]--[2014-09-27 Sat 10:00] =>  0:01
+    CLOCK: [2014-09-26 Fri 23:46]--[2014-09-27 Sat 00:04] =>  0:18
+    CLOCK: [2014-09-26 Fri 21:59]--[2014-09-26 Fri 22:07] =>  0:08
+    CLOCK: [2014-09-26 Fri 20:07]--[2014-09-26 Fri 21:52] =>  1:45
+
+Create the interface, workflow and registrar for the frontend
+model. Implement sources for SML and Dia to SML.
+
+*** COMPLETED Replace knit frontend logic with =frontend= model :task:refactor:
+    CLOSED: [2014-09-29 Mon 00:20]
+    CLOCK: [2014-09-29 Mon 00:30]--[2014-09-29 Mon 00:36] =>  0:06
+    CLOCK: [2014-09-28 Sun 23:22]--[2014-09-29 Mon 00:20] =>  0:58
+    CLOCK: [2014-09-28 Sun 21:43]--[2014-09-28 Sun 22:40] =>  0:57
+    CLOCK: [2014-09-28 Sun 19:08]--[2014-09-28 Sun 20:40] =>  1:32
+    CLOCK: [2014-09-28 Sun 18:32]--[2014-09-28 Sun 18:49] =>  0:17
+
+Now that we have created the =frontend= model and implemented all of the
+known use cases, we need to remove the legacy code and replace it with
+the =frontend= model. We need to address all the issues that result from
+such integration.
+
+*** COMPLETED Add a =is_target= flag to model                 :task:refactor:
+   CLOSED: [2014-09-29 Mon 01:26]
+
+Ideally we should keep track of the "targetness" of the model with the
+model itself instead of passing parameters. This will make the
+frontend move easier.
+
+*** COMPLETED Refactor knit's =persister=                     :task:refactor:
+    CLOSED: [2014-09-29 Mon 01:36]
+
+- add documentation
+- we put the decision on whether to persist on not based on settings
+  inside of persister. It should really be up to the person calling
+  the persister to decide. Persister should always persist.
+- we should have an argument deciding the file format, perhaps an
+  enumeration, instead of passing in the extension. The extension
+  should be automatically determined.
+
+*** COMPLETED Find a new name for enrichers and builders      :task:refactor:
+    CLOSED: [2014-10-01 Wed 00:23]
+
+*New understanding*: this was done as part of the backend model work.
+
+In reality these are just some kind of visitors of the SML
+graph. Also, the implementers of this interface are more like
+"builders" since they have state.
+
+We need to also move across all of this infrastructure from meta-data,
+since they are not meta-data specific at all.
+
+*** COMPLETED Finish the end-to-end architectural analysis    :task:refactor:
+    CLOSED: [2014-10-01 Wed 15:37]
+
+We seem to still have a lot of question marks in terms of the next
+generation architecture. As part of this task we need to clarify where
+we want to go, stitching together all of the different analysis that
+have been performed.
+
+**** COMPLETED First stab, more focused on the backend model
+     CLOSED: [2014-10-01 Wed 15:36]
+     CLOCK: [2014-10-01 Wed 00:15]--[2014-10-01 Wed 00:22] =>  0:07
+     CLOCK: [2014-09-30 Tue 22:19]--[2014-10-01 Wed 00:10] =>  1:51
+     CLOCK: [2014-09-30 Tue 19:03]--[2014-09-30 Tue 19:28] =>  0:25
+
+In =sml=:
+
+- create a single grapher in SML that does both parent dependencies
+  and module containment.
+- add a flag to modules to allow identification of model module.
+- create a graph visitor that for each vertex receives the model and
+  the type at the vertex.
+- create a class to manage the visitation, including the number of
+  passes. we basically should pass in a list of visitors and the
+  number of passes and it executes a dfs on the graph.
+
+In =backend=:
+
+- =backend= actually receives the merged model.
+- =backend= checks that each backend is enabled by passing the model
+  module to each one. it then produces the subset of the enabled
+  backends.
+- =backend= uses the graph visitor to iterate through the SML
+  model. it passes each element to each enabled backend. the backends
+  internally convert the element into a backend specific
+  representation and generate all the required settings. they also
+  pass in the model and the element to each formatter registered for
+  that backend specific type; the formatters obtain any formatter
+  specific settings.
+- the backend methods return a
+  =std::list<formatters::file>=. =backend= builds up this list and in
+  the end outputs it (or returns it to the caller of the =backend=
+  workflow?). it could make sense for the outputters to be part of the
+  backend model.
+
+Note that we require a cascade of registrations:
+
+- the formatters must register with their backend model (e.g. =cpp=);
+- the individual backend models must register with =backend=;
+
+We no longer need the transformer models (e.g. =sml_to_cpp=) as this
+is done on the fly.
+
+**** COMPLETED Second stab, looking at clang source code
+     CLOSED: [2014-10-01 Wed 15:36]
+     CLOCK: [2014-10-01 Wed 14:31]--[2014-10-01 Wed 15:32] =>  1:01
+     CLOCK: [2014-10-01 Wed 13:31]--[2014-10-01 Wed 13:51] =>  0:20
+
+Further analysis of clang/llvm source code provided some insights:
+
+- we need to have a model consumer and producer. this is akin to the
+  AST consumer. The front ends are model producers, the backends are
+  model consumers. SML workflow binds them all together -
+  i.e. receives a list of producers and a list of consumers; produces
+  all models with the producers, does the existing SML workflow and at
+  the end, uses the graph to consume. Consumers have a number of
+  required passes; SML organises them into some simple container by
+  passes: e.g. all require 1 pass, x require 2 passes and so on.
+- frontend and backend models are responsible for doing the
+  "management" of the consumers and producers -
+  e.g. registration. frontend model is also responsible for
+  specialising producers into file based producers, with a "FileEntry"
+  like class (which we called input descriptor).
+
+*** COMPLETED Refactor the =frontend= model                   :task:refactor:
+    CLOSED: [2014-10-02 Thu 14:28]
+    CLOCK: [2014-10-02 Thu 13:58]--[2014-10-02 Thu 14:28] =>  0:30
+
+- rename source to provider
+- rename source settings to provider settings
+
+**** CANCELLED Bring in frontend generation into SML
+     CLOSED: [2014-10-02 Thu 13:57]
+     CLOCK: [2014-10-02 Thu 13:28]--[2014-10-02 Thu 13:51] =>  0:23
+     CLOCK: [2014-10-02 Thu 11:55]--[2014-10-02 Thu 12:41] =>  0:46
+     CLOCK: [2014-10-01 Wed 19:08]--[2014-10-01 Wed 19:45] =>  0:37
+
+*New Understanding*
+
+This story sounded like a great idea: to add frontend work to the SML
+workflow. However, the more we investigated it the more complicated it
+turned out. The last straw was a need to create some kind of abstract
+factory to instantiate the providers inside of the SML workflow; this
+is because the frontend model has the input/file descriptors, so it
+either clones each of the providers for each descriptor or it provides
+some kind of factory. All and all, it seems like a lot of effort, and
+for something that was a "nice to have". We still have a dynamic way
+to add frontend providers as things stand, which was the feature we
+were really after. As such we have taken the executive decision to
+cancel this story.
+
+*Old Understanding*
+
+- create a model provider in SML.
+- rename the sources into file providers and inherit/implement SML
+  provider.
+- return a list of providers from frontend.
+- pass list of providers to SML workflow.
+- add activity to create SML models in workflow.
+
+*** COMPLETED Move flat name builder to CPP model     :task:refactor:sml:cpp:
+    CLOSED: [2014-10-03 Fri 14:37]
+    CLOCK: [2014-10-03 Fri 14:25]--[2014-10-03 Fri 14:36] =>  0:11
+
+It seems this class is used only for tagging so we should have one in
+each model. It may even make more sense in the c++ formatters model.
+
+*** COMPLETED Refactor module containment graphing in SML :task:refactor:sml:
+    CLOSED: [2014-10-05 Sun 00:14]
+    CLOCK: [2014-10-03 Fri 17:08]--[2014-10-03 Fri 17:37] =>  0:29
+    CLOCK: [2014-10-03 Fri 14:44]--[2014-10-03 Fri 16:19] =>  1:35
+    CLOCK: [2014-10-03 Fri 14:36]--[2014-10-03 Fri 14:37] =>  0:01
+    CLOCK: [2014-10-02 Thu 16:30]--[2014-10-02 Thu 16:51] =>  0:21
+    CLOCK: [2014-10-02 Thu 15:50]--[2014-10-02 Thu 16:22] =>  0:32
+    CLOCK: [2014-10-02 Thu 14:36]--[2014-10-02 Thu 14:58] =>  0:22
+
+- create a single grapher that generates a graph with both parents and
+  module containment.
+- create a consumer interface for this graph.
+- move the graph itself into the grapher.
+- create a class responsible for managing the consumers, including the
+  passes - integer supplied by the user in consumer interface. plug
+  new class into the workflow (at the very end).
+- delete registrar and static registration logic in meta-data; also
+  delete enricher grapher, etc. all that is left in the meta-data is
+  reader and writer.
+
+*** COMPLETED Add cycle detection to grapher               :task:feature:sml:
+    CLOSED: [2014-10-06 Mon 08:12]
+
+We need to move the cycle dectector code from dia to sml into
+utilities so that we can make use of it in the meta-data grapher.
+
+*** POSTPONED Implement the =backend= model                   :task:refactor:
+    CLOSED: [2014-10-06 Mon 08:01]
+    CLOCK: [2014-10-04 Sat 23:00]--[2014-10-05 Sun 00:13] =>  1:13
+    CLOCK: [2014-10-04 Sat 21:37]--[2014-10-04 Sat 22:43] =>  1:06
+    CLOCK: [2014-10-04 Sat 16:55]--[2014-10-04 Sat 17:25] =>  0:30
+
+Create the interface, workflow and registrar for the backend
+model. Workflow returns list of consumers. Implement it in formatters
+and C++ models. Formatters are consumers too (or provide a consumer).
+
+We may need to use some kind of adaptor for now to convert the output
+of the =cpp_formatters= model into a =formatters::file=.
+
+*** POSTPONED Refactor types header formatter  :task:refactor:formatters:cpp:
+    CLOSED: [2014-10-06 Mon 08:02]
+    CLOCK: [2014-08-25 Mon 12:01]--[2014-08-25 Mon 12:40] =>  0:39
+    CLOCK: [2014-08-25 Mon 11:56]--[2014-08-25 Mon 11:57] =>  0:01
+    CLOCK: [2014-08-25 Mon 11:35]--[2014-08-25 Mon 11:43] =>  0:08
+
+*Note*: this story no longer matches the current state of the
+world. Whilst the refactoring is needed, this description is no
+longer accurate.
+
+Make the main types header formatters look like the =om= types
+formatter. This model was deleted around commit 10157ad.
+
+This is still not quite right. We need to drive the formatting from
+two things:
+
+- user options
+- available formatters
+
+**** Tidy-up =types_main_header_file_formatter=                        :task:
+     CLOCK: [2014-08-25 Mon 11:57]--[2014-08-25 Mon 12:16] =>  0:19
+
+Clean up internal functions in file and add documentation.
+
+**** Make use of boilerplate                                           :task:
+
+Generate the licence, etc using boilerplate formatter.
+
+**** Copy across documentation from =om=                               :task:
+
+We did a lot of doxygen comments that are readily applicable, copy
+them across.
+
+**** Make use of indenting stream                                      :task:
+
+Remove uses of old indenter.
+
+**** Copy across =om= types formatter tests                            :task:
+
+Not sure how applicable this would be, but we may be able to scavenge
+some tests.
+
+** Deprecated Development Stories
+
+Stories that do not make sense any longer.
+
+*** CANCELLED Implement the types enricher in cpp      :task:feature:sml:cpp:
+    CLOSED: [2014-10-01 Wed 15:44]
+
+*Rationale*: superseded by new stories.
+
+Create the first and second stage enrichment for types. This is a good
+test to see if the overall logic is sound.
+
+*** CANCELLED Move SML graph visiting code from meta-data into main namespace :task:refactor:
+    CLOSED: [2014-10-01 Wed 15:43]
+
+*Rationale*: superseded by new stories.
+
+We also need to rename enrichers and delete the graph of dependencies
+between enrichers.
+
+*** CANCELLED Create a librarian to manage library models     :task:refactor:
+    CLOSED: [2014-09-29 Mon 01:25]
+
+*Rationale*: Actually, the library models are not an SML artefact; in
+fact SML handles these models in exactly the same way as any other
+model. Knit is the right place for this.
+
+As part of the frontend refactor we moved the loading of library
+models away from the SML workflow. However, SML should at least
+provide a simple way to manage the library models or else we will have
+to duplicate this code wherever these models need to be loaded.

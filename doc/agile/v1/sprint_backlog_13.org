@@ -1,0 +1,1764 @@
+#+title: Sprint Backlog 13
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- complete the testing story to ensure we have good coverage for model
+  changes.
+- start work on moving decorations and profiles to metamodel.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-03-25 Mon 10:08]
+| <75>                                                     |         |       |       |       |
+| Headline                                                 | Time    |       |       |     % |
+|----------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                             | *75:58* |       |       | 100.0 |
+|----------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                  | 75:58   |       |       | 100.0 |
+| Active                                                   |         | 75:58 |       | 100.0 |
+| Edit release notes for previous sprint                   |         |       |  2:22 |   3.1 |
+| Sprint and product backlog grooming                      |         |       | 11:51 |  15.6 |
+| Create a video demo for the sprint's features            |         |       |  3:47 |   5.0 |
+| Make projects directory env optional                     |         |       |  0:10 |   0.2 |
+| Clang-cl builds are failing due to memory leak reporting |         |       |  0:45 |   1.0 |
+| Add tests for tracing, reporting and diffing             |         |       |  5:46 |   7.6 |
+| Delete extra files appears broken at present             |         |       |  6:26 |   8.5 |
+| Empty directories should be deleted                      |         |       |  5:37 |   7.4 |
+| Changes to stitch templates are not reported correctly   |         |       |  1:09 |   1.5 |
+| Orchestration test is broken on Windows                  |         |       |  2:40 |   3.5 |
+| Code generation of tests for dogen models                |         |       | 23:22 |  30.8 |
+| Formatters have been incorrectly placed under extraction |         |       |  0:23 |   0.5 |
+| Generate binaries from clang-cl                          |         |       |  0:17 |   0.4 |
+| Promote extraction entities to meta-model elements       |         |       | 11:23 |  15.0 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-03-11 Mon 10:44]
+    :LOGBOOK:
+    CLOCK: [2019-03-12 Tue 08:11]--[2019-03-12 Tue 08:42] =>  0:31
+    CLOCK: [2019-03-11 Mon 16:18]--[2019-03-11 Mon 16:22] =>  0:04
+    CLOCK: [2019-03-11 Mon 16:07]--[2019-03-11 Mon 16:17] =>  0:10
+    CLOCK: [2019-03-11 Mon 09:07]--[2019-03-11 Mon 10:44] =>  1:37
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.12, "Estádio"
+
+#+begin_src markdown
+![Estádio](https://imgs.sapo.pt/jornaldeangola/img/thumb1/20181222123311moraris.jpg)
+_Estádio Joaquim Morais, Moçamedes, Namibe. [(C) 2018 Jornal de Angola](http://jornaldeangola.sapo.ao/desporto/joaquim_morais__beneficia_de_obras__de_restauracao)_.
+
+# Overview
+
+With Sprint 12 we are hoping to finally return to a regular release cadence. This was a much more predictable two-week sprint, which largely delivered on the sprint's mission statement of cleaning up the mess of refactors and reactivating system testing. As such, it was not a particularly exciting sprint in terms of end user features, but still got us very excited because we are finally paying off years of technical debt in a manner that respects established MDE theory.
+
+# Internal Changes
+
+The key internal changes are described in the next sections.
+
+## Complete the orchestration refactor
+
+We have now finally got a proper pipeline of tasks, with well-defined roles and terminology:
+
+- **injection**: responsible for importing external models into MASD. The name "injection" comes from the MDE concept of injecting external technical spaces into a technical space.
+- **coding**: meta-model responsible for modeling software engineering entities.
+- **generation**: meta-model responsible for the expansion into facets, providing a multidimensional extension to the coding model. The role of generation is to get the meta-model as close as possible to the requirements of code-generation.
+- **extraction**: responsible for extracting a model out of MASD into an external technical space. Again, the name "extraction" comes from the MDE notion of extracting content from one technical space into another.
+
+The biggest advantage of this architecture is that we now have a simple pipeline of transformations, taking us from the original external model into the final generated code:
+
+![Processing pipeline](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/orchestration_pipeline.png)
+
+This orchestration pipeline is conceptually similar to the architecture of a compiler, and each of these high-level transforms can be thought of as a "lowering phase" where we move to lower and lower levels of abstraction. However, for a proper technical explanation of the approach you'll have to wait for the PhD thesis to be published.
+
+This work has enabled us to do a number of important clean ups, such as:
+
+- core models now have a uniform structure, with distinct meta-models, transform-sets and transform contexts. We don't have special cases any more.
+- all of the mix-and-match processing that occurred inside of the coding model is now gone (e.g. injection work, extraction work, etc).
+- the creation of the extraction transform pipeline made things significantly easier to implement features such as diffing and the dry run mode (see user visible changes).
+
+## Reactivate all system tests
+
+One of the biggest problems we faced of late has been a lack of adequate testing. Whilst we were experimenting with the architecture, we had to disable all system tests as they became completely out of sync with the ([admittedly crazy](http://mcraveiro.blogspot.com/2018/01/nerd-food-refactoring-quagmire.html)) experiments we were carrying out. However, before we can enter the last few refactors, we desperately needed to have system tests again.
+
+This sprint saw a lot of infrastructural work to enable a more sensible approach to system testing; one that takes into account both reference models (C++ and C#) as well as using dogen's own models. In order to make this practical, we ended up having to improve the conversion of Dia models into JSON as well. On the plus side, our code coverage has experienced a marked uptick:
+
+![Coverage over time](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/code_coverage_after_system_tests.png)
+
+However, analysis reveals that we are still not testing a fair bit of the generated code, so next sprint the objective is to close the gap further in code coverage and testing.
+
+# User visible changes
+
+The key user visible changes are described in the next sections. In addition, we've finally got round creating a video to demo the user visible features added in this sprint:
+
+[![Sprint 1.0.12 Demo](https://img.youtube.com/vi/Tt34P3JXzeE/0.jpg)](https://www.youtube.com/watch?v=Tt34P3JXzeE)
+
+Hopefully this will become a habit from now on.
+
+## Improvements on handling of references
+
+There were two key changes on how references are processed. First, we no longer automatically include system models. From now on, these are treated just like any other model and must be included manually. As an example, a C++ model using the STL, C++ built-in types and boost would now need to have the following references:
+
+```
+#DOGEN masd.injection.reference=cpp.builtins
+#DOGEN masd.injection.reference=cpp.std
+#DOGEN masd.injection.reference=cpp.boost
+```
+
+Whilst it is a bit of an inconvenience to have to add these to every other model (specially ```builtins``` and ```std```), this does mean that there are now no special cases and no need for "speculative processing" of models. In the past we loaded all system models and there was a lot of extra logic to determine which ones where needed by whom (e.g. do not load C# system models for a C++ model, but maybe load it for a LAM model, etc). We have now placed the onus of determining what should be loaded onto the user, who knows what models to load.
+
+A second related change is that references are now transitive. This means that if model A depends on model B which depends on model C, you no longer need to add a reference to model C in model A as you had to in the past; the reference from model B to model C will be honoured. Sounds like a trivial change, but in reality this was only possible because of the move towards a simplified pipeline (as outlined in the previous section).
+
+## Dry-run mode
+
+One of the biggest annoyances we've had is the need to code generate in order to see what _would_ change. The problem with C++ is that, if the generated code is not what you'd expect - a fairly common occurrence when you are developing the code generator, as it turns out - you end up with a large number of rebuilt translation units for no good reason. Thus we copied the idea from vcpkg and others of a "dry-run mode": in effect, do all the transforms and produce all the generated code, but don't actually write it to the filesystem. Of course, the logical conclusion is that some kind of diffing mechanism is required in order to see what would change. For this we relied on the nifty [Diff Template Library](https://github.com/cubicdaiya/dtl), which provides a very simple way of producing unified diffs from C++. Sadly it was not on vcpkg, but the most excellent vcpkg developers responded [quickly to our PR](https://github.com/Microsoft/vcpkg/pull/5541), so you if you'd like to use it, you can now simply ```vcpkg install dtl```.
+
+As a result, with a fairly simple incantation, you can now see what dogen would like to do to your current state. For example, say we've updated the comment for ```property``` attribute of the ```hello_world.dia``` test model; to check our changes, we could do:
+
+```
+$ ./masd.dogen.cli generate --target hello_world.dia --dry-run-mode-enabled --diffing-enabled --diffing-destination console
+diff -u include/dogen.hello_world/types/one_property.hpp include/dogen.hello_world/types/one_property.hpp
+Reason: Changed generated file.
+---  include/dogen.hello_world/types/one_property.hpp
++++  include/dogen.hello_world/types/one_property.hpp
+@@ -33,7 +33,7 @@
+
+ public:
+     /**
+-     * @brief This is a sample property.
++     * @brief This is a sample property. Test diff
+      */
+     /**@{*/
+     const std::string& property() const;
+```
+
+Whilst the arguments required may appear a bit excessive at this point, we decided to roll out the feature as is to gain a better understanding of how we use it. We will then clean up the arguments as required (for example, should dry run mode default to ```--diffing-enabled --diffing-destination console```?).
+
+As an added bonus, if you choose to output to file instead of console, we generate a patch file which can be patched on the command line via ```patch```. We don't have a particular use case for this as of yet, but it just seems nice.
+
+## Reporting
+
+A feature that is related to dry-run mode is reporting. We originally merged the two together but then realised that reporting might be useful even when you don't require a diff or a dry run, so we ended up implementing it stand alone. Reporting provides an overview of the operations dogen performed (or would have performed, if you are in dry run mode) to your file system. And, as with tracing, you can visualise it on org mode, making it really easy to navigate if you are a vi or emacs user:
+
+![Reporting in org-mode](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/dogen_reporting_mode_org_mode.png)
+
+However, if you'd like to grep for specific types of operations, you can use the plain report instead:
+
+![Reporting in plain text](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/dogen_reporting_mode_plain.png)
+
+To enable reporting, simply do:
+
+```
+./masd.dogen.cli generate --target hello_world.dia --dry-run-mode-enabled --reporting-enabled --reporting-style org-mode
+```
+
+Replacing ```org-mode``` with ```plain``` as required.
+
+## Byproducts directory
+
+Even before the advent of diffing and reporting, we were already generating a large number of non-code related files, all of which were fairly randomly placed in the filesystem. With this release, we just couldn't continue with this approach so, instead, all of the non-generated files are now created under a "byproducts" directory. This includes:
+
+- log files
+- traces
+- diff reports, when outputting to file
+- reports
+
+And any future functionality we may add. This means that you can now safely delete the byproducts directory and know that you have got rid of all files. We write to ```masd.dogen.byproducts``` by default, but if you'd like to place it elsewhere, use ```--byproduct-directory```. The directory is organised by "run identifier", allowing you to generate multiple models into the same directory:
+
+```
+$ tree
+.
+├── cli.generate.hello_world.dia
+│   ├── cli.generate.hello_world.dia.log
+│   ├── hello_world_report.org
+│   └── hello_world_report.txt
+├── tests.code_generation.masd.dogen.annotations.dia
+│   ├── annotations.patch
+│   └── annotations_report.org
+├── tests.code_generation.masd.dogen.annotations.json
+│   ├── annotations.patch
+│   └── annotations_report.org
+```
+
+## Graph of Transforms
+
+A minor feature that was added this sprint was the ability to print a [GraphViz](https://www.graphviz.org/) graph of transforms. This is done by exporting tracing information with the dot format, e.g.:
+
+```
+./masd.dogen.cli   generate --target hello_world.dia --dry-run-mode-enabled --reporting-enabled --reporting-style plain  --log-enabled  --tracing-enabled --tracing-format graphviz
+```
+
+The output can then be post processed with dot to generate a PDF:
+
+```
+$ cd masd.dogen.byproducts/cli.generate.hello_world.dia/tracing/
+$ dot -Tpdf transform_stats.dot -O
+```
+
+The PDF is quite large because the transform graph is getting extremely complex. This small sample is representative of the output:
+
+![Graph of transforms](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/graph_of_transforms.png)
+
+## Other
+
+As usual, for more details of the work carried out this sprint, see [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_12.org).
+
+# Next Sprint
+
+Now that we have the testing in place, our key objective for next sprint is to move all of the decoration related code into the meta-model. This means that much of what currently exists as assorted files that dogen loads on startup would become regular model entities, paving the way for a much more configurable model.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.12_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.12/dogen_1.0.12_amd64-applications.deb)
+- [dogen-1.0.12-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.12/dogen-1.0.12-Darwin-x86_64.dmg)
+- [dogen-1.0.12-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/dogen-1.0.11-Windows-AMD64.msi)
+
+**Note**: There was a bug in windows builds; the binaries are incorrectly labelled as the previous release.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/1105141000589193216][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6506470333200023552][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-03-25 Mon 10:08]
+    :LOGBOOK:
+    CLOCK: [2019-03-25 Mon 09:38]--[2019-03-25 Mon 10:07] =>  0:29
+    CLOCK: [2019-03-25 Mon 09:01]--[2019-03-25 Mon 09:19] =>  0:18
+    CLOCK: [2019-03-23 Sat 16:12]--[2019-03-23 Sat 17:19] =>  1:07
+    CLOCK: [2019-03-21 Thu 09:57]--[2019-03-21 Thu 10:15] =>  0:18
+    CLOCK: [2019-03-21 Thu 09:02]--[2019-03-21 Thu 09:56] =>  0:54
+    CLOCK: [2019-03-21 Thu 06:09]--[2019-03-21 Thu 06:58] =>  0:49
+    CLOCK: [2019-03-20 Wed 20:05]--[2019-03-20 Wed 20:15] =>  0:10
+    CLOCK: [2019-03-20 Wed 08:25]--[2019-03-20 Wed 08:33] =>  0:08
+    CLOCK: [2019-03-20 Wed 06:31]--[2019-03-20 Wed 07:10] =>  0:39
+    CLOCK: [2019-03-18 Tue 20:02]--[2019-03-18 Tue 20:18] =>  0:23
+    CLOCK: [2019-03-18 Tue 19:02]--[2019-03-18 Tue 19:25] =>  0:23
+    CLOCK: [2019-03-19 Tue 06:02]--[2019-03-19 Tue 07:01] =>  0:59
+    CLOCK: [2019-03-18 Mon 10:36]--[2019-03-18 Mon 10:44] =>  0:08
+    CLOCK: [2019-03-16 Sat 21:12]--[2019-03-16 Sat 21:30] =>  0:18
+    CLOCK: [2019-03-16 Sat 20:48]--[2019-03-16 Sat 21:02] =>  0:14
+    CLOCK: [2019-03-15 Fri 11:44]--[2019-03-15 Fri 11:50] =>  0:06
+    CLOCK: [2019-03-15 Fri 11:36]--[2019-03-15 Fri 11:43] =>  0:07
+    CLOCK: [2019-03-15 Fri 11:00]--[2019-03-15 Fri 11:13] =>  0:13
+    CLOCK: [2019-03-15 Fri 10:44]--[2019-03-15 Fri 10:59] =>  0:15
+    CLOCK: [2019-03-15 Fri 10:20]--[2019-03-15 Fri 10:43] =>  0:23
+    CLOCK: [2019-03-15 Fri 09:56]--[2019-03-15 Fri 10:19] =>  0:23
+    CLOCK: [2019-03-15 Fri 08:18]--[2019-03-15 Fri 08:35] =>  0:17
+    CLOCK: [2019-03-15 Fri 08:11]--[2019-03-15 Fri 08:18] =>  0:07
+    CLOCK: [2019-03-14 Thu 15:18]--[2019-03-14 Thu 15:52] =>  0:34
+    CLOCK: [2019-03-12 Tue 08:43]--[2019-03-12 Tue 08:56] =>  0:13
+    CLOCK: [2019-03-11 Mon 18:46]--[2019-03-11 Mon 19:07] =>  0:21
+    CLOCK: [2019-03-11 Mon 08:02]--[2019-03-11 Mon 08:53] =>  0:51
+    CLOCK: [2019-03-11 Mon 07:15]--[2019-03-11 Mon 07:24] =>  0:09
+    CLOCK: [2019-03-11 Mon 06:44]--[2019-03-11 Mon 07:14] =>  0:30
+    CLOCK: [2019-03-11 Mon 06:31]--[2019-03-11 Mon 06:43] =>  0:12
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Disable global hashing on coding                        :story:
+    CLOSED: [2019-03-11 Mon 06:47]
+
+*Rationale*: already implemented.
+
+We are generating hash for all types at present in coding but we only
+need it for two types: name and location. Try to switch it off
+globally and on just for those two types.
+
+*** COMPLETED JSON models in dogen are out of sync                    :story:
+    CLOSED: [2019-03-11 Mon 06:47]
+
+*Rationale*: already done and won't happen again after changes to
+system tests.
+
+Problems:
+
+- tailor generation results in files with the wrong name (=dia.json=)
+- input models were copied into test data.
+
+*** COMPLETED Contents change check is done twice                     :story:
+    CLOSED: [2019-03-11 Mon 06:56]
+
+*Rationale*: moving away from writer.
+
+We seem to check twice if a file has changed:
+
+: 2015-04-26 12:37:28.451464 [DEBUG] [formatters.filesystem_writer] File contents have not changed, and force write is false so not writing.
+: 2015-04-26 12:37:28.451486 [DEBUG] [formatters.filesystem_writer] File contents have not changed, and force write is false so not writing.
+
+This is in stitch but it should be the same for knit.
+
+*** COMPLETED Add reporting support to dogen model testing            :story:
+    CLOSED: [2019-03-11 Mon 07:01]
+
+*Rationale*: whilst we didn't implement exactly this vision, the work
+on the byproduct directory is almost like this.
+
+Dogen should have a mode which generates a report for a run rather
+than code generate. The report could look like so:
+
+:              /project_a
+:                  /summary for this commit
+:                  /diffs
+:                  /errors
+:                  /benchmark data
+:                  /probing data
+:                  /log
+
+If the report was largely in HTML we could link it to the dogen docs
+and save it into git. This would make troubleshooting much easier. If
+the report contains the probing data it would be easier to figure out
+what went wrong. We should also keep track of the model that was
+generated (e.g. its location and git commit) so we can download it and
+reproduce it locally.
+
+*** COMPLETED Load system models based on language prefix             :story:
+    CLOSED: [2019-03-11 Mon 07:19]
+
+*Rationale*: this is no longer a requirement now that all models must
+be loaded explicitly from the reference list.
+
+We used a convention for system models that have the language as a
+prefix:
+
+: cpp.boost.json
+: cpp.builtins.json
+: cpp.std.json
+: csharp.builtins.json
+: csharp.system.collections.generic.json
+: csharp.system.collections.json
+
+Coincidentally, this could make life easier when it comes to filtering
+models by language: we could pattern match the file name depending on
+the language and only load those who match. The convention would then
+become a rule for system models. With this we would not have to load
+the models, process annotations, etc just to get access to the
+language.
+
+*** COMPLETED Feature models should always be tested by knit           :epic:
+    CLOSED: [2019-03-11 Mon 08:10]
+
+*Rationale*: the new system tests approach should take care of this.
+
+#+begin_quote
+*Story*: As a dogen user, I want to be sure that every feature is
+comprehensively tested so that I don't have to worry about dogen bugs
+when using it.
+#+end_quote
+
+We recently implemented features into dogen; these work off of CMake
+detection, where by if a library is not detected, all tests associated
+with it are not built and executed. However, we should still try to
+codegen these models to make sure that a change we did elsewhere did
+not introduce bugs in features we're not interested in. We need to
+check that knit has tests for both EOS and ODB that get executed
+regardless of these features being on or off.
+
+*** COMPLETED Check packaging code for non-distro dependencies        :story:
+    CLOSED: [2019-03-11 Mon 08:11]
+
+*Rationale*: boost is statically built now so this should not be a
+problem.
+
+We are manually copying a lot of shared objects from locally built
+third party libraries when creating packages, this should be replaced
+with appropriate dependencies (at least for Debian packages).
+
+*** COMPLETED Use xtime-like stopwatch in selected places to log timings :story:
+    CLOSED: [2019-03-11 Mon 08:12]
+
+*Rationale*: this was implemented as part of the tracing framework.
+
+We should log the time it takes for certain operations in dogen so
+that users can figure out if we are becoming slower (or faster) at
+doing them and report regressions.
+
+Boost used to provide a nifty little utility class called xtime. It
+appears to have been deprecated by [[http://www.boost.org/doc/libs/1_55_0/doc/html/chrono/users_guide.html#chrono.users_guide.examples.duration.xtime_conversions][chrono]].
+
+We should also provide a command line option that prints a timing
+report. This would be useful so that users can compare timings between
+releases.
+
+We should also be able to grep the log for all timings and save them
+down to get trends. We should add a log severity for this, perhaps
+PROFILE. Not sure what priority it would be at.
+
+We should also be able to get a command-line report, e.g. =--profile=
+would show all the timings for all the components.
+
+It should also be possible to support some kind of uploading of
+metrics to a metrics server with a database etc.
+
+*** COMPLETED Re-enable schema updates in database model              :story:
+    CLOSED: [2019-03-11 Mon 08:49]
+
+*Rationale*: fixed in northwind tests.
+
+We are deleting the entire DB schema and re-applying it for every
+invocation of the tests. This does not work on a concurrent world. We
+commented it out for now, but we need a proper solution for this.
+
+*** COMPLETED Test model sanity checks fail for enable facet serialisation :story:
+    CLOSED: [2019-03-11 Mon 08:51]
+
+*Rationale*: this was addressed some time ago as the test model is up
+and running.
+
+For some reason we are unable to compile the serialisation test for
+the test model which focuses only on the serialisation facet. Test is
+ignored for the moment.
+
+*** COMPLETED Create a video demo for the sprint's features           :story:
+    CLOSED: [2019-03-11 Mon 16:06]
+    :LOGBOOK:
+    CLOCK: [2019-03-11 Mon 15:55]--[2019-03-11 Mon 16:06] =>  0:11
+    CLOCK: [2019-03-11 Mon 14:32]--[2019-03-11 Mon 14:50] =>  0:18
+    CLOCK: [2019-03-11 Mon 12:34]--[2019-03-11 Mon 14:31] =>  1:57
+    CLOCK: [2019-03-11 Mon 11:08]--[2019-03-11 Mon 12:07] =>  0:59
+    CLOCK: [2019-03-11 Mon 10:45]--[2019-03-11 Mon 11:07] =>  0:22
+    :END:
+
+Our video is extremely old and misleading. We need to get back into
+the habit of doing a video demo at the end of every sprint talking
+about the work of the sprint.
+
+*** COMPLETED Implement the new dogen product API                     :story:
+    CLOSED: [2019-03-11 Mon 19:03]
+
+*Rationale*: this was done as part of the CLI work.
+
+Now the API has been designed and generated, we need to implement it.
+
+*** COMPLETED Make projects directory env optional                    :story:
+    CLOSED: [2019-03-12 Tue 09:36]
+    :LOGBOOK:
+    CLOCK: [2019-03-12 Tue 09:26]--[2019-03-12 Tue 09:36] =>  0:10
+    :END:
+
+We are now stopping the build if the projects directory is not
+defined:
+
+: * Starting C++ build.
+: -- CMake Version: 3.13.4
+: CMake Error at CMakeLists.txt:35 (message):
+:  MASD_DOGEN_PROJECT_DIRECTORY env variable not defined
+
+This means that a user that just wants to compile dogen out of git
+will now be stuck trying to figure out what this is. In reality the
+projects directory for Dogen is always known to CMake. We should just
+set it from CMake.
+
+*** COMPLETED Clang-cl builds are failing due to memory leak reporting :story:
+    CLOSED: [2019-03-12 Tue 12:45]
+    :LOGBOOK:
+    CLOCK: [2019-03-11 Mon 16:23]--[2019-03-11 Mon 17:08] =>  0:45
+    :END:
+
+It seems our clang-cl debug builds are taking longer and longer due to
+some memory leaks. The leaks are showing on MSVC as well. We are not
+always exceeding maximum build time, so sometimes it goes unnoticed.
+
+We've managed to ignore the leaks for now. Once we have cleared up all
+of the valgrind warnings we need to get a windows development
+environment to investigate these properly.
+
+Links:
+
+- [[https://docs.microsoft.com/en-us/visualstudio/debugger/finding-memory-leaks-using-the-crt-library?view=vs-2017][Find memory leaks with the CRT library]]
+- [[https://social.msdn.microsoft.com/Forums/vstudio/en-US/0e6746b9-b042-4402-84ba-d3e38a65a6f4/how-to-disable-memory-leaks-dumping-in-ms-vs?forum=vsdebug][How to disable Memory leaks dumping in MS VS?]]
+- [[https://github.com/SaschaWillems/Vulkan/issues/111][Replace this code at WinMain() to enable memory checks on windows
+  builds]]
+
+*** COMPLETED Add tests for tracing, reporting and diffing            :story:
+    CLOSED: [2019-03-13 Wed 10:03]
+    :LOGBOOK:
+    CLOCK: [2019-03-13 Wed 13:15]--[2019-03-13 Wed 13:31] =>  0:16
+    CLOCK: [2019-03-13 Wed 10:04]--[2019-03-13 Wed 10:28] =>  0:24
+    CLOCK: [2019-03-13 Wed 09:32]--[2019-03-13 Wed 10:03] =>  0:31
+    CLOCK: [2019-03-13 Wed 08:10]--[2019-03-13 Wed 09:25] =>  1:15
+    CLOCK: [2019-03-13 Wed 06:24]--[2019-03-13 Wed 07:18] =>  0:54
+    CLOCK: [2019-03-12 Tue 15:37]--[2019-03-12 Tue 17:40] =>  2:03
+    CLOCK: [2019-03-12 Tue 18:15]--[2019-03-12 Tue 18:38] =>  0:23
+    :END:
+
+At present its easy to break tracing and reporting without noticing
+it. Add a simple set of tests that verify the existence of the files
+and perform some basic sanity checks on the content.
+
+*** COMPLETED Delete extra files appears broken at present            :story:
+    CLOSED: [2019-03-13 Wed 17:57]
+     :LOGBOOK:
+     CLOCK: [2019-03-13 Wed 16:04]--[2019-03-13 Wed 17:57] =>  1:53
+     CLOCK: [2019-03-13 Wed 15:27]--[2019-03-13 Wed 16:03] =>  0:36
+     CLOCK: [2019-03-13 Wed 13:32]--[2019-03-13 Wed 15:26] =>  1:54
+     CLOCK: [2019-03-13 Wed 10:35]--[2019-03-13 Wed 11:59] =>  1:24
+     CLOCK: [2019-03-13 Wed 10:29]--[2019-03-13 Wed 10:34] =>  0:05
+     CLOCK: [2019-03-12 Tue 15:20]--[2019-03-12 Tue 15:36] =>  0:16
+     CLOCK: [2019-03-12 Tue 12:41]--[2019-03-12 Tue 12:59] =>  0:18
+     :END:
+
+ Can't find any evidence of code in extraction to handle the case where
+ the flag is set to false.
+
+ Notes:
+
+ - implement it in terms of the existing operations, e.g. set it to
+   ignore, reason user requested not to delete extra files .
+ - add test that validates the flag on and off. No need to check the
+   deletion itself, we can trust remove files transform.
+
+*** COMPLETED Empty directories should be deleted                     :story:
+    CLOSED: [2019-03-14 Thu 14:05]
+    :LOGBOOK:
+    CLOCK: [2019-03-14 Thu 13:26]--[2019-03-14 Thu 14:05] =>  0:39
+    CLOCK: [2019-03-14 Thu 12:13]--[2019-03-14 Thu 12:18] =>  0:05
+    CLOCK: [2019-03-14 Thu 11:24]--[2019-03-14 Thu 12:12] =>  0:48
+    CLOCK: [2019-03-14 Thu 10:16]--[2019-03-14 Thu 11:23] =>  1:07
+    CLOCK: [2019-03-14 Thu 09:59]--[2019-03-14 Thu 10:15] =>  0:16
+    CLOCK: [2019-03-14 Thu 09:11]--[2019-03-14 Thu 09:58] =>  0:47
+    CLOCK: [2019-03-14 Thu 08:55]--[2019-03-14 Thu 09:10] =>  0:15
+    CLOCK: [2019-03-14 Thu 08:33]--[2019-03-14 Thu 08:54] =>  0:21
+    CLOCK: [2019-03-14 Thu 08:02]--[2019-03-14 Thu 08:32] =>  0:30
+    CLOCK: [2019-03-14 Thu 07:04]--[2019-03-14 Thu 07:20] =>  0:16
+    CLOCK: [2019-03-14 Thu 06:59]--[2019-03-14 Thu 07:03] =>  0:04
+    CLOCK: [2019-03-14 Thu 06:40]--[2019-03-14 Thu 06:58] =>  0:18
+    CLOCK: [2019-03-14 Thu 06:28]--[2019-03-14 Thu 06:39] =>  0:11
+    :END:
+
+#+begin_quote
+*Story*: As a dogen user, I want empty directories to be removed so
+that I don't have to do it manually.
+#+end_quote
+
+When housekeeper finishes deleting all extra files, it should check
+all of the processed directories to see if they are empty. If they
+are, it should delete the directory.
+
+We should probably have a command line option to control this
+behaviour.
+
+This can be implemented as a transform in extracton that executes
+against the managed directories.
+
+Links:
+
+- [[https://www.codeproject.com/Questions/454944/how-to-remove-empty-folders-in-a-directory-using-b][How to remove empty folders in a directory using boost]]
+
+*** COMPLETED Easy addition of facets and formatters                   :epic:
+    CLOSED: [2019-03-15 Fri 08:23]
+
+*Rationale*: most of this work has been carried out already.
+
+The ideal state of the world is one where:
+
+- the facet directory contains a small JSON file with the fields
+  specific to a facet, including defaults, etc.
+- the facet directory is made up of a number of stitch templates and
+  their expansion into c++ (e.g. no separation of template and
+  formatter).
+- the backend model has an entity marked as =Stitch= or =Stitchable=
+  and linked to a stitch meta-template. Ideally one should be able to
+  create a concept for it so that we can define these properties only
+  once.
+- the template should have all of the parameters required such as
+  types of variables.
+
+*** CANCELLED Weaving results in unnecessary rebuilds                 :story:
+    CLOSED: [2019-03-15 Fri 14:26]
+
+*Rationale*: it seems something else must have changed the files,
+cannot reproduce it any longer.
+
+ We've introduced weaving targets supposedly to make things faster - so
+ we don't have to generate a whole model. However, we are finding a lot
+ of touched files on weave:
+
+ : [1/29] Building CXX object projects/masd.dogen.generation.cpp/src/CMakeFiles/masd.dogen.generation.cpp.lib.dir/types/formatters/types/enum_header_formatter.cpp.o
+ : [2/29] Building CXX object projects/masd.dogen.generation.cpp/src/CMakeFiles/masd.dogen.generation.cpp.
+ : ...
+ : [22/29] Building CXX object projects/masd.dogen.generation.csharp/src/CMakeFiles/masd.dogen.generation.csharp.lib.dir/types/formatters/types/primitive_formatter.cpp.o
+ : [23/29] Building CXX object projects/masd.dogen.generation.csharp/src/CMakeFiles/masd.dogen.generation.csharp.lib.dir/types/formatters/types/class_formatter.cpp.o
+
+ This is still small compared to the total stitch templates:
+
+ : $ find . -iname '*.stitch' | wc -l
+ : 91
+
+ But clearly something untowards is happening with some of the
+ templates.
+
+*** COMPLETED Changes to stitch templates are not reported correctly  :story:
+    CLOSED: [2019-03-15 Fri 16:00]
+    :LOGBOOK:
+    CLOCK: [2019-03-15 Fri 14:51]--[2019-03-15 Fri 16:00] =>  1:09
+    :END:
+
+At the moment if we make a change to a template but forget to weave we
+get errors in tests but nothing shows up on the diffs or in the
+operations report.
+
+Problems:
+
+- we do not produce a trace of the inputs to the reporting transform
+  even when reporting is on. Fixed.
+- when diffing is off and reporting is on, we do not get a write
+  operation in report. This was because report was out of sync.
+- diffs are not produced if diffing is off. The problem is that we
+  have only one knob to control the generation of diffs and the
+  production of patches. We should always generate diffs for tests
+  because it allows us to troubleshoot the build machines. For now we
+  can simply enable diffing on all extraction chain tests.
+
+*** COMPLETED Add ODB to the build machine                            :story:
+    CLOSED: [2019-03-16 Sat 21:26]
+
+*Rationale*: completed on the main. We will not add oracle support due
+to the overhead.
+
+At present we are only compiling and running the ODB tests
+locally. Now that ODB is becoming a core dependency, we need to make
+sure we are running these tests on the build machines - Windows and
+Linux at least.
+
+However, at present we are already running out of time for the main
+build. If we simply add ODB to Linux we will not complete the build in
+the allocated slot. One way to achieve this is to have a build that
+does ODB only.
+
+We should also add oracle OCI to the dogen dependencies package so
+that we test oracle support as well as postgres. However, to run the
+tests we need some way to configure postgres to allow connections. It
+is also possible to install oracle by copying the DEB to dropbox and
+creating a simple installation script that sets up the users etc. We
+could make similar scripts for postgres and oracle. However, we need
+to convert the oracle schema into postgres.
+
+*** COMPLETED Load system models intelligently                         :epic:
+    CLOSED: [2019-03-16 Sat 21:29]
+
+*Rationale*: this was addressed with the transitive references work.
+
+#+begin_quote
+*Story*: As a dogen user, I want to load only the system models
+required for the model I want to generate so that generation is as
+quick as possible.
+#+end_quote
+
+At present we are loading all library models. This is not a problem
+because they are small and there are only a few of them. However, in a
+distant future, one can imagine a very large number of system models,
+each of which with large number of types (say the C# system models,
+the C++ system models, etc). In this world we may need to disable the
+loading of some system models: either by programming language or more
+explicitly by choosing individual models in a given language.
+
+It may even make more sense to load just what is required: load the
+target model, infer all of its dependencies (including at the
+programming language level) and then load only the system models that
+are required for those languages.
+
+This may not be as hard as it seems: we already infer that all models
+the target depends on are present by looking at the list of distinct
+model names required by the target qualified names. We could use the
+same logic to determine what system models to load. The only exception
+is the hardware model, which must always be loaded (or we need some
+kind of mapping between "empty" model name and the hardware model).
+
+We should keep in mind the model groups too; not all models are
+applicable to all model groups. We should only consider compatible
+models.
+
+*** COMPLETED Orchestration test is broken on Windows                 :story:
+    CLOSED: [2019-03-18 Mon 13:45]
+    :LOGBOOK:
+    CLOCK: [2019-03-18 Mon 13:06]--[2019-03-18 Mon 13:44] =>  0:38
+    CLOCK: [2019-03-18 Mon 10:56]--[2019-03-18 Mon 11:25] =>  0:29
+    CLOCK: [2019-03-18 Mon 09:02]--[2019-03-18 Mon 10:35] =>  1:33
+    :END:
+
+The following test is breaking on all builds for Windows:
+
+: masd.dogen.orchestration.tests/extraction_model_production_chain_tests/masd_dogen_generation_cpp_json_produces_expected_model
+
+It works on all other builds.
+
+Notes:
+
+- running the Windows dogen binaries against this model does not
+  reproduce the problem.
+- the problem does not happen with the corresponding Dia model.
+- detailed tracing test must be ifdef'd. We are still running it if we
+  fire the binary from the command line. This is not ideal as it is
+  how most users will run the tests (e.g. =rat= from readme).
+- the test was broken because we locally enabled tracing whilst
+  debugging and checked it in by mistake; tracing with long names
+  fails on windows.
+
+*** COMPLETED Code generation of tests for dogen models               :story:
+    CLOSED: [2019-03-19 Tue 15:04]
+    :LOGBOOK:
+    CLOCK: [2019-03-19 Tue 18:39]--[2019-03-19 Tue 18:53] =>  0:14
+    CLOCK: [2019-03-19 Tue 13:53]--[2019-03-19 Tue 15:04] =>  1:11
+    CLOCK: [2019-03-19 Tue 12:49]--[2019-03-19 Tue 13:02] =>  0:13
+    CLOCK: [2019-03-19 Tue 12:14]--[2019-03-19 Tue 12:15] =>  0:01
+    CLOCK: [2019-03-19 Tue 12:04]--[2019-03-19 Tue 12:13] =>  0:09
+    CLOCK: [2019-03-19 Tue 11:46]--[2019-03-19 Tue 12:03] =>  0:17
+    CLOCK: [2019-03-19 Tue 11:23]--[2019-03-19 Tue 11:45] =>  0:22
+    CLOCK: [2019-03-19 Tue 11:13]--[2019-03-19 Tue 11:22] =>  0:09
+    CLOCK: [2019-03-19 Tue 10:57]--[2019-03-19 Tue 11:12] =>  0:15
+    CLOCK: [2019-03-19 Tue 09:54]--[2019-03-19 Tue 10:56] =>  1:02
+    CLOCK: [2019-03-19 Tue 09:28]--[2019-03-19 Tue 09:53] =>  0:25
+    CLOCK: [2019-03-19 Tue 09:14]--[2019-03-19 Tue 09:27] =>  0:13
+    CLOCK: [2019-03-19 Tue 09:04]--[2019-03-19 Tue 09:13] =>  0:09
+    CLOCK: [2019-03-19 Tue 08:42]--[2019-03-19 Tue 09:03] =>  0:21
+    CLOCK: [2019-03-19 Tue 08:16]--[2019-03-19 Tue 08:41] =>  0:25
+    CLOCK: [2019-03-19 Tue 08:03]--[2019-03-19 Tue 08:15] =>  0:12
+    CLOCK: [2019-03-19 Tue 07:57]--[2019-03-19 Tue 08:02] =>  0:05
+    CLOCK: [2019-03-18 Mon 18:48]--[2019-03-18 Mon 19:00] =>  0:12
+    CLOCK: [2019-03-18 Mon 17:18]--[2019-03-18 Mon 17:27] =>  0:09
+    CLOCK: [2019-03-18 Mon 17:16]--[2019-03-18 Mon 17:17] =>  0:01
+    CLOCK: [2019-03-18 Mon 16:37]--[2019-03-18 Mon 17:15] =>  0:38
+    CLOCK: [2019-03-18 Mon 16:34]--[2019-03-18 Mon 16:36] =>  0:02
+    CLOCK: [2019-03-18 Mon 16:19]--[2019-03-18 Mon 16:33] =>  0:14
+    CLOCK: [2019-03-18 Mon 16:06]--[2019-03-18 Mon 16:18] =>  0:12
+    CLOCK: [2019-03-18 Mon 16:04]--[2019-03-18 Mon 16:05] =>  0:01
+    CLOCK: [2019-03-18 Mon 15:33]--[2019-03-18 Mon 16:01] =>  0:28
+    CLOCK: [2019-03-18 Mon 15:30]--[2019-03-18 Mon 15:32] =>  0:02
+    CLOCK: [2019-03-18 Mon 15:09]--[2019-03-18 Mon 15:29] =>  0:20
+    CLOCK: [2019-03-18 Mon 14:44]--[2019-03-18 Mon 15:08] =>  0:24
+    CLOCK: [2019-03-18 Mon 13:44]--[2019-03-18 Mon 14:43] =>  0:59
+    CLOCK: [2019-03-18 Mon 13:00]--[2019-03-18 Mon 13:05] =>  0:05
+    CLOCK: [2019-03-18 Mon 12:28]--[2019-03-18 Mon 12:59] =>  0:31
+    CLOCK: [2019-03-18 Mon 11:26]--[2019-03-18 Mon 12:08] =>  0:42
+    CLOCK: [2019-03-18 Mon 10:45]--[2019-03-18 Mon 10:56] =>  0:11
+    CLOCK: [2019-03-17 Sun 17:46]--[2019-03-17 Sun 18:04] =>  0:18
+    CLOCK: [2019-03-17 Sun 17:02]--[2019-03-17 Sun 17:45] =>  0:43
+    CLOCK: [2019-03-17 Sun 07:09]--[2019-03-17 Sun 07:25] =>  0:16
+    CLOCK: [2019-03-17 Sun 06:40]--[2019-03-17 Sun 06:50] =>  0:10
+    CLOCK: [2019-03-16 Sat 21:31]--[2019-03-16 Sat 21:35] =>  0:04
+    CLOCK: [2019-03-16 Sat 16:11]--[2019-03-16 Sat 16:35] =>  0:24
+    CLOCK: [2019-03-16 Sat 06:45]--[2019-03-16 Sat 07:30] =>  0:45
+    CLOCK: [2019-03-16 Sat 05:33]--[2019-03-16 Sat 06:44] =>  1:11
+    CLOCK: [2019-03-15 Fri 17:21]--[2019-03-15 Fri 17:45] =>  0:24
+    CLOCK: [2019-03-15 Fri 16:43]--[2019-03-15 Fri 17:20] =>  0:37
+    CLOCK: [2019-03-15 Fri 16:30]--[2019-03-15 Fri 16:42] =>  0:12
+    CLOCK: [2019-03-15 Fri 16:01]--[2019-03-15 Fri 16:29] =>  0:28
+    CLOCK: [2019-03-15 Fri 14:28]--[2019-03-15 Fri 14:50] =>  0:22
+    CLOCK: [2019-03-15 Fri 13:31]--[2019-03-15 Fri 14:27] =>  0:56
+    CLOCK: [2019-03-15 Fri 13:15]--[2019-03-15 Fri 13:30] =>  0:15
+    CLOCK: [2019-03-15 Fri 11:51]--[2019-03-15 Fri 12:00] =>  0:09
+    CLOCK: [2019-03-15 Fri 11:14]--[2019-03-15 Fri 11:35] =>  0:21
+    CLOCK: [2019-03-15 Fri 08:45]--[2019-03-15 Fri 09:35] =>  0:50
+    CLOCK: [2019-03-14 Thu 18:31]--[2019-03-14 Thu 19:01] =>  0:30
+    CLOCK: [2019-03-12 Tue 11:56]--[2019-03-12 Tue 12:04] =>  0:08
+    CLOCK: [2019-03-12 Tue 11:27]--[2019-03-12 Tue 11:55] =>  0:28
+    CLOCK: [2019-03-12 Tue 10:58]--[2019-03-12 Tue 11:26] =>  0:28
+    CLOCK: [2019-03-12 Tue 09:27]--[2019-03-12 Tue 10:57] =>  1:30
+    CLOCK: [2019-03-12 Tue 08:57]--[2019-03-12 Tue 09:26] =>  0:29
+    CLOCK: [2019-03-11 Mon 17:17]--[2019-03-11 Mon 17:47] =>  0:30
+    :END:
+
+At present we are manually generating tests for each model
+(serialisation, etc). The structure of the tests is very
+predictable. In a world where tests are a facet, we could have some
+options to control the generation of tests. This would also allow end
+users to generate tests for their models and report the results. We
+would need to generate the utility model for this - or perhaps we
+could code generate tests in a way that no longer requires templates -
+its all "hard-coded". This would make the tests easier to follow, but
+we would generate a lot of code.
+
+We could separate dogen specific tests from user tests by naming them
+differently, e.g. =abc_dogen_test.cpp=. We can then create two
+different test binaries, one for dogen tests and another for user
+tests, so that users don't have to run dogen tests unless something
+has gone wrong.
+
+Interestingly we could even set rules to ignore tests that are known
+to fail:
+
+- if object has no members do not do equality tests
+- if object has some kind of recursion do not do tests
+- etc.
+
+These can be marked as known limitations. At present the tests require
+Boost.Test but it should be possible to target other frameworks
+(meta-data option).
+
+Notes:
+
+- we've bumped into a problem: at present we created a number of
+  profiles that are used by test models to enable and disable facets,
+  as required by the tests. This means that in order to setup the new
+  facet, we will have to update all of these profiles manually until
+  the tests are ready to be tested. As a quick hack, we've disabled
+  the facet from the dogen profile.
+- if an object has no attributes, we need to disable testing for
+  it. For now we will just hack it by disabling tests on these classes
+  manually. Write story to fix it properly.
+- rename =class_implementation_formatter=. This is more like
+  =class_test_suite=.
+- need a way to add include of logging and json validator. This is
+  actually really complicated because we do not know what the name for
+  logging is (its model dependent). For now we will just not make use
+  of logging. We can also use property tree for JSON validation.
+- if test data is disabled we should let the users know and output
+  fake tests. Same with no properties.
+- should be able to disable testing for a type by disabling the facet
+  locally. Need to do this for composite/nested types.
+- drop source prefix in =source_cmakelists=.
+- no tests for hashing and enumerations.
+- handling of abstract base classes requires additional work.
+- two types in different namespaces with the same name result in
+  linking errors. Templating: text templates.
+- at present we are not including internal namespaces in the CTest
+  execution. We should add them to the test suite name. If we do this
+  in the template we will solve two problems in one go (line above).
+
+Merged stories:
+
+*Consider creating a "test" facet*
+
+Whilst we can't really generate tests, we can at least create the
+stubs for them. For this we could have a =test= facet that uses a
+stereotype, e.g. =test_suite=. Users mark classes with
+these. Attributes are the test cases. At the model level users can
+choose the test framework. For example for Boost.Test, it generates
+the main file with fixture initialisation, etc. We could then have one
+of two approaches:
+
+- protected regions, where the test contents are protected and perhaps
+  an area at the top for globals etc.
+- stubs only, were we generate the original content but then users
+  subsequently manage the files.
+
+*Canned tests rely on copy constructors rather than cloning*
+
+If an object has pointers, the canned tests will not perform a deep
+copy of the object. We need to [[*Add%20support%20for%20object%20cloning][implement cloning]] and then use it in
+canned tests.
+
+*Generate tests skeleton*
+
+When we create a dogen project for the first time, we should be able
+to, optionally, add the tests directory with skeleton code and a
+sample test. If the directory already exists (or if the option is off)
+we do nothing.
+
+*Automatically ignore tests*
+
+If a project has tests (see story above) we should automatically
+ignore the test regular expressions.
+
+*** COMPLETED Formatters have been incorrectly placed under extraction :story:
+    CLOSED: [2019-03-19 Tue 15:30]
+    :LOGBOOK:
+    CLOCK: [2019-03-19 Tue 15:26]--[2019-03-19 Tue 15:30] =>  0:04
+    CLOCK: [2019-03-19 Tue 15:06]--[2019-03-19 Tue 15:25] =>  0:19
+    :END:
+
+When we did the big meta-data rename, we placed facets and formatters
+in the following in extraction:
+
+: masd.extraction.cpp.cmake.enabled
+
+However, this is not entirely correct: facet space is a property of
+generation; the formatters are model to text transformations in
+generation space that produce the extraction model. When you are
+enabling and disabling formatters, you are in the generation space. We
+need to update these keys.
+
+This highlights a more relevant point: we are exposing the internals
+of the pipeline to the end user at the meta-model / UML profile level;
+should we really mention which component of the pipeline owns the key?
+On the plus side, we are not expecting to have fields move again given
+that this is the "final" architecture.
+
+Notes:
+
+- update extraction_properties in coding model. In fact, move them to
+  the generation model.
+- update most of the extraction keys in JSON and all models. Actually
+  for now update all. We need to look at them more carefully in the
+  future.
+- enable_unique_file_names: are we using this?
+
+*** COMPLETED Generate binaries from clang-cl                         :story:
+    CLOSED: [2019-03-25 Mon 10:08]
+    :LOGBOOK:
+    CLOCK: [2019-03-25 Mon 09:20]--[2019-03-25 Mon 09:37] =>  0:17
+    :END:
+
+It seems MSVC builds cannot run all tests. We need to ship some
+binaries on windows, so since clang-cl is looking ok ship those
+binaries instead.
+
+Merged stories:
+
+*Consider adding compiler name to package*
+
+At present we are not uploading clang packages into bintray. This is
+because they have the same name as the GCC and MSVC packages. If we
+add the compiler name to the package we can then upload them too. This
+would be good because we can then test to make sure all packages are
+working correctly.
+
+*** POSTPONED Promote extraction entities to meta-model elements      :story:
+    CLOSED: [2019-03-25 Mon 10:08]
+    :LOGBOOK:
+    CLOCK: [2019-03-21 Thu 15:31]--[2019-03-21 Thu 15:35] =>  0:04
+    CLOCK: [2019-03-21 Thu 14:55]--[2019-03-21 Thu 15:30] =>  0:35
+    CLOCK: [2019-03-21 Thu 14:46]--[2019-03-21 Thu 14:54] =>  0:08
+    CLOCK: [2019-03-21 Thu 14:43]--[2019-03-21 Thu 14:45] =>  0:02
+    CLOCK: [2019-03-21 Thu 14:12]--[2019-03-21 Thu 14:42] =>  0:30
+    CLOCK: [2019-03-21 Thu 13:09]--[2019-03-21 Thu 14:11] =>  1:02
+    CLOCK: [2019-03-21 Thu 11:54]--[2019-03-21 Thu 12:00] =>  0:06
+    CLOCK: [2019-03-21 Thu 10:16]--[2019-03-21 Thu 11:53] =>  1:37
+    CLOCK: [2019-03-20 Wed 17:55]--[2019-03-20 Wed 18:10] =>  0:15
+    CLOCK: [2019-03-20 Wed 16:02]--[2019-03-20 Wed 16:55] =>  0:53
+    CLOCK: [2019-03-20 Wed 14:34]--[2019-03-20 Wed 14:51] =>  0:17
+    CLOCK: [2019-03-20 Wed 14:24]--[2019-03-20 Wed 14:33] =>  0:09
+    CLOCK: [2019-03-20 Wed 14:15]--[2019-03-20 Wed 14:23] =>  0:08
+    CLOCK: [2019-03-20 Wed 08:34]--[2019-03-20 Wed 12:02] =>  3:28
+    CLOCK: [2019-03-19 Tue 15:31]--[2019-03-19 Tue 17:40] =>  2:09
+    :END:
+
+As with mappings, profiles and templates, we should make modelines,
+modeline groups, licences and location strings meta-model elements
+too. It may require a little bit of thinking because they are not
+simple KVPs - but we also have support for arrays in annotations.
+
+The final destination is for users to create modeline configurations
+or reuse the dogen ones.
+
+Notes:
+
+- In theory we should be able to load modelines incrementally, as they
+  are only needed for code generation. However, order of references
+  will matter because we need to validate references to
+  modelines. Actually this is not a problem because we will process
+  them after merging. Decorations can be generated at the very end.
+- though it is probably overkill, it would be nice to be able to
+  inherit from modelines; then we could define all the common fields
+  on a parent.
+- decoration repository moves to become properties of the model
+  itself.
+- decoration properties becomes just decoration. Can stay property of
+  the element, though perhaps we need to distinguish between
+  decoratable elements and those that are not. Make them optional?
+- modeline_group, modeline, modeline_field, licence_text, marker (real
+  name: location strings) become meta-model entities.
+- decoration is a mapping of meta-type to modeline name. All coding
+  elements for a kernel map to the technical space, except for build
+  files, etc. This could be achieved by adding some meta-data. The
+  good thing about this approach is that we can create a profile for
+  these and make it transparent to users
+  (=masd::standard_modelines=?).
+- decoration of elements must be done after mapping has taken
+  place. We will rely on the output language to determine the correct
+  modeline.
+- due to the fact that fabric types are still not in coding, we need
+  to do decoration expansion as a two-phase process. We need to have
+  the exact same transform present in both generation and coding. This
+  is a bit painful and since its only temporary, a waste of time
+  really. A better alternative would be to move all of fabric types
+  into coding first - the simplest possible way, e.g. copy and paste,
+  rename. We could use the injector as is in fabric. Then as the last
+  step in coding, we could do the decoration transform. A simpler
+  alternative is to just move the dynamic transform chain to
+  coding. This means we don't have to touch fabric at all. We can add
+  it to the post-assembly chain. Then we can execute the decoration
+  transform. It must be done post mapping so that we have a concrete
+  language set on the model. This is required both by the dynamic
+  transform as well as the decoration transform.
+
+Tasks:
+
+- update qname in modeline group to string.
+- implement modeline transform.
+- update name to have dot separated and colon separated qualified
+  names
+- move dynamic transforms into coding again.
+- implement decoration transform in post assembly chain after dynamic
+  transform. Use the qualified name to find the correct modeline.
+- implement the decoration formatters in generation.
+- remvoe legacy decoration code in extraction.
+
+Merged stories:
+
+*Licences as meta-model elements*
+
+Continuing the trend, licences are also moeta-model elements. We can
+use the comments of a class to convey the licence text. The name
+becomes the license name. Users use named configurations to assign
+licences to elements. All artefacts produced across all facets for an
+element will share the same licence. Users can easily add their own
+licence (at whichever level they choose, product line, product,
+component) and then refer to it. The only change is that they must now
+prefix it with the model name (e.g. =masd::licenses::gpl_v2=).
+
+In theory we should be able to load licences incrementally, as they
+are only needed for code generation. However, order of references will
+matter because we need to validate references to licences.
+
+We should also allow for both:
+
+- full licence: used later at the product level.
+- licence summary: used for preambles in files.
+
+** Deprecated
+*** CANCELLED Add tests for yarn main workflow                        :story:
+    CLOSED: [2019-03-11 Mon 08:16]
+
+*Rationale*: code has changed considerably since this story was
+written.
+
+A few come to mind:
+
+- model with no generatable types returns false
+- model with generatable types returns true
+- multiple models get merged
+- system models get injected
+
+*** CANCELLED Sort model dependencies                                 :story:
+    CLOSED: [2019-03-11 Mon 08:19]
+
+*Rationale*: code has changed considerably since this story was
+written.
+
+It seems the order of registration of models has moved with recent
+builds of dogen (1418). Investigate if we sort the dependencies and if
+not, sort them.
+
+*** CANCELLED Consider adding a start and end dogen variable block in dia :story:
+    CLOSED: [2019-03-11 Mon 08:34]
+
+*Rationale*: this is going to complicate the parsing for no real
+advantage. Users will forget to add the end bit, etc.
+
+At present we defined a special market to find dogen kvp's in dia's
+comments: =#DOGEN=. The problem with this is that, as we start adding
+more and more knobs to dynamic, we have to repeat it more and more:
+
+: #DOGEN dia.comment=true
+: #DOGEN licence_name=gpl_v3
+: #DOGEN copyright_notice=Copyright (C) 2012 Kitanda <info@kitanda.co.uk>
+: #DOGEN modeline_group_name=emacs
+
+It would be nice to be able to create a block instead, maybe (first stab):
+
+: #DOGEN_START
+: dia.comment=true
+: licence_name=gpl_v3
+: copyright_notice=Copyright (C) 2012 Kitanda <info@kitanda.co.uk>
+: modeline_group_name=emacs
+: #DOGEN_END
+
+*** CANCELLED Add test to check if we are writing when file contents haven't changed :story:
+    CLOSED: [2019-03-11 Mon 08:41]
+
+*Rationale*: this is less of a problem now we have dry-run-mode.
+
+We broke the code that detected changes and did not notice because we
+don't have any changes around it. A simple test would be to generate
+code for a test model, read the timestamp of a file (or even all
+files), then regenerate the model and compare the timestamps. If there
+are changes, the test would fail.
+*** CANCELLED Random notes on domodl                                   :epic:
+    CLOSED: [2019-03-15 Fri 08:21]
+
+*Rationale*: metametamodeling is deemed to be outside of the scope of
+dogen. This can be done using other tools and then exported into an
+injactable model.
+
+eCore and GME seem to point out that there is a companion product to
+dogen at the meta-modeling level. A tool that allows one to define
+metamodels and instances of those metamodels. Name: domodl (domain
+modeler).
+
+For example, for finance we could define a structure like so:
+
+- M3: GME or eCore, some kind of reflexive meta-metamodel.
+- M2: instrument taxonomy (? building blocks): define the basic
+  building blocks for all instruments in finance. Examples: barriers
+  by type (american, parisian, etc), triggerable, monitoring,
+  settlement types,
+- M1: instruments: using the M2 building blocks, create instruments
+  such as spot, forward. This is a dogen model that is code
+  generated.
+- M0: actual finance system.
+
+To some extent we already started doing this by introducing the notion
+of object templates / concepts: these are in effect a bridge to the
+modeling layer above, joining two distinct layers in a single
+diagram. This is not a good idea according to the literature, but we
+can leave it there with a warning. However, there is something that is
+still not quite right: if we define say =ForwardAmountExchange= as
+inheriting from =Class= and then say that a =forward= is an instance
+of =ForwardAmountExchange= then there is an expectation that we should
+supply say =forward_points= when we define the model just like we
+supply a class name when we define a class. However, what we are
+saying is more like "this is the shape of the forward that you will
+instantiate". We need to understand how to express this in eCore.
+
+From a dia perspective, a domodl diagram uses the metamodel instances
+as profiles/stereotypes
+
+Features:
+
+- ability to read eCore diagrams
+- ability to read dia diagrams and parse them as eCore diagrams. We
+  need the merging (simultaneous loading) of both the metamodel and
+  the model so that we can make sense of the diagram. We also need to
+  understand how do expose concepts of Mn at Mn-1 - is it always
+  profiles/stereotypes? or perhaps the dia model must have the correct
+  metamodel stereotypes (e.g. =Class, etc=).
+- ability to "flatten" the read models into a dogen external
+  model. There is a dependency on dogen for this, but that's only for
+  the export.
+- we also need to somehow create an XSD and a spirit parser for the
+  instances of the metamodel. These are then used to generate a binary
+  that reads these instances and creates dogen models. In an ideal
+  world these could be injected into dogen as plugins, able to read an
+  extension (in effect, new frontends/externals). So domodl actually
+  somehow code generates these dogen plugins. Once we have dart, then
+  we have all the tools required to create build files etc. The user
+  can then create a git repo for the plugin, build it and inject it
+  into dogen. From then on dogen can parse their DSL and generate code
+  for it.
+- for completeness we should generate spirit parsing code so that we
+  could have syntax other than XML. This seems hard as it must need
+  some kind of EBNF interfacing. We should see what [[https://www.eclipse.org/Xtext/][XText]] does. The
+  parser can then be plugged in to the plugin and becomes in effect a
+  "compiler" for the new DSL. The errors should be outputted using
+  emacs/vi compliant syntax so that flycheck will automatically work.
+  XText even has LSP support.
+- it would also be ideal if we could generate emacs/vim syntax
+  highlighting.
+- we need to somehow be able to "transport" metadata into the
+  models. For example, instruments need to support ORM, etc. The
+  generated languages must have a way of supplying stereotypes so that
+  dogen knows what to generate.
+- it should be possible to just output the dogen model so that the
+  user can see what domodl is doing. It should always be possible to
+  manually replicate it (and bypass it).
+- domodl parsing code etc. should be as good as if written by hand.
+
+Notes:
+
+- users should start by creating dogen models and then try to
+  generalise them into a DSL.
+- interestingly, dogen's external model input format could be seen as
+  one such DSL. It would be great to have syntax highlighting,
+  flycheck integration etc for model development. Completion would be
+  great too (for example, get a list of types of elements, including
+  external models, etc).
+*** CANCELLED Investigate the Generic Modeling Environment            :story:
+    CLOSED: [2019-03-15 Fri 08:22]
+
+*Rationale*: outside of the bounds of dogen.
+
+[[http://www.isis.vanderbilt.edu/projects/gme/][GME]] - Generic Modeling Environment - is a complete environment for
+meta-modeling. It seems that they have already dealt with a lot of the
+problems we are now facing. However, note that this is not a modeling
+environment - it is a meta-modeling environment.
+
+#+begin_quote
+The Generic Modeling Environment is a configurable toolkit for
+creating domain-specific modeling and program synthesis
+environments. The configuration is accomplished through metamodels
+specifying the modeling paradigm (modeling language) of the
+application domain. The modeling paradigm contains all the syntactic,
+semantic, and presentation information regarding the domain; which
+concepts will be used to construct models, what relationships may
+exist among those concepts, how the concepts may be organized and
+viewed by the modeler, and rules governing the construction of
+models. The modeling paradigm defines the family of models that can be
+created using the resultant modeling environment
+#+end_quote
+
+Source code is available [[http://repo.isis.vanderbilt.edu/GME/old/15.5.8/][here]].
+
+*** CANCELLED Consider adding a meta-meta-model                       :story:
+    CLOSED: [2019-03-15 Fri 08:22]
+
+*Rationale*: outside of the bounds of dogen.
+
+This story is just a very vague placeholder for ideas around the DSL
+space.
+
+We could create a meta-meta-model that would allow us to describe
+meta-models in general. The concepts of the meta-meta-model would be
+more or less those defined in here:
+
+- [[http://www2.informatik.hu-berlin.de/sam/lehre/MDA-UML/UML-Infra-03-09-15.pdf][UML 2.0 Infrastructure Specification]]
+
+With a meta-meta-model we could then allow users to describe their own
+meta-models, which are DSLs. This could be done graphically (say using
+Dia). The GME story explains what the end-game of such an approach
+would be and its more or less realised by GME in its current form.
+
+The meta-meta-model would also allow us to think about model-to-model
+transformations using a language such as [[https://eclipse.org/atl/][ATL]]. This would then mean
+that we could transform a meta-model created by the user into one of
+our meta-models used for code generation.
+
+Meta-meta-models are vaguely related to binding.
+
+On further thought, we should probably make a clear separation of
+responsibilities. A few notes on this:
+
+- there are two separate, but interrelated problem domains:
+  meta-modeling and modeling.
+- UML is a tool for modeling. It sits in the M2 to M1 space. M2
+  because its meta-model is extensible, M1 because we spend most of
+  our time defining user models.
+- Dogen also sits in the M2 to M1 space. M2 because it defines its own
+  meta-model, not entirely MOF compatible. It also allows user
+  extensions with share some very basic similarities with profiles. M1
+  is the core of the work.
+- modeling is a huge domain. Dogen only concerns itself with the code
+  generation aspects of modeling; as such it provides a set of
+  "adapters" that convert models from other technologies (one could
+  say DSLs) into its meta-models. These adapters are
+  hand-crafted/hard-coded and they will always remain that way.
+- Dogen does not and will not concern itself with: a) UIs for modeling
+  (we will always rely on the existing tools) b) automated model
+  transformation via some transformation language (we will always
+  hand-craft them) c) management of the model life-cycle (these will
+  be left to the users).
+- there is a need for a separate product that lives a layer up from
+  Dogen: M3 to M2. This is equivalent to GME. The idea is that we need
+  to define a meta-meta-model and a constraint language. We can then
+  allow users to create their own meta-models.
+- lets call the tool Memod (Meta-modeler).
+- the job of Memod is to do meta-meta-modeling and then modeling
+  according to the defined meta-model. One can imagine Dogen as a
+  special case of this, where we hard-coded the meta-model. One could
+  of course describe Dogen's meta-model in Memod. In fact one could
+  describe all of Dogen's meta-models in Memod (including the ones we
+  adapt). However this is of limited use because there already is a
+  good language to perform modeling in (UML). One vaguely useful use
+  case is to automate the model transformations, but the effort
+  required in describing every single detail of the models and the
+  mapping is equivalent (if not greater) than hand-crafting the
+  model. However, it is useful to have a Memod description of just the
+  Dogen main meta-model (yarn).
+- for other domains Memod would be useful though. Examples: a)
+  finance: we could model all structured products using a financial
+  products meta-model. The rules that describe how each composite
+  product work must be described via the constraint language (is it
+  sufficient?). For example, one could state that a Risk Reversal is
+  made up of two Vanilla options, and describe the constraints in
+  terms of Expiry Date, Strike etc via the language. With this one can
+  create a Finance DSL. The canonical user for this tool would be the
+  structuring desk. b) Computational Neuroscience: NeuroML is a DSL
+  that describes neurons, topologies, etc. One can imagine a UI,
+  similar to NEURON, which allows one to describe specific neurons and
+  neuronal networks.
+- Once we have a Memod meta-model, we could define transformation
+  rules into Dogen's meta-model. Taking finance as an example, if we
+  had a) a Memod representation of the Dogen meta-model b) an instance
+  of the Dogen meta-model with the domain specific concepts
+  (e.g. Financial Products) c) a Memod meta-model for finance and d) a
+  user defined instance of the Memod meta-model for finance,
+  describing structured products we could then code-generate
+  user-defined structured products. Having said that, this still seems
+  like an extremely large amount of work for something that does not
+  change that frequently and could be spec'd and passed over to
+  developers rather than automated. Finally, it would be quite tricky
+  to get it right to the point one could put the output of this
+  process into production.
+*** CANCELLED Consider moving the doc folder into its own branch      :story:
+    CLOSED: [2019-03-15 Fri 08:24]
+
+*Rationale*: in the present setup this is not practical.
+
+At present we are generating builds whenever we update the docs
+(agile, manual, etc). It probably makes more sense to have one or more
+orphan branches with documentation. We can then use git worktrees to
+manage these folders.
+
+*** CANCELLED Add support for XText                                   :story:
+    CLOSED: [2019-03-15 Fri 08:25]
+
+*Rationale*: outside of the bounds of dogen.
+
+XText is a java technology that allows defining simple EBNF grammars
+and then code-generates both the parser and classes to store the
+AST. We could have a spirit equivalent. This is probably not
+horrendously difficult, but we do not have any use cases.
+
+Links:
+
+- [[http://www.eclipse.org/Xtext/][XText site]] and [[https://eclipse.org/Xtext/documentation/][documentation]]
+- [[%5B%5Bhttp://eclipsecon.org/summiteurope2006/presentations/ESE2006-EclipseModelingSymposium12_xTextFramework.pdf%5D%5D][oAW xText: A framework for textual DSLs]]
+- Franca: some IDL language for which there is an XText
+  definition. C++ (spirit) implementation [[https://github.com/martinhaefner/franca][here]].
+
+*** CANCELLED Run "changed" tests only                                :story:
+    CLOSED: [2019-03-15 Fri 08:28]
+
+*Rationale*: this is too complicated for C++.
+
+Random idea: can we have a target that just runs "changed" tests? That
+is, tests that are impacted by the files that were changed since we
+last executed the tests.
+
+For this to work we need to create a file with every execution of
+tests and then use that as a dependency. There must be some prior art
+for this with CMake.
+
+*** CANCELLED Support for transactional writes                        :story:
+    CLOSED: [2019-03-15 Fri 08:31]
+
+*Rationale*: this is not practical. Users should be on version control.
+
+It would be nice if dogen either generated all files or didn't touch
+the directory at all, at least as an option. We could simply generate
+into a temporary directory and then swap them at the end.
+*** CANCELLED Windows build release test failures                      :epic:
+    CLOSED: [2019-03-16 Sat 21:20]
+
+*Rationale*: most of these have been addressed already, many don't
+make sense any longer.
+
+Dia tests:
+
+: [00:27:30] C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppCommon.targets(171,5): error MSB6006: "cmd.exe" exited with code -1073741515. [C:\projects\dogen\build\output\projects\dia\tests\run_dia.tests.vcxproj]
+
+Dia hydrator tests:
+
+: [00:27:31] unknown location : fatal error : in "modeline_group_hydrator_tests/hydrating_emacs_modeline_group_results_in_expected_modelines": class std::runtime_error: Error during test [C:\projects\dogen\build\output\projects\formatters\tests\run_formatters.tests.vcx
+: [00:27:31] proj]
+: [00:27:31]   C:\projects\dogen\projects\formatters\tests\modeline_group_hydrator_tests.cpp(142): last checkpoint: hydrating_emacs_modeline_group_results_in_expected_modelines
+: [00:27:31]
+: [00:27:31]   *** 1 failure is detected in the test module "formatters_tests"
+
+Knit:
+
+: [00:27:35] C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppCommon.targets(171,5): error MSB6006: "cmd.exe" exited with code -1073741515. [C:\projects\dogen\build\output\projects\knit\tests\run_knit.tests.vcxproj]
+: [00:27:35] Done Building Project "C:\projects\dogen\build\output\projects\knit\tests\run_knit.tests.vcxproj" (default targets) -- FAILED.
+
+Stitch:
+: [00:27:36]   C:\projects\dogen\projects\utility\src\test_data\validating_resolver.cpp(39): Throw in function class boost::filesystem::path __cdecl dogen::utility::test_data::validating_resolver::resolve(class boost::filesystem::path)
+: [00:27:36]   Dynamic exception type: class boost::exception_detail::clone_impl<class dogen::utility::filesystem::file_not_found>
+: [00:27:36]   std::exception::what: File not found: C:\projects\dogen\build\output\bin\../test_data\stitch/input/simple_template.stitch
+: [00:27:36] unknown location : fatal error : in "workflow_tests/simple_template_results_in_expected_output": class std::runtime_error: Error during test [C:\projects\dogen\build\output\projects\stitch\tests\run_stitch.tests.vcxproj]
+: [00:27:36]   C:\projects\dogen\projects\stitch\tests\workflow_tests.cpp(48): last checkpoint: simple_template_results_in_expected_output
+: [00:27:36]
+: [00:27:36]   C:\projects\dogen\projects\utility\src\test_data\validating_resolver.cpp(39): Throw in function class boost::filesystem::path __cdecl dogen::utility::test_data::validating_resolver::resolve(class boost::filesystem::path)
+: [00:27:36]   Dynamic exception type: class boost::exception_detail::clone_impl<class dogen::utility::filesystem::file_not_found>
+: [00:27:36]   std::exception::what: File not found: C:\projects\dogen\build\output\bin\../test_data\stitch/input/complex_template.stitch
+: [00:27:36]
+: [00:27:36]   C:\projects\dogen\projects\utility\src\test_data\validating_resolver.cpp(39): Throw in function class boost::filesystem::path __cdecl dogen::utility::test_data::validating_resolver::resolve(class boost::filesystem::path)
+: [00:27:36]   Dynamic exception type: class boost::exception_detail::clone_impl<class dogen::utility::filesystem::file_not_found>
+: [00:27:36]   std::exception::what: File not found: C:\projects\dogen\build\output\bin\../test_data\stitch/input/empty_template.stitch
+: [00:27:36]
+: [00:27:36]   *** 3 failures are detected in the test module "stitch_tests"
+<snip>
+
+Test model sanitizer:
+
+: [00:27:39]   CMake does not need to re-run because C:\projects\dogen\build\output\projects\test_models\test_model_sanitizer\tests\CMakeFiles\generate.stamp is up-to-date.
+: [00:27:39]   Running 127 test cases...
+: [00:27:39] C:/projects/dogen/projects/utility/include/dogen/utility/test/hash_tester.hpp(57): error : in "std_model_tests/validate_hashing": check hasher(a) == hasher(b) has failed [C:\projects\dogen\build\output\projects\test_models\test_model_sanitizer\tests\run_test_model_sanitizer.tests.vcxproj]
+: [00:27:39] C:/projects/dogen/projects/utility/include/dogen/utility/test/hash_tester.hpp(57): error : in "std_model_tests/validate_hashing": check hasher(a) == hasher(b) has failed [C:\projects\dogen\build\output\projects\test_models\test_model_sanitizer\tests\run_te
+: [00:27:39] st_model_sanitizer.tests.vcxproj]
+: [00:27:40]
+: [00:27:40]   *** 2 failures are detected in the test module "test_model_sanitizer_tests"
+
+Yarn.dia:
+
+: [00:27:42]   C:\projects\dogen\projects\utility\src\test_data\validating_resolver.cpp(39): Throw in function class boost::filesystem::path __cdecl dogen::utility::test_data::validating_resolver::resolve(class boost::filesystem::path)
+: [00:27:42]   Dynamic exception type: class boost::exception_detail::clone_impl<class dogen::utility::filesystem::file_not_found>
+: [00:27:42]   std::exception::what: File not found: C:\projects\dogen\build\output\bin\../test_data\yarn.dia/expected/class_in_a_package.diaxml
+: [00:27:42] unknown location : fatal error : in "workflow_tests/class_in_a_package_dia_transforms_into_expected_yarn": class std::runtime_error: Error during test [C:\projects\dogen\build\output\projects\yarn.dia\tests\run_yarn.dia.tests.vcxproj]
+: [00:27:42]   C:\projects\dogen\projects\yarn.dia\tests\workflow_tests.cpp(85): last checkpoint: class_in_a_package_dia_transforms_into_expected_yarn
+
+Yarn.Json
+
+: [00:27:42]   Building Custom Rule C:/projects/dogen/projects/yarn.json/tests/CMakeLists.txt
+: [00:27:42]   CMake does not need to re-run because C:\projects\dogen\build\output\projects\yarn.json\tests\CMakeFiles\generate.stamp is up-to-date.
+: [00:27:42]   Running 12 test cases...
+: [00:27:42]
+: [00:27:42]   C:\projects\dogen\projects\yarn.json\src\types\hydrator.cpp(251): Throw in function class dogen::yarn::intermediate_model __cdecl dogen::yarn::json::hydrator::hydrate(class std::basic_istream<char,struct std::char_traits<char> > &) const
+: [00:27:42]   Dynamic exception type: class boost::exception_detail::clone_impl<class dogen::yarn::json::hydration_error>
+: [00:27:42]   std::exception::what: Failed to parse JSON file<unspecified file>(1): expected value
+: [00:27:42] unknown location : fatal error : in "hydrator_tests/cpp_std_model_hydrates_into_expected_model": class std::runtime_error: Error during test [C:\projects\dogen\build\output\projects\yarn.json\tests\run_yarn.json.tests.vcxproj]
+: [00:27:42]   C:\projects\dogen\projects\yarn.json\tests\hydrator_tests.cpp(386): last checkpoint: cpp_std_model_hydrates_into_expected_model
+
+Yarn:
+
+: [00:27:42] C:/projects/dogen/projects/utility/include/dogen/utility/test/hash_tester.hpp(57): error : in "hashing_tests/validate_hashing": check hasher(a) == hasher(b) has failed [C:\projects\dogen\build\output\projects\yarn\tests\run_yarn.tests.vcxproj]
+: [00:27:42] C:/projects/dogen/projects/utility/include/dogen/utility/test/hash_tester.hpp(57): error : in "hashing_tests/validate_hashing": check hasher(a) == hasher(b) has failed [C:\projects\dogen\build\output\projects\yarn\tests\run_yarn.tests.vcxproj]
+: [00:27:42] C:/projects/dogen/projects/utility/include/dogen/utility/test/hash_tester.hpp(57): error : in "hashing_tests/validate_hashing": check hasher(a) == hasher(b) has failed [C:\projects\dogen\build\output\projects\yarn\tests\run_yarn.tests.vcxproj]
+: [00:27:44]
+: [00:27:44]   *** 3 failures are detected in the test module "yarn_tests"
+
+Utility:
+
+:  Building Custom Rule C:/projects/dogen/projects/utility/tests/CMakeLists.txt
+:  CMake does not need to re-run because C:\projects\dogen\build\output\msvc\Debug\projects\utility\tests\CMakeFiles\generate.stamp is up-to-date.
+:  Running utility.tests
+: C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppCommon.targets(171,5): error MSB6006: "cmd.exe" exited with code -1073741515. [C:\projects\dogen\build\output\msvc\Debug\projects\utility\tests\run_utility.tests.vcxproj]
+: Done Building Project "C:\projects\dogen\build\output\msvc\Debug\projects\utility\tests\run_utility.tests.vcxproj" (default targets) -- FAILED.
+: Done Building Project "C:\projects\dogen\build\output\msvc\Debug\run_windows_green_tests.vcxproj" (default targets) -- FAILED.
+: Build FAILED.
+: "C:\projects\dogen\build\output\msvc\Debug\run_windows_green_tests.vcxproj" (default target) (1) ->
+
+*** CANCELLED Fix the dynamic linker errors in OSX when running tests :story:
+    CLOSED: [2019-03-16 Sat 21:21]
+
+*Rationale*: most of these have been addressed already, many don't
+make sense any longer.
+
+
+At present we are building for OSX but not running the tests. Most of
+the tests should actually pass, if only we could run them. The problem
+is that DYLD_LIBRARY_PATH is not being supplied to make, resulting in
+dynamic linker errors:
+
+: dyld: Library not loaded: /Users/marco/Development/local/lib/libxml2.2.dylib
+:  Referenced from: /Users/travis/build/DomainDrivenConsulting/dogen/build/output/clang/Release/stage/bin/dogen.utility.tests
+:  Reason: Incompatible library version: dogen.utility.tests requires version 12.0.0 or later, but libxml2.2.dylib provides version 10.0.0
+: /bin/sh: line 1:  1692 Trace/BPT trap: 5       /Users/travis/build/DomainDrivenConsulting/dogen/build/output/clang/Release/stage/bin/dogen.utility.tests
+
+We tried both =DYLD_LIBRARY_PATH= and =DYLD_FALLBACK_LIBRARY_PATH=.
+If we do run the tests manually inside the main script we get the
+linking to work, as proved in [[https://travis-ci.org/DomainDrivenConsulting/dogen/jobs/164335824][this build]].
+
+- [[https://forums.developer.apple.com/thread/9233][DYLD_LIBRARY_PATH and make]]: according to this article, fallback
+  should have fixed the problem but didn't.
+
+*** CANCELLED Add support for uploading packages in cloud storage     :story:
+    CLOSED: [2019-03-16 Sat 21:22]
+
+*Rationale*: we are going to just continue relying on BinTray.
+
+We need to upload the packages created by each build to a public
+Google Drive (GDrive) location or to DropBox
+
+- Google drive folder created [[https://drive.google.com/folderview?id%3D0B4sIAJ9bC4XecFBOTE1LZEpINUE&usp%3Dsharing][here]].
+- See [[https://developers.google.com/drive/quickstart-ruby][this article]].
+- [[http://stackoverflow.com/questions/15798141/create-folder-in-google-drive-with-google-drive-ruby-gem][Create folders]] to represent the different types of uploads:
+  =tag_x.y.z=, =last=, =previous=. maybe we should only have latest
+  and tag as this would require no complex logic: if tag create new
+  folder, if latest, delete then create.
+
+We are uploading the tag packages to GitHub already, but ideally we
+should test all packages for all commits.
+
+*** CANCELLED Add Travis support for 32-bits                          :story:
+    CLOSED: [2019-03-16 Sat 21:23]
+
+*Rationale*: the overhead of having more builds is too high (vcpkg
+etc). We will not support 32-bits.
+
+It seems its fairly straightforward to add 32-bit support to Travis,
+as per RapidJSON:
+
+https://github.com/miloyip/rapidjson/blob/master/.travis.yml
+
+*** CANCELLED Enable package installation tests for Linux              :epic:
+    CLOSED: [2019-03-16 Sat 21:23]
+
+*Rationale*: we are presently installing the package after building
+and using dogen to generate hello world. This is sufficient.
+
+Now that we will be using docker, we could create a simple =systemd=
+ctest script that runs as root in a docker container:
+
+- build package and drop them on a well known location;
+- Create a batch script that polls this location for new packages;
+  when one is found run package installer. Looks for files that match
+  a given regular expression (e.g. we need to make sure we match the
+  bitness and the platform)
+- if it finds one, it installs it and runs sanity scripts (see story
+  for sanity scripts).
+- it then uninstalls it and makes sure the docker image is identical
+  to how we started (however that is done in docker)
+
+*** CANCELLED Travis deployment of tags fails                         :story:
+    CLOSED: [2019-03-16 Sat 21:24]
+
+*Rationale*: this has already been addressed.
+
+As per [[https://github.com/travis-ci/travis-ci/issues/2577][issue 2577]] in travis, it does not support wildcards at the
+moment. We need to find another way to upload packages into GitHub
+without using wildcards.
+
+Error:
+
+: dpl.1
+: Installing deploy dependencies
+: Fetching: addressable-2.3.6.gem (100%)
+: Successfully installed addressable-2.3.6
+: Fetching: multipart-post-2.0.0.gem (100%)
+: Successfully installed multipart-post-2.0.0
+: Fetching: faraday-0.9.0.gem (100%)
+: Successfully installed faraday-0.9.0
+: Fetching: sawyer-0.5.5.gem (100%)
+: Successfully installed sawyer-0.5.5
+: Fetching: octokit-3.5.2.gem (100%)
+: Successfully installed octokit-3.5.2
+: 5 gems installed
+: Fetching: mime-types-2.4.3.gem (100%)
+: Successfully installed mime-types-2.4.3
+: 1 gem installed
+: error: could not lock config file .git/config: No such file or directory
+: error: could not lock config file .git/config: No such file or directory
+: dpl.2
+: Preparing deploy
+: Logged in as Marco Craveiro
+: Deploying to repo: DomainDrivenConsulting/dogen
+: Current tag is: v0.56.2767
+: dpl.3
+: Deploying application
+: /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/octokit-3.5.2/lib/octokit/client/releases.rb:86:in `initialize': No such file or directory - stage/pkg/*.deb (Errno::ENOENT)
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/octokit-3.5.2/lib/octokit/client/releases.rb:86:in `new'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/octokit-3.5.2/lib/octokit/client/releases.rb:86:in `upload_asset'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/provider/releases.rb:118:in `block in push_app'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/provider/releases.rb:102:in `each'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/provider/releases.rb:102:in `push_app'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/provider.rb:122:in `block in deploy'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/cli.rb:41:in `fold'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/provider.rb:122:in `deploy'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/cli.rb:32:in `run'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/lib/dpl/cli.rb:7:in `run'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/gems/dpl-1.7.6/bin/dpl:5:in `<top (required)>'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/bin/dpl:23:in `load'
+:     from /home/travis/.rvm/gems/ruby-1.9.3-p550/bin/dpl:23:in `<main>'
+: failed to deploy
+
+We solved this for now by just uploading the application packages.
+
+*** CANCELLED Check that custom targets in CMake have correct dependencies :story:
+    CLOSED: [2019-03-16 Sat 21:26]
+
+*Rationale*: these targets have been removed now it seems.
+
+At present we have a number of custom targets, which create a new Make
+target. These are good because they do not require re-running CMake to
+manage the files in the output directory; however, we do not have the
+correct dependencies between the targets and the target
+dependencies. For example, create_scripts should check to see if any
+script has changed before re-generating the tarball; it seems to have
+no dependencies so it will always regenerate the tarball. We need to:
+
+- check all custom targets and see what their current behaviour is:
+  a) change a dependency and rebuild the target and see if the
+  change is picked up or not; b) change no dependencies and re-run the
+  target and ensure that nothing happens.
+- add dependencies as required.
+*** CANCELLED Add prefetch support to ODB                             :story:
+    CLOSED: [2019-03-16 Sat 21:27]
+
+*Rationale*: this is no longer required.
+
+As per Boris email:
+
+#+begin_quote
+Hm, I am not sure the bulk approach (with a compiler-time pragma) is
+right in this case. There we don't really have a choice since we need
+to know the "batch buffer" size.
+
+But here it is all runtime. Plus, you may want to have different
+prefetch for different queries of the same object. In fact, you
+can already customize it for queries (but not for object loads)
+by using prepared queries (Section 4.5 in the manual):
+
+1. Create prepared query.
+
+2. Get its statement (statement()).
+
+3. Cast it to odb::oracle::select_statement.
+
+4. Call handle() on the result to get OCIStmt*.
+
+5. Set custom OCI_ATTR_PREFETCH_ROWS.
+
+6. Execute the query.
+
+The problems with this approach are: (1) it is tedious and (2) it
+doesn't work for non-query SELECT's (e.g., database::load()). So
+perhaps the way to do it is:
+
+1. Provide prefetch() functions on oracle::database() and
+   oracle::connection() that can be used to modify database-wide
+   and connection-wide prefetch values. Also set it to some
+   reasonable default (say 512?)
+
+2. Provide oracle::select_statement::prefetch() to make the
+   prepared query approach less tedious.
+#+end_quote
+
+*** CANCELLED Consider using a graph in yarn for indexing and other tasks :story:
+    CLOSED: [2019-03-17 Sun 17:47]
+
+*Rationale*: this is far too complex and would be too brittle.
+
+To keep things simple we created a number of specialised indexers,
+each performing a complete loop, recursion, etc over the merged
+model. A better way of doing things would be to do a DAG of the model
+that includes both concepts and objects and then DFS it; at each
+vertex we could plug in a set of indexers, each acting on the
+vertex. We could also have dependencies between the indexers (for
+example concept indexing must take place before property indexing and
+so on). This could also be extended to the quilt models, provided we
+could express dependencies. We just need a simple interface that any
+indexer can implement. Of course we also have to worry about indexers
+which need to see the intermediate results of other indexers.
+
+In addition, for this to work properly we need to remove all of the
+frontend workflow processing and make these work off of the merged
+model. Property expansion for example could be done by splitting
+modules by model. The good thing about this approach is that we could
+setup the graph in such a way that any type that does not link back to
+the target model can be dropped so we would do very little work for
+these - other than the original front end loading. Its not easy to
+avoid loading models which we will not use because we only know which
+models we need after resolution, and that requires having the model
+loaded.
+
+We did something similar with the consumer interface, which was never
+used. The graph could probably be reused as is. See:
+
+: 5db6524 * sml: remove consumer workflow and associated classes
+
+One possible approach is to use [[http://www.nuget.org/packages/RxCpp/][Rx]]. Each of the indexers is a stream
+which does some processing. Streams are linked to each other based on
+the indexer dependencies, such that we pass on the processed types
+once we are finished with it. They are passed on up all the way to
+quilt indexers. We need to come up with a streams architecture linking
+all indexers. We then use the graph to determine the order in which
+yarn type are being passed in to the stream pipeline.
+
+More thoughts: what we really want is to have a "transfomers" pipeline
+("indexers" seems too limited a name) that is designed to generate the
+inputs for the formatters. This means that by the end of the pipeline
+we end up with properties, settings and the yarn type. And of course
+we could take this one step further and then say that the formatters
+themselves are also in the pipeline and the ultimate result of the
+pipeline is a file.
+
+We should not tackle this task until we have support for a few
+languages other than C++ because we may be hacking things for C++
+which wont work for those languages. It will be much harder to change
+the code once we have a graph + pipeline.
+*** CANCELLED Consider generating the diagram targets from files in directory :story:
+    CLOSED: [2019-03-19 Tue 06:26]
+
+*Rationale*: superseded by projects.
+
+Once references are supplied as meta-data, we could conceivably create
+a loop in CMake to generates all of the knitting targets based on the
+contents of the diagrams directory.
+*** CANCELLED Generator usage in template tests needs to be cleaned   :story:
+    CLOSED: [2019-03-20 Wed 06:57]
+
+*Rationale*: canned tests have been removed.
+
+At present some template tests in =utility/test= ask for a
+generator, other for instances. We should only have one way of doing
+this. We should probably always ask for generators as this means less
+boiler plate code in tests. It does mean a fixed dependency on
+generators.
+*** CANCELLED Unordered map of user type in package fails             :story:
+    CLOSED: [2019-03-21 Thu 06:10]
+
+*Rationale*: no longer an issue (we have maps of name to element in
+coding).
+
+We seem to have a strange bug whereby creating a
+=std::unordered_map<E1,E2>= fails sanity checks if E1 is in a
+package. This appears to be some misunderstanding in namespacing
+rules.
+
+*** CANCELLED Type resolution in referenced models                    :story:
+    CLOSED: [2019-03-21 Thu 06:28]
+
+*Rationale*: we are now processing all types in resolver.
+
+We did a hack a while ago whereby if a type is of a referenced model,
+we don't bother resolving it. As an optimisation this is probably
+fine, but however, it hides a bug which is that we fail to resolve
+properties of referenced models properly. The reason why is that these
+properties have a blank model name. We could simply force it to be the
+name of the referenced model but then it would fail to find
+built-ins. So we leave it blank during the dia to sml translation and
+then if it gets to the resolver, it will not be able to resolve the
+type. We could add yet another layer of try-logic (e.g. try every
+model name in the references) but it seems that this is just another
+hack to solve a more fundamental problem. The sort of errors one gets
+due to this are like so:
+
+: 2013-06-29 23:10:34.831009 [ERROR] [sml.resolver] Object has property with undefined type:  { "__type__": "dogen::sml::qname", "model_name": "", "external_module_path": [ ] , "module_path": [ ] , "type_name": "qname", "meta_type": { "__type__": "meta_types", "value": "invalid" } }
+: 2013-06-29 23:10:34.831294 [FATAL] [dogen] Error: /home/marco/Development/kitanda/dogen/projects/sml/src/types/resolver.cpp(202): Throw in function dogen::sml::qname dogen::sml::resolver::resolve_partial_type(const dogen::sml::qname&) const
+: Dynamic exception type: boost::exception_detail::clone_impl<dogen::sml::resolution_error>
+*** CANCELLED Cross model referencing tests                           :story:
+    CLOSED: [2019-03-21 Thu 06:38]
+
+*Rationale*: dogen models are now used in system tests.
+
+At present we do not have any tests were a object in one model makes use
+of types defined in another model. This works fine but we should
+really have tests at the dogen level.
+
+*** CANCELLED Incorrect application of formatter templates in field expansion :story:
+    CLOSED: [2019-03-21 Thu 06:40]
+
+*Rationale*: story bit-rotted; we have these formatters and things seem
+to be working just fine.
+
+At present we are applying formatter templates across all formatters
+in C++ mode; this only makes sense because we do not have CMake and
+ODB formatters. However, when these are added we will need to filter
+the formatters further. For example, C++ formatters (both headers and
+implementation) need inclusion dependencies but CMake files don't.
+
+*** CANCELLED Dump container of files in formatter workflow           :story:
+    CLOSED: [2019-03-21 Thu 06:45]
+
+*Rationale*: addressed with tracing.
+
+At present we are polluting the log file with lots of entries for each
+file name in formatter's workflow. Ideally we want a single entry with
+a container of file names. The problem is, if we dump the entire
+container we will also get the file contents. But if we create a
+temporary container we will have to pay the cost even though log level
+may not be enabled.
+
+*** CANCELLED "Assistant" type found in test model                    :story:
+    CLOSED: [2019-03-21 Thu 06:51]
+
+*Rationale*: model no longer exists.
+
+We seem to be generating an "Assistant" type on the =primitve= test model:
+
+: 2017-02-01 10:28:44.513705 [DEBUG] [quilt.cpp.formattables.helper_expander] Procesing element: <dogen><test_models><primitive><Assistant>
+
+Figure out what this type is and why its appearing on this test model.
+*** CANCELLED Consider having a =transformator=                       :story:
+    CLOSED: [2019-03-25 Mon 09:41]
+
+*Rationale*: does not add any value.
+
+In "Aspect-Oriented Model-Driven Software Product Line Engineering",
+Groher and Voelter name the top-level owner of transforms
+"transformator", in symmetry with the "generator". We could probably
+have these classes.

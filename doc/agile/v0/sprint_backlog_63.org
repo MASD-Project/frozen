@@ -1,0 +1,380 @@
+#+title: Sprint Backlog 63
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission
+
+Start implementing types header formatter using stitch.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-04-13 Mon 07:09]
+
+| Headline                                                                | Time    |       |       |
+|-------------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                            | *32:40* |       |       |
+|-------------------------------------------------------------------------+---------+-------+-------|
+| Active                                                                  |         | 32:40 |       |
+| COMPLETED Sprint and product backlog grooming                           |         |       |  0:28 |
+| COMPLETED Add support for forward declarations                          |         |       |  0:42 |
+| COMPLETED Create a selector for path derivatives data structures        |         |       |  0:58 |
+| COMPLETED Refactor field definition selection into its own class        |         |       |  1:58 |
+| COMPLETED Split merged model expansion from individual models expansion |         |       |  3:58 |
+| COMPLETED Create a "populate includes operation"                        |         |       | 13:01 |
+| COMPLETED Consider creating a include list sorter                       |         |       |  1:37 |
+| COMPLETED Create the stitch and stitcher projects                       |         |       |  1:31 |
+| COMPLETED Create a =stitcher= skeleton                                  |         |       |  1:09 |
+| COMPLETED Fix streaming of strings in variants                          |         |       |  1:02 |
+| COMPLETED Add basic functionality to stitch                             |         |       |  4:17 |
+| POSTPONED Implement a basic formatter in stitch                         |         |       |  1:59 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-04-13 Mon 07:08]
+    CLOCK: [2015-04-10 Fri 16:40]--[2015-04-10 Fri 16:47] =>  0:07
+    CLOCK: [2015-04-10 Fri 14:50]--[2015-04-10 Fri 15:03] =>  0:13
+    CLOCK: [2015-03-29 Sun 22:32]--[2015-03-29 Sun 22:40] =>  0:08
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-04-13 Mon 07:08]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Clean-up hierarchical support in dynamic                :story:
+    CLOSED: [2015-03-30 Mon 07:29]
+
+At present there are a number of limitations on how we have
+implemented hierarchical support:
+
+- fields from one model will get mixed up with other models;
+- fields from one formatter in one facet will get mixed up with fields
+  from other formatters in other facets with the same name.
+
+We need to improve on the indexer. While we're at it, we should do a
+few other assorted clean-ups:
+
+- rename workflow (since we now have two);
+- rename content extensions since this is a selector in disguise;
+
+*** COMPLETED Add support for forward declarations                    :story:
+    CLOSED: [2015-04-07 Tue 14:45]
+    CLOCK: [2015-04-07 Tue 14:03]--[2015-04-07 Tue 14:45] =>  0:42
+
+We need to have the basic skeleton for forward declarations in order
+to be able to access the forward declaration include directives.
+
+*** COMPLETED Create a selector for path derivatives data structures  :story:
+    CLOSED: [2015-04-07 Tue 15:43]
+    CLOCK: [2015-04-07 Tue 14:45]--[2015-04-07 Tue 15:43] =>  0:58
+
+We need some kind of helper class to help us find data in the path
+derivatives data structures.
+
+*** COMPLETED Refactor field definition selection into its own class  :story:
+    CLOSED: [2015-04-09 Thu 16:19]
+    CLOCK: [2015-04-09 Thu 16:18]--[2015-04-09 Thu 17:32] =>  1:14
+    CLOCK: [2015-04-09 Thu 15:34]--[2015-04-09 Thu 16:18] =>  0:44
+
+Create a simple selection utility class to house all of the canned
+queries we have on repositories.
+
+*** COMPLETED Split merged model expansion from individual models expansion :spike:
+    CLOSED: [2015-04-09 Thu 19:25]
+    CLOCK: [2015-04-09 Thu 18:49]--[2015-04-09 Thu 19:26] =>  0:37
+    CLOCK: [2015-04-09 Thu 18:25]--[2015-04-09 Thu 18:49] =>  0:24
+    CLOCK: [2015-04-09 Thu 18:14]--[2015-04-09 Thu 18:24] =>  0:10
+    CLOCK: [2015-04-09 Thu 17:44]--[2015-04-09 Thu 18:08] =>  0:24
+    CLOCK: [2015-04-09 Thu 17:33]--[2015-04-09 Thu 17:44] =>  0:11
+    CLOCK: [2015-04-07 Tue 21:38]--[2015-04-07 Tue 21:40] =>  0:02
+    CLOCK: [2015-04-07 Tue 21:22]--[2015-04-07 Tue 21:31] =>  0:09
+    CLOCK: [2015-04-07 Tue 17:15]--[2015-04-07 Tue 17:45] =>  0:30
+    CLOCK: [2015-04-07 Tue 15:43]--[2015-04-07 Tue 17:14] =>  1:31
+
+It is not possible to perform the inclusion dependencies expansion
+before we merge. This is because there are no relationships yet. We
+cannot compute the relationships until we merge. However, the path
+related expansions must be done before merging. Thus we must split the
+expansion into a two-step process: before merging and after merging.
+
+Tasks:
+
+- split path derivatives workflow from inclusion dependencies workflow
+- create a expansion types enum:  =stand_alone_model= and
+  =merged_model=. Add this property to expander interface.
+- Each expansion type has its own graph. Workflow is executed with an
+  expansion type.
+- Create a inclusion dependencies workflow that computes all of the
+  inclusion dependencies against qname and formatter name. We no
+  longer need expansion inputs.
+- Create a inclusion dependencies expander that uses the result of its
+  workflow to setup the inclusion dependencies.
+
+*** COMPLETED Create a "populate includes operation"                  :story:
+    CLOSED: [2015-04-09 Thu 23:08]
+    CLOCK: [2015-04-09 Thu 22:14]--[2015-04-09 Thu 23:08] =>  0:54
+    CLOCK: [2015-04-07 Tue 13:24]--[2015-04-07 Tue 14:03] =>  0:39
+    CLOCK: [2015-04-06 Mon 19:09]--[2015-04-06 Mon 20:23] =>  1:14
+    CLOCK: [2015-04-04 Sat 16:30]--[2015-04-04 Sat 17:17] =>  0:47
+    CLOCK: [2015-04-03 Fri 16:17]--[2015-04-03 Fri 17:05] =>  0:48
+    CLOCK: [2015-04-02 Thu 16:04]--[2015-04-02 Thu 18:02] =>  1:58
+    CLOCK: [2015-04-02 Thu 15:03]--[2015-04-02 Thu 16:03] =>  1:00
+    CLOCK: [2015-04-01 Wed 16:44]--[2015-04-01 Wed 18:12] =>  1:28
+    CLOCK: [2015-03-30 Mon 17:05]--[2015-03-30 Mon 18:03] =>  0:58
+    CLOCK: [2015-03-30 Mon 16:25]--[2015-03-30 Mon 17:04] =>  0:39
+    CLOCK: [2015-03-30 Mon 14:58]--[2015-03-30 Mon 15:06] =>  0:08
+    CLOCK: [2015-03-30 Mon 13:13]--[2015-03-30 Mon 14:01] =>  0:48
+    CLOCK: [2015-03-30 Mon 12:56]--[2015-03-30 Mon 13:13] =>  0:17
+    CLOCK: [2015-03-30 Mon 11:32]--[2015-03-30 Mon 12:55] =>  1:23
+
+This operation needs to be implemented by every formatter. It queries
+the model to look for all the types it depends on and obtains the
+corresponding include paths from them. It places them in a formatter
+specific list of includes. It depends on the inclusion path operation.
+
+Notes:
+
+- we need to remember the model after setup.
+- we could use a base inclusion expander that sets up the formatter
+  properties and remembers the model, etc. Derived expanders just
+  need to provide an expansion method. We could even have a utility
+  method to set the field back into the dynamic object.
+- massive impedance mismatch between the boilerplate formatters and
+  the inclusion dependency meta-data. We should probably just use a
+  =std::list<std::string> to represent includes at the formatter
+  level, but we need to check. Actually no one is yet using this code
+  so we can change it at will.
+- we need to simplify the story around include paths. There are two
+  use cases: the include path ready to be stamped as an include
+  statement and the header guards. The include path for the include
+  statement could come with delimiters (<>, "", etc). The header
+  guards however cannot. So due to this we have split the two things
+  so we can recombine them later. However, this just generates a whole
+  load of unnecessary complexity. To make matters worse, there is only
+  a need to compute header guards for dogen types since the user is
+  not expected to overload them (one can, possibly, configure its
+  generation but not supply an override). Perhaps the cleaner solution
+  is to have a header guards field and a include directive field, both
+  generated as part of the path expansion. Formatter settings extract
+  both.
+
+Tasks:
+
+- remove delimiter field, create a header guards field.
+- rename include path field to include directive; add delimiters to
+  all usages of this field.
+- populate header guards in path expander, copying code from the
+  formatter (upper-casing etc.).
+- update header guards in boilerplate to take in a string, and to do
+  nothing to the supplied header guard string (other than outputting
+  it).
+- when generating include directive field for dogen types, add the
+  appropriate delimiters.
+- change include formatter to use a list of strings.
+
+Notes:
+
+- Actually we have gone the wrong way about inclusion. The expander is
+  not at the individual formatter level, but instead is a global
+  expander for all formatters. It receives some kind of "computation"
+  function from each formatter that, given a map of (qname,
+  formatter) to inclusion directive, produces a set of inclusion
+  dependencies. This is done on setup. Then, for each object, all the
+  expander does is to look up the qname to retrieve the inclusion
+  dependencies. The function can be available in the formatter
+  interface to make our life easier; =compute_inclusion_dependencies=?
+  On further thought we probably need to specialise this function for
+  each entity type as we need to receive the entity to compute as well
+  as the map above. Internally (in the CPP) we can create a class to
+  handle the work. We also need access to the dynamic object to figure
+  out what formatters are enabled etc. This is done internally using a
+  selector.
+- Consider renaming setup to =prepare=? Not sure if it makes a lot of
+  difference.
+
+*** COMPLETED Implement new settings factories with caching           :story:
+    CLOSED: [2015-04-10 Fri 14:57]
+
+- create a field definition selector;
+- get factories to use the selector on construction and setup a cache
+  for all required fields. These could be const copies of the fields.
+- stop using has_field followed by get content - we now know that the
+  field either existed originally or was defaulted correctly.
+
+For type settings:
+
+:    using namespace dynamic::schema;
+:    using fd = field_definitions;
+:    const field_selector fs(o);
+:
+:    if (fs.has_field(fd::enabled()))
+:        s.enabled(fs.get_boolean_content(fd::enabled()));
+
+Actually, do we really need to cache? We just need the qualified name
+of the field which is how the object stores its fields.
+
+*** COMPLETED Consider creating a include list sorter                 :story:
+    CLOSED: [2015-04-10 Fri 16:07]
+    CLOCK: [2015-04-10 Fri 16:26]--[2015-04-10 Fri 16:40] =>  0:14
+    CLOCK: [2015-04-10 Fri 16:07]--[2015-04-10 Fri 16:26] =>  0:19
+    CLOCK: [2015-04-10 Fri 15:03]--[2015-04-10 Fri 16:07] =>  1:04
+
+There are a few cases where we want the include files to be ordered in
+certain ways (in one case the code breaks otherwise; FIXME search
+backlog for it). In general we probably want to ensure the includes
+are ordered in a specific way like we do with regular source code,
+such as c files first, then standard c++ files, then boost, etc. We
+should have a function that given a list of includes performs this
+ordering.
+
+*** COMPLETED Create the stitch and stitcher projects                 :story:
+    CLOSED: [2015-04-11 Sat 08:45]
+    CLOCK: [2015-04-11 Sat 08:25]--[2015-04-11 Sat 08:45] =>  0:20
+    CLOCK: [2015-04-10 Fri 16:51]--[2015-04-10 Fri 17:59] =>  1:08
+    CLOCK: [2015-04-10 Fri 16:47]--[2015-04-10 Fri 16:50] =>  0:03
+
+We need to create a simple model for stitch and a command line utility
+around it. [[https://msdn.microsoft.com/en-us/library/ff697256.aspx][T4 terminology]]:
+
+#+begin_quote
+A T4 template consists of declarations, enclosed in <#@...#> angle
+brackets, followed by a sequence of text strings and
+scriptlets. Scriptlets are fragments of C# or Visual Basic contained
+in <#= …#> or <#+ …#> angle brackets. T4 templates follow the
+following overall syntax:
+
+- A declaration of the language used by the scriptlets. All scriptlets
+  in a template must be written in the same language.
+- A sequence of so called “property processor” declarations that
+  define template properties use to pass parameters to the template.
+- A series of arbitrary text strings and scriptlets. The scriptlets
+  are interspersed with the text, with scriptlets used to dynamically
+  generate specific text as defined by the scriptlet expression.
+- A sequence of declarations of template-specific methods. These
+  methods can be called from scriptlets within the template.
+#+end_quote
+
+*** COMPLETED Create a =stitcher= skeleton                            :story:
+    CLOSED: [2015-04-11 Sat 11:24]
+    CLOCK: [2015-04-11 Sat 10:15]--[2015-04-11 Sat 11:24] =>  1:09
+
+We need to clone =knitter= into =stitcher= and rename namespaces etc.
+
+*** COMPLETED Fix streaming of strings in variants                    :spike:
+    CLOSED: [2015-04-11 Sat 19:11]
+    CLOCK: [2015-04-11 Sat 18:09]--[2015-04-11 Sat 19:11] =>  1:02
+
+It seems that a boost variant with a string does not get streamed
+properly. We need to fix this as we need it for stitch.
+
+*** COMPLETED Add basic functionality to stitch                       :story:
+    CLOSED: [2015-04-12 Sun 16:34]
+    CLOCK: [2015-04-12 Sun 14:47]--[2015-04-12 Sun 15:10] =>  0:23
+    CLOCK: [2015-04-12 Sun 14:16]--[2015-04-12 Sun 14:46] =>  0:30
+    CLOCK: [2015-04-11 Sat 19:39]--[2015-04-11 Sat 20:27] =>  0:48
+    CLOCK: [2015-04-11 Sat 19:11]--[2015-04-11 Sat 19:31] =>  0:20
+    CLOCK: [2015-04-11 Sat 18:00]--[2015-04-11 Sat 18:09] =>  0:09
+    CLOCK: [2015-04-11 Sat 14:42]--[2015-04-11 Sat 16:06] =>  1:24
+    CLOCK: [2015-04-11 Sat 14:07]--[2015-04-11 Sat 14:24] =>  0:17
+    CLOCK: [2015-04-11 Sat 11:25]--[2015-04-11 Sat 11:51] =>  0:26
+
+We need to implement stitch as per analysis in backlog, with a few
+simple unit tests.
+
+We could make use of the meta-data to build the copyright etc
+information when instantiating a stitch template. We need to split the
+fields into knitter and stitch fields so that we do not load the wrong
+fields.
+
+*** POSTPONED Implement a basic formatter in stitch                   :story:
+    CLOSED: [2015-04-13 Mon 07:08]
+    CLOCK: [2015-04-12 Sun 18:34]--[2015-04-12 Sun 19:33] =>  0:59
+    CLOCK: [2015-04-12 Sun 16:30]--[2015-04-12 Sun 17:30] =>  1:00
+
+We need to create a formatter in stitch that can implement the trivial
+use cases we have covered with the parser. We must also start creating
+a stitch template for the formatter and perhaps implement the stitch
+output manually just to give stitch a target.
+
+Actually, a stitch template does not make a lot of sense. This is
+because stitch has nothing to add to the output other than what it
+reads from its object model. So the template would contain nothing but
+c++ code, with very little text.
+
+*** POSTPONED Create a "supported" expander                           :story:
+    CLOSED: [2015-04-13 Mon 07:08]
+
+This needs a bit more analysis. The gist of it is that not all types
+support all formatters. We need a way to determine if a formatter is
+not supported. This probably should be inferred by a "is dogen model"
+property (see backlog); e.g. non-dogen models need their types to have
+an inclusion setup in order to be "supported", otherwise they should
+default to "not-supported". However the "supported" flag is populated,
+we then need to take into account relationships and propagate this
+flag across the model such that, if a type =A= in a dogen model has a
+property of a type =B= from a non-dogen model which does not support a
+given formatter =f=, then =A= must also not support =f=.
+
+In order to implement this feature we need to:
+
+- update the SML grapher to take into account relationships
+  (properties that the class has) as well as inheritance.
+- we must only visit related types if we ourselves do not have values
+  for all supported fields.
+- we also need a visitor that detects cycles; when a cycle is found we
+  simply assume that the status of the revisited class is true (or
+  whatever the default value of "supported" is) and we write a warning
+  to the log file. We should output the complete path of the cycle.
+- users can override this by setting supported for all formatters
+  where there are cycles.
+- we could perhaps have a bitmask by qname; we could start by
+  generating all bitmasks for all qnames and setting them to default
+  value. We could then find all qnames that have supported set to
+  false and update the corresponding bitmasks. Then we could use the
+  graph to loop through the qnames and "and" the bitmasks of each
+  qname with the bitmasks of their related qnames. The position of
+  each field is allocated by the algorithm (e.g. the first "supported"
+  field is at position 0 and so on). Actually the first position of
+  the bitmask could be used to indicate if the bitmask has already
+  been processed or not. In the presence of a cycle force it to true.
+- we need a class that takes the SML model and computes the supported
+  bitmasks for each qname; the supported expander then simply takes
+  this (perhaps as part of the expansion context), looks up for the
+  current qname and uses the field list to set the flags
+  appropriately.
+- we should remove all traces of supported from a settings
+  perspective; supported and multi-level enabled are just artefacts of
+  the meta-data. From a settings perspective, there is just a
+  formatter level (common formatter settings) enabled which determines
+  whether the formatter is on or off. How that flag came to be
+  computed is not relevant outside the expansion process. This also
+  means we can have simpler or more complex policies as time allows us
+  improve on this story; provided we can at least set all flags to
+  enabled we can move forward.
+
+*** POSTPONED Compute managed directories from knitting options       :story:
+    CLOSED: [2015-04-13 Mon 07:08]
+
+At present the backend is returning empty managed directories. This
+means housekeeping will fail in the new world. We need to change the
+interface of this method to take in the knitting options and return
+the managed directories.
+
+This is not entirely trivial. At present the managed directories are
+computed in the locator. It takes into account split project, etc to
+come up with all the directories used by the backend. We need to make
+these decisions during path expansion, expect we only need manged
+directories for the root object. However we do not know which object
+is the root object at present, during the expansion. We could identify
+it via the QName and the SML model in context thought. We could then
+populate the managed directories as a text collection. We then need
+some settings and a factory to pull out the managed directories from
+the root object. This could be done in =managed_directories=, by
+having an SML model as input.
+
+** Deprecated

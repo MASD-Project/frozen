@@ -1,0 +1,398 @@
+#+title: Sprint Backlog 40
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 40.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:05]
+
+| Headline                                                              | Time    |       |       |
+|-----------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                          | *34:32* |       |       |
+|-----------------------------------------------------------------------+---------+-------+-------|
+| Development Stories Implemented                                       |         | 34:32 |       |
+| COMPLETED Sprint and product backlog grooming                         |         |       |  1:11 |
+| COMPLETED Update manual                                               |         |       |  0:19 |
+| COMPLETED Add more tests to =concept_indexer=                         |         |       |  3:22 |
+| COMPLETED Plug =concept_indexer= into workflow                        |         |       |  2:14 |
+| COMPLETED Checking that a model hasn't changed by copying it is wrong |         |       |  0:13 |
+| COMPLETED Create a =property_indexer= and add tests                   |         |       | 13:31 |
+| COMPLETED Inclusion is broken with extractor changes                  |         |       |  1:27 |
+| COMPLETED Use relationship container for leaves                       |         |       |  1:06 |
+| COMPLETED Use relationship container for keys                         |         |       |  0:52 |
+| COMPLETED Remove =abstract_object= inheritance tree                   |         |       |  9:04 |
+| COMPLETED Rename enumerators for visitor relationships                |         |       |  0:58 |
+| CANCELLED Create a =relationship_indexer= and add tests               |         |       |  0:15 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2013-12-16 Mon 07:25]
+    CLOCK: [2013-12-16 Mon 07:11]--[2013-12-16 Mon 07:25] =>  0:14
+    CLOCK: [2013-12-13 Fri 18:17]--[2013-12-13 Fri 18:19] =>  0:02
+    CLOCK: [2013-12-13 Fri 08:38]--[2013-12-13 Fri 08:40] =>  0:02
+    CLOCK: [2013-12-13 Fri 07:58]--[2013-12-13 Fri 08:07] =>  0:09
+    CLOCK: [2013-12-13 Fri 07:13]--[2013-12-13 Fri 07:25] =>  0:12
+    CLOCK: [2013-12-11 Wed 07:53]--[2013-12-11 Wed 08:06] =>  0:13
+    CLOCK: [2013-12-11 Wed 07:19]--[2013-12-11 Wed 07:26] =>  0:07
+    CLOCK: [2013-12-07 Sat 18:40]--[2013-12-07 Sat 18:47] =>  0:07
+    CLOCK: [2013-12-03 Tue 08:01]--[2013-12-03 Tue 08:06] =>  0:05
+
+*** COMPLETED Update manual                                           :story:
+   CLOSED: [2013-12-16 Mon 07:26]
+    CLOCK: [2013-12-06 Fri 08:25]--[2013-12-06 Fri 08:39] =>  0:14
+    CLOCK: [2013-12-06 Fri 08:20]--[2013-12-06 Fri 08:25] =>  0:05
+
+Use compilation downtime to update the manual.
+
+*** COMPLETED Add more tests to =concept_indexer=                     :story:
+    CLOSED: [2013-12-05 Thu 08:44]
+**** COMPLETED Finish adding unit tests for modeled concepts           :task:
+     CLOSED: [2013-12-05 Thu 08:06]
+     CLOCK: [2013-12-05 Thu 17:44]--[2013-12-05 Thu 18:10] =>  0:26
+     CLOCK: [2013-12-05 Thu 07:56]--[2013-12-05 Thu 08:06] =>  0:10
+     CLOCK: [2013-12-04 Wed 18:07]--[2013-12-04 Wed 18:49] =>  0:42
+     CLOCK: [2013-12-04 Wed 07:48]--[2013-12-04 Wed 08:12] =>  0:24
+     CLOCK: [2013-12-03 Tue 21:09]--[2013-12-03 Tue 21:29] =>  0:20
+     CLOCK: [2013-12-03 Tue 08:06]--[2013-12-03 Tue 08:48] =>  0:42
+
+**** COMPLETED Add negative unit tests                                 :task:
+     CLOSED: [2013-12-05 Thu 08:44]
+     CLOCK: [2013-12-05 Thu 08:06]--[2013-12-05 Thu 08:44] =>  0:38
+
+- concept that refines non-existing concept
+- object that models non-existing concept
+- object with non-existing parent
+
+*** COMPLETED Concept resolution is not particularly clean            :story:
+    CLOSED: [2013-12-05 Thu 23:42]
+
+At present resolver is tasked with converting the hierarchy of
+concepts into a container with a set of =qnames= that represent the
+concepts the type models. It takes into account both the inheritance
+from a concept perspective (e.g. refinement) and the type-related
+inheritance (e.g. if our parent already models a concept we do not
+have to model it too). However, the code is very hacky and needs to be
+cleaned up.
+
+*** COMPLETED Plug =concept_indexer= into workflow                    :story:
+    CLOSED: [2013-12-07 Sat 18:42]
+**** COMPLETED Minor refactor to workflow                              :task:
+     CLOSED: [2013-12-05 Thu 23:26]
+     CLOCK: [2013-12-05 Thu 23:20]--[2013-12-05 Thu 23:25] =>  0:05
+     CLOCK: [2013-12-05 Thu 23:01]--[2013-12-05 Thu 23:20] =>  0:19
+     CLOCK: [2013-12-05 Thu 18:12]--[2013-12-05 Thu 18:35] =>  0:23
+
+- tidy-up method names
+- avoid mixed activities
+
+**** COMPLETED Add concept indexing activity                           :task:
+     CLOSED: [2013-12-06 Fri 07:49]
+     CLOCK: [2013-12-05 Thu 23:25]--[2013-12-05 Thu 23:59] =>  0:34
+
+**** COMPLETED Remove =modeled_concepts= from abstract object          :task:
+     CLOSED: [2013-12-06 Fri 12:39]
+     CLOCK: [2013-12-06 Fri 08:39]--[2013-12-06 Fri 08:41] =>  0:02
+     CLOCK: [2013-12-06 Fri 07:55]--[2013-12-06 Fri 08:20] =>  0:25
+     CLOCK: [2013-12-06 Fri 07:43]--[2013-12-06 Fri 07:51] =>  0:08
+
+- deal with the fallout
+
+**** COMPLETED Remove resolver concept indexing                        :task:
+     CLOSED: [2013-12-07 Sat 18:42]
+     CLOCK: [2013-12-06 Fri 19:50]--[2013-12-06 Fri 20:08] =>  0:18
+
+- activate new activity
+
+*** COMPLETED Populate new concept properties in dia to sml transformer :story:
+    CLOSED: [2013-12-07 Sat 18:42]
+
+- populate =is_parent= and =is_child=
+
+*** COMPLETED Checking that a model hasn't changed by copying it is wrong :spike:
+    CLOSED: [2013-12-11 Wed 20:22]
+    CLOCK: [2013-12-10 Tue 08:40]--[2013-12-10 Tue 08:45] =>  0:05
+    CLOCK: [2013-12-10 Tue 08:31]--[2013-12-10 Tue 08:39] =>  0:08
+
+In the past we used to rely on making a copy of a model prior to doing
+a transformation (named "expected" or e) and then checking that the
+"actual" result of the transformation was equal/not equal to
+"expected". We used to rely on the copy constructor for this because
+there were no pointers in the model. With the introduction of shared
+pointers, this logic became faulty because now expected and actual
+have some pointers that point to the same locations in memory. We do
+not yet support cloning, so there is no easy solution for this. We
+need to review all the code that does this and on a case-by-case basis
+figure out how to generate "expected".
+
+We could also consider implementing cloning, if this proves too hard.
+
+*** COMPLETED Create a =property_indexer= and add tests               :story:
+    CLOSED: [2013-12-13 Fri 00:17]
+**** COMPLETED Implement indexing of properties
+     CLOSED: [2013-12-07 Sat 20:09]
+     CLOCK: [2013-12-07 Sat 19:03]--[2013-12-07 Sat 20:09] =>  1:06
+     CLOCK: [2013-12-07 Sat 18:48]--[2013-12-07 Sat 19:02] =>  0:14
+
+**** COMPLETED Create a flags class in mock factory                   :spike:
+     CLOSED: [2013-12-09 Mon 08:44]
+     CLOCK: [2013-12-09 Mon 17:43]--[2013-12-09 Mon 17:48] =>  0:05
+     CLOCK: [2013-12-09 Mon 07:59]--[2013-12-09 Mon 08:49] =>  0:50
+
+- fixes borked clang build and makes the use of flags in factory a bit
+  more sensible.
+
+**** COMPLETED Add support for concept indexing in mock factory       :spike:
+     CLOSED: [2013-12-10 Tue 07:57]
+     CLOCK: [2013-12-09 Mon 23:42]--[2013-12-10 Tue 00:22] =>  0:40
+     CLOCK: [2013-12-09 Mon 18:00]--[2013-12-09 Mon 18:42] =>  0:42
+
+- blocker: we require the model to have been indexed at the concept level in
+  order to test the property indexer, so we need to update the mock
+  factory.
+
+**** COMPLETED Add unit tests                                          :task:
+     CLOSED: [2013-12-11 Wed 18:28]
+     CLOCK: [2013-12-11 Wed 18:16]--[2013-12-11 Wed 18:28] =>  0:12
+     CLOCK: [2013-12-11 Wed 17:56]--[2013-12-11 Wed 18:16] =>  0:20
+     CLOCK: [2013-12-11 Wed 08:18]--[2013-12-11 Wed 08:41] =>  0:23
+     CLOCK: [2013-12-11 Wed 08:07]--[2013-12-11 Wed 08:18] =>  0:11
+     CLOCK: [2013-12-10 Tue 17:24]--[2013-12-10 Tue 18:01] =>  0:37
+     CLOCK: [2013-12-10 Tue 17:15]--[2013-12-10 Tue 17:22] =>  0:07
+     CLOCK: [2013-12-10 Tue 07:57]--[2013-12-10 Tue 08:29] =>  0:32
+     CLOCK: [2013-12-07 Sat 20:09]--[2013-12-07 Sat 21:23] =>  1:14
+
+**** COMPLETED Plug into workflow                                      :task:
+     CLOSED: [2013-12-11 Wed 18:40]
+     CLOCK: [2013-12-11 Wed 18:28]--[2013-12-11 Wed 18:40] =>  0:12
+
+**** COMPLETED Concept properties were incorrectly added to all properties :spike:
+     CLOSED: [2013-12-11 Wed 19:12]
+     CLOCK: [2013-12-11 Wed 18:52]--[2013-12-11 Wed 19:12] =>  0:20
+
+We should have added them to local properties.
+
+**** COMPLETED Remove all usages of =parent_name= and =original_parent_name= :spike:
+     CLOSED: [2013-12-12 Thu 23:20]
+     CLOCK: [2013-12-12 Thu 22:53]--[2013-12-12 Thu 23:20] =>  0:27
+     CLOCK: [2013-12-12 Thu 21:50]--[2013-12-12 Thu 22:52] =>  1:02
+     CLOCK: [2013-12-12 Thu 17:40]--[2013-12-12 Thu 18:17] =>  0:37
+     CLOCK: [2013-12-12 Thu 07:53]--[2013-12-12 Thu 08:30] =>  0:37
+
+**** COMPLETED Replace C++ property handling code                      :task:
+     CLOSED: [2013-12-13 Fri 00:01]
+     CLOCK: [2013-12-12 Thu 23:30]--[2013-12-13 Fri 00:01] =>  0:31
+     CLOCK: [2013-12-12 Thu 23:25]--[2013-12-12 Thu 23:30] =>  0:05
+     CLOCK: [2013-12-11 Wed 23:53]--[2013-12-12 Thu 00:40] =>  0:47
+     CLOCK: [2013-12-11 Wed 23:32]--[2013-12-11 Wed 23:53] =>  0:21
+     CLOCK: [2013-12-11 Wed 20:00]--[2013-12-11 Wed 20:12] =>  0:12
+     CLOCK: [2013-12-11 Wed 19:12]--[2013-12-11 Wed 19:20] =>  0:08
+     CLOCK: [2013-12-11 Wed 18:41]--[2013-12-11 Wed 18:52] =>  0:11
+
+**** COMPLETED Refactor =properties_for_concept= in extractor         :spike:
+     CLOSED: [2013-12-13 Fri 00:17]
+     CLOCK: [2013-12-13 Fri 00:00]--[2013-12-13 Fri 00:17] =>  0:17
+
+**** COMPLETED Document the property indexer                           :task:
+     CLOSED: [2013-12-13 Fri 08:38]
+     CLOCK: [2013-12-13 Fri 08:07]--[2013-12-13 Fri 08:38] =>  0:31
+
+*** COMPLETED Implement the property cache in SML                     :story:
+    CLOSED: [2013-12-13 Fri 07:17]
+
+
+Indexers and the indexed fields now take on the role of the property
+cache.
+
+*** COMPLETED Validate inheritance graph does a lot of double-checks  :story:
+    CLOSED: [2013-12-13 Fri 07:21]
+
+In method =validate_inheritance_graph=, we should really just check
+that the parent exists since we know all objects get checked
+anyway. this results in a lot of double-checks for no reason.
+
+*** COMPLETED Inclusion is broken with extractor changes              :spike:
+    CLOSED: [2013-12-14 Sat 19:24]
+
+When codegening with latest, a number of includes are missing from
+SML. After bisection, the problem was detected with commit 0157e96.
+
+**** COMPLETED Revert changes and push it                              :task:
+     CLOSED: [2013-12-14 Sat 18:17]
+     CLOCK: [2013-12-14 Sat 17:49]--[2013-12-14 Sat 18:17] =>  0:28
+
+Revert extractor back to commit c83bf2d and ship fix.
+
+**** COMPLETED Re-aply changes and try to fix borked code
+     CLOSED: [2013-12-14 Sat 19:24]
+     CLOCK: [2013-12-14 Sat 19:18]--[2013-12-14 Sat 19:24] =>  0:06
+     CLOCK: [2013-12-14 Sat 19:01]--[2013-12-14 Sat 19:18] =>  0:17
+     CLOCK: [2013-12-14 Sat 18:43]--[2013-12-14 Sat 19:01] =>  0:18
+     CLOCK: [2013-12-14 Sat 18:25]--[2013-12-14 Sat 18:43] =>  0:18
+
+Create a test that reproduces the problem and make the test go green.
+
+It appears this is not a bug but a feature: we are now removing header
+files from parent concepts we shouldn't have been including in the
+first place.
+
+We need to regenerate SML with these changes and make sure we have a
+working code generator.
+
+*** COMPLETED Use relationship container for leaves                   :story:
+    CLOSED: [2013-12-14 Sat 20:31]
+
+Update transformer to use relationship container rather than leaves
+property.
+
+**** COMPLETED Start populating the leaves relationship from Dia to SML :task:
+     CLOSED: [2013-12-13 Fri 18:40]
+     CLOCK: [2013-12-13 Fri 18:20]--[2013-12-13 Fri 18:42] =>  0:22
+
+**** COMPLETED Update SML to C++ transformer to use relationships instead of leaves :task:
+     CLOSED: [2013-12-14 Sat 17:49]
+     CLOCK: [2013-12-14 Sat 17:27]--[2013-12-14 Sat 17:49] =>  0:22
+
+**** COMPLETED Remove leaves from abstract object and fix the fallout  :task:
+     CLOSED: [2013-12-14 Sat 20:31]
+     CLOCK: [2013-12-14 Sat 20:09]--[2013-12-14 Sat 20:31] =>  0:22
+
+*** COMPLETED Use relationship container for keys                     :story:
+    CLOSED: [2013-12-14 Sat 23:05]
+**** COMPLETED Add keys to relationship container in injector and update tests :story:
+     CLOSED: [2013-12-14 Sat 21:19]
+     CLOCK: [2013-12-14 Sat 20:38]--[2013-12-14 Sat 21:19] =>  0:41
+
+**** COMPLETED Remove all usages of legacy versioned and unversioned properties :task:
+     CLOSED: [2013-12-14 Sat 21:30]
+     CLOCK: [2013-12-14 Sat 21:19]--[2013-12-14 Sat 21:30] =>  0:11
+
+*** COMPLETED Remove =abstract_object= inheritance tree               :spike:
+    CLOSED: [2013-12-16 Mon 07:22]
+
+After the refactorings done for relationships, it became obvious we
+are carrying the pain of inheritance on the =abstract_object= side for
+no obvious gain. Most of the information can be reduced to a new
+enumeration and adding a few properties into a main class with only a
+little loss in type safety (e.g. =identity= should only be available
+to entities). This approach is similar to what we've done for
+relationships, so its the right thing to do.
+
+**** COMPLETED Collapse all entity classes into just entity           :task:
+    CLOSED: [2013-12-14 Sat 23:20]
+
+With the refactoring of the keys we no longer need separate entity
+classes, so remove them.
+
+***** COMPLETED Remove =keyed_entity=                                  :task:
+      CLOSED: [2013-12-14 Sat 23:06]
+      CLOCK: [2013-12-14 Sat 22:45]--[2013-12-14 Sat 23:05] =>  0:20
+      CLOCK: [2013-12-14 Sat 22:03]--[2013-12-14 Sat 22:30] =>  0:42
+      CLOCK: [2013-12-14 Sat 21:46]--[2013-12-14 Sat 22:03] =>  0:17
+      CLOCK: [2013-12-14 Sat 21:31]--[2013-12-14 Sat 21:44] =>  0:13
+
+***** COMPLETED Remove =abstract_entity=                               :task:
+      CLOSED: [2013-12-14 Sat 23:20]
+      CLOCK: [2013-12-14 Sat 23:07]--[2013-12-14 Sat 23:19] =>  0:12
+
+**** COMPLETED Create object class and remove factory and repository  :task:
+    CLOSED: [2013-12-15 Sun 00:19]
+
+As part of the collapsing all variations of abstract object into just
+object exercise, we need to create the =object= class and get rid of
+factory and repository - these were never finished so should be easy
+to get rid of.
+
+***** COMPLETED Create the object class                                :task:
+      CLOSED: [2013-12-14 Sat 23:30]
+      CLOCK: [2013-12-14 Sat 23:22]--[2013-12-14 Sat 23:30] =>  0:08
+
+***** COMPLETED Remove factory                                         :task:
+      CLOSED: [2013-12-14 Sat 23:58]
+      CLOCK: [2013-12-14 Sat 23:31]--[2013-12-14 Sat 23:58] =>  0:27
+
+***** COMPLETED Remove repository                                      :task:
+      CLOSED: [2013-12-15 Sun 00:19]
+      CLOCK: [2013-12-14 Sat 23:59]--[2013-12-15 Sun 00:19] =>  0:20
+
+**** COMPLETED Remove entity and move all properties into abstract object :task:
+    CLOSED: [2013-12-15 Sun 01:27]
+    CLOCK: [2013-12-15 Sun 00:33]--[2013-12-15 Sun 01:27] =>  0:54
+    CLOCK: [2013-12-15 Sun 00:20]--[2013-12-15 Sun 00:33] =>  0:13
+
+Continue the consolidation of all the descendants of abstract object
+by getting rid of entity.
+
+**** COMPLETED Remove services and replace it with object             :task:
+    CLOSED: [2013-12-15 Sun 02:16]
+    CLOCK: [2013-12-15 Sun 01:29]--[2013-12-15 Sun 02:16] =>  0:47
+
+Continue the consolidation of all the descendants of abstract object
+by getting rid of services.
+
+**** COMPLETED Remove value object and replace it with object         :task:
+    CLOSED: [2013-12-15 Sun 03:13]
+    CLOCK: [2013-12-15 Sun 02:17]--[2013-12-15 Sun 03:13] =>  0:56
+
+Continue the consolidation of all the descendants of abstract object
+by getting rid of value object.
+
+**** COMPLETED Services are now being added to registrar              :task:
+    CLOSED: [2013-12-15 Sun 11:41]
+    CLOCK: [2013-12-15 Sun 11:20]--[2013-12-15 Sun 11:41] =>  0:21
+
+We broke leave processing with recent changes - ensure services don't
+end up in registrar.
+
+**** COMPLETED Remove abstract object use of shared pointer in objects container :task:
+     CLOSED: [2013-12-15 Sun 16:13]
+***** COMPLETED Remove abstract object class
+      CLOSED: [2013-12-15 Sun 13:26]
+      CLOCK: [2013-12-15 Sun 11:41]--[2013-12-15 Sun 13:26] =>  1:45
+
+***** COMPLETED Remove shared pointer in objects container
+      CLOSED: [2013-12-15 Sun 16:13]
+      CLOCK: [2013-12-15 Sun 13:30]--[2013-12-15 Sun 15:13] =>  1:43
+      CLOCK: [2013-12-15 Sun 13:27]--[2013-12-15 Sun 13:28] =>  0:01
+
+*** COMPLETED Rename enumerators for visitor relationships            :story:
+     CLOSED: [2013-12-15 Sun 17:53]
+     CLOCK: [2013-12-15 Sun 16:33]--[2013-12-15 Sun 17:20] =>  0:47
+     CLOCK: [2013-12-15 Sun 16:15]--[2013-12-15 Sun 16:26] =>  0:11
+
+We need to have enumerators that reflect both ways of the visitation
+relationship - e.g. the visitor visits and objects are visited by.
+
+*** CANCELLED Create a =relationship_indexer= and add tests           :story:
+    CLOSED: [2013-12-16 Mon 07:25]
+**** IMPLEMENTATION Create the class skeleton with tests               :task:
+     CLOCK: [2013-12-13 Fri 18:07]--[2013-12-13 Fri 18:17] =>  0:10
+     CLOCK: [2013-12-13 Fri 08:43]--[2013-12-13 Fri 08:48] =>  0:05
+
+**** Plug into workflow                                                :task:
+**** Add indexing of associations                                      :task:
+** Deprecated Development Stories
+*** CANCELLED Add content to the introduction in manual               :story:
+    CLOSED: [2013-12-13 Fri 07:22]
+
+New understanding: This story was too generic and we already have the
+rolling add content to manual.
+
+*** CANCELLED Remove generation types in SML                          :story:
+    CLOSED: [2013-12-13 Fri 07:24]
+
+New understanding: There will no longer be any language specific models, so
+generation types has to stay in SML.
+
+Old understanding: SML knows not of code generation so we shouldn't
+have a generation type in it. What we should have instead is a way of
+identifying a type as belonging to the target model or not. In a way,
+its qname already does that.
+
+Partial generation is actually a c++ model decision based on how much
+features it supports.

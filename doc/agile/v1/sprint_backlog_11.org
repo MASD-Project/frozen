@@ -1,0 +1,1280 @@
+#+title: Sprint Backlog 11
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- resolve the refactoring problem with lots of duplicated types;
+- work on the masd profile.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-02-26 Tue 15:36]
+| <75>                                                      |          |        |        |       |
+| Headline                                                  | Time     |        |        |     % |
+|-----------------------------------------------------------+----------+--------+--------+-------|
+| *Total time*                                              | *227:45* |        |        | 100.0 |
+|-----------------------------------------------------------+----------+--------+--------+-------|
+| Stories                                                   | 227:45   |        |        | 100.0 |
+| Active                                                    |          | 227:45 |        | 100.0 |
+| Edit release notes for previous sprint                    |          |        |   2:03 |   0.9 |
+| Sprint and product backlog grooming                       |          |        |   6:39 |   2.9 |
+| Work on MASD theory                                       |          |        | 113:38 |  49.9 |
+| Rename models to fit MASD architecture                    |          |        |   4:56 |   2.2 |
+| Read up on framework and API design                       |          |        |   0:57 |   0.4 |
+| Analyse the state of the mess of refactors                |          |        |   6:27 |   2.8 |
+| Create the =orchestration= model                          |          |        |   4:15 |   1.9 |
+| Update vcpkg across all operative systems                 |          |        |   4:35 |   2.0 |
+| Update C# reference models to latest dogen                |          |        |   0:42 |   0.3 |
+| Convert the utility model into a regular dogen model      |          |        |   7:27 |   3.3 |
+| Improve support for clang-cl builds                       |          |        |   2:02 |   0.9 |
+| Move generation properties into meta-data                 |          |        |   9:26 |   4.1 |
+| Disabling facet globally and enabling locally fails       |          |        |   2:21 |   1.0 |
+| References to types in top-level namespace do not resolve |          |        |   0:51 |   0.4 |
+| Create a colour palette test model                        |          |        |   1:09 |   0.5 |
+| Create a single binary for all of dogen                   |          |        |  38:46 |  17.0 |
+| Setup a nightly build for Dogen                           |          |        |   3:53 |   1.7 |
+| Great meta-data rename                                    |          |        |   6:00 |   2.6 |
+| Remove the need for =dia.comment= tag                     |          |        |   0:12 |   0.1 |
+| Use tracing options in existing code                      |          |        |   2:25 |   1.1 |
+| Rename profile header only                                |          |        |   0:06 |   0.0 |
+| Throw on profiles that refer to invalid fields            |          |        |   1:06 |   0.5 |
+| Dogen's vcpkg export for OSX was created from master      |          |        |   0:46 |   0.3 |
+| Fix clang-cl warnings                                     |          |        |   5:07 |   2.2 |
+| Model references are not transitive                       |          |        |   0:21 |   0.2 |
+| Move top-level transforms into orchestration              |          |        |   1:35 |   0.7 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2018-10-29 Mon 10:46]
+     :LOGBOOK:
+     CLOCK: [2018-10-29 Mon 10:47]--[2018-10-29 Mon 10:52] =>  0:05
+     CLOCK: [2018-10-29 Mon 10:24]--[2018-10-29 Mon 10:46] =>  0:22
+     CLOCK: [2018-10-29 Mon 09:27]--[2018-10-29 Mon 10:23] =>  0:56
+     CLOCK: [2018-10-29 Mon 08:46]--[2018-10-29 Mon 09:26] =>  0:40
+     :END:
+
+ Add github release notes for previous sprint.
+
+Title: Dogen v1.0.10, "Lucira"
+
+#+begin_src markdown
+![Lucira](http://www.redeangola.info/wp-content/uploads/2016/06/roteiro_lucira_pedro-carreno_5-580x361.jpg)
+_Lucira fishing village, Namibe province, Angola. [(C) 2016 Rede Angola](http://www.redeangola.info/roteiros/lucira/)_.
+
+# Overview
+
+This sprint brought the infrastructural work to a close. Much was achieved, though mainly relevant to the development process. As always, you can get the gory details in [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_10.org), but the below has the highlights.
+
+## Complete the vcpkg transition
+
+There were still a number of issues to mop-up including proper OSX build support, removing all references to conan (the previous packaging system) and fixing a number of warnings that resulted from the build settings on vcpkg. We have now fully transitioned to vcpkg and we're already experiencing the benefits of the new package management system: adding new packages across all operative systems now takes a couple of hours (the time it takes to rebuild the vcpkg export in three VMs). However, not all packages are available in vcpkg and not all packages that are available build cleanly on all our supported platforms, so we haven't reached nirvana just yet.
+
+## Other build improvements
+
+In parallel to the vcpkg transition we also cleaned up most warnings, resulting in very clean builds on [CDash](https://my.cdash.org/index.php?project=MASD+Project+-+Dogen). The only warnings we see are real warnings that need to be addressed. We have tried moving to ```/W4``` and even ```Wall``` on MSVC but quickly discovered that [it isn't feasible at present](https://github.com/Microsoft/vcpkg/issues/4577), so we are using the compiler default settings until the issues we raised are addressed.
+
+Sadly, we've had to ignore all failing tests across all platforms for now (thus taking a further hit on code coverage). This had to be done because at present the tests do not provide enough information for us to understand why they are failing when looking at the Travis/AppVeyor logs. Since reproducing things locally is just too expensive, we need to rewrite these tests to make them easy to troubleshoot from CI logs. This will be done as part of the code generation of model tests.
+
+A final build "improvement" was the removal of facets that were used only to test the code generator, such as hashing, serialisation etc. This has helped immensely in terms of the build time outs but the major downside is we've lost yet another significant source of testing. It seems the only way forward is to create a nightly build that exercises all features of the code generator and runs on our machines - we just do not have enough time on Travis / AppVeyor to compile non-essential code. We still appear to hit occasional timeouts, but these are much less frequent.
+
+## Code coverage
+
+We've lacked code coverage for a very long time, and this has been a pressing need because we need to know which parts of the generated code are not being exercised. We finally managed to get it working thanks to the amazing [kcov](https://github.com/SimonKagstrom/kcov). It is far superior to gcov and previous alternative approaches, requiring very little work to set up. Unfortunately how coverage numbers are very low now due to the commenting out of many unit tests to resolve the build times issues. However, the great news is we can now monitor the coverage as we re-introduce the tests. Sadly, the code coverage story on C# is still weak as we do not seem to be able to generate any information at present (likely due to NUnit shadowing). This will have to be looked at in the future.
+
+We now have support for both [Codecov](https://codecov.io/gh/MASD-Project/dogen) and [Coveralls](https://coveralls.io/github/MASD-Project/dogen?branch=master), which appear to give us different results.
+
+##  C++ 17 support
+
+One of the long time desires has been to migrate from C++ 14 to C++ 17 so that we can use the new features. However, this migration was blocked due to the difficulties of upgrading packages across all platforms. With the completion of the vcpkg story, we finally had all the building blocks in place to move to C++ 17, which was achieved successfully this sprint. This now means we can start to make use of ```ranges```, ```string_view``` and all the latest developments. The very first feature we've introduced is nested namespaces, described below.
+
+## Project naming clean-up
+
+Now we've settled on the new standard namespaces structure, as defined by the [Framework Design Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/names-of-namespaces), we had to update all projects to match. We've also made the build targets match this structure, as well as the folders in the file system, making them all consistent. Since we had to update the CMake files, we started to make them a bit more modern - but we only scratched the surface.
+
+## Defining a Dogen API
+
+As part of the work with Framework Design Guidelines, we've created a model to define the product level API and tested it via scenarios. The API is much cleaner and suitable for interoperability (e.g. SWIG) as well as for the code generation of the remotable interfaces.
+
+# User visible changes
+
+The main feature added this sprint was the initial support for C++ 17. You can now set your standard to this version:
+
+```
+#DOGEN quilt.cpp.standard=c++-17
+```
+
+At present the only difference is how nested namespaces are handled. Using our annotations class as an example, prior to enabling C++ 17 we had:
+
+```
+namespace masd
+namespace dogen
+namespace annotations {
+<snip>
+} } }
+```
+
+Now we generate the following code:
+
+```
+namespace masd::dogen::annotations {
+<snip>
+}
+```
+
+# Next Sprint
+
+We have reached a bit of a fork in Dogen's development: we have got some good ideas on how to address the fundamental architectural problems, but these require very significant surgery into the core of Dogen and its not yet clear if this can be achieved in an incremental manner. On the other hand, there are a number of important stories that need to be implemented in order to get us in a good shape (such as sorting out the testing story). Hard decisions will have to be made in the next sprint.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.10_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.10/dogen_1.0.10_amd64-applications.deb)
+- [dogen-1.0.10-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.10/dogen-1.0.10-Darwin-x86_64.dmg)
+- [dogen-1.0.10-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/dogen-1.0.10-Windows-AMD64.msi)
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.#+end_src
+
+ - [[https://twitter.com/MarcoCraveiro/status/1051785972206247936][Tweet]]
+ - [[https://www.linkedin.com/feed/update/urn:li:activity:6457553749215899648/][LinkedIn]]
+ - [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/1056856688983187456][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6462624611979841536][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+     :LOGBOOK:
+     CLOCK: [2019-02-24 Sun 09:35]--[2019-02-24 Sun 10:42] =>  1:07
+     CLOCK: [2019-02-21 Thu 13:01]--[2019-02-21 Thu 13:20] =>  0:19
+     CLOCK: [2019-02-19 Tue 13:05]--[2019-02-19 Tue 13:16] =>  0:11
+     CLOCK: [2019-02-15 Fri 17:45]--[2019-02-15 Fri 17:52] =>  0:07
+     CLOCK: [2019-02-15 Fri 11:46]--[2019-02-15 Fri 11:55] =>  0:09
+     CLOCK: [2019-02-15 Fri 09:50]--[2019-02-15 Fri 09:53] =>  0:03
+     CLOCK: [2019-02-13 Wed 10:42]--[2019-02-13 Wed 11:04] =>  0:22
+     CLOCK: [2019-02-13 Wed 09:53]--[2019-02-13 Wed 10:03] =>  0:10
+     CLOCK: [2019-02-11 Mon 11:28]--[2019-02-11 Mon 11:37] =>  0:09
+     CLOCK: [2019-02-09 Sat 06:50]--[2019-02-09 Sat 06:54] =>  0:04
+     CLOCK: [2019-02-09 Sat 06:11]--[2019-02-09 Sat 06:19] =>  0:08
+     CLOCK: [2019-02-08 Fri 13:41]--[2019-02-08 Fri 14:02] =>  0:21
+     CLOCK: [2019-02-06 Wed 11:51]--[2019-02-06 Wed 12:10] =>  0:19
+     CLOCK: [2018-11-22 Thu 10:21]--[2018-11-22 Thu 11:25] =>  1:01
+     CLOCK: [2018-11-19 Mon 09:10]--[2018-11-19 Mon 11:01] =>  1:51
+     CLOCK: [2018-10-29 Mon 08:30]--[2018-10-29 Mon 08:45] =>  0:15
+     :END:
+
+ Updates to sprint and product backlog.
+
+*** COMPLETED Work on MASD theory                                     :story:
+    CLOSED: [2018-11-19 Mon 11:35]
+    :LOGBOOK:
+    CLOCK: [2018-11-16 Fri 16:07]--[2018-11-16 Fri 17:07] =>  1:00
+    CLOCK: [2018-11-16 Fri 13:28]--[2018-11-16 Fri 15:00] =>  1:32
+    CLOCK: [2018-11-16 Fri 09:12]--[2018-11-16 Fri 12:54] =>  3:42
+    CLOCK: [2018-11-15 Thu 18:02]--[2018-11-15 Thu 19:29] =>  1:27
+    CLOCK: [2018-11-15 Thu 13:20]--[2018-11-15 Thu 17:05] =>  3:45
+    CLOCK: [2018-11-15 Thu 09:20]--[2018-11-15 Thu 12:06] =>  2:46
+    CLOCK: [2018-11-15 Thu 09:11]--[2018-11-15 Thu 09:18] =>  0:07
+    CLOCK: [2018-11-14 Wed 13:15]--[2018-11-14 Wed 18:15] =>  5:00
+    CLOCK: [2018-11-14 Wed 08:12]--[2018-11-14 Wed 12:15] =>  4:03
+    CLOCK: [2018-11-13 Tue 14:02]--[2018-11-13 Tue 17:02] =>  3:00
+    CLOCK: [2018-11-13 Tue 09:00]--[2018-11-13 Tue 12:09] =>  3:09
+    CLOCK: [2018-11-12 Mon 13:25]--[2018-11-12 Mon 17:35] =>  4:10
+    CLOCK: [2018-11-12 Mon 09:04]--[2018-11-12 Mon 12:09] =>  4:10
+    CLOCK: [2018-11-10 Sat 14:10]--[2018-11-10 Sat 17:50] =>  3:40
+    CLOCK: [2018-11-09 Fri 14:05]--[2018-11-09 Fri 18:10] =>  4:05
+    CLOCK: [2018-11-09 Fri 08:22]--[2018-11-09 Fri 12:30] =>  4:08
+    CLOCK: [2018-11-08 Thu 13:40]--[2018-11-08 Thu 17:22] =>  3:42
+    CLOCK: [2018-11-08 Thu 08:15]--[2018-11-08 Thu 12:22] =>  9:07
+    CLOCK: [2018-11-07 Wed 13:10]--[2018-11-07 Wed 18:29] =>  5:19
+    CLOCK: [2018-11-07 Wed 08:15]--[2018-11-07 Wed 12:21] =>  4:06
+    CLOCK: [2018-11-06 Tue 08:15]--[2018-11-06 Tue 10:39] =>  2:24
+    CLOCK: [2018-11-05 Mon 14:25]--[2018-11-05 Mon 18:20] =>  3:55
+    CLOCK: [2018-11-05 Mon 08:30]--[2018-11-05 Mon 12:20] =>  3:50
+    CLOCK: [2018-11-04 Sun 14:00]--[2018-11-04 Sun 18:00] =>  4:00
+    CLOCK: [2018-11-03 Sat 07:30]--[2018-11-03 Sat 11:20] =>  3:50
+    CLOCK: [2018-11-02 Fri 13:50]--[2018-11-02 Fri 18:20] =>  4:30
+    CLOCK: [2018-11-02 Fri 10:01]--[2018-11-02 Fri 12:19] =>  2:18
+    CLOCK: [2018-11-01 Thu 15:45]--[2018-11-01 Thu 18:16] =>  2:31
+    CLOCK: [2018-11-01 Thu 10:10]--[2018-11-01 Thu 12:43] =>  2:33
+    CLOCK: [2018-10-31 Wed 16:27]--[2018-10-31 Wed 17:45] =>  1:18
+    CLOCK: [2018-10-31 Wed 15:00]--[2018-10-31 Wed 15:08] =>  0:08
+    CLOCK: [2018-10-31 Wed 12:02]--[2018-10-31 Wed 14:59] =>  2:57
+    CLOCK: [2018-10-31 Wed 08:28]--[2018-10-31 Wed 11:07] =>  2:39
+    CLOCK: [2018-10-30 Tue 17:14]--[2018-10-30 Tue 18:31] =>  1:17
+    CLOCK: [2018-10-30 Tue 13:36]--[2018-10-30 Tue 15:08] =>  1:32
+    CLOCK: [2018-10-30 Tue 08:55]--[2018-10-30 Tue 12:05] =>  3:10
+    CLOCK: [2018-10-29 Mon 15:32]--[2018-10-29 Mon 18:10] =>  2:38
+    CLOCK: [2018-10-29 Mon 12:35]--[2018-10-29 Mon 14:08] =>  1:33
+    CLOCK: [2018-10-29 Mon 10:53]--[2018-10-29 Mon 11:35] =>  0:42
+    :END:
+
+Work on defining the theory for MASD:
+
+- update latex templates.
+- update API scenarios.
+- finish foundations chapter.
+
+*** COMPLETED Rename input models directory to models                 :story:
+    CLOSED: [2018-11-22 Thu 10:30]
+
+*Rationale*: Already done.
+
+We need to move the dogen project to the new directory layout whereby
+all models are kept in the =models= directory.
+
+*** COMPLETED ODB source files are generated when ODB is off          :story:
+    CLOSED: [2019-02-04 Mon 11:49]
+
+Even when the ODB facet is off, we still get the following in CMake:
+
+: set(odb_files "")
+: file(GLOB_RECURSE odb_files RELATIVE
+:   "${CMAKE_CURRENT_SOURCE_DIR}/"
+:   "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx")
+: set(files ${files} ${odb_files})
+
+This should only be generated if ODB is on.
+
+Actually the problem is slightly more complicated. We are only adding
+these lines if ODB is on, but however, we may have switched ODB on but
+not defined classes with ODB stereotypes. In this case we do not
+generate any pragmas, and thus no ODB files. However, the ODB flag is
+still on so we add the above file inclusion. To make this in the most
+clean possible manner, we'd have to check to see if any ODB files were
+generated to determine if there is a need to add them. However, this
+is probably non-trivial because we only have a list of files after
+template expansion. The simplest way may be to do a transform that
+looks for ODB stereotypes and marks a flag at model level.
+
+Actually we already had solved this problem:
+
+:        if (a.is_odb_facet_enabled() && !c.odb_targets().targets().empty()) {
+
+We can reuse this machinery.
+
+*** COMPLETED Split ODB executable from ODB libraries in CMake        :story:
+    CLOSED: [2019-02-04 Mon 11:49]
+
+In order to compile on Travis using vcpkg, we need to detect the ODB
+executable separately from the ODB libraries. We have the following
+cases:
+
+- if ODB facet is off, no ODB related code should be emitted.
+- if ODB facet is on, it is the responsibility of the containing
+  project to ensure that at least the ODB libraries have been found
+  (or that the project has been excluded from the build). We should
+  refuse to continue if they are not present.
+- if the ODB compiler has not been found, we should not include the
+  ODB targets.
+
+*** COMPLETED SQLite backend is misspelled                            :story:
+    CLOSED: [2019-02-04 Mon 12:08]
+
+At present we are calling SQLite =sqllite=. Fix this.
+
+*** COMPLETED Rename models to fit MASD architecture                  :story:
+    CLOSED: [2019-02-06 Wed 09:42]
+    :LOGBOOK:
+    CLOCK: [2018-11-23 Fri 11:40]--[2018-11-23 Fri 11:57] =>  0:17
+    CLOCK: [2018-11-23 Fri 10:19]--[2018-11-23 Fri 11:39] =>  1:20
+    CLOCK: [2018-11-23 Fri 09:02]--[2018-11-23 Fri 10:18] =>  1:16
+    CLOCK: [2018-11-22 Thu 15:16]--[2018-11-22 Thu 15:17] =>  0:01
+    CLOCK: [2018-11-22 Thu 13:14]--[2018-11-22 Thu 15:16] =>  2:02
+    :END:
+
+We now have the following top-level models:
+
+- injection
+- coding
+- generation
+- extraction
+- tracing
+
+We need to update the models to match this.
+
+*** COMPLETED Read up on framework and API design                     :story:
+    CLOSED: [2019-02-06 Wed 09:42]
+    :LOGBOOK:
+    CLOCK: [2018-11-22 Thu 09:55]--[2018-11-22 Thu 10:20] =>  0:25
+    CLOCK: [2018-11-19 Mon 11:02]--[2018-11-19 Mon 11:34] =>  0:32
+    :END:
+
+Now that we are creating a top-level API for Dogen we should really
+read up on books about good API design.
+
+Namespacing guideline:
+
+- company | project
+- product | technology
+- feature
+- subnamespace
+
+So in our case, =masd::dogen= and =masd::cpp_ref_impl=. We are
+violating the guideline on no abbreviations with ref_impl but
+=cpp_reference_implementation= seems a tad long.
+
+It seems we have several types of classes:
+
+- interfaces
+- abstract base classes
+- values
+- objects where data dominates and behaviours are small or trivial
+- objects where behaviour dominates and data is small or trivial
+- static classes
+
+These should be identifiable at the meta-model level, with appropriate
+names.
+
+*** COMPLETED Analyse the state of the mess of refactors              :story:
+    CLOSED: [2019-02-06 Wed 12:02]
+    :LOGBOOK:
+    CLOCK: [2019-02-06 Wed 14:40]--[2019-02-06 Wed 16:01] =>  1:21
+    CLOCK: [2019-02-06 Wed 09:39]--[2019-02-06 Wed 11:50] =>  2:11
+    CLOCK: [2018-11-29 Thu 09:46]--[2018-11-29 Thu 10:02] =>  0:16
+    CLOCK: [2018-11-28 Wed 14:55]--[2018-11-28 Wed 16:22] =>  1:27
+    CLOCK: [2018-11-28 Wed 14:30]--[2018-11-28 Wed 14:54] =>  0:24
+    CLOCK: [2018-11-28 Wed 13:10]--[2018-11-28 Wed 13:43] =>  0:33
+    CLOCK: [2018-11-27 Tue 11:48]--[2018-11-27 Tue 12:03] =>  0:15
+    :END:
+
+The first task is to try to abort the OOP refactors that we made in
+the past.
+
+Notes:
+
+- some properties were moved into element and are now being used. They
+  no longer exist in the formatters types.
+- some properties were moved into the generation model but are not
+  being used.
+- the best approach is to unwind *all* of the refactoring work. If we
+  can get to a place were generation space is again totally decoupled
+  from coding space, we can then at least start to work towards
+  finding commonalities between generation space models.
+
+Tasks:
+
+- delete all types that are not being used at present.
+- move all properties that were moved from formattables into element
+  back to formattables. Actually this cannot be done because we
+  refactored these types a fair bit. They are no longer compatible
+  with formatables without a lot of surgery.
+- move dynamic transforms back to formattables / fabric transforms.
+
+Important conclusions:
+
+- there is no such thing as "fabric". All metamodel elements that were
+  defined at the generation level are really coding entities. It does
+  not matter that some of them may be specific to a TS, because TSs
+  are cross-cutting concerns; they will appear at every point in the
+  pipeline. The key thing is the metamodel elements are not
+  "generational concepts". That is, they do not appear only after we
+  moved from coding space into generation space (facet expansion).
+- the generational model has a dependency on the coding model, but its
+  a "soft-dependency". Generational model deals with all concepts from
+  generational space. Some of these may require information from
+  coding space, but that's the only connection.
+- the extractional model takes the generational representation and
+  instantiates artefacts. Again, TSs are part of the extractional
+  model. There is a "conversion model" that takes us from generational
+  space to extractional space.
+
+*** COMPLETED Create the =orchestration= model                        :story:
+    CLOSED: [2019-02-06 Wed 15:36]
+    :LOGBOOK:
+    CLOCK: [2018-11-27 Tue 08:51]--[2018-11-27 Tue 11:47] =>  3:56
+    CLOCK: [2018-11-26 Mon 17:26]--[2018-11-26 Mon 18:22] =>  0:56
+    CLOCK: [2018-11-26 Mon 17:02]--[2018-11-26 Mon 17:25] =>  0:23
+    :END:
+
+Create a model with the top-level transforms.
+
+*** COMPLETED Create the =generation= model                           :story:
+    CLOSED: [2019-02-08 Fri 13:51]
+
+*Rationake*: model has been created. The approach has changed and we
+have stories to cover it.
+
+Create a new model called =generation= and move all code-generation
+related class to it.
+
+We need to create classes for element properties and make model have a
+collection that is a pair of element and element properties. We need a
+good name for this pair:
+
+- extended element
+- augmented element
+- decorated element: though not using the decorator pattern; also, we
+  already have decoration properties so this is confusing.
+
+Alternatively we could just call it =element= and make it contain a
+modeling element.
+
+Approach:
+
+- create a new generation model, copying across all of the meta-model
+  and transform classes from yarn. Get the model to transform from
+  endomodel to generation model.
+- augment formattables with the new element properties. Supply this
+  data via the context or assistant.
+
+Problems:
+
+- all of the transforms assume access to the modeling element means
+  access to the generation properties. However, with the introduction
+  of the generation element we now have a disconnect. For example, we
+  sometimes sort and bucket the elements, and then modify them; this
+  no longer works with generation elements because these are not
+  pointers. It would be easier to make the generation properties a
+  part of the element. This is an ongoing discussion we've had since
+  the days of formattables. However, in formattables we did write all
+  of the transforms to take into account the formattable contained
+  both the element and the formattable properties, whereas now we need
+  to update all transforms to fit this approach. This is a lot more
+  work. The quick hack is to slot in the properties directly into the
+  element as some kind of "opaque properties". We could create a base
+  class =opaque_properties= and then have a container of these in
+  element. However, to make it properly extensible, the only way is to
+  make it a unordered set of pointers.
+- actually the right solution for this is to use multiple
+  inheritance. For each modeling element we need to create a
+  corresponding generation version of it, which is the combination of
+  the modeling element and a generation element base class. Them the
+  generation model is made up of pointers to generation elements and
+  it dispatches into generation elements descendants in the
+  formatter. The key point is to preserve the distinction between
+  modeling (single element) vs generation (projection across facet
+  space).
+
+*** COMPLETED Rename core models                                      :story:
+    CLOSED: [2019-02-08 Fri 13:52]
+
+*Rationale*: this has been implemented.
+
+The more we catch up with the literature, the more the current model
+names look weird, particularly =modeling= and =generation=. In reality
+all of the models relate to "modeling" and to generation. We should
+just bite the bullet and use the compiler related names: frontend,
+middleend and backend.
+
+Interestingly, eCore/EMF also take the same approach of having a model
+that is then enriched for generation. This means we could have:
+
+- frontend/interop/external.
+- middleend/modeling
+- backend/generation
+
+*** COMPLETED Update vcpkg across all operative systems               :story:
+    CLOSED: [2019-02-09 Sat 06:46]
+    :LOGBOOK:
+    CLOCK: [2019-02-08 Fri 12:25]--[2019-02-08 Fri 13:30] =>  1:05
+    CLOCK: [2019-02-08 Fri 08:35]--[2019-02-08 Fri 12:05] =>  3:30
+    :END:
+
+Now that we have updated linux to latest vcpkg, we need to do the same
+for windows and osx. Hopefully latest boost.di and boost will fix the
+errors we are experiencing there.
+
+*** COMPLETED Update C# reference models to latest dogen              :story:
+    CLOSED: [2019-02-11 Mon 09:08]
+    :LOGBOOK:
+    CLOCK: [2019-02-11 Mon 09:09]--[2019-02-11 Mon 09:25] =>  0:16
+    CLOCK: [2019-02-11 Mon 08:42]--[2019-02-11 Mon 09:08] =>  0:26
+    :END:
+
+At present the C# reference models do not work with latest dogen.
+
+*** COMPLETED Convert the utility model into a regular dogen model    :story:
+    CLOSED: [2019-02-12 Tue 12:25]
+    :LOGBOOK:
+    CLOCK: [2019-02-12 Tue 09:19]--[2019-02-12 Tue 12:25] =>  3:06
+    CLOCK: [2019-02-11 Mon 17:39]--[2019-02-11 Mon 17:45] =>  0:06
+    CLOCK: [2019-02-11 Mon 17:15]--[2019-02-11 Mon 17:38] =>  0:23
+    CLOCK: [2019-02-11 Mon 14:49]--[2019-02-11 Mon 17:14] =>  2:25
+    CLOCK: [2019-02-11 Mon 13:54]--[2019-02-11 Mon 14:48] =>  0:54
+    CLOCK: [2019-02-11 Mon 11:51]--[2019-02-11 Mon 12:11] =>  0:20
+    CLOCK: [2019-02-11 Mon 11:37]--[2019-02-11 Mon 11:50] =>  0:13
+    :END:
+
+Up to now we have manually created utility. However, as part of the
+CLI cleanup we should really have high-level constructs to represent
+logging etc. It makes no sense to create these types
+manually. Instead, we need to create a utility model and mark all of
+the existing types as either hand-crafted or regenerate them via dogen
+(for example for enums).
+
+*** COMPLETED Improve support for clang-cl builds                     :story:
+    CLOSED: [2019-02-13 Wed 10:03]
+    :LOGBOOK:
+    CLOCK: [2019-02-13 Wed 09:20]--[2019-02-13 Wed 09:52] =>  0:32
+    CLOCK: [2019-02-12 Tue 08:28]--[2019-02-12 Tue 08:47] =>  0:19
+    CLOCK: [2019-02-09 Sat 16:19]--[2019-02-09 Sat 16:37] =>  0:18
+    CLOCK: [2019-02-09 Sat 15:25]--[2019-02-09 Sat 16:18] =>  0:53
+    :END:
+
+We have added preliminary support for building with clang-cl on
+windows, but the build is not green. Most of the errors seem to be on
+boost.
+
+With boost 1.69 we now have mostly green builds. The only problem is
+that one of the ref impl tests is failing:
+
+: Running 1 test case...
+: unknown location(0): fatal error: in "boost_model_tests/validate_serialisation": class boost::archive::archive_exception: unregistered void cast class masd::cpp_ref_impl::boost_model::class_derived<-class masd::cpp_ref_impl::boost_model::class_base
+: ..\..\..\..\projects\masd.cpp_ref_impl.test_model_sanitizer\tests\boost_model_tests.cpp(56): last checkpoint: validate_serialisation
+:
+: *** 1 failure is detected in the test module "test_model_sanitizer_tests"
+
+Its not obvious why it is failing as the debug tests are passing. We
+should just open a story for this.
+
+Links:
+
+- [[https://ci.appveyor.com/project/mcraveiro/dogen/builds/19463961/job/6bnv6ppljlklu2ag][Release build]]
+- [[https://ci.appveyor.com/project/mcraveiro/dogen/builds/19463961/job/45yhn8sdhexvsdmi][Debug build]]
+- [[https://github.com/Kitware/CDash/issues/733][CDash reporting problems]]
+
+*** COMPLETED Simplify split configuration configuration              :story:
+    CLOSED: [2019-02-15 Fri 09:43]
+
+*Rationale*: implemented as part of moving extraction options into
+meta-data.
+
+At present we have two separate command line parameters to configure
+the main output directory and the directory for header files. The
+second parameter is used for split configurations. The problem is that
+we now need to treat split configuration projects specially because of
+this. It makes more sense to force the header directory to be relative
+to the output path and make it a meta-data parameter.
+
+*** COMPLETED Make "ignore regexes" a model property                  :story:
+    CLOSED: [2019-02-15 Fri 09:44]
+
+*Rationale*: implemented as part of moving extraction options into
+meta-data.
+
+At present we have a command line option:
+=--ignore-files-matching-regex=. It is used to ignore files in a
+project. However, the problem is, because it is a command line option,
+it must be supplied with each invocation of Dogen. This means that if
+we want to run dogen from outside the build system, we need to know
+what options were set in the build scripts or else we will have
+different results. This is a problem for testing. We should make it a
+meta-data option, which is supplied with each model and even more
+interesting, can be used with profiling. This means we can create
+profiles for specific purposes (ODB, lisp, etc) and then reuse them in
+different projects.
+
+We should do the same thing for =--delete-extra-files=.
+
+*** COMPLETED Fix the northwind model                                 :story:
+    CLOSED: [2019-02-15 Fri 09:45]
+
+*Rationale*: implemented as part of the ref impl / vcpkg clean up.
+
+There are numerous problems with this model:
+
+- at present we have oracle support on ODB. Oracle libs are not
+  distributed with debian. If we do not find oracle we do not compile
+  northwind. This is not ideal. We should remove oracle support from
+  northwind, and install odb support in the build machine (hopefully
+  available as debs).
+- the tests are commented out and require a clean up.
+- the tests require a database to be up.
+
+Notes:
+
+- it is possible to setup [[https://docs.travis-ci.com/user/database-setup/#postgresql][postgres on travis]]
+
+*** COMPLETED Move generation properties into meta-data               :story:
+    CLOSED: [2019-02-15 Fri 11:23]
+    :LOGBOOK:
+    CLOCK: [2019-02-15 Fri 09:38]--[2019-02-15 Fri 09:49] =>  0:11
+    CLOCK: [2019-02-15 Fri 08:51]--[2019-02-15 Fri 09:37] =>  0:46
+    CLOCK: [2019-02-14 Thu 21:04]--[2019-02-14 Thu 21:10] =>  0:06
+    CLOCK: [2019-02-14 Thu 17:45]--[2019-02-14 Thu 18:29] =>  0:44
+    CLOCK: [2019-02-14 Thu 16:41]--[2019-02-14 Thu 17:15] =>  0:34
+    CLOCK: [2019-02-14 Thu 16:30]--[2019-02-14 Thu 16:40] =>  0:10
+    CLOCK: [2019-02-14 Thu 16:25]--[2019-02-14 Thu 16:29] =>  0:04
+    CLOCK: [2019-02-14 Thu 15:33]--[2019-02-14 Thu 16:24] =>  0:51
+    CLOCK: [2019-02-14 Thu 14:40]--[2019-02-14 Thu 15:32] =>  0:52
+    CLOCK: [2019-02-14 Thu 14:01]--[2019-02-14 Thu 14:39] =>  0:38
+    CLOCK: [2019-02-14 Thu 09:54]--[2019-02-14 Thu 11:46] =>  1:52
+    CLOCK: [2019-02-13 Wed 17:53]--[2019-02-13 Wed 18:34] =>  0:41
+    CLOCK: [2019-02-13 Wed 17:02]--[2019-02-13 Wed 17:52] =>  0:50
+    CLOCK: [2019-02-12 Tue 18:30]--[2019-02-12 Tue 18:43] =>  0:13
+    CLOCK: [2019-02-12 Tue 17:35]--[2019-02-12 Tue 18:29] =>  0:54
+    :END:
+
+We have a number of properties that are in the configuration of the
+code generator but which are really part of the model. We need to move
+these into the model to avoid having to add them to the new CLI
+interface.
+
+Notes:
+
+- rename "yarn." transforms in log to "masd." - done.
+
+*** COMPLETED Disabling facet globally and enabling locally fails     :story:
+    CLOSED: [2019-02-18 Mon 13:02]
+    :LOGBOOK:
+    CLOCK: [2019-02-18 Mon 14:30]--[2019-02-18 Mon 14:51] =>  0:21
+    CLOCK: [2019-02-18 Mon 11:02]--[2019-02-18 Mon 13:02] =>  2:00
+    :END:
+
+We tried to disable hash globally and then enable it just for the
+types that require it, but it was not expressed. Interestingly,
+disabling an archetype globally and then enabling it locally does work
+(e.g. forward declarations).
+
+*** COMPLETED References to types in top-level namespace do not resolve :story:
+    CLOSED: [2019-02-19 Tue 10:58]
+    :LOGBOOK:
+    CLOCK: [2019-02-19 Tue 10:35]--[2019-02-19 Tue 11:04] =>  0:29
+    CLOCK: [2019-02-18 Mon 17:49]--[2019-02-18 Mon 17:56] =>  0:07
+    CLOCK: [2019-02-15 Fri 16:01]--[2019-02-15 Fri 16:16] =>  0:15
+    :END:
+
+When referring to =weaving_styles= defined in =masd::dogen= from
+within =masd::dogen::cli=, dogen failed to resolve the
+type. Qualifying it as =masd::dogen::weaving_styles= solved the
+problem. Resolver is not walking up the path correctly.
+
+We also need to take into account the case where the name is used
+within a inner module.
+
+*** COMPLETED Create a colour palette test model                      :story:
+    CLOSED: [2019-02-20 Wed 10:56]
+    :LOGBOOK:
+    CLOCK: [2019-02-20 Wed 10:57]--[2019-02-20 Wed 11:12] =>  0:15
+    CLOCK: [2019-02-20 Wed 10:02]--[2019-02-20 Wed 10:56] =>  0:54
+    :END:
+
+Thus far we have been updating the colour palette in a ad-hoc
+fashion. The problem is, since we don't have a model that uses all
+colours, we do not know how they look together. The idea with colours
+is that we can look at a model and quickly find meta-information; if
+we are using the same colours with multiple meanings, the approach no
+longer works.
+
+Create a simple "colour palette" test model that exercises all
+stereotypes which are expressed as colours and ensure there is some
+kind of useful pattern.
+
+*** COMPLETED Add support for header-only types                       :story:
+    CLOSED: [2019-02-21 Thu 13:13]
+
+*Rationale*: this was already implemented.
+
+Sometimes we may just want to generate a simple header only class. By
+default we always get a cpp. We could suppress the cpp by having a
+stereotype:
+
+: masd::header_only
+
+This can be a simple profile like handcrafted. It can even be a
+superset of handcrafted.
+
+*** COMPLETED Create a single binary for all of dogen                 :story:
+    CLOSED: [2019-02-21 Thu 14:54]
+    :LOGBOOK:
+    CLOCK: [2019-02-23 Sat 09:22]--[2019-02-23 Sat 10:38] =>  1:16
+    CLOCK: [2019-02-22 Fri 16:20]--[2019-02-22 Fri 17:42] =>  1:22
+    CLOCK: [2019-02-22 Fri 15:42]--[2019-02-22 Fri 16:19] =>  0:37
+    CLOCK: [2019-02-22 Fri 14:45]--[2019-02-22 Fri 15:41] =>  0:56
+    CLOCK: [2019-02-21 Thu 14:55]--[2019-02-21 Thu 15:43] =>  0:48
+    CLOCK: [2019-02-21 Thu 14:09]--[2019-02-21 Thu 14:54] =>  0:45
+    CLOCK: [2019-02-21 Thu 13:21]--[2019-02-21 Thu 14:08] =>  0:47
+    CLOCK: [2019-02-21 Thu 10:53]--[2019-02-21 Thu 11:23] =>  0:30
+    CLOCK: [2019-02-21 Thu 10:28]--[2019-02-21 Thu 10:52] =>  0:24
+    CLOCK: [2019-02-21 Thu 10:07]--[2019-02-21 Thu 10:27] =>  0:20
+    CLOCK: [2019-02-21 Thu 08:50]--[2019-02-21 Thu 10:06] =>  1:16
+    CLOCK: [2019-02-20 Wed 20:09]--[2019-02-20 Wed 20:21] =>  0:12
+    CLOCK: [2019-02-20 Wed 19:45]--[2019-02-20 Wed 20:08] =>  0:23
+    CLOCK: [2019-02-20 Wed 18:41]--[2019-02-20 Wed 19:00] =>  0:19
+    CLOCK: [2019-02-20 Wed 15:42]--[2019-02-20 Wed 18:40] =>  2:58
+    CLOCK: [2019-02-20 Wed 15:34]--[2019-02-20 Wed 15:41] =>  0:07
+    CLOCK: [2019-02-20 Wed 14:41]--[2019-02-20 Wed 15:33] =>  0:52
+    CLOCK: [2019-02-20 Wed 11:13]--[2019-02-20 Wed 12:52] =>  1:39
+    CLOCK: [2019-02-20 Wed 09:45]--[2019-02-20 Wed 10:01] =>  0:31
+    CLOCK: [2019-02-19 Tue 15:47]--[2019-02-19 Tue 16:25] =>  0:38
+    CLOCK: [2019-02-19 Tue 14:12]--[2019-02-19 Tue 15:46] =>  1:34
+    CLOCK: [2019-02-19 Tue 11:19]--[2019-02-19 Tue 13:04] =>  1:45
+    CLOCK: [2019-02-15 Fri 16:28]--[2019-02-15 Fri 17:13] =>  0:45
+    CLOCK: [2019-02-15 Fri 11:24]--[2019-02-15 Fri 11:45] =>  0:21
+    CLOCK: [2019-02-15 Fri 09:54]--[2019-02-15 Fri 11:23] =>  1:29
+    CLOCK: [2019-02-13 Wed 10:04]--[2019-02-13 Wed 10:41] =>  0:37
+    CLOCK: [2019-02-11 Mon 10:01]--[2019-02-11 Mon 11:27] =>  1:26
+    CLOCK: [2019-02-09 Sat 16:38]--[2019-02-09 Sat 18:15] =>  1:37
+    CLOCK: [2019-02-09 Sat 06:55]--[2019-02-09 Sat 07:40] =>  0:45
+    CLOCK: [2019-02-08 Fri 17:04]--[2019-02-08 Fri 17:29] =>  0:25
+    CLOCK: [2019-02-08 Fri 16:20]--[2019-02-08 Fri 17:03] =>  0:43
+    CLOCK: [2019-02-08 Fri 14:03]--[2019-02-08 Fri 16:00] =>  1:57
+    CLOCK: [2019-02-08 Fri 13:31]--[2019-02-08 Fri 13:40] =>  0:19
+    CLOCK: [2019-02-07 Thu 16:20]--[2019-02-07 Thu 17:03] =>  0:43
+    CLOCK: [2019-02-07 Thu 14:05]--[2019-02-07 Thu 15:40] =>  1:35
+    CLOCK: [2019-02-07 Thu 09:21]--[2019-02-07 Thu 12:05] =>  2:44
+    CLOCK: [2019-02-07 Thu 08:36]--[2019-02-07 Thu 09:20] =>  0:44
+    CLOCK: [2019-02-06 Wed 16:01]--[2019-02-06 Wed 19:03] =>  3:02
+    :END:
+
+As per analysis, we need to create a single dogen binary, like so:
+
+: dogen.cli COMMAND COMMAND_SPECIFIC_OPTIONS
+
+Where =COMMAND= is:
+
+- =transform=: functionality that is currently in tailor.
+- =generate=: functionality that is currently in knitter.
+- =expand=: functionality that is currently in stitcher plus expansion
+  of wale templates.
+- =make=: functionality in darter: create project, structure etc.
+
+In order to support sub-commands we need to do a lot of hackery with
+program options:
+
+- [[https://gist.github.com/randomphrase/10801888][cmdoptions.cpp]]: Demonstration of how to do subcommand option
+  processing with boost program_options
+- [[https://stackoverflow.com/questions/15541498/how-to-implement-subcommands-using-boost-program-options][How to implement subcommands using Boost.Program_options?]]
+
+Notes:
+
+- create a top-level code generation transform that uses the API
+  options; internally it converts them to legacy options and calls the
+  coding workflow.
+- add methods to application to execute each activity. Then create a
+  boost visitor for each of the activities that calls each method.
+- move the hand-crafted configuration defaults in program options
+  parser into configuration builder.
+- logs from generation get overridden with conversion
+- log should start with app details, including command line options so
+  we can see what command we're executing.
+
+*Merged Stories*
+
+We started off by creating lots of little executables: knitter,
+darter, tailor, stitcher. Each of these has its own project,
+command-line options etc. However, now that we are concentrating all
+of the domain knowledge in yarn, it seems less useful to have so many
+executables that are simply calling yarn transforms. Instead, it may
+make more sense to use an approach similar to git and have a
+"sub-command":
+
+: dogen knit
+: dogen tailor
+
+And so forth. Of course, we could also take this opportunity and clean
+up these names to making them more meaningful to end users. Perhaps:
+
+: dogen codegen
+: dogen transform
+
+Each of these sub-commands or modes would have their own set of
+associated options. We need to figure out how this is done using boost
+program options. We also need to spend a bit of time working out the
+sub-commands to make sure they make sense across the board.
+
+In terms of names, we can't really call the project "dogen". We should
+call it something allusive to the command line, such as cli. However,
+the final binary should be called dogen or perhaps, =dogen.cli=. This
+fits in with other binaries such as =dogen.web=, =dogen.http=,
+=dogen.gui= etc.
+
+*** COMPLETED Setup a nightly build for Dogen                         :story:
+    CLOSED: [2019-02-22 Fri 14:44]
+    :LOGBOOK:
+    CLOCK: [2019-02-23 Sat 09:15]--[2019-02-23 Sat 09:21] =>  0:06
+    CLOCK: [2019-02-22 Fri 14:10]--[2019-02-22 Fri 14:44] =>  0:34
+    CLOCK: [2019-02-22 Fri 13:45]--[2019-02-22 Fri 14:09] =>  0:24
+    CLOCK: [2019-02-22 Fri 12:29]--[2019-02-22 Fri 12:37] =>  0:08
+    CLOCK: [2019-02-22 Fri 12:01]--[2019-02-22 Fri 12:28] =>  0:27
+    CLOCK: [2019-02-22 Fri 11:01]--[2019-02-22 Fri 12:00] =>  0:59
+    CLOCK: [2019-02-22 Fri 09:45]--[2019-02-22 Fri 11:00] =>  1:15
+    :END:
+
+We haven't had nightlies with valgrind for a long time. We need these
+for both Dogen and the C++ ref impl.
+
+*** COMPLETED Update annotation profiles and stereotypes to masd namespace :story:
+    CLOSED: [2019-02-22 Fri 18:52]
+
+*Rationale*: this has been implemented as part of the great meta-data
+rename..
+
+We should rename all annotation profiles and all stereotypes into the
+MASD namespace.
+
+We should also rename the artefact formatters to a compliant names,
+e.g. instead of =C# Artefact Formatter= maybe
+=dogen::csharp_artefact_formatter=. Note its dogen not MASD because
+these are dogen specific profiles. We need to create a model for
+dogen, separate from the MASD standard profile.
+
+*** COMPLETED Great meta-data rename                                  :story:
+    CLOSED: [2019-02-22 Fri 19:09]
+    :LOGBOOK:
+    CLOCK: [2019-02-22 Fri 18:52]--[2019-02-22 Fri 19:09] =>  0:17
+    CLOCK: [2019-02-22 Fri 18:02]--[2019-02-22 Fri 18:51] =>  0:49
+    CLOCK: [2018-11-26 Mon 10:01]--[2018-11-26 Mon 11:02] =>  1:01
+    CLOCK: [2018-11-23 Fri 21:43]--[2018-11-23 Fri 22:20] =>  0:37
+    CLOCK: [2018-11-23 Fri 20:55]--[2018-11-23 Fri 21:42] =>  0:47
+    CLOCK: [2018-11-23 Fri 16:57]--[2018-11-23 Fri 18:08] =>  1:11
+    CLOCK: [2018-11-23 Fri 16:50]--[2018-11-23 Fri 16:56] =>  0:06
+    CLOCK: [2018-11-23 Fri 15:37]--[2018-11-23 Fri 16:49] =>  1:12
+    :END:
+
+All of the existing stereotypes and meta-data need to be moved from
+the existing names (e.g. =quilt=, =yarn=, etc) into
+=masd=. Interestingly, we can take this opportunity to make dia
+diagrams a bit more readable. Instead of
+
+: #DOGEN a.b.c=d
+
+we can now just do:
+
+: masd.a.b.c=4
+
+It is very unlikely dia users will need lines starting with =masd.=.
+
+We should probably try to tackle this rename sooner rather than later
+since it badly breaks model-compatibility.
+
+We should use the new names as part of this rename, e.g.:
+
+: masd.injection.dia.comment
+: masd.extraction.cpp.enabled
+
+Rename =is_proxy_model= to =platform_definition_model=.
+
+Notes:
+
+- decoration etc are still not using the =masd.= prefix.
+
+Merged stories:
+
+*Update all stereotypes to masd*
+
+We need to start distinguishing MASD from dogen. The profile for UML
+is part of MASD rather than dogen, so we should update all stereotypes
+to match. We need to make a decision regarding the "dia extensions" -
+its not clear if its MASD or dogen.
+
+*Clean up UML profiles and meta-data*
+
+- we should wait until we rename =quilt= too so we can clean up the
+  quilt meta-data at the same time.
+- rename references too since they belong to external, i.e.:
+
+: #DOGEN yarn.reference=annotations.dia
+
+  should be:
+
+: #DOGEN external.reference=annotations.dia
+
+- similarly with:
+
+: #DOGEN yarn.dia.comment=true
+
+  should instead be:
+
+: #DOGEN external.dia.comment=true
+
+  in fact, should we mention "tagged values" instead of "comment"?
+
+*** CANCELLED Remove the need for =dia.comment= tag                   :story:
+    CLOSED: [2019-02-23 Sat 09:14]
+    :LOGBOOK:
+    CLOCK: [2019-02-23 Sat 09:02]--[2019-02-23 Sat 09:14] =>  0:12
+    :END:
+
+At present we are detecting the presence of =masd.dogen.dia.comment=
+in a UML comment to determine if it is to be processed as a comment
+for the model module. However, we could just as well look for the
+presence of meta-data parameters instead. Similarly, we could say that
+it is an error to have more than one comment with meta-data parameters
+(as hopefully with do at present with dia.comment). This is a
+usability papercut.
+
+While we're there we could also remove the need for =#DOGEN= and state
+that all meta-data keys must start with =masd.=. For user specific
+keys we could namespace them: =masd.user.=.
+
+Actually these assumptions are not entirely true:
+
+- for the use case where we just want to add comments to a namespace,
+  we need the dia.comment marker as there will be no other meta-data
+  on the comment.
+- it is not inconceivable that a comment may have a line starting with
+  =masd.= in one of the masd models. Seems like an arbitrary
+  limitation to forbid this and could result in strange errors.
+
+As a result the conclusion is that we should not implement this story.
+
+*** COMPLETED Use tracing options in existing code                    :story:
+    CLOSED: [2019-02-23 Sat 16:28]
+    :LOGBOOK:
+    CLOCK: [2019-02-23 Sat 16:13]--[2019-02-23 Sat 16:28] =>  0:15
+    CLOCK: [2019-02-23 Sat 15:39]--[2019-02-23 Sat 16:12] =>  0:33
+    CLOCK: [2019-02-23 Sat 10:38]--[2019-02-23 Sat 11:18] =>  0:40
+    CLOCK: [2019-02-19 Tue 11:05]--[2019-02-19 Tue 11:18] =>  0:13
+    CLOCK: [2019-02-18 Mon 18:50]--[2019-02-18 Mon 18:52] =>  0:02
+    CLOCK: [2019-02-18 Mon 14:52]--[2019-02-18 Mon 15:04] =>  0:12
+    CLOCK: [2019-02-15 Fri 17:14]--[2019-02-15 Fri 17:44] =>  0:30
+    :END:
+
+Tasks:
+
+- read the byproduct directory and supply it to probing somehow.
+- add dependency to API from tracing.
+- implement a tracer constructor that takes in tracing configuration.
+- add tracing configuration to coding options.
+- update knitter to generate tracing options.
+- delete probing options from configuration.
+- delete probing options from tracer.
+
+*** COMPLETED Rename profile header only                              :story:
+    CLOSED: [2019-02-23 Sat 16:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-23 Sat 16:30]--[2019-02-23 Sat 16:36] =>  0:06
+    :END:
+
+This profile only applies to C++ so it should be:
+
+: masd::cpp::header_only
+
+*** COMPLETED Consider renaming probing to tracing                    :story:
+    CLOSED: [2019-02-24 Sun 10:12]
+
+*Rationale*: this was already implemented.
+
+It seems that in MDE what we called probing is more aptly called
+"tracing". We should rename the code to match this. Czarnecki and
+Helsen:
+
+#+begin_quote
+Tracing can be understood as the runtime footprint of transformation
+execution. A common form of trace information in model transformation
+are traceability links connecting source and target elements, which
+are essentially instances of the mapping between the source and target
+domains.
+#+end_quote
+
+The top-level object responsible for tracing is called the
+=tracer=. Although its not clear if a tracer is just providing probing
+data or is also an execution engine.
+
+*** COMPLETED Fix typo in ODB error message                           :story:
+    CLOSED: [2019-02-24 Sun 10:14]
+
+*Rationale*: this was already implemented.
+
+Spelt =FATAL= instead of =FATAL_ERROR= in ODB makefile:
+
+: if (NOT ODB_EXECUTABLE)
+:    message(FATAL_ERROR "ODB Executable not defined.")
+: endif()
+
+*** COMPLETED Windows packages have a sanity folder                   :story:
+    CLOSED: [2019-02-24 Sun 10:20]
+
+*Rationale*: this was already implemented. Validated by installing
+latest package on windows, no mention of sanity, binary works fine.
+
+We should remove the ctest file and add the dia and json examples. We
+should also have pdf/html docs.
+
+*** POSTPONED Throw on profiles that refer to invalid fields          :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-22 Fri 21:03]--[2019-02-22 Fri 21:17] =>  0:14
+    CLOCK: [2019-02-22 Fri 20:31]--[2019-02-22 Fri 21:02] =>  0:31
+    CLOCK: [2019-02-22 Fri 19:10]--[2019-02-22 Fri 19:31] =>  0:21
+    :END:
+
+At present during profile instantiation, if we detect a field which
+does not exist we skip the profile. This was done in the past because
+we had different binaries for stitch, knit etc, which meant that we
+could either split profiles by application or skip errors
+silently. Now we have a single binary, we could enable this
+validation. However, the stitch tests still rely on this
+behaviour. The right solution for this is to have some kind of
+override flag ("compatibility mode" springs to mind) which is off by
+default but can be used (judiciously).
+
+We put a fix in but it seems weave is still borked. The problem
+appears to be that we do something in the generation path that is not
+done for weaving (and presumably for conversion). The hack was put
+back in for now.
+
+*** POSTPONED Dogen's vcpkg export for OSX was created from master    :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-09 Sat 06:20]--[2019-02-09 Sat 06:46] =>  0:26
+    CLOCK: [2019-02-09 Sat 05:50]--[2019-02-09 Sat 06:10] =>  0:20
+    :END:
+
+Problems:
+
+- we have built it from master instead of masd branch.
+- installing libodb et al. from master fails due to a config error. We
+  need to check that master has our fix. We need to check that the
+  config.h workaround works for OSX as well.
+- when building using the masd branch, we can't download ODB from git
+  due to a hash mismatch. This may be something to do with the git
+  version (2.7).
+
+*** POSTPONED Fix clang-cl warnings                                   :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-19 Tue 09:32]--[2019-02-19 Tue 09:53] =>  0:21
+    CLOCK: [2019-02-18 Mon 14:52]--[2019-02-18 Mon 17:48] =>  2:56
+    CLOCK: [2019-02-15 Fri 15:20]--[2019-02-15 Fri 16:01] =>  0:41
+    CLOCK: [2019-02-15 Fri 14:21]--[2019-02-15 Fri 14:59] =>  0:38
+    CLOCK: [2019-02-14 Thu 11:47]--[2019-02-14 Thu 12:18] =>  0:31
+    :END:
+
+We also have a number of warnings left to clean up, all related to
+boost.log:
+
+: masd.dogen.utility.lib(lifecycle_manager.cpp.obj) : warning LNK4217: locally defined symbol
+: ?get_tss_data@detail@boost@@YAPEAXPEBX@Z (void * __cdecl boost::detail::get_tss_data(void const *))
+: imported in function "public: struct boost::log::v2s_mt_nt6::sinks::basic_formatting_sink_frontend<char>::formatting_context * __cdecl boost::thread_specific_ptr<struct boost::log::v2s_mt_nt6::sinks::basic_formatting_sink_frontend<char>::formatting_context>::get(void)const " (?get@?$thread_specific_ptr@Uformatting_context@?$basic_formatting_sink_frontend@D@sinks@v2s_mt_nt6@log@boost@@@boost@@QEBAPEAUformatting_context@?$basic_formatting_sink_frontend@D@sinks@v2s_mt_nt6@log@2@XZ)
+
+Notes:
+
+- opened issue: [[https://github.com/Microsoft/vcpkg/issues/5336][Building with clang-cl on windows generates warnings
+  from vcpkg-installed libraries]]
+- it seems that the log files show a lot more warnings than those
+  reported by cdash,
+- Updated issue on CDash parsing problems for clang-cl: [[https://github.com/Kitware/CDash/issues/733][Parsing of
+  errors and warnings from clang-cl]]
+- Sent email to clang mailinglist: [[http://lists.llvm.org/pipermail/cfe-dev/2019-February/061326.html][Clang-cl - errors and warning
+  messages slightly different from MSVC]]. Clang [[http://lists.llvm.org/pipermail/cfe-dev/2019-February/061339.html][have patched]] the diffs
+  now.
+
+*** POSTPONED Model references are not transitive                     :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-18 Mon 18:29]--[2019-02-18 Mon 18:50] =>  0:21
+    :END:
+
+For some reason we do not seem to be following references of
+referenced models. We should load them automatically, now that they
+are part of the meta-data. However, the =yarn.json= model breaks when
+we remove the reference to annotation even though it does not use this
+model directly and =yarn= is referencing it correctly.
+
+The reason why is that we load up references to all intermediate
+models, but then on merge we only take target references. What we
+really need to do is to combine the reference containers on merge. For
+this we need to create a method that loops through the map and inserts
+all keys which have not yet been inserted. Something like "merge
+references".
+
+We should address this issue when we introduce two-phase parsing of
+models. This is because, as with the new meta-model elements, we also
+need to do a first pass across the target and all reference models to
+obtain all the paths for all referenced models. We then need to obtain
+the unique set of referenced models and load those. To put in this
+logic in the code at present (i.e. without a two-phase approach) would
+mean we'd have to load the same models several times (or heavily
+rewrite existing code, resulting in a two-phase approach, anyway).
+
+*** POSTPONED Move top-level transforms into orchestration            :story:
+    CLOSED: [2019-02-26 Tue 15:36]
+    :LOGBOOK:
+    CLOCK: [2019-02-24 Sun 18:29]--[2019-02-24 Sun 18:31] =>  0:02
+    CLOCK: [2019-02-24 Sun 18:00]--[2019-02-24 Sun 18:26] =>  0:26
+    CLOCK: [2019-02-24 Sun 17:43]--[2019-02-24 Sun 17:59] =>  0:16
+    CLOCK: [2019-02-24 Sun 16:51]--[2019-02-24 Sun 17:42] =>  0:51
+    :END:
+
+- clear up the existing orchestration model We don't really know what
+  its current state is. Keep it as a backup as we may need to go back
+  to it.
+- copy the top-level chains into orchestration, into a well
+  defined namespace (say =dirty=). This must include the model to text
+  model and registration. Remove all of these types from coding. At
+  this point coding should only depend on injectors.
+- try implement interface based I/O instead of reading/writing
+  directly from the filesystem.
+- first move the model to text model transform into
+  =generation.cpp=. This means updating all of the formatters. Also,
+  use the external model, deleting all of the text models.
+
+** Deprecated
+*** CANCELLED Update =yarn.dia= traits to external                    :story:
+    CLOSED: [2018-11-22 Thu 10:38]
+
+*Rationale*: superseded by the MASD rename.
+
+We renamed the model but did not update the traits.
+*** CANCELLED Update backend shape to match yarn                      :story:
+    CLOSED: [2019-02-08 Fri 13:55]
+
+*Rationale*: this story has been superseded by the latest refactor.
+
+In an ideal world, the backends should be made up of two components:
+
+- *meta-model*: a set of types that augment yarn with backend
+  specific elements. This is what we call fabric at present.
+- *transforms*: of these we have two kinds:
+  - the model-to-model transforms that involve either yarn meta-model
+    elements or backened specific meta-model elements. These live in
+    fabric at present.
+   - the model-to-text transforms that convert a meta-model element
+     (yarn or backend specific) into an artefact. These we call
+     formatters at present.
+
+The ultimate destination for the backend is then to have a shape that
+reflects this:
+
+- rename formatters to transforms
+- move artefact formatter into yarn; with this it means we can also
+  move all of the top-level workflow formatting logic into
+  yarn. However, before we can do this we must make all of the backend
+  specific code in the formatter interface go away.
+- note that at this point we no longer need to know what formatters
+  belong to what backend other than perhaps to figure out if the
+  backend is enabled. This means yarn can now have the registrars for
+  formatters and organise them by backend. Which means the
+  model-to-text chain will own all of these. However, we still have
+  the managed directories to worry about; somehow, someone has to be
+  able to compute the managed directories per kernel. This could be
+  done at yarn level if the locator is clever enough.
+
+Of course, before we can contemplate this change, we must first get
+rid of formattables altogether.
+
+We must also somehow model canonical formatters in yarn. Take this
+into account when we do:
+
+:        /*
+:         * We must have one canonical formatter per type per facet.
+:         * FIXME: this check is broken at the moment because this is
+:         * only applicable to yarn types, not fabric types. It is also
+:         * not applicable to forward declarations. We need some
+:         * additional information from yarn to be able to figure out
+:         * which types must have a canonical archetype.
+:         */
+
+Notes from MASD:
+
+- Formatters are now seen as merely *text transforms* that convert
+  from the generational model to the extractional model. We could
+  house them under "text transforms" rather than transforms because we
+  will also need regular model transforms.
+- Formatters model is the extractional model. It provides primitives
+  to create transforms to generate its types. It needs to be augmented
+  with the model types, and divided using the traditional namespaces
+  (metamodel, transforms, helpers).
+- moving towards having multiple components per model means that its
+  much easier to support facets in this way. The other great advantage
+  of this approach is that now each facet can have its DLL main / main
+  if a binary is to be made for it, on its own folder. Conversely, the
+  top-level DLL main / main is the cross-facet component, so its
+  slightly clearer who includes what. We should also start specifying
+  explicitly what is included in each target.
+- when tests become a facet rename it to testing.
+
+Merged Stories:
+
+*Rename fabric and formattables*
+
+In the long run, we should use proper names for these namespaces:
+
+- fabric is meta-model;
+- formattables houses transformations.
+
+Unfortunately this will cause problems with the yarn names.
+
+*** CANCELLED Tidy-up fabric                                          :story:
+    CLOSED: [2019-02-08 Fri 13:57]
+
+*Rationale*: this story has been superseded by the latest refactor.
+
+Now we have dynamic transforms, we don't really need all the classlets
+we've created in fabric. We can get away with probably just the
+dynamic transform, calling all the factories.
+*** CANCELLED Keep track of sewing terms allocation                    :epic:
+    CLOSED: [2019-02-09 Sat 06:52]
+
+*Rationale*: we are no longer using sewing terms.
+
+This story just keeps track of how we are using the different sewing
+terms in Dogen. We are only tracking terms which are not yet
+incorporated into the product. It also keeps track of ideas that have
+not yet allocated a term.
+
+| Term   | Meaning | Dogen usage                                               |
+|--------+---------+-----------------------------------------------------------|
+| weave  |         | Reserved for AOP support?                                 |
+| [[https://en.wikipedia.org/wiki/Glossary_of_sewing_terms#D][dart]]   |         | Skeleton generator tool.                                  |
+| [[https://en.wikipedia.org/wiki/Yoke_(clothing)][yoke]]   |         |                                                           |
+| tailor |         | Format converter. e.g. Dia to JSON, etc.                  |
+| jersey |         | Code generation service.                                  |
+| hem    |         | HTTP Wrapper around jersey.                               |
+| twine  |         | Tool to infer model from XML/JSON/CSV instance documents. |
+|        |         | Tool to infer model from SQL database schemas.            |
+| pleat  |         |                                                           |
+
+*** CANCELLED Consider renaming LAM to a sewing term                  :story:
+    CLOSED: [2019-02-09 Sat 06:53]
+
+*Rationale*: we are no longer using sewing terms.
+
+In keeping with the rest of Dogen we should also use a sewing term for
+LAM. Wool is an interesting one.
+*** CANCELLED Consider adding a writing policy to files               :story:
+    CLOSED: [2019-02-12 Tue 18:01]
+
+*Rationale*: this will be moved to meta-data.
+
+At present we are using a single flag to describe several
+possibilities with regards to file writing:
+
+- write if its a new file;
+- write if the contents have changed;
+- write always. No use case yet.
+
+It may make more sense to have an enum for this. Having said that, we
+removed the "force write" feature so there is less of a need for this
+at present.
+
+*** CANCELLED Remove unused features                                   :epic:
+    CLOSED: [2019-02-12 Tue 18:02]
+
+*Rationale*: we are still using all of the features below and this
+story does not help in capturing the notion of deprecated features. We
+should just open stories for each feature as required.
+
+This story captures any features that we no longer require and will
+remove at some point. We have already removed most of the unused
+features, but the story keeps track of any remnants.
+
+At the very start of dogen we added a number of features that we
+thought were useful such as suppressing model directory, facet
+directories etc. We should look at all the features and make a list of
+all features that we are not currently making use of and create
+stories to remove them.
+
+We may have to split this story into several but we should at least
+trim down the obvious ones:
+
+- delete extra files: we always do so why make it optional.
+- disable facet folders: no use case.
+- force write: we never force write and now the logic is a bit at odds
+  with the overwriting logic: should we force write even if overwrite
+  is set to false? This would break hand-crafted code.
+- etc.
+
+Basically any feature which we are not using at present and cannot
+think of an obvious use case.

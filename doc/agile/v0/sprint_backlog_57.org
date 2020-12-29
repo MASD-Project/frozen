@@ -1,0 +1,527 @@
+#+title: Sprint Backlog 57
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Commentary
+
+** Mission
+
+Complete the picture for settings and start making use of them in
+anger; start moving across some of the formatting code for the class
+formatter.
+
+** Retrospective
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-12-16 Tue 15:55]
+
+| Headline                                                        | Time    |       |      |
+|-----------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                    | *12:20* |       |      |
+|-----------------------------------------------------------------+---------+-------+------|
+| Active                                                          |         | 12:20 |      |
+| COMPLETED Sprint and product backlog grooming                   |         |       | 0:51 |
+| COMPLETED Refactor tags and todos in sprint and product backlog |         |       | 0:34 |
+| COMPLETED Traits to use static methods                          |         |       | 0:46 |
+| COMPLETED Resolve the breaches of maximum build time            |         |       | 0:34 |
+| COMPLETED Install packages in travis after building             |         |       | 0:12 |
+| COMPLETED Analysis on returning global settings by formatter    |         |       | 2:22 |
+| COMPLETED Analysis towards more strongly-typed meta-data        |         |       | 2:44 |
+| POSTPONED Add support for coveralls                             |         |       | 1:06 |
+| POSTPONED Create the =dynamic= model                            |         |       | 3:11 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2014-12-16 Tue 15:55]
+    CLOCK: [2014-12-07 Sun 15:50]--[2014-12-07 Sun 15:58] =>  0:08
+    CLOCK: [2014-12-06 Sat 20:35]--[2014-12-06 Sat 20:40] =>  0:05
+    CLOCK: [2014-12-06 Sat 20:20]--[2014-12-06 Sat 20:34] =>  0:14
+    CLOCK: [2014-12-04 Thu 21:35]--[2014-12-04 Thu 21:44] =>  0:09
+    CLOCK: [2014-12-01 Mon 17:48]--[2014-12-01 Mon 17:53] =>  0:05
+    CLOCK: [2014-12-01 Mon 08:30]--[2014-12-01 Mon 08:35] =>  0:05
+    CLOCK: [2014-12-01 Mon 07:51]--[2014-12-01 Mon 07:56] =>  0:05
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Refactor tags and todos in sprint and product backlog   :story:
+    CLOSED: [2014-12-01 Mon 08:26]
+    CLOCK: [2014-12-01 Mon 08:08]--[2014-12-01 Mon 08:30] =>  0:22
+    CLOCK: [2014-12-01 Mon 07:56]--[2014-12-01 Mon 08:08] =>  0:12
+
+*Analysis*
+
+We have been messing around with org mode tags on backlogs for a bit,
+trying to figure out what is the best way to make use of them. We now
+have a lot of tags:
+
+: #+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+: #+tags: { refactor(r) bug(b) feature(f) vision(v) }
+: #+tags: { meta_data(m) tests(a) packaging(q) media(h) build(u) validation(x) diagrams(w) frontend(c) backend(g) }
+: #+tags: dia(y) sml(l) cpp(k) config(o) formatters(d)
+
+In reality, we don't really make proper use of any of these other than
+=vision=. It is useful to distinguish between the stories that are
+almost ready for implementation from the stories that won't be for a
+long while. We should probably remove all tags all leave =vision= and
+=task= or =story=. The problem with =story= is that we then feel like
+we always have to provide the story text, which is not always
+possible. Task is suitable vague.
+
+In the future if we do find a use for tags like =dia=, etc, we should
+implement them as properties.
+
+In effect, we just want to distinguish between two cases:
+
+- stories that are small enough that can be tackled within a sprint
+  (where we thin the analysis has been done, sufficiently to start
+  working on them)
+- stories that are still too vague to be worked on.
+
+We need to find two names that fit these descriptions.
+
+*Action Items*
+
+- remove all tags except for story and spike in sprint backlog, and
+  story and epic in product backlog.
+- add section for retrospective.
+- remove all statuses except for started, completed, cancelled and
+  postponed.
+
+*** COMPLETED Traits to use static methods                            :story:
+    CLOSED: [2014-12-01 Mon 18:29]
+    CLOCK: [2014-12-01 Mon 18:10]--[2014-12-01 Mon 18:28] =>  0:18
+    CLOCK: [2014-12-01 Mon 17:53]--[2014-12-01 Mon 18:10] =>  0:17
+    CLOCK: [2014-12-01 Mon 08:36]--[2014-12-01 Mon 08:47] =>  0:11
+
+As per analysis in the previous sprint, we need to start using static
+methods in traits rather than static variables. We had forgotten about
+the static variable initialisation fiasco. In order to fix this we
+should add methods to the structs that contain static variables
+internally. This should ensure the correct order of initialisation. We
+should also do a bit of a refresher on the fiasco to refresh it.
+
+*** COMPLETED Resolve the breaches of maximum build time              :story:
+    CLOSED: [2014-12-07 Sun 15:57]
+    CLOCK: [2014-12-06 Sat 21:14]--[2014-12-06 Sat 21:39] =>  0:25
+    CLOCK: [2014-12-06 Sat 21:05]--[2014-12-06 Sat 21:14] =>  0:09
+
+*Initial Understanding*
+
+We seem to be missing the build window of 50 minutes on
+occasion.
+
+Since the packages cannot be uploaded anyway, we should consider
+disabling them for now. However, if there is anything else that we
+could do to save on build time, it would be best to do that first
+before we disable packages.
+
+*Final Understanding*
+
+- add flags to produce only minimal packaging
+- package and run tests in the same invocation of ninja
+
+*** COMPLETED Install packages in travis after building               :story:
+    CLOSED: [2014-12-07 Sun 15:58]
+    CLOCK: [2014-12-06 Sat 21:40]--[2014-12-06 Sat 21:52] =>  0:12
+
+Since we have a full VM in travis at our disposal, nothing stops us
+from installing the packages we generate and then running the sanity
+checks on them. For this story we just need to prove that the install
+works. We then need to pick up the sanity work where we left off.
+
+*** COMPLETED Analysis on returning global settings by formatter      :story:
+    CLOSED: [2014-12-13 Sat 14:51]
+    CLOCK: [2014-12-04 Thu 19:21]--[2014-12-04 Thu 19:25] =>  0:04
+    CLOCK: [2014-12-03 Wed 08:03]--[2014-12-03 Wed 08:51] =>  0:48
+    CLOCK: [2014-12-02 Tue 19:14]--[2014-12-02 Tue 19:58] =>  0:44
+    CLOCK: [2014-12-02 Tue 08:03]--[2014-12-02 Tue 08:49] =>  0:46
+
+We seem to be returning settings by facet. In the new world of
+formatter settings this is a problem.
+
+*Random Thoughts*
+
+- we need to create a class like =facet= that has the local and global
+  settings for a formatter plus the formatter itself. However, this
+  will force us to have a =format= method in the formatter interface
+  as well as performing casting in its implementations. In addition,
+  formatters must return the enumeration for the entity type they
+  support (perhaps misleadingly called =formatter_types=). We can use
+  tuples for this.
+- in this world, facet, facet factory, container and container
+  splitter are not required. Formatters can register against a single
+  container in registrar: a map of =formatter_types= to formatter
+  interface.
+- one of the problems we have is that there is an element of recursion
+  here: we need to construct file settings but for that we need the
+  global settings as well as the local formatter settings and possibly
+  the opaque settings too.
+- in effect we have a =settings_workflow= or =settings_factory=; it
+  will generate the local settings, including the file settings. For
+  the file settings we loop through SML entities; for each qname we
+  ask for their =formatter_types=.
+  (e.g. =formatter_types::class_formatter=); then ideally we would
+  query a map of =formatter_types= to pair of (formatter interface,
+  global settings). Then we'd generate the local settings for that
+  entity (opaque and formatter settings) and with these we can now
+  generate the file name. Once all of the local settings are done we
+  can then pack them into the =settings= class, perhaps by formatter
+  id?
+- use case inventory:
+  - in order to build the file names we need the
+    global settings plus some of the local settings, by formatter id.
+  - in order to format we need a tuple with: entity, local settings,
+    global settings and formatter. If we were able to pass this to the
+    formatter workflow, all it would have to do is to invoke the
+    formatter.
+  - in the formatting process we need to know what facets and
+    formatters are enabled.
+- instead of using =formatter_types= we should be relying on
+  RTTI. After all, we are just creating a proxy for type information
+  and there is always the possibility that we get it wrong (enum not
+  matching the type). Its better to rely on the type system.
+- the file name generation must take into account file name overrides
+  coming in from the meta-data. e.g. for a STL class we will provide
+  our own serialisation files.
+- the settings workflow must take into account the SML dependency
+  graph; if it finds a type for which the formatter is disabled, then
+  all types that have properties of that type must also have their
+  formatter disabled. In effect there are three levels of formatter
+  settings: a) did we enable the formatter for the model? b) did we
+  enable the formatter for the type? c) can the formatter be enabled
+  given all of the types' dependencies? By the time we come up with
+  the local formatter settings it has gone through all these three
+  levels.
+- the above means the includes builder can be fairly simple, all it
+  has to do is to look at it's formatter settings; if they are enabled
+  that implies that all types it depends on are also enabled.
+- cross facet interference is still an issue. Ideally we want to check
+  in the settings factory if a facet or formatter is enabled
+  (e.g. serialisation) and determine what flags to toggle for a given
+  formatter (ideally in opaque formatter settings). However, this
+  requires making the opaque settings not so opaque or to provide yet
+  another interface from the formatter to do this job: for example we
+  could provide global and local settings to an opaque settings
+  factory and it could then determine how to toggle its state.
+- file settings seems to violate the rule that settings are generated
+  off of the meta-data. All other settings are obtained from meta-data
+  factories. It could be argued that we will in the future also read
+  file settings from the meta-data; However, the key point is that the
+  main source of file settings is internal even though there may be
+  meta-data overrides. This is not the case with everything else. This
+  raises the question as to whether we should have file settings for
+  meta-data and something else for the generated data.
+
+*Final Understanding*
+
+- change the formatter interface to format on entity rather than
+  concrete classes. Add validation for the dynamic casting of the
+  entity.
+- change formatter interface to return the RTTI of the entity
+  descendant it can process.
+- change registrar to have a single container of formatters.
+- remove settings from entity and from transformation.
+- change formatters workflow to work off of a entity, local
+  settings, global settings and formatter.
+- change splitter and container to work off of RTTI instead: container
+  is just a map of RTTI to formatter interface, splitter does this
+  splitting.
+
+This story will be revisited after we implement =dynamic=.
+
+*** COMPLETED Analysis towards more strongly-typed meta-data          :story:
+    CLOSED: [2014-12-13 Sat 13:32]
+    CLOCK: [2014-12-13 Sat 13:14]--[2014-12-13 Sat 13:30] =>  0:16
+    CLOCK: [2014-12-05 Fri 18:44]--[2014-12-05 Fri 19:25] =>  0:41
+    CLOCK: [2014-12-05 Fri 07:51]--[2014-12-05 Fri 08:44] =>  0:53
+    CLOCK: [2014-12-04 Thu 20:20]--[2014-12-04 Thu 20:45] =>  0:25
+    CLOCK: [2014-12-04 Thu 19:26]--[2014-12-04 Thu 19:55] =>  0:29
+
+*Random Thoughts*
+
+When we introduced the =ptree= based meta-data, we thought that the
+flexibility of the format would provide the required
+decoupling. However, there are downsides to this flexibility:
+
+- we cannot validate the input parameters during dia transformation
+  (or SML JSON hydration); conceivably we could add yet another
+  formatter specific type that validates the inputs but that would
+  make things convoluted. This means users can supply numbers for
+  booleans, collections for scalars etc and we will only find out when
+  it comes to the SML to C++ transformation.
+- we cannot validate the keys passed in: are they actually valid keys
+  or did the user supply keys we do not support? Did the user try to
+  enable a formatter that does not exist? Because the validation is
+  done on a per-formatter basis, we can't say "all the keys that are
+  left are invalid"; we do not know what keys are left.
+- we need to duplicate the copying code in every model (and
+  potentially, in every formatter). We are leaving the copying
+  decisions to the formatters (e.g. copy a kvp from model module or
+  parent module to class, etc). This is because only the formatters
+  know what kvps to copy.
+
+A better solution for this would be to create a meta-data model. It
+has the following components:
+
+- a set of strong types to describe the ptree: string, boolean,
+  number, etc.
+- a set of _field definitions_; field name, field type and so
+  on. These are used to read _fields_ from the meta-data.
+- a container for fields, perhaps _object_.
+- a _reader_ that takes the ptree and the field definitions and
+  instantiates the object.
+
+We could almost copy and paste a JSON implementation, except we need
+something like a "schema" (the definitions).
+
+In this new world, each model simply provides their set of field
+definitions. Further, the meta-data model could even handle "local"
+and "global" settings - that is, overrides. We just need to supply
+both ptrees (or both objects) and it will do the right thing. The
+final object it outputs already takes into account any local
+overrides.
+
+How it will work:
+
+- SML objects now have a meta-data object instead of a ptree
+  (=Taggable= concept). This applies to both properties and
+  operations.
+- during dia to SML transformation (or JSON transformation) we ask the
+  register for all registered fields. We then use the definitions to
+  create the meta-data object. We validate the fields: ensure they
+  have a matching field definition, the type of data is correct, etc.
+- field definitions should state if they are local or global or both
+  (e.g. only model module, only entity or can be on both via
+  overrides). We must also be able to specify property-specific fields
+  and even method-specific fields. This allows us to validate that the
+  user has placed settings in the right place. This could be called
+  =scope= or =locality=.
+- during SML merging we process the overrides: the relevant fields of
+  the model module are replicated to every single SML object, and
+  local settings take precedence.
+- we should expand the meta-data object with every entity to contain
+  all of the global settings. This is ok, even though we have
+  scopes. The expansion should be in SML, using facilities provided by
+  the meta-data model. However, we should not expand the
+  property/method meta-data objects. There is no reason to duplicate
+  all of the meta-data here. This means we need a way to distinguish
+  between expandable and non-expandable objects. The meta-data model
+  gets told what's expandable by SML (e.g. meta-data object in a class
+  is, but not in a property). We need a top-level flag for this in the
+  workflow.
+- we should use the meta-data object directly rather than construct
+  local settings for the following purposes:
+  - generating the file name: cpp settings, facet settings, formatter
+    settings;
+  - determining what formatters are enabled, globally and locally: cpp
+    settngs, facet settings, formatter settings. The globally disabled
+    formatters should be filtered out from the list of registered
+    formatters.
+  - this will do away with most of the meta-data factories and their
+    related objects.
+- even better: we should somehow associate all of the arguments for
+  the formatter with the entity, _including_ the formatters
+  themselves. If locally disabled we can just not associate it.
+- in C++ model, we have lots of settings. We can now call these
+  formatter settings because there will be no other settings (we will
+  consume the data from the meta-data object). Formatter settings have
+  a component that is formatter specific and another component that is
+  common to all formatters.
+- Settings are populated either directly from the meta-data object, or
+  there is additional processing that needs to be done.
+- existing settings factories take the meta-data object rather than
+  the ptree.
+- things we need to do workflow:
+  - switchboard: determine which formatters are on for each qname
+    including those not in the target model. Uses the meta-data
+    object. Must take into account the fact that some qnames may have
+    formatters disabled: processes dependency graph. We need to do
+    some work on naming here. Switchboard should be the name of the
+    class that answers questions like "what formatters are on for a
+    given type" and "for a given formatter and type, is the formatter
+    on" and so on. There must be a class responsible for creating the
+    switchboard (perhaps switchboard_factory?).
+  - namer: generate all the file names for all qnames (including those
+    not in the target model). Uses the meta-data object. Requires a
+    full SML model, or perhaps just meta-data object and qname.
+  - includer: generate all the includes for all the target qnames
+    using the file names container and the enabled
+    formatters (the switchboard). Requires a full SML model.
+  - formatter properties: we need to process the SML model to generate
+    type-specific and formatter-specific properties. May require
+    meta-data. Requires a full SML model. These need to be
+    "opaque". As with include builders, formatters must supply a
+    formatter property builder. At present these live in the C++ class
+    but that is incorrect because not all formatters need
+    them. However, we may end up having to share logic between two or
+    more formatters because it seems some formatters do share
+    properties (for example header and implementation of types). In
+    order to generate the formatter properties, we will ne
+  - transformation: we need to generate the C++ representation of the
+    SML model.
+  - Finally we can call the formatter workflow with a structure that
+    contains all of these bits of data: a formatter, its properties,
+    the name, the includes.
+- SML model needs a registrar - or perhaps it should actually be part
+  of the meta-data model itself - for the field
+  definitions. Formatters etc inject definitions into it.
+- SML objects have meta-data object instead of the ptree; Taggable is
+  perhaps not the best name for the concept but we need to think of a
+  better alternative. =Extensible= perhaps? =DynamicallyExtensible=.
+- Note: meta-data is not a great name. In a way, SML is meta-data and
+  pretty much everything in dogen is a meta-model. This is more like a
+  set of dynamic extensions to meta-models so perhaps we could call it
+  =dynamic=?
+- things we need in the meta-data model:
+  - an object has fields.
+  - fields have a value pointer. This is a base class that has
+    descendants: text, number, boolean or a collection (forward list)
+    of these. Collections must be homogeneous. Value is visitable.
+  - fields have a name and a fully qualified name.
+  - fields have a field definition (meta-field, field kind).
+  - field definitions have a name and a fully qualified name. The
+    qualified name must match the key on the ptree.
+  - fields have a path. This is all but the name in the fully
+    qualified name. We should probably create a =name= or
+    =field_name= class to encapsulate all of these.
+  - field definitions have a type: text, number, boolean or a
+    collection (forward list) of these. The value of the original
+    container must be valid according to this type.
+  - field definitions have an optional default value. It is of the
+    same type as field's value. This only applies to the
+    non-collection values.
+  - field definitions have a scope: any, root module, any module,
+    property, method, entity. This could perhaps be represented by a
+    bitset, supporting permutations much easily. However, this does
+    mean we need good validation to ensure invalid permutations are
+    not supplied. Can this be even defined?
+  - in this world, we do not need the ptree at all. We can just use
+    the kvps from the inputs directly, splitting it into two things:
+    the name and the path. A forward list of pair of strings is
+    sufficient as an input to some kind of meta-data workflow.
+  - field definitions could support a "mandatory" attribute, in which
+    case the user must supply a value.
+  - field definitions could support a "domain" of values, e.g. an
+    enumeration, in which case user must supply one of a set of
+    values.
+- meta-data workflow:
+  - receives a forward list of pair of strings, returns an object.
+  - initialised with a registrar reference.
+  - obtains field definitions from registrar.
+  - calls a validator to ensure each kvp is valid. Collections must be
+    validated by the workflow itself (e.g. should we have one or more
+    than one value against a given key).
+  - calls a factory of fields with the definition and the kvp to
+    obtain a field. Constructs an object by adding fields to it.
+  - loops through field definition collection and adds default values
+    for fields that have not been supplied.
+- in addition to workflow we need a class that takes two objects and
+  merges them. For example the root module meta-data object and any
+  type. Could be called merger. Should have a lhs and a rhs and
+  produce a result.
+
+*** POSTPONED Add support for coveralls                               :story:
+    CLOSED: [2014-12-13 Sat 13:31]
+    CLOCK: [2014-12-07 Sun 14:44]--[2014-12-07 Sun 14:54] =>  0:10
+    CLOCK: [2014-12-07 Sun 01:12]--[2014-12-07 Sun 01:43] =>  0:31
+    CLOCK: [2014-12-06 Sat 20:40]--[2014-12-06 Sat 21:05] =>  0:25
+
+Seems like all we need to do to have code coverage from travis is to
+enable it in the YML file.
+
+*Direct use of Coveralls failed*
+
+We had to remove coveralls:
+
+: - coveralls --gcov "$GCOV" --gcov-options '\-lp' -e /usr
+
+This was generating over 10 MB of logging so the build got terminated.
+
+We also add to remove debug builds:
+
+: -DWITH_DEBUG=on -DWITH_PROFILING=on
+
+We were getting a lot of internal compiler errors:
+
+: FAILED: /usr/bin/g++-4.9   -DBOOST_ALL_DYN_LINK -g -O0 -Wall -Wextra -pedantic -Werror -Wno-system-headers -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage -std=c++11 -frtti -fvisibility-inlines-hidden -fvisibility=default -isystem /usr/include/libxml2 -Istage/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/dia/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/dia_to_sml/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/frontend/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/backend/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/sml/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/config/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/cpp/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/cpp_formatters/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/sml_to_cpp/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/formatters/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/utility/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/knit/include -I/home/travis/build/DomainDrivenConsulting/dogen/projects/knitter/include -MMD -MT projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o -MF "projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o.d" -o projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/types/transformer.cpp.o -c /home/travis/build/DomainDrivenConsulting/dogen/projects/sml_to_cpp/src/types/transformer.cpp
+: g++-4.9: internal compiler error: Killed (program cc1plus)
+: Please submit a full bug report,
+: with preprocessed source if appropriate.
+: See <file:///usr/share/doc/gcc-4.9/README.Bugs> for instructions.
+
+Finally note also that we must add coverage _after_ the script
+executes or else we risk doing coverage whilst the build is taking
+place. Hopefully this is the reason for these errors:
+
+: /home/travis/build/DomainDrivenConsulting/output/projects/test_models/class_without_attributes/src/CMakeFiles/class_without_attributes.dir/io/package_1/class_1_io.cpp.gcda:cannot open data file, assuming not executed
+: File '/usr/include/c++/4.9/bits/basic_ios.h'
+: No executable lines
+
+We should read up on the [[http://docs.travis-ci.com/user/build-lifecycle/][life-cycle]] properly.
+
+*Travis Examples*
+
+Seems like all we need to do to have code coverage from travis is to
+enable it in the YML file. We should look into copying it from the
+[[https://github.com/apolukhin/Boost.DLL][Boost.DLL]] [[https://raw.githubusercontent.com/apolukhin/Boost.DLL/master/.travis.yml][example]]. We also need to enable coverage on all builds,
+separately from nightlies. The key parts appear to be these:
+
+:  - ../../../b2 cxxflags="--coverage -std=$CXX_STANDARD" linkflags="--coverage"
+
+and
+
+: after_success:
+:    - find ../../../bin.v2/ -name "*.gcda" -exec cp "{}" ./ \;
+:    - find ../../../bin.v2/ -name "*.gcno" -exec cp "{}" ./ \;
+:    - sudo apt-get install -qq python-yaml lcov
+:    - lcov --directory ./ --base-directory ./ --capture --output-file coverage.info
+:    - lcov --remove coverage.info '/usr*' '*/filesystem*' '*/container*' '*/core/*' '*/exception/*' '*/intrusive/*' '*/smart_ptr/*' '*/move/*' '*/fusion/*' '*/io/*' '*/function/*' '*/iterator/*' '*/preprocessor/*' '*/system/*' '*/boost/test/*' '*/boost/detail/*' '*/utility/*' '*/dll/example/*' '*/dll/test/*' '*/pe_info.hpp' '*/macho_info.hpp' -o coverage.info
+:    - gem install coveralls-lcov
+:    - cd .. && coveralls-lcov test/coverage.info
+
+Another way seems to be using gcov, as per [[https://github.com/fabianschuiki/Maxwell][Maxwell]] [[https://raw.githubusercontent.com/fabianschuiki/Maxwell/master/.travis.yml][travis.yml]]:
+
+: - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; export CXX="g++-4.8" CC="gcc-4.8" GCOV="gcov-4.8"; fi
+:  - sudo pip install cpp-coveralls
+
+and
+
+: script:
+:  - export CTEST_OUTPUT_ON_FAILURE=1
+:  - cmake -DCMAKE_BUILD_TYPE=gcov . && make && make test
+: after_success:
+:  - coveralls --gcov "$GCOV" --gcov-options '\-lp' -e CMakeFiles -E ".*/test/.*" -E ".*/mock/.*" -e maxwell/gen -e language -e thirdparty -e maxwell/ast/nodes -e maxwell/driver/gramdiag.c -e maxwell/driver/Parser.cpp -e maxwell/driver/Parser.hpp -e maxwell/driver/Scanner.cpp -e maxwell/driver/position.hh -e maxwell/driver/stack.hh -e maxwell/driver/location.hh
+
+Yet another way seems to be creating a script to do coverage, as per
+[[https://github.com/BoostGSoC13/boost.afio][boost.afio]] [[https://raw.githubusercontent.com/BoostGSoC13/boost.afio/master/.travis.yml][travis.yml]]. The script is available [[https://raw.githubusercontent.com/BoostGSoC13/boost.afio/master/test/update_coveralls.sh][here]].
+
+*** POSTPONED Create the =dynamic= model                              :story:
+    CLOSED: [2014-12-16 Tue 15:52]
+    CLOCK: [2014-12-13 Sat 21:07]--[2014-12-13 Sat 21:30] =>  0:23
+    CLOCK: [2014-12-13 Sat 18:29]--[2014-12-13 Sat 18:45] =>  0:16
+    CLOCK: [2014-12-13 Sat 18:15]--[2014-12-13 Sat 19:06] =>  0:51
+    CLOCK: [2014-12-13 Sat 14:50]--[2014-12-13 Sat 15:11] =>  0:21
+    CLOCK: [2014-12-13 Sat 13:30]--[2014-12-13 Sat 14:50] =>  1:20
+
+Implement the dynamic model As per analysis story.
+
+Notes:
+
+- we should handle the "value-less" value case such as for instance
+  =dia.comment=. We don't care about the value so the right thing to
+  do is to have a field that has no value (and can't have one; if
+  supplied, we throw).
+- knit must create the dynamic workflow and pass it to dia to
+  sml. We could have the workflow owned by dia to sml, but then that
+  would require the registrar keeping the field definitions in a
+  map. If we do that then we need to perform error handling during
+  static initialisation, which is not ideal. So we choose to do that
+  during construction of the dynamic workflow, with full access to
+  logging, etc. The downside is that we need to move the work to knit.
+
+** Deprecated

@@ -1,0 +1,346 @@
+#+title: Sprint Backlog 55
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) task(t) note(n) spike(p) }
+#+tags: { refactor(r) bug(b) feature(f) vision(v) }
+#+tags: { meta_data(m) tests(a) packaging(q) media(h) build(u) validation(x) diagrams(w) frontend(c) backend(g) }
+#+tags: dia(y) sml(l) cpp(k) config(o) formatters(d)
+
+* Stories
+
+This file contains all stories that were closed during sprint 55.
+
+The *Mission Statement* for this sprint is to continue to finish
+implementing the C++ model workflow skeleton, creating the end-to-end
+pipeline for at least one formatter.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-11-17 Mon 07:48]
+
+| Headline                                                               | Time    |       |      |
+|------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                           | *24:38* |       |      |
+|------------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                        |         | 24:38 |      |
+| COMPLETED Sprint and product backlog grooming                          |         |       | 0:59 |
+| COMPLETED Sort out postgres update problems                            |         |       | 0:36 |
+| COMPLETED Refactor static data initialisation                          |         |       | 1:08 |
+| COMPLETED Add support for facet settings                               |         |       | 4:10 |
+| COMPLETED Implement factory for c++ settings                           |         |       | 0:20 |
+| COMPLETED Copy across boilerplate formatter and specs                  |         |       | 0:38 |
+| COMPLETED Implement transformation for class info objects in cpp model |         |       | 1:30 |
+| COMPLETED Determine the architecture for include generation            |         |       | 4:00 |
+| COMPLETED Implement the new file name method in class header formatter |         |       | 0:36 |
+| COMPLETED Create a base interface for all formatters                   |         |       | 0:43 |
+| COMPLETED Implement the path spec workflow and associated classes      |         |       | 3:28 |
+| COMPLETED Add a class responsible for creating settings bundles        |         |       | 1:08 |
+| COMPLETED Create a formatter container to house the formatters         |         |       | 0:50 |
+| COMPLETED Create a splitter class to split the formatter container     |         |       | 0:38 |
+| COMPLETED Refactor formatter facade                                    |         |       | 0:17 |
+| COMPLETED Create a top-level facet class and facet factory             |         |       | 0:41 |
+| POSTPONED Implement path spec details builder for class header         |         |       | 2:13 |
+| POSTPONED Implement class header formatter                             |         |       | 0:43 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-11-17 Mon 07:47]
+    CLOCK: [2014-11-14 Fri 07:52]--[2014-11-14 Fri 08:02] =>  0:10
+    CLOCK: [2014-11-13 Thu 07:51]--[2014-11-13 Thu 08:09] =>  0:18
+    CLOCK: [2014-11-11 Tue 18:35]--[2014-11-11 Tue 18:41] =>  0:06
+    CLOCK: [2014-11-10 Mon 08:20]--[2014-11-10 Mon 08:29] =>  0:09
+    CLOCK: [2014-11-03 Mon 08:09]--[2014-11-03 Mon 08:16] =>  0:07
+    CLOCK: [2014-11-03 Mon 07:59]--[2014-11-03 Mon 08:08] =>  0:09
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Sort out postgres update problems                       :spike:
+    CLOSED: [2014-11-03 Mon 18:14]
+    CLOCK: [2014-11-03 Mon 18:02]--[2014-11-03 Mon 18:14] =>  0:12
+    CLOCK: [2014-11-03 Mon 08:26]--[2014-11-03 Mon 08:43] =>  0:17
+    CLOCK: [2014-11-03 Mon 08:16]--[2014-11-03 Mon 08:23] =>  0:07
+
+The latest dist-upgrade failed due to a format change on postgres
+9.4. We need to drop and recreate the cluster or else we can't run
+unit tests.
+
+- dropped cluster 9.4 main
+- created new cluster
+- created user build with permissions to create dabatases
+- altered it's password
+- changed hba conf to use md5
+- created databases from user build and added schemas
+- un-commented create schema from database tests
+
+*** COMPLETED Refactor static data initialisation             :task:refactor:
+    CLOSED: [2014-11-03 Mon 22:23]
+    CLOCK: [2014-11-03 Mon 22:01]--[2014-11-03 Mon 22:26] =>  0:25
+    CLOCK: [2014-11-03 Mon 19:13]--[2014-11-03 Mon 19:24] =>  0:11
+    CLOCK: [2014-11-03 Mon 18:26]--[2014-11-03 Mon 18:46] =>  0:20
+    CLOCK: [2014-11-03 Mon 18:14]--[2014-11-03 Mon 18:26] =>  0:12
+
+The objective of this story is to consider if there is any advantage
+in aligning our names a bit more to C# IoC names, and/or to decide if
+we should rename =static_initializer=.
+
+We created registrar as a poor man's DI (dependency injection)
+container. It had only the bare minimum functionality required to
+allow dynamic discovery of backends and formatters. We also decided to
+call it "registrar" rather than "container" because the latter would
+be meaningless to pretty much any C++ programmer that is not familiar
+with DI terminology in C#. We then created static data
+initialisers. These are similar to installers in say Windsor Castle,
+in that they are responsible for setting up the container. As with
+Castle, it makes sense to create a chain of installers, and to have a
+top level installer that calls all dependent installers so that a user
+of a library does not have to worry about setting up its
+dependencies. The next logical step after this is within the library
+itself. For example, each facet is responsible for setting itself up
+(in the future by creating its default facet settings). It would be
+natural to create a facet-level installer and call it from the
+model-level installer. however, the name =static_initializer= starts
+becoming a bit cumbersome when one has so many of these lying around.
+
+Conclusions:
+
+- the names container and installer are confusing (container in
+  particular);
+- registrar is a good name since it manages registration;
+- it is a shame that we interface with the registrar via the workflow
+  though. Removed the delegation and made the registrar visible.
+- we should rename =static_initializer= to just =initializer= and have
+  an =initializer= per facet.
+
+In general, we want to wait until C++ supports reflection properly
+(C++ 17 hopefully) at which point proper DI libraries will start to
+appear. For now we just want the bare minimum.
+
+*** COMPLETED Add support for facet settings                          :story:
+    CLOSED: [2014-11-05 Wed 20:47]
+    CLOCK: [2014-11-05 Wed 20:21]--[2014-11-05 Wed 20:47] =>  0:26
+    CLOCK: [2014-11-05 Wed 19:46]--[2014-11-05 Wed 19:59] =>  0:13
+    CLOCK: [2014-11-05 Wed 18:05]--[2014-11-05 Wed 18:49] =>  0:44
+    CLOCK: [2014-11-05 Wed 07:54]--[2014-11-05 Wed 08:51] =>  0:57
+    CLOCK: [2014-11-04 Tue 19:53]--[2014-11-04 Tue 20:04] =>  0:11
+    CLOCK: [2014-11-04 Tue 07:55]--[2014-11-04 Tue 08:46] =>  0:51
+    CLOCK: [2014-11-03 Mon 23:16]--[2014-11-03 Mon 23:20] =>  0:04
+    CLOCK: [2014-11-03 Mon 22:56]--[2014-11-03 Mon 23:09] =>  0:13
+    CLOCK: [2014-11-03 Mon 22:28]--[2014-11-03 Mon 22:56] =>  0:28
+    CLOCK: [2014-11-03 Mon 08:23]--[2014-11-03 Mon 08:26] =>  0:03
+
+- create default settings in facet initialisers.
+- create a facet settings factory: given a facet id, locates the
+  meta-data for the facet.
+- apply factory to all facets in workflow.
+- supply all settings to formatter dispatcher, including map of facet
+  settings by facet
+- build the settings bundle in dispatcher
+
+*** COMPLETED Implement factory for c++ settings                      :story:
+    CLOSED: [2014-11-05 Wed 21:10]
+    CLOCK: [2014-11-05 Wed 20:50]--[2014-11-05 Wed 21:10] =>  0:20
+
+Add support for all of the main C++ properties in factory.
+
+*** COMPLETED Copy across boilerplate formatter and specs     :task:refactor:
+    CLOSED: [2014-11-05 Wed 22:44]
+    CLOCK: [2014-11-05 Wed 22:24]--[2014-11-05 Wed 22:44] =>  0:20
+    CLOCK: [2014-11-05 Wed 22:05]--[2014-11-05 Wed 22:23] =>  0:18
+
+Seems like we didn't move across the boilerplate formatter and
+associated classes. Move it now from =cpp_formatters=.
+
+*** COMPLETED Implement transformation for class info objects in cpp model :story:
+    CLOSED: [2014-11-06 Thu 22:19]
+    CLOCK: [2014-11-06 Thu 22:10]--[2014-11-06 Thu 22:19] =>  0:09
+    CLOCK: [2014-11-06 Thu 19:05]--[2014-11-06 Thu 19:50] =>  0:45
+    CLOCK: [2014-11-06 Thu 08:08]--[2014-11-06 Thu 08:44] =>  0:36
+
+In order to implement the class header formatter we need classes to
+format. Copy across the code from the legacy transformer and refactor
+it to fit the new class info.
+
+*** COMPLETED Determine the architecture for include generation        :task:
+     CLOSED: [2014-11-09 Sun 23:17]
+     CLOCK: [2014-11-09 Sun 23:03]--[2014-11-09 Sun 23:17] =>  0:14
+     CLOCK: [2014-11-09 Sun 22:37]--[2014-11-09 Sun 23:03] =>  0:26
+     CLOCK: [2014-11-09 Sun 20:28]--[2014-11-09 Sun 21:08] =>  0:40
+     CLOCK: [2014-11-09 Sun 18:44]--[2014-11-09 Sun 19:38] =>  0:54
+     CLOCK: [2014-11-07 Fri 17:25]--[2014-11-07 Fri 18:07] =>  0:42
+     CLOCK: [2014-11-07 Fri 07:54]--[2014-11-07 Fri 08:45] =>  0:51
+     CLOCK: [2014-11-06 Thu 22:38]--[2014-11-06 Thu 22:51] =>  0:13
+
+Overall objectives:
+
+- formatters must be able to populate the meta-data for the file name
+  and system/user include files during SML workflow;
+- transformer must be able to read this information using registrar to
+  access all available formatters.
+
+After reading all that has been written on this subject, it seems like
+we have taken a wrong turn in the transition of =enricher= to
+=consumer_interface=. We thought we could accumulate state rather than
+mutate the meta-data in the model; however, if we accumulate state by
+=qname= we then need to store it somewhere. It can't be stored in SML
+(since we do not want to mutate the model) nor can we store it in C++
+(we are).
+
+Update the diagrams with all the required infrastructure.
+
+*** COMPLETED Implement the new file name method in class header formatter :task:
+    CLOSED: [2014-11-10 Mon 18:16]
+    CLOCK: [2014-11-10 Mon 17:58]--[2014-11-10 Mon 18:16] =>  0:18
+    CLOCK: [2014-11-10 Mon 17:45]--[2014-11-10 Mon 17:52] =>  0:07
+    CLOCK: [2014-11-10 Mon 08:29]--[2014-11-10 Mon 08:40] =>  0:11
+
+We need to look at all the settings and the qname and generate the
+relative path inside the formatter.
+
+- refactor file name generation in identifier name builder;
+- make use of identifier name builder in formatter.
+
+*** COMPLETED Create a base interface for all formatters      :task:refactor:
+    CLOSED: [2014-11-10 Mon 22:50]
+    CLOCK: [2014-11-10 Mon 22:33]--[2014-11-10 Mon 22:50] =>  0:17
+    CLOCK: [2014-11-10 Mon 18:22]--[2014-11-10 Mon 18:43] =>  0:21
+    CLOCK: [2014-11-10 Mon 18:16]--[2014-11-10 Mon 18:21] =>  0:05
+
+We have a number of properties common to all formatters. Move it to a
+common interface called =formatter_interface=.
+
+Actually we can't call it =formatter_interface= because the one thing
+it can't do is to format. However, it has two main responsibilities:
+
+- store static information (facet and formatter id);
+- provide helper functionality (make file name and includes builder)
+
+However, we can't think of a better name for now, so it will stay
+=formatter_interface=. This can be refactored later.
+
+*** COMPLETED Implement the path spec workflow and associated classes  :task:
+    CLOSED: [2014-11-13 Thu 08:08]
+    CLOCK: [2014-11-12 Wed 22:17]--[2014-11-12 Wed 23:21] =>  1:04
+    CLOCK: [2014-11-12 Wed 20:20]--[2014-11-12 Wed 21:02] =>  0:42
+    CLOCK: [2014-11-12 Wed 18:07]--[2014-11-12 Wed 18:35] =>  0:28
+    CLOCK: [2014-11-11 Tue 18:57]--[2014-11-11 Tue 19:20] =>  0:23
+    CLOCK: [2014-11-11 Tue 18:41]--[2014-11-11 Tue 18:49] =>  0:08
+    CLOCK: [2014-11-11 Tue 07:57]--[2014-11-11 Tue 08:40] =>  0:43
+
+Create the minimal infrastructure required to prove that the path spec
+approach works.
+
+*Implementation problem*: the path spec workflow presumes that we will
+get relative paths and includes for the cross-product of SML entities
+and formatters. This is not correct. Formatters are expected to only
+work on specific C++ types, so by implication, we need to have a
+"inverse transformation" function that returns the SML type
+corresponding to the C++ type supported by the formatter; that is the
+type for which we should be computing relative paths and includes. We
+do not have any such machinery.
+
+We could create a mapping between SML types and formatters but it
+wouldn't be trivial since the same SML type can have different
+formatters depending on its state.
+
+Perhaps the right thing to do is to have the transformer receive the
+"formatter interfaces" and make the decision on which one to call. We
+still need some type information though.
+
+Actually, the "formatter interface" is not sufficient - we need to
+know the type. Transformer needs to know of the registrar and of the
+settings bundle.
+
+*Final understanding*: it is much easier to copy the meta-function
+that maps SML types to C++ types into the path spec workflow. This is
+very simple code that changes infrequently.
+
+*** COMPLETED Add a class responsible for creating settings bundles :task:refactor:
+    CLOSED: [2014-11-14 Fri 07:55]
+    CLOCK: [2014-11-13 Thu 18:58]--[2014-11-13 Thu 19:39] =>  0:41
+    CLOCK: [2014-11-13 Thu 08:12]--[2014-11-13 Thu 08:39] =>  0:27
+
+We need to find a way to create the bundles upfront and pass them to
+the entity formatter as well as path spec details builder. The class
+should be called =bundler=.
+
+*** COMPLETED Create a formatter container to house the formatters :task:refactor:
+    CLOSED: [2014-11-16 Sun 18:17]
+    CLOCK: [2014-11-16 Sun 18:06]--[2014-11-16 Sun 18:17] =>  0:11
+    CLOCK: [2014-11-14 Fri 08:27]--[2014-11-14 Fri 08:42] =>  0:15
+    CLOCK: [2014-11-14 Fri 08:02]--[2014-11-14 Fri 08:26] =>  0:24
+
+- create a class that contains all the different formatters
+- implement registrar using the new class
+
+*** COMPLETED Create a splitter class to split the formatter container :task:refactor:
+    CLOSED: [2014-11-16 Sun 18:56]
+    CLOCK: [2014-11-16 Sun 18:18]--[2014-11-16 Sun 18:56] =>  0:38
+
+- create a class responsible for splitting an existing container into
+  a set of containers by facet
+- add splitting to the workflow
+- pass the new container to the path spec activities.
+
+*** COMPLETED Refactor formatter facade                       :task:refactor:
+    CLOSED: [2014-11-16 Sun 19:14]
+    CLOCK: [2014-11-16 Sun 18:58]--[2014-11-16 Sun 19:14] =>  0:16
+    CLOCK: [2014-11-13 Thu 08:10]--[2014-11-13 Thu 08:11] =>  0:01
+
+Move formatter facade to formatters and call it entity
+formatter. Could also be the =formatters::workflow= as a sub-workflow.
+
+*** COMPLETED Create a top-level facet class and facet factory :task:refactor:
+    CLOSED: [2014-11-16 Sun 19:55]
+    CLOCK: [2014-11-16 Sun 19:14]--[2014-11-16 Sun 19:55] =>  0:41
+
+Actually, what both path spec activities and formatter workflow really
+need is the concept of a facet, with all the information preprocessed
+ready to use. Add classes for these.
+
+*** POSTPONED Implement path spec details builder for class header     :task:
+    CLOSED: [2014-11-17 Mon 07:47]
+    CLOCK: [2014-11-16 Sun 22:15]--[2014-11-16 Sun 23:03] =>  0:48
+    CLOCK: [2014-11-16 Sun 20:47]--[2014-11-16 Sun 21:01] =>  0:14
+    CLOCK: [2014-11-11 Tue 07:54]--[2014-11-11 Tue 07:57] =>  0:03
+    CLOCK: [2014-11-10 Mon 22:50]--[2014-11-10 Mon 23:42] =>  0:52
+    CLOCK: [2014-11-10 Mon 08:04]--[2014-11-10 Mon 08:20] =>  0:16
+
+We need to implement the interface for path spec details builder.
+
+*** POSTPONED Implement class header formatter :task:refactor:formatters:cpp:
+    CLOSED: [2014-11-17 Mon 07:48]
+    CLOCK: [2014-11-06 Thu 22:19]--[2014-11-06 Thu 22:36] =>  0:17
+    CLOCK: [2014-11-06 Thu 07:54]--[2014-11-06 Thu 08:07] =>  0:13
+    CLOCK: [2014-11-05 Wed 22:46]--[2014-11-05 Wed 22:59] =>  0:13
+
+- look at the old =om= types formatter implementation to see if there
+  is any code to scavenge. This model was deleted around commit
+  10157ad.
+
+**** COMPLETED Make use of boilerplate                                 :task:
+     CLOSED: [2014-11-06 Thu 22:38]
+
+Generate the licence, etc using boilerplate formatter.
+
+**** Tidy-up =types_main_header_file_formatter=                        :task:
+
+Clean up internal functions in file and add documentation.
+
+**** Copy across documentation from =om=                               :task:
+
+We did a lot of doxygen comments that are readily applicable, copy
+them across.
+
+**** Make use of indenting stream                                      :task:
+
+Remove uses of old indenter.
+
+**** Copy across =om= types formatter tests                            :task:
+
+Not sure how applicable this would be, but we may be able to scavenge
+some tests.
+
+** Deprecated Development Stories
+
+Stories that do not make sense any longer.

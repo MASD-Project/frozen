@@ -1,0 +1,1161 @@
+#+title: Sprint Backlog 06
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish moving enablement and dependencies into yarn.
+- Start sorting out object templates and profiles.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-11-06 Mon 20:57]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *58:39* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 58:39   |       |       | 100.0 |
+| Active                                                                      |         | 58:39 |       | 100.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  2:19 |   3.9 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  2:08 |   3.6 |
+| CANCELLED Add an "at" field to transform stats                              |         |       |  0:10 |   0.3 |
+| COMPLETED Move enablement into yarn                                         |         |       |  1:01 |   1.7 |
+| COMPLETED Consider revamping the project logo                               |         |       |  2:02 |   3.5 |
+| COMPLETED Rename top-level transformations                                  |         |       |  1:33 |   2.6 |
+| COMPLETED Clean-up context usage                                            |         |       |  0:38 |   1.1 |
+| COMPLETED Housekeeper should know of text models                            |         |       |  2:05 |   3.6 |
+| COMPLETED Rename the model to text transforms                               |         |       |  0:29 |   0.8 |
+| COMPLETED Rename kernel and family                                          |         |       |  2:44 |   4.7 |
+| COMPLETED Clean up formatter names                                          |         |       |  1:00 |   1.7 |
+| COMPLETED Caching in travis                                                 |         |       |  0:59 |   1.7 |
+| COMPLETED Consider collapsing element properties into element               |         |       |  1:08 |   1.9 |
+| COMPLETED Create the archetype location properties                          |         |       | 13:58 |  23.8 |
+| COMPLETED Analysis work on moving to c++ 17                                 |         |       |  0:32 |   0.9 |
+| COMPLETED Upgrade rtags to latest                                           |         |       |  0:36 |   1.0 |
+| COMPLETED Experiment with adding colour to dia diagrams                     |         |       |  3:01 |   5.1 |
+| COMPLETED Move artefact into yarn                                           |         |       |  2:21 |   4.0 |
+| COMPLETED Supply the yarn options to prober                                 |         |       |  0:23 |   0.7 |
+| COMPLETED Experiment with a database model                                  |         |       |  1:20 |   2.3 |
+| POSTPONED Split registrar into two classes                                  |         |       |  1:25 |   2.4 |
+| POSTPONED Generate file paths as a transform                                |         |       |  9:21 |  15.9 |
+| POSTPONED Implement exomodel in terms of exoelements                        |         |       |  7:26 |  12.7 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-09-18 Mon 21:39]
+    CLOCK: [2017-09-18 Mon 20:32]--[2017-09-18 Mon 21:30] =>  0:58
+    CLOCK: [2017-09-18 Mon 19:10]--[2017-09-18 Mon 20:31] =>  1:21
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.05, "Tribunal"
+
+#+begin_src markdown
+![Tribunal](https://lh4.googleusercontent.com/-jGPjhmZ1ZU8/TeI_Gc1PFtI/AAAAAAAAIwQ/UBPUpWaRuHA/s894/IMG_2594.JPG)
+_Tribunal, Namibe, Angola. (C) SkyScrapperCity, 2011._
+
+Overview
+=======
+The bulk of this sprint was focused on three refactoring tasks:
+
+- **Renaming Concepts to Object Templates**: This is a long-standing clean-up that needed doing. One of the key principles in Yarn is to avoid binding to language specific terms when those terms don't cleanly map across to several programming languages. Since inception, "Concepts" has been a flagrant violation, as it alludes to a C++ feature which it isn't even a proper implementation of, nor does it map to generics. With the work on profiles looming, this clean-up became ever more pressing. Granted, "object templates"  is rather more verbose - but we decided to make the change in the interest of cleaning up Yarn vocabulary. It is, at least, a more accurate reflection of this meta-model element's responsibilities.
+- **Probing support**: Historically, Dogen has always had good logging, allowing us to troubleshoot most issues quickly. However, with Yarn's transition towards a transformation-based architecture, it has become increasingly difficult to figure out what each transformation is doing. The linear nature of the log does not help, given that one is trying to visualise a graph. Thus, troubleshooting of issues has slowed down noticeably, so something had to be done. Probing is the proposed solution for this problem, and it has already made  troubleshooting orders of magnitude faster. This feature is described in depth below.
+- **Work on moving kernel specific transforms**: we continued our long road on moving all of the "kernel-specific" transforms which aren't actually kernel-specific into Yarn. Enablement is almost done, but it remains elusive.
+
+In addition to this, there were other minor (but still significant) strands of work:
+
+- we continued work on the theme "everything is a transform", adding more transform chains and cleaning up more terminology as we went along. This work is now more or less complete, with the core of Yarn providing a set of primitives that are in keeping with the literature on code generation - in particular [Model-Driven Software Engineering in Practice](https://www.amazon.co.uk/Model-Driven-Software-Engineering-Practice-Synthesis/dp/1608458822). This has greatly simplified Yarn's conceptual model and vocabulary since we can now rely on "standard" terms.
+- in a similar vein, we continued to merge more functionality into Yarn, deprecating the Knit model and moving its contents as transforms into Yarn.
+
+User visible changes
+================
+The most important user visible changes introduced with this sprint are related to stereotypes:
+
+- all meta-model types must now be prefixed: where you had ```object``` you must now put ```yarn::object```. This change was done in preparation for both the generalisation of profiles, and for adding the ability to refer to object templates (née concepts) across models.
+- as explained in the previous section, ```concept``` has been renamed to ```object_template```, so where you had ```concept``` you must now put ```yarn::object_template```.
+
+In addition, there was also a ORM related change that brings it in line with all other tagged values: the low-level ODB parameter was renamed from ```odb_pragma``` to ```quilt.cpp.odb.pragma```. So, in your models, where you had:
+
+```
+#DOGEN odb_pragma=no_id
+```
+
+You must replace it with:
+
+```
+#DOGEN quilt.cpp.odb.pragma=no_id
+```
+
+The final user visible change is the most significant in terms of time spent: transform probing. As it happens, it is not really aimed at end-users, but its worth describing the feature as it may still prove to be useful.
+
+A new set of command line options have been added to ```dogen.knitter```:
+
+```
+  --probe-stats                         Generate stats about executed
+                                        transforms.
+  --probe-stats-disable-guids           Disable guids in probe stats, to make
+                                        comparisons easier.
+  --probe-stats-org-mode                Use org-mode format for stats. Requires
+                                        enabling stats.
+  --probe-all                           Dump all available probing information
+                                        about transforms.
+  --probe-directory                     Directory in which to dump probe data.
+                                        Only used if transforms probing is
+                                        enabled.
+  --probe-use-short-names               Use short names for directories and
+                                        files. Useful for Windows where long
+                                        paths are not supported.
+```
+
+We'll start with ```--probe-stats``` and related options, since it is the most likely to be of use to end users. It is now possible to dump statistics about the transform graph, allowing simple benchmarkings. When a user selects this option, a file is generated under the probing directory (configurable via ```--probe-directory```), with the name ```transform_stats.txt```. As an example, here is the ```head``` of the generation of the ```yarn``` model:
+
+```
+root (1574 ms) [version: v1.0.06, log: debug, probing: off] [4423093f-eb3e-40af-a370-b879684f7950]
+    dogen.yarn.code_generation_chain (1527 ms) [yarn.dia] [c6d812e9-9e97-4084-a1e1-afd804929dc0]
+        yarn.transforms.model_generation_chain (1075 ms) [] [9778eeab-107a-4c0f-a633-87ffd06fcd5c]
+            yarn.transforms.endomodel_generation_chain (890 ms) [yarn.dia] [3425b8d7-7ab2-4f95-a53a-b8c4bf7e0485]
+                yarn.transforms.initial_target_chain (398 ms) [yarn.dia] [229a572e-70c1-4934-be79-db7e481de5bc]
+                    yarn.transforms.exomodel_generation_chain (333 ms) [yarn.dia] [240ea71b-778a-4601-8682-153ad8b78d51]
+                        yarn.dia.exomodel_transform (58 ms) [yarn.dia] [5e599d88-9676-41e9-aa9a-aaf4ebb134f8]
+                        yarn.transforms.annotations_transform (12 ms) [] [7d95b799-72d0-471f-a50c-bb29a0d70709]
+                        yarn.transforms.naming_transform (10 ms) [] [5c768d15-7964-4d54-a9c1-f32acc452161]
+                    yarn.transforms.exomodel_to_endomodel_transform (0 ms) [<dogen><yarn>] [e8ec0c9f-92f1-4b03-a755-a335beda1c44]
+```
+
+As you can see, each node has the total elapsed time it took the transform to execute. In addition, the root node of the graph contains information about the configuration, so that we can compare like with like. This includes the Dogen version, the type of logging and whether detailed probing was enabled or not. You will also not fail to notice the GUIDs next to each node in the graph. These are correlation IDs, enabling one to find the logging for each of the transforms in the log file:
+
+```
+2017-09-18 11:22:11.618837 [DEBUG] [yarn.helpers.transform_prober] Starting: yarn.transforms.endomodel_pre_processing_chain (229a572e-70c1-4934-be79-db7e481de5bc)
+```
+
+If instead one just wants to diff two transformation graphs - perhaps looking for performance changes, or changes in the composition of the grap - one can disable the GUIDs via ```--probe-stats-disable-guids```.
+
+```
+root (1530 ms) [version: v1.0.06, log: debug, probing: off]
+    dogen.yarn.code_generation_chain (1522 ms) [yarn.dia]
+        yarn.transforms.model_generation_chain (1066 ms) []
+            yarn.transforms.endomodel_generation_chain (880 ms) [yarn.dia]
+                yarn.transforms.initial_target_chain (393 ms) [yarn.dia]
+                    yarn.transforms.exomodel_generation_chain (328 ms) [yarn.dia]
+                        yarn.dia.exomodel_transform (58 ms) [yarn.dia]
+                        yarn.transforms.annotations_transform (12 ms) []
+                        yarn.transforms.naming_transform (9 ms) []
+                    yarn.transforms.exomodel_to_endomodel_transform (1 ms) [<dogen><yarn>]
+```
+
+For Vi and Emacs users, there is an additional way of interacting with the transform graph: we've added an org-mode compatible dump of the graph via ```--probe-stats-org-mode```. This feature is extremely useful because it allows collapsing and expanding the graph interactively from within the editor:
+
+![org-mode](https://github.com/DomainDrivenConsulting/dogen/raw/master/doc/blog/images/emacs_org_mode_stats.png)
+
+The second aspect of probing is the ability to dig deep into each transform, in order to understand what it was doing. For this we can use ```--probe-all```. Once enabled, a dump is generated for each transform in the transform graph of its inputs and outputs - where applicable. These are also stored in the probe directory. The directory structure follows the graph:
+
+```
+000-archetype_location_repository.json
+001-type_repository.json
+002-mapping_set_repository.json
+003-dogen.yarn.code_generation_chain
+transform_stats.txt
+```
+
+Each transform chain becomes a directory, and each transform has files with inputs and outputs, in JSON. It is trivial to indent the JSON files and diff input with output to figure out what the transform did - or, more likely, didn't do.
+
+As always, there were complications with Windows. Since this operative system does not support long paths, we found that probing often failed with errors because our transform graph is deeply nested and the transforms have very long names. To allow one to use this feature under Windows, we've added ```--probe-use-short-names```. This makes the files and directories a lot less meaningful, but at least it still works:
+
+```
+000.json
+001.json
+002.json
+003
+transform_stats.txt
+```
+
+It is difficult to overstate the importance of probing in Dogen development. It was already used during this sprint to quickly get to the bottom of issues in enablement, and it was found to greatly simply this task. In the future, when we have rapid JSON support, one can conceive of a feature to read the dumped data into a test to replicate some particular bug very quickly.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/v1/sprint_backlog_05.org).
+
+Next Sprint
+===========
+Next sprint we'll resume the work on moving kernel-agnostic transformations from the kernels into yarn.
+
+Binaries
+======
+You can download binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.05_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.05/dogen_1.0.05_amd64-applications.deb)
+- [dogen-1.0.05-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.05/dogen-1.0.05-Darwin-x86_64.dmg)
+- [dogen-1.0.05-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-1.0.05-Windows-AMD64.msi)
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/909878261852835843][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6315644420331053056][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-11-06 Mon 20:57]
+    CLOCK: [2017-11-03 Fri 11:14]--[2017-11-03 Fri 11:33] =>  0:19
+    CLOCK: [2017-11-02 Thu 08:22]--[2017-11-02 Thu 08:46] =>  0:24
+    CLOCK: [2017-10-21 Sat 22:11]--[2017-10-21 Sat 22:31] =>  0:20
+    CLOCK: [2017-10-21 Sat 11:28]--[2017-10-21 Sat 11:48] =>  0:20
+    CLOCK: [2017-10-05 Thu 07:08]--[2017-10-05 Thu 07:15] =>  0:07
+    CLOCK: [2017-09-29 Fri 10:01]--[2017-09-29 Fri 10:25] =>  0:24
+    CLOCK: [2017-09-18 Mon 21:32]--[2017-09-18 Mon 21:39] =>  0:07
+    CLOCK: [2017-09-18 Mon 00:01]--[2017-09-18 Mon 00:08] =>  0:07
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Add logging to all top-level workflow activities        :story:
+    CLOSED: [2017-09-18 Mon 21:43]
+
+*Rationale*: probing has addressed this problem.
+
+We need to make sure the log file is narrating a story. For this we
+need to add logging to all start and end of activities by the
+workflows. This means that when we filter by workflow name we should
+be able to quickly figure out where things went wrong.
+
+*** COMPLETED Add logging to test suite                               :story:
+    CLOSED: [2017-09-18 Mon 21:42]
+
+*Rationale*: initialisation of logging in tests has addressed this
+problem.
+
+At present its not possible to figure out where a test suite starts or
+ends in the log file. We should also move the asserts from =DEBUG= to
+=TRACE=, unless there is an error.
+
+*** CANCELLED Add an "at" field to transform stats                    :story:
+    CLOSED: [2017-09-18 Mon 22:21]
+    CLOCK: [2017-09-18 Mon 22:11]--[2017-09-18 Mon 22:21] =>  0:10
+
+*Rationale*: given the current state of affairs in C++, its best if we
+just rely on the file timestamp.
+
+At present we cannot tell when the transform stats were dumped. We
+could of course look at timestamps but to make life easier for the
+user we could add a field with a date in local time - or perhaps UTC?
+
+*** COMPLETED Move enablement into yarn                               :story:
+    CLOSED: [2017-09-19 Tue 08:36]
+    CLOCK: [2017-09-19 Tue 20:58]--[2017-09-19 Tue 21:19] =>  0:21
+    CLOCK: [2017-09-19 Tue 07:41]--[2017-09-19 Tue 08:01] =>  0:20
+    CLOCK: [2017-09-19 Tue 07:20]--[2017-09-19 Tue 07:40] =>  0:20
+
+It seems that the concepts around enablement are actually not kernel
+specific but instead can be generalised at the meta-model level. We
+need to create adequate representations in yarn to handle facets,
+etc. We then need to move across the code that computes enablement
+into yarn so that all kernels can make use of it.
+
+Problems:
+
+- we are checking to see if the hash facet is enabled with c++ 98; if
+  so, we throw as this facet is incompatible. We cannot do this from
+  yarn since we do not know what c++ standards are.
+- because we do not have a mapping between a archetype location and
+  the meta-type, we will be enabling/disabling all archetype locations
+  across all meta-types.
+- because we do not have element segmentation, the element extensions
+  will be disabled. Actually this will probably work just the same,
+  given that all elements exist.
+- enablement must be done after external transformations so it picks
+  up fabric types.
+- we need to support formatting styles in order to be able to use the
+  artefact properties from the meta-model.
+- in quilt.cpp, someone did an upfront generation of all archetype
+  properties against the archetype locations. We not doing that in
+  yarn, so nothing is coming out. This was done during transformation
+  in formattables.
+- with a move into yarn, we seem to have broken the overwrite flag
+  logic; changes no longer result in new code being generated.
+- we also have borked the includes: dependency builder is looking into
+  the formattables instead of element. However, we then run into
+  segmentation issues because we cannot find forward declarations on
+  the main element.
+
+To do:
+
+- kernel registrar type index map - done.
+- assistant to latch on to element; use new element properties where
+  possible.
+- facet properties must be handled, and assistant must use the yarn
+  version.
+- c# formatter registrar type index map - done.
+- bug in template instantiating: artefact expansions do not seem to
+  take kernel into account - done.
+- use new enabled fields.
+- delete all enablement classes in c++ and enabled/overwrite properties.
+
+*Previous Understanding*
+
+We need to make use of the exact same logic as implemented in
+=quilt.cpp= for enablement. Perhaps all of the enablement related
+functionality can be lifted and grafted onto quilt without any major
+changes.
+
+*** COMPLETED Consider revamping the project logo                     :story:
+    CLOSED: [2017-09-20 Wed 22:00]
+    CLOCK: [2017-09-21 Thu 09:10]--[2017-09-21 Thu 10:14] =>  1:04
+    CLOCK: [2017-09-20 Wed 21:47]--[2017-09-20 Wed 22:00] =>  0:13
+    CLOCK: [2017-09-18 Mon 22:11]--[2017-09-18 Mon 22:56] =>  0:45
+
+Try doing something slightly less "street".
+
+*** COMPLETED Rename top-level transformations                        :story:
+    CLOSED: [2017-09-29 Fri 12:31]
+    CLOCK: [2017-09-29 Fri 12:18]--[2017-09-29 Fri 12:31] =>  0:13
+    CLOCK: [2017-09-29 Fri 12:14]--[2017-09-29 Fri 12:17] =>  0:03
+    CLOCK: [2017-09-29 Fri 10:57]--[2017-09-29 Fri 11:14] =>  0:17
+    CLOCK: [2017-09-29 Fri 10:26]--[2017-09-29 Fri 10:56] =>  0:30
+    CLOCK: [2017-09-18 Mon 21:40]--[2017-09-18 Mon 22:10] =>  0:30
+
+We no longer need the code-generator outside of transforms; we can now
+have a code-generation chain.
+
+Actually in addition, we need two top-level transforms:
+
+- a text model generation chain, which produces the text model, and is
+  useful for services;
+- a code genration chain, which uses the text model generation chain
+  and then writes it to the file system. In the future we could have
+  an archive generation chain which produces a tarball, zip etc.
+
+Tasks:
+
+- rename kernel related transforms to "model to text" as this is what
+  they are doing.
+- remove code-generation, create a transform for it.
+
+*** COMPLETED Clean-up context usage                                  :story:
+    CLOSED: [2017-09-29 Fri 12:57]
+    CLOCK: [2017-09-29 Fri 12:58]--[2017-09-29 Fri 13:11] =>  0:13
+    CLOCK: [2017-09-29 Fri 12:32]--[2017-09-29 Fri 12:57] =>  0:25
+
+We've included context generation in the code generation
+transform. This is not ideal. It should be the responsibility of the
+client to create the context.
+
+*** COMPLETED Housekeeper should know of text models                  :story:
+    CLOSED: [2017-09-29 Fri 16:40]
+    CLOCK: [2017-09-29 Fri 16:39]--[2017-09-29 Fri 16:42] =>  0:03
+    CLOCK: [2017-09-29 Fri 16:22]--[2017-09-29 Fri 16:38] =>  0:16
+    CLOCK: [2017-09-29 Fri 15:49]--[2017-09-29 Fri 16:01] =>  0:12
+    CLOCK: [2017-09-29 Fri 15:30]--[2017-09-29 Fri 15:48] =>  0:18
+    CLOCK: [2017-09-29 Fri 14:13]--[2017-09-29 Fri 15:29] =>  1:16
+
+It should be the responsibility of the house keeper to collect the
+expected files and extract managed directories.
+
+The housekeeper API doesn't make a lot of sense either: we should just
+return the candidates for deletion rather than take in a lambda for
+deletion.
+
+The job of the "housekeeper" is to compute a list of unexpected
+files. Its name should be: =file_linter=.
+
+*** COMPLETED Rename the model to text transforms                     :story:
+    CLOSED: [2017-10-06 Fri 10:08]
+    CLOCK: [2017-10-06 Fri 10:01]--[2017-10-06 Fri 10:08] =>  0:07
+    CLOCK: [2017-10-06 Fri 09:47]--[2017-10-06 Fri 10:00] =>  0:13
+    CLOCK: [2017-10-05 Thu 07:21]--[2017-10-05 Thu 07:30] =>  0:09
+
+We originally called the transforms "model to text" but actually they
+are "model to text model" transforms.
+
+*** COMPLETED Rename kernel and family                                :story:
+    CLOSED: [2017-10-06 Fri 14:07]
+    CLOCK: [2017-10-06 Fri 14:06]--[2017-10-06 Fri 14:10] =>  0:04
+    CLOCK: [2017-10-06 Fri 13:19]--[2017-10-06 Fri 14:05] =>  0:46
+    CLOCK: [2017-10-06 Fri 13:12]--[2017-10-06 Fri 13:18] =>  0:06
+    CLOCK: [2017-10-06 Fri 13:01]--[2017-10-06 Fri 13:11] =>  0:10
+    CLOCK: [2017-10-06 Fri 12:57]--[2017-10-06 Fri 13:00] =>  0:03
+    CLOCK: [2017-10-06 Fri 12:49]--[2017-10-06 Fri 12:56] =>  0:07
+    CLOCK: [2017-10-06 Fri 12:19]--[2017-10-06 Fri 12:25] =>  0:06
+    CLOCK: [2017-10-06 Fri 12:04]--[2017-10-06 Fri 12:18] =>  0:14
+    CLOCK: [2017-10-06 Fri 11:57]--[2017-10-06 Fri 12:03] =>  0:06
+    CLOCK: [2017-10-06 Fri 11:32]--[2017-10-06 Fri 11:56] =>  0:24
+    CLOCK: [2017-10-06 Fri 10:53]--[2017-10-06 Fri 11:31] =>  0:38
+
+We need to use the term "family" to signify a group of archetypes such
+as "c++ headers", "c++ implementations", "c# implementations"
+etc. However, we have already used this term in the archetype
+location. So we need to:
+
+- rename kernel to backend. This clarifies things since we keep
+  calling kernels backends anyway.
+- rename family to kernel. So quilt becomes a kernel, implemented by a
+  number of backends: quilt.cpp, quilt.csharp and so forth.
+- rename archetype location group to archetype location family.
+
+*** COMPLETED Clean up formatter names                                :story:
+    CLOSED: [2017-10-08 Sun 16:41]
+    CLOCK: [2017-10-08 Sun 16:35]--[2017-10-08 Sun 16:41] =>  0:06
+    CLOCK: [2017-10-08 Sun 16:17]--[2017-10-08 Sun 16:34] =>  0:17
+    CLOCK: [2017-10-08 Sun 15:39]--[2017-10-08 Sun 16:16] =>  0:37
+
+At present we have confusing terminology in formatters:
+
+- formatter name, helper name
+- static artefact
+
+We should just standardise everything as "id's" which at least is
+consistent with how we deal with yarn names. Still not ideal given
+that the "id" is in effect "archetype" in archetype location, but its
+slightly less confusing.
+
+*** COMPLETED Caching in travis                                       :story:
+    CLOSED: [2017-10-15 Sun 07:49]
+    CLOCK: [2017-10-15 Sun 07:41]--[2017-10-15 Sun 07:49] =>  0:08
+    CLOCK: [2017-10-14 Sat 22:20]--[2017-10-14 Sat 22:37] =>  0:17
+    CLOCK: [2017-10-14 Sat 21:45]--[2017-10-14 Sat 22:19] =>  0:34
+
+It seems it is possible to cache in travis. We should try to enable it
+for our builds and see if it improves build times.
+
+Links:
+
+- [[https://github.com/lballabio/QuantLib/blob/master/.travis.yml][QuantLib travis.yml]] with caching enabled
+- [[https://blog.travis-ci.com/2016-05-03-caches-are-coming-to-everyone][Caching now available for everyone]]
+- [[https://docs.travis-ci.com/user/caching/][Caching Dependencies and Directories]]
+- [[https://ccache.samba.org/][CCache]]
+- [[https://crascit.com/2016/04/09/using-ccache-with-cmake/][Using ccache with CMake]]
+- [[https://github.com/perl11/potion/issues/41][clang: error: argument unused during compilation: '-I core']]
+- [[https://bugzilla.samba.org/show_bug.cgi?id%3D8118][Bug 8118 - don't pass -D, -I, -U to compiler]]
+
+*** COMPLETED Consider collapsing element properties into element     :story:
+    CLOSED: [2017-10-15 Sun 18:44]
+    CLOCK: [2017-10-15 Sun 18:45]--[2017-10-15 Sun 18:49] =>  0:04
+    CLOCK: [2017-10-15 Sun 18:24]--[2017-10-15 Sun 18:44] =>  0:20
+    CLOCK: [2017-10-15 Sun 17:39]--[2017-10-15 Sun 18:23] =>  0:44
+
+Do we really need element properties as a stand alone class? It seems
+all of its attributes should just be part of element.
+
+*** COMPLETED Create the archetype location properties                :story:
+    CLOSED: [2017-10-20 Fri 11:00]
+    CLOCK: [2017-10-20 Fri 10:51]--[2017-10-20 Fri 10:55] =>  0:04
+    CLOCK: [2017-10-20 Fri 10:41]--[2017-10-20 Fri 10:50] =>  0:09
+    CLOCK: [2017-10-20 Fri 10:35]--[2017-10-20 Fri 10:40] =>  0:05
+    CLOCK: [2017-10-20 Fri 10:29]--[2017-10-20 Fri 10:34] =>  0:05
+    CLOCK: [2017-10-20 Fri 09:54]--[2017-10-20 Fri 10:28] =>  0:34
+    CLOCK: [2017-10-20 Fri 08:45]--[2017-10-20 Fri 09:53] =>  1:08
+    CLOCK: [2017-10-17 Tue 19:00]--[2017-10-17 Tue 19:07] =>  0:07
+    CLOCK: [2017-10-17 Tue 18:40]--[2017-10-17 Tue 18:59] =>  0:19
+    CLOCK: [2017-10-17 Tue 18:18]--[2017-10-17 Tue 18:39] =>  0:21
+    CLOCK: [2017-10-17 Tue 07:09]--[2017-10-17 Tue 07:29] =>  0:20
+    CLOCK: [2017-10-15 Sun 19:20]--[2017-10-15 Sun 19:53] =>  0:33
+    CLOCK: [2017-10-15 Sun 18:45]--[2017-10-15 Sun 19:19] =>  0:34
+    CLOCK: [2017-10-15 Sun 17:28]--[2017-10-15 Sun 17:38] =>  0:10
+    CLOCK: [2017-10-13 Fri 15:31]--[2017-10-13 Fri 15:50] =>  0:19
+    CLOCK: [2017-10-13 Fri 14:16]--[2017-10-13 Fri 14:26] =>  0:10
+    CLOCK: [2017-10-13 Fri 11:51]--[2017-10-13 Fri 13:45] =>  1:54
+    CLOCK: [2017-10-10 Tue 18:42]--[2017-10-10 Tue 19:13] =>  0:31
+    CLOCK: [2017-10-10 Tue 18:20]--[2017-10-10 Tue 18:41] =>  0:21
+    CLOCK: [2017-10-10 Tue 07:11]--[2017-10-10 Tue 07:55] =>  0:44
+    CLOCK: [2017-10-08 Sun 17:13]--[2017-10-08 Sun 17:23] =>  0:10
+    CLOCK: [2017-10-08 Sun 16:42]--[2017-10-08 Sun 17:12] =>  0:30
+    CLOCK: [2017-10-08 Sun 14:52]--[2017-10-08 Sun 15:38] =>  0:46
+    CLOCK: [2017-10-08 Sun 14:12]--[2017-10-08 Sun 14:51] =>  0:39
+    CLOCK: [2017-10-06 Fri 10:09]--[2017-10-06 Fri 10:52] =>  0:43
+    CLOCK: [2017-10-05 Thu 07:15]--[2017-10-05 Thu 07:20] =>  0:05
+    CLOCK: [2017-09-29 Fri 14:02]--[2017-09-29 Fri 14:13] =>  0:11
+    CLOCK: [2017-09-29 Fri 11:40]--[2017-09-29 Fri 12:13] =>  0:33
+    CLOCK: [2017-09-29 Fri 11:17]--[2017-09-29 Fri 11:39] =>  0:22
+    CLOCK: [2017-09-29 Fri 11:15]--[2017-09-29 Fri 11:16] =>  0:01
+    CLOCK: [2017-09-22 Fri 13:58]--[2017-09-22 Fri 14:07] =>  0:09
+    CLOCK: [2017-09-22 Fri 13:43]--[2017-09-22 Fri 13:57] =>  0:14
+    CLOCK: [2017-09-22 Fri 13:35]--[2017-09-22 Fri 13:42] =>  0:07
+    CLOCK: [2017-09-22 Fri 13:18]--[2017-09-22 Fri 13:34] =>  0:16
+    CLOCK: [2017-09-22 Fri 13:08]--[2017-09-22 Fri 13:17] =>  0:09
+    CLOCK: [2017-09-22 Fri 11:31]--[2017-09-22 Fri 12:02] =>  0:31
+    CLOCK: [2017-09-22 Fri 11:26]--[2017-09-22 Fri 11:30] =>  0:04
+
+We have a number of properties scattered around the model that need to
+be treated as a unit. We don't really have a good name for it, but as
+they are all related to archetype location stuff,
+=archetype_location_properties= seems like a good name.
+
+The reading of the "global" properties is done in the new archetype
+location transform. Enablement takes these properties and uses it to
+populate its global configuration.
+
+Notes:
+
+- is there a need for a global overwrite flag? We already have the
+  force write command line option. We seem to have this at all levels
+  (backend, facet, archetype).
+
+Tasks:
+
+- create the =archetype_location_properties=.
+- update enablement to use new properties, drop legacy ones.
+- create a transform that reads in all the meta-data related to
+  them. Place it prior to enablement.
+- update enablement to use the =archetype_location_properties= to
+  populate its global and local caches.
+- add disable_facet_directories to locator properties?
+
+*** COMPLETED Analysis work on moving to c++ 17                       :story:
+    CLOSED: [2017-10-21 Sat 12:21]
+    CLOCK: [2017-10-21 Sat 11:49]--[2017-10-21 Sat 12:21] =>  0:32
+
+Have a quick go at bumping C++ standard version to 17 and see what breaks.
+
+*** COMPLETED Upgrade rtags to latest                                 :story:
+    CLOSED: [2017-10-21 Sat 13:46]
+    CLOCK: [2017-10-21 Sat 13:10]--[2017-10-21 Sat 13:46] =>  0:36
+
+We seem to be experiencing some random problems with rtags. Try
+getting latest and see if it gets better.
+
+*** COMPLETED Experiment with adding colour to dia diagrams           :story:
+    CLOSED: [2017-10-27 Fri 13:10]
+    CLOCK: [2017-10-27 Fri 10:09]--[2017-10-27 Fri 13:10] =>  3:01
+
+As per this paper, using colours in diagrams could be useful:
+
+- [[http://www.robwortham.com/wp-content/uploads/2016/05/ICAPS-2016-PlanRob-Instinct-Planner.pdf][Instinct: A Biologically Inspired Reactive Planner for Embedded
+  Environments]]
+
+It was mentioned in this discussion:
+
+- https://mail.gnome.org/archives/dia-list/2016-September/msg00021.html
+
+Play around with creating a script that updates diagrams with a
+palette of colours so that we can distinguish between the different
+meta-types.
+
+*** COMPLETED Move artefact into yarn                                 :story:
+    CLOSED: [2017-11-02 Thu 19:39]
+    CLOCK: [2017-11-03 Fri 08:45]--[2017-11-03 Fri 09:30] =>  0:45
+    CLOCK: [2017-11-02 Thu 18:41]--[2017-11-02 Thu 19:39] =>  0:58
+    CLOCK: [2017-11-02 Thu 09:06]--[2017-11-02 Thu 09:17] =>  0:11
+    CLOCK: [2017-11-02 Thu 09:01]--[2017-11-02 Thu 09:05] =>  0:04
+    CLOCK: [2017-11-02 Thu 08:47]--[2017-11-02 Thu 09:00] =>  0:13
+    CLOCK: [2017-10-31 Tue 18:45]--[2017-10-31 Tue 18:55] =>  0:10
+
+Originally we had placed artefact in the formatters model, but now
+that we have text models, it makes more sense to have it in yarn.
+
+*** COMPLETED Supply the yarn options to prober                       :story:
+    CLOSED: [2017-11-03 Fri 09:43]
+    CLOCK: [2017-11-03 Fri 09:38]--[2017-11-03 Fri 10:01] =>  0:23
+
+At present most of the arguments supplied to prober come from the
+options anyway - why not just supply the options to it?
+
+*** COMPLETED Experiment with a database model                        :story:
+    CLOSED: [2017-11-05 Sun 17:26]
+    CLOCK: [2017-10-31 Tue 18:01]--[2017-10-31 Tue 18:45] =>  0:44
+    CLOCK: [2017-10-31 Tue 08:22]--[2017-10-31 Tue 08:58] =>  0:36
+
+Try to create a dogen model to store documents in a relational
+database in a de-normalised representation. We should also store the
+original representation supplied by the user as well as support
+versioning.
+
+Actions:
+
+- put workspace, delete workspace, get workspaces
+- put input, delete input, get inputs
+- put request for generating output, delete output, get outputs
+
+*** POSTPONED Split registrar into two classes                        :story:
+    CLOSED: [2017-11-06 Mon 20:57]
+    CLOCK: [2017-11-03 Fri 11:33]--[2017-11-03 Fri 12:08] =>  0:35
+    CLOCK: [2017-11-03 Fri 10:23]--[2017-11-03 Fri 11:13] =>  0:50
+
+At present we do not distinguish between the setting up of the
+registrar and the usage of the registrar. Up to know this is not a
+major issue, although its a bit of a smell that we have to call
+validate at some arbitrary point.
+
+However, with the new parts/builder setup, this becomes even more of a
+problem because we only want to build the parts once we have
+registered all of the formatters. The right thing would have been to
+have:
+
+- a registrar builder, used during registration;
+- a build step which returns the (validated) registrar. Once build is
+  called, we should throw if anyone attempts to add more formatters.
+
+This makes it hard to misuse the API.
+
+Notes:
+
+- how does this affect plugins? will it still be possible to register
+  formatters from a shared library?
+
+Tasks:
+
+- create a registrar builder with most of the existing registrar
+  interface. On build it computes the parts, generates the repository,
+  etc and then supplies that to the registrar. The registrar itself is
+  no longer static, just a member of the workflow.
+
+*** POSTPONED Generate file paths as a transform                      :story:
+    CLOSED: [2017-11-06 Mon 20:57]
+    CLOCK: [2017-11-03 Fri 10:02]--[2017-11-03 Fri 10:22] =>  0:20
+    CLOCK: [2017-10-21 Sat 10:30]--[2017-10-21 Sat 11:27] =>  0:57
+    CLOCK: [2017-10-20 Fri 13:05]--[2017-10-20 Fri 13:42] =>  0:37
+    CLOCK: [2017-10-20 Fri 11:33]--[2017-10-20 Fri 11:55] =>  0:22
+    CLOCK: [2017-10-20 Fri 10:56]--[2017-10-20 Fri 11:32] =>  0:36
+    CLOCK: [2017-09-22 Fri 09:41]--[2017-09-22 Fri 11:26] =>  1:45
+    CLOCK: [2017-09-21 Thu 14:20]--[2017-09-21 Thu 14:55] =>  0:35
+    CLOCK: [2017-09-21 Thu 12:21]--[2017-09-21 Thu 12:31] =>  0:10
+    CLOCK: [2017-09-21 Thu 11:55]--[2017-09-21 Thu 12:20] =>  0:25
+    CLOCK: [2017-09-21 Thu 10:50]--[2017-09-21 Thu 11:32] =>  0:42
+    CLOCK: [2017-09-20 Wed 20:12]--[2017-09-20 Wed 21:46] =>  1:34
+    CLOCK: [2017-09-19 Tue 21:42]--[2017-09-19 Tue 21:47] =>  0:05
+    CLOCK: [2017-09-19 Tue 21:20]--[2017-09-19 Tue 21:41] =>  0:21
+    CLOCK: [2017-09-19 Tue 17:51]--[2017-09-19 Tue 18:43] =>  0:52
+
+Add a yarn transform for file path generation.
+
+In order to solve this problem, we need to create a generic
+architecture that compute file paths. We have two key
+responsibilities:
+
+- computing the full path, used for writing the artefact.
+- computing a relative path, used for:
+  - includes;
+  - header guards;
+  - visual studio C# projects at present, and in the future, c++ projects;
+  - paths in ODB files, which requires the relative path to both the
+    odb and types facets.
+  - paths in CMakeLists for ODB files.
+  - paths in msbuild for ODB files.
+
+*Computing the full path*
+
+At present we are computing the full path by having a kernel-specific
+locator who loads its information as follows:
+
+- output directory path, cpp headers output directory path; can be
+  sourced from options.
+- type repository: can be sourced from context.
+- enable kernel directories: read from meta-data.
+- module ids: already available in model.
+- formatters repository: part of this can be replaced by sourcing the
+  archetype location from context. However, we also use the formatter
+  to generate the path.
+
+In addition, we read data from meta-data:
+
+- include, source directory name
+- header, implementation file extension
+- disable facet directories
+- kernel directory name
+- for each facet, facet directory name, facet postfix, archetype
+  postfix
+
+This information can all be read up front from the root annotation.
+
+We then compute different kinds of paths:
+
+- project path: full path to the project directory. Starts with the
+  supplied output directory, skips external modules, adds model
+  modules, skips internal modules. Includes_ kernel directory, if
+  enabled.
+- facet path: includes facet directory, internal modules, model
+  modules. Handles module names differently from all other
+  names. Includes file name and extension (supplied as paramters).
+
+Finally, formatters call specific functions to obtain the full path or
+include path. However, each formatter is then responsible for
+supplying things such as is header file/implementation file, is
+CMakeLists etc.
+
+*Towards a more general locator architecture*
+
+Locator needs to be able to load all of the meta-data related to:
+
+- kernels: kernel directory, is kernel enabled
+- facets: directory, postfix, archetype postfix
+
+The biggest problem we have is that, given an element and an
+archetype, we are not able to determine:
+
+- the full path: what is the extension? is the archetype in a facet or
+  not? e.g. top-level CMakeLists. Is it in a directory that lives
+  outside of the project directory and outside of facet directories?
+  e.g. src CMakeLists. Is it in a facet? e.g. ODB files.
+- the relative paths: relative to what? how many to compute.
+
+However, some things do have a functional relationship:
+
+- given archetype location, you can only have one extension. One
+  extension can have many archetype locations. This includes
+  separating headers from implementation, etc. Formatters know the
+  extension.
+
+We could introduce two concepts:
+
+- directory groups: project, kernel, other: include,
+  implementation. Directory groups contain directory groups. Directory
+  groups have settings: a name; whether to add external modules,
+  internal modules, model modules;
+
+  - file groups: include, implementation.
+
+Each group has an associated configuration:
+
+- directory configuration:
+  - id: yarn, quilt.cpp/quilt.csharp, include/source/
+  - name
+  - type: model, kernel, intra-kernel. Not actually modeled in code.
+  - external modules: as path components, as folders, does not
+    contribute (none). Enum: path contribution type. Not available for
+    kernel configuration.
+  - model modules: as path components, as folders, does not
+    contribute. Not available for kernel configuration.
+  - internal modules: as path components, as folders, does not
+    contribute. Not available for model directory configuration or
+    kernel configuration.
+  - facets: as path components, as folders, does not
+    contribute.
+  - enabled:
+- file configuration:
+  - name: C++ header files, C++ implementation files, CMakeFiles, MSBuild
+    files, C# files.
+  - extension: .cpp, etc.
+
+A path is composed of segments, which are sets of path components. The
+following segments exist:
+
+- output segment: supplied by the command line, as it references full paths.
+- output override segment: supplied by the command line, as it
+  references full paths. Must have a intra-kernel segment name.
+- model segment
+- kernel segment
+- intra-kernel segment: needs to know if the parent has been
+  overriden. Else, defaults to output + model + kernel.
+- facet segment: Composed of the facet directory name (configurable,
+  enabled or disabled) and the facet postfix (configurable, enabled or
+  disabled)
+
+Examples:
+
+- =yarn.directory_configuration.flat_mode=: if true, no other
+  directory configuration options may be specified. No directories
+  will be generated at all. However we will still use the facet and
+  archetype post-fixes (these then become mandatory). We need to also
+  worry about CMakeLists: we can't have include/src files because they
+  have the same name. We need to disable the include CMakeLists.txt
+  and add the install for headers into source CMakeLists.txt.
+- =yarn.directory_configuration.directory_name=: defaults to model
+  name. If user supplied, the rest is ignored. If not supplied, and
+  all other path contribution types are set to none, there will be no
+  contribution from model directory configuration.
+- =yarn.directory_configuration.separator=: defaults to dot.
+- =yarn.directory_configuration.external_modules=: none.
+- =yarn.directory_configuration.model_modules=: path_components.
+- =quilt.cpp.directory_configuration.directory_name=: each kernel
+  provides a default (e.g. =cpp=, =cs=).
+- =quilt.cpp..directory_configuration.external_modules=: none.
+- =quilt.cpp.directory_configuration.model_modules=: path_components.
+- =yarn.directory_configuration.internal_modules=: path_components.
+
+Note: it should be possible to assign a different intra-kernel
+directory configuration for a given (element, archetype) pair. For
+example, if it is public vs internal. The trouble with this is that we
+want the directory configurations to be supplied by the kernel at
+context construction time, but we do not know of the overrides until
+we start processing the elements. Thus we need an element level
+configuration "directory group override" that is read during
+processing, that takes precedence over the kernel level default.
+
+Styles: dogen style, vs flat style. Dogen style:
+
+Creates the directory structure as follows:
+
+- the model segment is composed of just the model directory; the model
+  directory is composed of the model modules, separated by dots.
+- the kernel segment is composed of just the kernel directory - but only if
+  there is more than one kernel enabled.
+- followed by the intra-kernel
+enabled
+
+**** Merged Stories
+***** Split out the file extension from the formatter
+
+At present we have handled file extensions in one of two ways:
+
+- we baked them in into locator, dynamically: this is the case for
+  =hpp= and =cpp=, where locator is responsible for retrieving the
+  meta-data related to extensions.
+- we hacked them in into locator, statically: this is the case for
+  CMakeLists, where the =txt= is hard-coded in.
+- we hacked them in into the elements: this is the case for Visual
+  Studio solutions and projects.
+
+In reality, what we need is to create a separation between the
+archetype, the extension "kind" and the actual extension. All
+archetypes have a fixed "extension kind". For example, C++ headers
+will always have a C++ header extension even though the actual header
+extension used is not known. In other cases the extension kind has a
+fixed extension (CMakeLists, Visual Studio projects, solutions). At
+present this mapping is done via the multiple functions locator
+supplies.
+
+We could conceivably have an enumeration for extension kind and then
+have a single function for full paths, that just takes in the
+extension kind, archetype etc. This would replace the proliferation of
+"full path for XYZ".
+
+We also have the concept of inclusion paths. We should generalise this
+to just "relative paths" and have a "add project directory?" flag.
+
+***** Name all project paths according to a scheme
+
+The locator API looks really confusing due to the various kinds of
+paths. We need to catalogue them all and name them properly.
+
+- output directory: directory into which knitter will write all files,
+  unless "c++ headers output directory" is set, in which case it will
+  write all files except for the headers.
+- c++ headers output directory: directory in which knitter will write
+  the headers. Only applicable to c++.
+- include directory: aka inclusion directory; directory to place in
+  the include path.
+
+***** Handling of visual studio projects and solutions is incorrect
+
+At present we added the extension of the solution/project to the
+element name, e.g.:
+
+: all_path_and_directory_settings.csproj
+
+This happens to work for the simpler cases, but if we try to add a
+postfix we then have a problem:
+
+: dogen.test_models.all_path_and_directory_settings.csproj_vc15_
+
+Projects and solutions do not seem to fit our conceptual model for the
+element space. We need to somehow have distinct element IDs but yet
+not associate the extension with the name directly. Up to now we never
+had two distinct elements with the exact same name but generating two
+different artefacts with different extensions.
+
+This is a problem because we will need to have the ability to generate
+multiple project files for different versions of visual studio.
+
+For now we removed the project and solution postfixes:
+
+: #DOGEN quilt.csharp.visual_studio.solution.postfix=_vs15_
+: #DOGEN quilt.csharp.visual_studio.project.postfix=_vc15_
+
+In order to fit our conceptual model, we need to make some adjustments
+to our implementation of projects and solutions. First, there is only
+one meta-model element for *both* projects and solutions. This is
+derived from the fact that they both share a common name. The
+conceptual model does not involve file extensions - or file paths for
+that matter; archetypes exist only in archetype space, and their
+"paths" in this space are only related to the facets they belong
+to. The physical location is a property of files, which are
+expressions of archetypes in "file space". Thus, there is only one
+single element, provisionally called "visual studio", which has
+multiple archetypes (and their associated formatters):
+
+- solution
+- project
+
+Second, a solution and project may be instantiated multiple times,
+depending on the version of visual studio and the associated
+compiler. Externally users supply a visual studio version and that
+internally will map to different instances of the formatters. We must
+instantiate the formatters for each supported version because we may
+need to create multiple versions simultaneously: his is the use case
+where users want to generate projects and solutions for multiple
+versions of VS at the same time.
+
+THe good news is that we already have something similar: master
+includes. We can adapt a lot of the logic we have for master
+includes. There are some differences though:
+
+- we will have multiple instances on the same facet.
+- we need some external mechanism to determine if a given version is
+  enabled. We could force users to enter the "enabled" property for
+  each version in the meta-data, but that would get really messy since
+  there are only a few valid combinations of solution and project
+  version. Its better if users supply the Visual Studio versions and
+  we infer the solution and projects to enable. But we do not have a
+  mechanism for this at present. We could add a "is enabled" to
+  formatters like we did for helpers, supplying the element; we would
+  then check the Visual Studio version in the element and return false
+  if it didn't match the formatters version. Or we could change the
+  formatter's interface to return optional artefact. Whilst this is a
+  bit more painful - we'd have to change all formatters - it fits the
+  code structure slightly better.
+- we need to have different file names depending on the
+  version. Worse: if there is just a single version we do not need to
+  have a "version prefix". If there are multiple versions we need to
+  add the prefix. The fist use case is easy: we already have archetype
+  prefixes; we just need to add a prefix for each version. The second
+  part requires some hacking. We could have an option in locator:
+  "apply archetype postfix" supplied as an argument. Since we have the
+  Visual Studio element we have visibility of all enabled versions.
+
+***** Add a "flat directory" mode
+
+It would be nice to have a mode in which all files get placed in a
+single-directory: no src, include, etc – just one big folder with all
+files.
+
+Actually we can already achieve this:
+
+- set =quilt.cpp.disable_facet_directories= to true
+- set =quilt.cpp.include_directory_name= to empty
+- set =quilt.cpp.source_directory_name= to empty
+
+It is however a bit painful. It would be nice to have a shorthand for
+this, which could be the "flat directory" mode. It is also compatible
+with split project mode (we just have flat directories in two
+different top-level directories), which is nice.
+
+We should check that =enable_unique_file_names= is set to true.
+
+Key: =quilt.cpp.flat_directory_mode.enabled=.
+
+*** POSTPONED Implement exomodel in terms of exoelements              :story:
+    CLOSED: [2017-11-06 Mon 20:57]
+    CLOCK: [2017-11-05 Sun 17:27]--[2017-11-05 Sun 17:36] =>  0:09
+    CLOCK: [2017-11-05 Sun 16:24]--[2017-11-05 Sun 17:26] =>  1:02
+    CLOCK: [2017-11-05 Sun 15:12]--[2017-11-05 Sun 16:20] =>  1:08
+    CLOCK: [2017-11-04 Sat 16:39]--[2017-11-04 Sat 16:59] =>  0:20
+    CLOCK: [2017-11-04 Sat 14:56]--[2017-11-04 Sat 16:38] =>  1:42
+    CLOCK: [2017-11-04 Sat 14:10]--[2017-11-04 Sat 14:55] =>  0:45
+    CLOCK: [2017-11-04 Sat 13:33]--[2017-11-04 Sat 13:50] =>  0:17
+    CLOCK: [2017-11-03 Fri 16:44]--[2017-11-03 Fri 17:05] =>  0:21
+    CLOCK: [2017-11-03 Fri 15:01]--[2017-11-03 Fri 16:43] =>  1:42
+
+We were going in the right direction by creating the exomodel, but we
+didn't go far enough. In reality we should have created an
+intermediate object type which is not an element but more of a
+"proto-element": it has the ability of storing all of the information
+retrieved from the original exomodel but doesn't yet map to the yarn
+element types. The rationale behind this approach is that we will move
+even more code from the frontends into yarn, making adding a frontend
+even easier.
+
+This means for example that we may be able keep all names as strings
+in the exoelement, and we could even potentially support KVPs directly
+so that the scribble processing is done in yarn too. In addition, we
+do not need to perform any stereotype processing - instead we should
+just propagate them up. We should perhaps have some default stereotype
+that maps exoelements that do not have the element stereotype to yarn
+objects.
+
+The layour of the exomodel then becomes:
+
+- exoelements
+- root exoelement
+
+Notes:
+
+- enumerators are mapped to exoattributes
+- JSON will have to be updated to reflect this change, removing types,
+  etc.
+- exoelement will have the superset of all properties we use across
+  all elements; this set is not huge, maybe some 5 or 6
+  properties. Validator will then make sure the user has not supplied
+  some invalid combination of these properties. Actually if these
+  properties are already being handled via annotations, we should
+  probably not handle them specifically at this level. We probably
+  have two code-paths already for this, one for Dia and one for JSON
+  (or if we don't its because we only support them in JSON). Handle
+  them all as annotations. Examples:
+  - is_default_enumeration_type
+  - is_floating_point
+  - can_be_enumeration_underlier
+  - etc.
+- one great advantage of this approach is that we no longer need to
+  have meta-names in JSON - simply use stereotypes. In addition, we
+  can make names just a simple string.
+- we can make this model very close to UML: call KVPs tagged values,
+  etc.
+- could we express parent names as annotations?
+- we could potentially drop the unparsed type from regular attributes,
+  since this is now modeled in exoattributes.
+- annotations transform and naming transform now become part of the
+  endomodel chain. Actually these all merge into one thing: the
+  exomodel to endomodel transform. The annotations transform is done
+  one element at a time. We must first do the root model so we can
+  extract the naming configuration.
+- we can finally deprecate scribble groups and annotation groups with
+  this approach. The KVPs are simply stored with the
+  exoelements/exoattributes and processed in place during the
+  annotations transform. The reason why we ended up with groups was
+  that we didn't want to process annotations in the frontends but at
+  the same time it didn't make a lot of sense to polute the meta-model
+  with lots of intermediate structures. However, exoelements are
+  designed for this so they can carry the intermediate data
+  naturally. Once we're done we discard the exomodels.
+- actually taking this to its logical conclusion, we can then have an
+  exopackage that contains exoelements:
+
+Graph version:
+
+#+begin_src json
+{
+    "name" : "some_name",
+    "parent_names" : [],
+    "stereotypes" : [ "yarn::module" ],
+    "tagged_values" : [
+        {
+            "key" : "a_key",
+            "value" : "a_value"
+        }
+    ],
+    "children" : [
+        {
+            "name" : "another_name",
+            "parent_names" : ["some_name"],
+            "stereotypes" : [ "yarn::module" ],
+            "members" : [
+                {
+                    "name" : "a",
+                    "parent_names" : ["some_name::another_name"],
+                    "stereotypes" : "yarn::object",
+                    "tagged_values" : [
+                        {
+                            "key" : "a_key",
+                            "value" : "a_value"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name" : "b",
+            "parent_names" : ["some_name"],
+            "stereotypes" : "yarn::object",
+            "tagged_values" : [
+                {
+                    "key" : "a_key",
+                    "value" : "a_value"
+                }
+            ],
+            "attributes" : [
+                {
+                    "name" : "some_attr",
+                    "type" : "std::string",
+                    "tagged_values" : [
+                        {
+                            "key" : "a_key",
+                            "value" : "a_value"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+#+end_src
+
+Flat version:
+
+#+begin_src json
+{
+    "name" : "a_model",
+    "stereotypes" : [ ],
+    "tagged_values" : [
+        {
+            "key" : "a_key",
+            "value" : "a_value"
+        }
+    ],
+    "elements" : [
+        {
+            "name" : "a_name",
+            "parents" : [ "yarn::meta_model::element" ],
+            "stereotypes" : [ "yarn::module" ],
+            "tagged_values" : [
+                {
+                    "key" : "a_key",
+                    "value" : "a_value"
+                }
+            ]
+        },
+        {
+            "name" : "a_name::a",
+            "parents" : [ "some_name::a_parent" ],
+            "stereotypes" : ["yarn::object"],
+            "tagged_values" : [
+                {
+                    "key" : "a_key",
+                    "value" : "a_value"
+                }
+            ]
+        },
+        {
+            "name" : "b",
+            "parents" : [ "some_name" ],
+            "stereotypes" : "yarn::object",
+            "tagged_values" : [
+                {
+                    "key" : "a_key",
+                    "value" : "a_value"
+                }
+            ],
+            "attributes" : [
+                {
+                    "name" : "some_attr",
+                    "stereotypes" : "yarn::object",
+                    "type" : "std::string",
+                    "tagged_values" : [
+                        {
+                            "key" : "a_key",
+                            "value" : "a_value"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+#+end_src
+
+Tasks:
+
+- change yarn.dia to remember the "contained by" name rather than the
+  module name. Construct the object names from the contained by
+  name. Actually this won't work; the reason why we remember the
+  entire module is because we need to do a lookup in order to find the
+  module so we can update the documentation. We will still have this
+  problem when it comes to exoelements. Best to just create another
+  map this time to exoelement and follow the pattern. Actually, we can
+  clean this up slightly: create a map of exoelements
+- add exoelement, exoattribute.
+- create a parallel infrastructure in dia that populates the
+  exoelements.
+- create a new transform that converts exoelements into
+  endomodels. Somehow isolate the dia part of the pipeline so we can
+  switch between new world and old world. Actually we could very
+  simply check the exoelements container; if not empty use that,
+  otherwise use legacy.
+- once we get the dia side of the pipeline working, delete all classes
+  related to old world in yarn.dia.
+- create an hydrator that reads the new json and creates
+  exoelements. Add some basic feature switch so we can alternate
+  between new world and old world.
+
+Problems:
+
+- modules do not have a stereotype
+- add yarn element types enum to yarn and a method that given a
+  container of strings, returns the types. Use these in yarn.dia
+- add string constants for element stereotypes and use these to mark
+  the exoelements. Use this method in the stereotypes transforms in
+  yarn.
+- name does not have the module (e.g. contained by is not working).
+- remove upsilon language
+
+** Deprecated

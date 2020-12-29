@@ -1,0 +1,690 @@
+#+title: Sprint Backlog 14
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish work on moving decorations to metamodel.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2019-04-08 Mon 10:58]
+| <75>                                                      |         |       |       |       |
+| Headline                                                  | Time    |       |       |     % |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                              | *82:45* |       |       | 100.0 |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                   | 82:45   |       |       | 100.0 |
+| Active                                                    |         | 82:45 |       | 100.0 |
+| Edit release notes for previous sprint                    |         |       |  1:47 |   2.2 |
+| Sprint and product backlog grooming                       |         |       |  7:55 |   9.6 |
+| Create a video demo for the previous sprint's features    |         |       |  3:11 |   3.8 |
+| Fix issues with emacs                                     |         |       |  2:42 |   3.3 |
+| Create a basic "project plan"                             |         |       |  2:08 |   2.6 |
+| Simplify qualified name                                   |         |       |  3:39 |   4.4 |
+| Rename "language" to "technical space"                    |         |       |  7:22 |   8.9 |
+| Add intrinsic technical space ownership                   |         |       |  1:12 |   1.5 |
+| Promote extraction entities to meta-model elements        |         |       | 37:25 |  45.2 |
+| Integrate report-ci with dogen                            |         |       |  2:09 |   2.6 |
+| Move all utility formatters from extraction to generation |         |       |  7:29 |   9.0 |
+| Remove annotations from stitch templates                  |         |       |  1:17 |   1.6 |
+| Supply decorations as a stitch parameter                  |         |       |  4:29 |   5.4 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-03-25 Mon 14:43]
+    :LOGBOOK:
+    CLOCK: [2019-03-25 Mon 15:01]--[2019-03-25 Mon 15:44] =>  0:43
+    CLOCK: [2019-03-25 Mon 10:18]--[2019-03-25 Mon 11:22] =>  1:04
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.13, "Clube Náutico"
+
+#+begin_src markdown
+![Clube Náutico](https://restauranteclubenauticomocamedes.files.wordpress.com/2010/07/nautico_023.jpg)
+_Esplanada do Náutico Club, Moçamedes, Namibe Province, Angola. (C) 2019 [Nautico Club Site](https://restauranteclubenauticomocamedes.wordpress.com)_.
+
+# Introduction
+
+The sprint cadence seems to finally be establishing itself, with sprint 13 offering yet another solid 2-week effort. The main emphasis was on solving the unit testing of generated code. If you recall, we had some sparse manual tests for these, delightfully called the "canned tests". These weren't exactly brilliant, but did provide _some_ kind of coverage. Sadly, we ended up having to disable them due to weird and wonderful failures on OSX and Windows, which we could not reproduce on Linux and which were rather difficult to get to the bottom of via CI because of the way the tests were designed.
+
+As the next few sprints are all about very (hard-)core changes, we had to make sure a strong testing base is in place before we can proceed with the refactoring. As usual, the work was much harder than expected, taking us the best part of two sprints to get into a good place: sprint 12 was all about the system test story, and sprint 13 is all about the unit tests story. Fortunately, we still managed to sneak in one useful feature.
+
+The below chart breaks down the cost of each story worked percentage-wise in terms of the overall sprint time.
+
+![Story Pie Chart](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/agile/v1/sprint_13_pie_chart.jpg)
+
+The next sections provide a summary of the most significant stories. As usual, for more details of the work carried out this sprint, see [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_13.org).
+
+# Internal Changes
+
+In this section we cover stories that consumed significant resources but are only visible internally.
+
+## Sprint and product backlog grooming
+
+In this sprint we spent quite a lot of time grooming the backlogs. This is something which never gets much of a mention, but which I believe is one of the most important aspects of Agile: [you need to keep your product backlog in good shape](http://mcraveiro.blogspot.com/2016/01/nerd-food-on-product-backlogs.html). Perhaps spending 15% of the total time of a sprint grooming backlogs may sound _a tad_ excessive, but in our defence we do have a [hefty product backlog](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org), with over 550 user stories at various levels of detail. Also, given that we have just finished a massive rewrite of the theoretical basis for Dogen, it is no surprise that a lot of the stories started to bit-rot. This clean up was mainly to look for low hanging fruit and remove all stories which are completely deprecated; subsequent clean-ups will delve more into the detail of the stories.
+
+# User visible changes
+
+This section covers stories that affect end users. The sprint demo provides a quick demonstration on how the user visible changes; the below sections provide more detail.
+
+[![Sprint 1.0.12 Demo](https://img.youtube.com/vi/yerm2xiKBqA/0.jpg)](https://youtu.be/yerm2xiKBqA)
+
+## Code generation of tests for dogen models
+
+This story had started on the previous sprint, but, as always, proved to be much more complicated than anticipated. Whilst the story is user facing - in that users can enable it for their own models - its purpose is very much just to test the code generator, so its not really that helpful to end users outside of Dogen.
+
+Though in theory adding tests seems just like adding another facet - and since we already have quite a number of these - we were pretty confident this would be a "quick effort". In practice, there were subtle differences with tests that caused large problems. These in turn forced some changes to the core of Dogen. On the plus side, the pain seems to be worth it, as we are now testing pretty much all facets for all generated code, across both Dogen itself and the Reference Implementation on all supported platforms. Even better, they are all green:
+
+![CDash builds](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/cdash_dogen_all_builds.png)
+
+Whilst coverage is extensive, unfortunately we do not yet cover ODB (C++ ORM mapping) nor C# (which still relies on canned tests). In addition, build time has gone up quite considerably, given that we now need to compile the test data facet for all of these types, plus the tests too. The following chart demonstrates this problem:
+
+![Nightly build time](https://raw.githubusercontent.com/MASD-Project/dogen/master/doc/blog/images/dogen_nightly_build_time.png)
+
+As a result of this increase, MSVC is no longer able to complete the builds within the allotted time. Fortunately our clang-cl builds are deemed good enough (only one test failure across some 2.7k tests) so we'll be shipping that to users from now on. In the future we will need to look into ways of decreasing build time, as we are very close to the edge on OSX and clang-cl.
+
+## Delete empty directories
+
+In the past we used to generate all facets for all models, Dogen and Reference Implementation. However, over time we ended up having to disable most facets as the build time was getting out of control. Dogen correctly deleted all of the generated files when the acets were disabled, but left behind a number of empty directories. Worse: because git does not care about empty directories, we weren't even aware of their existence until some speculative filesystem browsing revealed them. This sprint adds a new knob to delete any empty directory under the project: ```delete_empty_directories```. Together with ```delete_extra_files```, this should mean that most generated lint is taken care of now.
+
+```
+#DOGEN masd.extraction.delete_extra_files=true
+#DOGEN masd.extraction.delete_empty_directories=true
+```
+## Rename of extraction fields
+
+One user facing change was actually a bug. Some generation fields had been placed incorrectly in extraction. This was spotted and fixed in this release. The change is not backwards compatible. As an example, a model with the following fields:
+
+```
+#DOGEN masd.extraction.cpp.enabled=true
+#DOGEN masd.extraction.cpp.standard=c++-17
+#DOGEN masd.extraction.cpp.msbuild.enabled=false
+#DOGEN masd.extraction.cpp.visual_studio.project.enabled=false
+#DOGEN masd.extraction.cpp.visual_studio.solution.enabled=false
+#DOGEN masd.extraction.csharp.enabled=false
+```
+
+Now becomes:
+
+```
+#DOGEN masd.generation.cpp.enabled=true
+#DOGEN masd.generation.cpp.standard=c++-17
+#DOGEN masd.generation.cpp.msbuild.enabled=false
+#DOGEN masd.generation.cpp.visual_studio.project.enabled=false
+#DOGEN masd.generation.cpp.visual_studio.solution.enabled=false
+#DOGEN masd.generation.csharp.enabled=false
+```
+
+This change affects all facets in C# and C++, so if you are configuring these directly you will need to manually update your models.
+
+# Next Sprint
+
+We risk repeating the same words as we used on Sprint 12, but here it goes anyway: that we have the testing in place, our key objective for next sprint is to move all of the decoration related code into the meta-model. We started work on this in the previous sprint but sadly ran out of time. In addition, we hope to finally make some  inroads against moving annotations to the metamodel. This will be a significant major feature, at long last.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.13_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.13/dogen_1.0.13_amd64-applications.deb)
+- [dogen-1.0.13-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.13/dogen-1.0.13-Darwin-x86_64.dmg)
+- [dogen-1.0.13-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.13-Windows-AMD64.msi)
+
+**Note**: Windows builds are now generated using clang-cl rather than MSVC.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/1110195455487631365][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6515961706701819904/][LinkedIn]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2019-04-08 Mon 10:58]
+    :LOGBOOK:
+    CLOCK: [2019-04-08 Mon 06:21]--[2019-04-08 Mon 06:51] =>  0:30
+    CLOCK: [2019-04-07 Sun 10:30]--[2019-04-07 Sun 10:32] =>  0:02
+    CLOCK: [2019-04-07 Sun 10:20]--[2019-04-07 Sun 10:29] =>  0:09
+    CLOCK: [2019-04-05 Fri 21:37]--[2019-04-05 Fri 21:44] =>  0:07
+    CLOCK: [2019-04-05 Fri 08:46]--[2019-04-05 Fri 09:19] =>  0:33
+    CLOCK: [2019-04-02 Tue 10:30]--[2019-04-02 Tue 10:53] =>  0:23
+    CLOCK: [2019-03-31 Sun 09:50]--[2019-03-31 Sun 10:23] =>  0:33
+    CLOCK: [2019-03-29 Fri 17:29]--[2019-03-29 Fri 17:38] =>  0:09
+    CLOCK: [2019-03-29 Fri 17:17]--[2019-03-29 Fri 17:28] =>  0:11
+    CLOCK: [2019-03-29 Fri 14:37]--[2019-03-29 Fri 17:16] =>  2:39
+    CLOCK: [2019-03-28 Thu 12:01]--[2019-03-28 Thu 12:06] =>  0:05
+    CLOCK: [2019-03-28 Thu 08:33]--[2019-03-28 Thu 09:16] =>  0:43
+    CLOCK: [2019-03-27 Wed 11:11]--[2019-03-27 Wed 12:16] =>  1:05
+    CLOCK: [2019-03-26 Tue 06:15]--[2019-03-26 Tue 06:52] =>  0:37
+    CLOCK: [2019-03-25 Mon 10:08]--[2019-03-25 Mon 10:17] =>  0:09
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Create a video demo for the previous sprint's features  :story:
+    CLOSED: [2019-03-25 Mon 14:43]
+    :LOGBOOK:
+    CLOCK: [2019-03-25 Mon 14:44]--[2019-03-25 Mon 15:01] =>  0:17
+    CLOCK: [2019-03-25 Mon 13:17]--[2019-03-25 Mon 14:43] =>  1:26
+    CLOCK: [2019-03-25 Mon 12:45]--[2019-03-25 Mon 13:16] =>  0:31
+    CLOCK: [2019-03-25 Mon 11:23]--[2019-03-25 Mon 12:20] =>  0:57
+    :END:
+
+Demo the delete empty directories feature.
+
+*** COMPLETED Fix issues with emacs                                   :story:
+    CLOSED: [2019-03-26 Tue 10:48]
+    :LOGBOOK:
+    CLOCK: [2019-03-26 Tue 11:31]--[2019-03-26 Tue 11:48] =>  0:17
+    CLOCK: [2019-03-26 Tue 11:18]--[2019-03-26 Tue 11:30] =>  0:12
+    CLOCK: [2019-03-26 Tue 11:06]--[2019-03-26 Tue 11:17] =>  0:11
+    CLOCK: [2019-03-26 Tue 10:49]--[2019-03-26 Tue 11:05] =>  0:16
+    CLOCK: [2019-03-26 Tue 09:02]--[2019-03-26 Tue 10:48] =>  1:46
+    :END:
+
+We've been struggling with a number of problems with emacs, take some
+time to sort them out:
+
+- fonts/icons are not displayed correctly
+- update prelude to latest
+- install treemacs (neotree is not that useful)
+
+*** COMPLETED Create a basic "project plan"                           :story:
+    CLOSED: [2019-03-27 Wed 11:10]
+    :LOGBOOK:
+    CLOCK: [2019-03-27 Wed 09:02]--[2019-03-27 Wed 11:10] =>  2:08
+    :END:
+
+We now have a number of sprints with associated major tasks that are
+needed in order to fulfil the V2 vision. We need to capture these in
+some form of Gantt-chart like plan, and keep it up-to-date. It doesn't
+have to be very precise, just allow us to see how the big tasks hang
+together.
+
+*** COMPLETED Simplify qualified name                                 :story:
+    CLOSED: [2019-03-28 Thu 12:00]
+    :LOGBOOK:
+    CLOCK: [2019-03-28 Thu 12:48]--[2019-03-28 Thu 13:20] =>  0:32
+    CLOCK: [2019-03-28 Thu 09:17]--[2019-03-28 Thu 12:00] =>  2:43
+    CLOCK: [2019-03-27 Wed 17:10]--[2019-03-27 Wed 17:34] =>  0:24
+    :END:
+
+At present we have a map of languages to qualified name, but in truth
+there are only two use cases:
+
+- dot separated: C#, CMake, etc.
+- double-colon separated: C++.
+
+We could just have these two as simple strings. In addition, we also
+need to versions of identifiable:
+
+- simple
+- qualified
+
+Actually we don't even need simple, just qualified.
+
+Merged stories:
+
+*Use an unordered map in qualified name*
+
+For some reason we are using a map, but its not clear that we need
+sorting. Change it to unordered and see what breaks.
+
+It seems we get errors in serialisation when using the map.
+
+*** COMPLETED Rename "language" to "technical space"                  :story:
+    CLOSED: [2019-03-29 Fri 10:37]
+    :LOGBOOK:
+    CLOCK: [2019-03-29 Fri 10:13]--[2019-03-29 Fri 10:22] =>  0:09
+    CLOCK: [2019-03-29 Fri 10:03]--[2019-03-29 Fri 10:12] =>  0:09
+    CLOCK: [2019-03-29 Fri 09:46]--[2019-03-29 Fri 10:02] =>  0:16
+    CLOCK: [2019-03-29 Fri 09:28]--[2019-03-29 Fri 09:45] =>  0:17
+    CLOCK: [2019-03-29 Fri 09:16]--[2019-03-29 Fri 09:27] =>  0:11
+    CLOCK: [2019-03-29 Fri 09:04]--[2019-03-29 Fri 09:15] =>  0:11
+    CLOCK: [2019-03-29 Fri 09:00]--[2019-03-29 Fri 09:03] =>  0:03
+    CLOCK: [2019-03-29 Fri 08:32]--[2019-03-29 Fri 08:59] =>  0:27
+    CLOCK: [2019-03-28 Thu 17:10]--[2019-03-28 Thu 17:28] =>  0:18
+    CLOCK: [2019-03-28 Thu 16:52]--[2019-03-28 Thu 17:09] =>  0:17
+    CLOCK: [2019-03-28 Thu 16:16]--[2019-03-28 Thu 16:51] =>  0:35
+    CLOCK: [2019-03-28 Thu 16:10]--[2019-03-28 Thu 16:15] =>  0:05
+    CLOCK: [2019-03-28 Thu 14:02]--[2019-03-28 Thu 16:09] =>  2:07
+    CLOCK: [2019-03-27 Wed 15:54]--[2019-03-27 Wed 17:09] =>  1:15
+    CLOCK: [2019-03-27 Wed 15:40]--[2019-03-27 Wed 15:53] =>  0:13
+    CLOCK: [2019-03-27 Wed 15:03]--[2019-03-27 Wed 15:39] =>  0:36
+    CLOCK: [2019-03-27 Wed 14:55]--[2019-03-27 Wed 15:02] =>  0:07
+    CLOCK: [2019-03-26 Tue 14:32]--[2019-03-26 Tue 14:38] =>  0:06
+    :END:
+
+- input language
+- output language
+
+We are using the word "language" in several places:
+
+What we really mean is technical space:
+
+- input technical space
+- output technical space
+
+When this is done we should also introduce the concept of
+=masd.technical_space= which then toggles knobs. For example, if set
+to C++, both input and output TS become C++. Actually this is best
+left to profiles. We can have profiles such as "windows c++
+development", etc.
+
+Tasks:
+
+- add technical spaces to elements. They start with the input TS, and
+  then are updated after mapping. Only if mapping did something to
+  element.
+- language agnostic enum
+- mappings
+- modeline
+- extraction model
+
+*** COMPLETED Add intrinsic technical space ownership                 :story:
+    CLOSED: [2019-03-29 Fri 11:38]
+    :LOGBOOK:
+    CLOCK: [2019-03-29 Fri 11:07]--[2019-03-29 Fri 11:37] =>  0:30
+    CLOCK: [2019-03-29 Fri 10:55]--[2019-03-29 Fri 11:06] =>  0:11
+    CLOCK: [2019-03-29 Fri 10:23]--[2019-03-29 Fri 10:54] =>  0:31
+    :END:
+
+We need to have the ability to associate meta-model elements to a
+technical space, in an intrinsic manner. Types such as fabric types
+cannot be mapped to other technical spaces.
+
+*** COMPLETED Update metrics in OpenHub                               :story:
+    CLOSED: [2019-03-29 Fri 17:58]
+
+*Rationale*: it seems metrics have finally settled down.
+
+For some reason our metrics are stuck at 5 months ago or so. It is
+actually mildly useful to know the number of lines of code etc.
+
+We probably need to delete and re-add the project.
+
+*** COMPLETED Allow manual overrides to facets                        :story:
+    CLOSED: [2019-03-31 Sun 10:09]
+
+*Rationale*: this is already possible by using a combination of
+enabled and override flags.
+
+#+begin_quote
+*Story*: As a dogen user, I sometimes want to provide my own
+implementation for a given facet.
+#+end_quote
+
+Sometimes it may make sense to provide a user-supplied implementation
+for a given facet. For example for qname it may make sense to use the
+string converter approach to do the actual JSON serialisation. However
+its not possible to just disable code generation of a given type's
+inserters and then provide a manual implementation. This could easily
+be achieved via dynamic extensions: we could provide a meta-data
+parameter for each facet such as "generation type", manual or
+automatic. This can be done once we get rid of the current use of
+generation types for full/partial/no generation.
+
+*** COMPLETED Promote extraction entities to meta-model elements      :story:
+    CLOSED: [2019-04-05 Fri 21:41]
+    :LOGBOOK:
+    CLOCK: [2019-04-06 Sat 06:02]--[2019-04-06 Sat 06:46] =>  0:44
+    CLOCK: [2019-04-05 Fri 21:22]--[2019-04-05 Fri 21:36] =>  0:14
+    CLOCK: [2019-04-05 Fri 20:47]--[2019-04-05 Fri 21:21] =>  0:34
+    CLOCK: [2019-04-05 Fri 20:41]--[2019-04-05 Fri 20:46] =>  0:05
+    CLOCK: [2019-04-05 Fri 20:15]--[2019-04-05 Fri 20:20] =>  0:05
+    CLOCK: [2019-04-05 Fri 19:42]--[2019-04-05 Fri 20:14] =>  0:32
+    CLOCK: [2019-04-05 Fri 19:25]--[2019-04-05 Fri 19:41] =>  0:16
+    CLOCK: [2019-04-05 Fri 18:30]--[2019-04-05 Fri 19:24] =>  0:54
+    CLOCK: [2019-04-05 Fri 14:51]--[2019-04-05 Fri 17:56] =>  3:05
+    CLOCK: [2019-04-04 Thu 14:13]--[2019-04-04 Thu 14:49] =>  0:36
+    CLOCK: [2019-04-04 Thu 13:18]--[2019-04-04 Thu 14:12] =>  0:54
+    CLOCK: [2019-04-04 Thu 09:01]--[2019-04-04 Thu 12:10] =>  3:09
+    CLOCK: [2019-04-03 Wed 17:30]--[2019-04-03 Wed 17:57] =>  0:27
+    CLOCK: [2019-04-03 Wed 17:08]--[2019-04-03 Wed 17:29] =>  0:21
+    CLOCK: [2019-04-03 Wed 15:36]--[2019-04-03 Wed 17:07] =>  1:31
+    CLOCK: [2019-04-03 Wed 14:35]--[2019-04-03 Wed 15:35] =>  1:00
+    CLOCK: [2019-04-03 Wed 14:21]--[2019-04-03 Wed 14:34] =>  0:13
+    CLOCK: [2019-04-03 Wed 13:45]--[2019-04-03 Wed 14:20] =>  0:35
+    CLOCK: [2019-04-03 Wed 13:01]--[2019-04-03 Wed 13:19] =>  0:18
+    CLOCK: [2019-04-03 Wed 08:51]--[2019-04-03 Wed 12:06] =>  3:15
+    CLOCK: [2019-04-02 Tue 18:25]--[2019-04-02 Tue 19:21] =>  0:56
+    CLOCK: [2019-04-02 Tue 17:26]--[2019-04-02 Tue 17:55] =>  0:29
+    CLOCK: [2019-04-02 Tue 14:20]--[2019-04-02 Tue 17:25] =>  3:05
+    CLOCK: [2019-04-02 Tue 11:04]--[2019-04-02 Tue 11:57] =>  0:53
+    CLOCK: [2019-04-01 Mon 18:25]--[2019-04-01 Mon 19:00] =>  0:35
+    CLOCK: [2019-04-01 Mon 17:10]--[2019-04-01 Mon 17:51] =>  0:41
+    CLOCK: [2019-04-01 Mon 16:53]--[2019-04-01 Mon 17:09] =>  0:16
+    CLOCK: [2019-04-01 Mon 15:41]--[2019-04-01 Mon 16:52] =>  1:11
+    CLOCK: [2019-04-01 Mon 15:27]--[2019-04-01 Mon 15:40] =>  0:13
+    CLOCK: [2019-04-01 Mon 14:42]--[2019-04-01 Mon 15:26] =>  0:44
+    CLOCK: [2019-04-01 Mon 14:34]--[2019-04-01 Mon 14:41] =>  0:07
+    CLOCK: [2019-04-01 Mon 13:01]--[2019-04-01 Mon 14:33] =>  1:32
+    CLOCK: [2019-04-01 Mon 12:01]--[2019-04-01 Mon 12:07] =>  0:06
+    CLOCK: [2019-04-01 Mon 11:54]--[2019-04-01 Mon 12:00] =>  0:06
+    CLOCK: [2019-04-01 Mon 11:10]--[2019-04-01 Mon 11:53] =>  0:43
+    CLOCK: [2019-04-01 Mon 11:06]--[2019-04-01 Mon 11:09] =>  0:03
+    CLOCK: [2019-04-01 Mon 10:48]--[2019-04-01 Mon 11:05] =>  0:17
+    CLOCK: [2019-04-01 Mon 10:02]--[2019-04-01 Mon 10:47] =>  0:45
+    CLOCK: [2019-03-30 Sat 07:47]--[2019-03-30 Sat 08:00] =>  0:13
+    CLOCK: [2019-03-30 Sat 07:10]--[2019-03-30 Sat 07:46] =>  0:36
+    CLOCK: [2019-03-29 Fri 18:19]--[2019-03-29 Fri 18:21] =>  0:02
+    CLOCK: [2019-03-29 Fri 18:00]--[2019-03-29 Fri 18:18] =>  0:18
+    CLOCK: [2019-03-29 Fri 17:39]--[2019-03-29 Fri 17:59] =>  0:20
+    CLOCK: [2019-03-29 Fri 13:31]--[2019-03-29 Fri 14:36] =>  1:05
+    CLOCK: [2019-03-29 Fri 11:50]--[2019-03-29 Fri 12:00] =>  0:10
+    CLOCK: [2019-03-29 Fri 11:39]--[2019-03-29 Fri 11:49] =>  0:10
+    CLOCK: [2019-03-26 Tue 13:01]--[2019-03-26 Tue 14:31] =>  1:30
+    CLOCK: [2019-03-25 Mon 18:27]--[2019-03-25 Mon 18:41] =>  0:14
+    CLOCK: [2019-03-25 Mon 17:27]--[2019-03-25 Mon 18:02] =>  0:35
+    CLOCK: [2019-03-25 Mon 16:43]--[2019-03-25 Mon 17:15] =>  0:32
+    CLOCK: [2019-03-25 Mon 16:32]--[2019-03-25 Mon 16:42] =>  0:10
+    :END:
+
+As with mappings, profiles and templates, we should make modelines,
+modeline groups, licences and location strings meta-model elements
+too. It may require a little bit of thinking because they are not
+simple KVPs - but we also have support for arrays in annotations.
+
+The final destination is for users to create modeline configurations
+or reuse the dogen ones.
+
+Notes:
+
+- In theory we should be able to load modelines incrementally, as they
+  are only needed for code generation. However, order of references
+  will matter because we need to validate references to
+  modelines. Actually this is not a problem because we will process
+  them after merging. Decorations can be generated at the very end.
+- though it is probably overkill, it would be nice to be able to
+  inherit from modelines; then we could define all the common fields
+  on a parent.
+- decoration repository moves to become properties of the model
+  itself.
+- decoration properties becomes just decoration. Can stay property of
+  the element, though perhaps we need to distinguish between
+  decoratable elements and those that are not. Make them optional?
+- modeline_group, modeline, modeline_field, licence_text, marker (real
+  name: location strings) become meta-model entities.
+- decoration is a mapping of meta-type to modeline name. All coding
+  elements for a kernel map to the technical space, except for build
+  files, etc. This could be achieved by adding some meta-data. The
+  good thing about this approach is that we can create a profile for
+  these and make it transparent to users
+  (=masd::standard_modelines=?).
+- decoration of elements must be done after mapping has taken
+  place. We will rely on the output language to determine the correct
+  modeline.
+- due to the fact that fabric types are still not in coding, we need
+  to do decoration expansion as a two-phase process. We need to have
+  the exact same transform present in both generation and coding. This
+  is a bit painful and since its only temporary, a waste of time
+  really. A better alternative would be to move all of fabric types
+  into coding first - the simplest possible way, e.g. copy and paste,
+  rename. We could use the injector as is in fabric. Then as the last
+  step in coding, we could do the decoration transform. A simpler
+  alternative is to just move the dynamic transform chain to
+  coding. This means we don't have to touch fabric at all. We can add
+  it to the post-assembly chain. Then we can execute the decoration
+  transform. It must be done post mapping so that we have a concrete
+  language set on the model. This is required both by the dynamic
+  transform as well as the decoration transform.
+- actually, we can only perform decoration expansion after we done the
+  mapping to the output language. We need this information to
+  determine the modelines. We need to unwind all the work on moving
+  dynamic factories into coding.
+- add resolver checks to ensure all modelines in a group can be found.
+- query for element names in generated model:
+
+: jq ."elements"[]."data"."__parent_0__"."name"."qualified"."dot"
+
+- remove data files as well.
+
+Tasks:
+
+- update qname in modeline group to string.
+- implement modeline transform.
+- update name to have dot separated and colon separated qualified
+  names
+- move dynamic transforms into coding again.
+- implement decoration transform in post assembly chain after dynamic
+  transform. Use the qualified name to find the correct modeline.
+- implement the decoration formatters in generation.
+- remvoe legacy decoration code in extraction.
+
+Merged stories:
+
+*Licences as meta-model elements*
+
+Continuing the trend, licences are also moeta-model elements. We can
+use the comments of a class to convey the licence text. The name
+becomes the license name. Users use named configurations to assign
+licences to elements. All artefacts produced across all facets for an
+element will share the same licence. Users can easily add their own
+licence (at whichever level they choose, product line, product,
+component) and then refer to it. The only change is that they must now
+prefix it with the model name (e.g. =masd::licenses::gpl_v2=).
+
+In theory we should be able to load licences incrementally, as they
+are only needed for code generation. However, order of references will
+matter because we need to validate references to licences.
+
+We should also allow for both:
+
+- full licence: used later at the product level.
+- licence summary: used for preambles in files.
+
+*** COMPLETED Integrate report-ci with dogen                          :story:
+    CLOSED: [2019-04-05 Fri 21:42]
+    :LOGBOOK:
+    CLOCK: [2019-04-02 Tue 10:54]--[2019-04-02 Tue 11:03] =>  0:09
+    CLOCK: [2019-04-02 Tue 10:19]--[2019-04-02 Tue 10:29] =>  0:10
+    CLOCK: [2019-04-02 Tue 10:09]--[2019-04-02 Tue 10:18] =>  0:09
+    CLOCK: [2019-04-02 Tue 09:07]--[2019-04-02 Tue 10:08] =>  1:01
+    CLOCK: [2019-04-02 Tue 08:54]--[2019-04-02 Tue 09:06] =>  0:12
+    CLOCK: [2019-04-02 Tue 08:25]--[2019-04-02 Tue 08:53] =>  0:28
+    :END:
+
+It seems Klemens has started a new project for a CI product. He
+submitted a PR. Help him integrate it with Dogen.
+
+*** COMPLETED Consider introducing formatter "location strings"       :story:
+    CLOSED: [2019-04-07 Sun 10:30]
+
+*Rationale*: created as generation marker. Location is too overloaded
+already in the metamodel.
+
+In MDSD, we have the notion of "location strngs" (volter, p.153):
+
+#+begin_quote
+A third and very useful technique is the application of location
+strings that identify the transformation or the template used, as well
+as the underlying model elements in the generated code. A location
+string might look like this:
+
+: [2003-10-04 17:05:36]
+: GENERATED FROM TEMPLATE SomeTemplate
+: MODEL ELEMENT aPackage::aClass::SomeOperation().
+#+end_quote
+
+This may be a useful thing. However, adding dates and dogen version
+etc will cause spurious diffs.
+
+*** COMPLETED Move all utility formatters from extraction to generation :story:
+    CLOSED: [2019-04-08 Mon 10:58]
+    :LOGBOOK:
+    CLOCK: [2019-04-07 Sun 09:40]--[2019-04-07 Sun 09:52] =>  0:12
+    CLOCK: [2019-04-07 Sun 07:42]--[2019-04-07 Sun 08:35] =>  0:53
+    CLOCK: [2019-04-06 Sat 20:58]--[2019-04-06 Sat 21:06] =>  0:08
+    CLOCK: [2019-04-06 Sat 20:44]--[2019-04-06 Sat 20:57] =>  0:13
+    CLOCK: [2019-04-06 Sat 20:28]--[2019-04-06 Sat 20:43] =>  0:15
+    CLOCK: [2019-04-06 Sat 20:20]--[2019-04-06 Sat 20:27] =>  0:07
+    CLOCK: [2019-04-06 Sat 20:12]--[2019-04-06 Sat 20:19] =>  0:07
+    CLOCK: [2019-04-06 Sat 19:59]--[2019-04-06 Sat 20:11] =>  0:12
+    CLOCK: [2019-04-06 Sat 19:41]--[2019-04-06 Sat 19:58] =>  0:17
+    CLOCK: [2019-04-06 Sat 17:18]--[2019-04-06 Sat 17:32] =>  0:14
+    CLOCK: [2019-04-06 Sat 17:12]--[2019-04-06 Sat 17:17] =>  0:05
+    CLOCK: [2019-04-06 Sat 16:53]--[2019-04-06 Sat 17:11] =>  0:18
+    CLOCK: [2019-04-06 Sat 16:01]--[2019-04-06 Sat 16:52] =>  0:51
+    CLOCK: [2019-04-06 Sat 12:24]--[2019-04-06 Sat 12:52] =>  0:28
+    CLOCK: [2019-04-06 Sat 11:34]--[2019-04-06 Sat 12:23] =>  0:49
+    CLOCK: [2019-04-06 Sat 10:45]--[2019-04-06 Sat 11:33] =>  0:48
+    CLOCK: [2019-04-06 Sat 06:47]--[2019-04-06 Sat 07:33] =>  0:46
+    CLOCK: [2019-04-05 Fri 21:45]--[2019-04-05 Fri 22:04] =>  0:19
+    CLOCK: [2019-03-30 Sat 13:39]--[2019-03-30 Sat 14:06] =>  0:27
+    :END:
+
+We need to move all formatters into generation and update templates to
+point to new location. This must be done after decoration has been
+updated to use the new modeling elements.
+
+Notes:
+
+- we need to split boilerplate tests: the stuff testing decoration
+  generation (modeline at top, bottom, multilicence, etc) needs to go
+  to a decoration formatter test.
+- the boilerplate tests themselves are fairly simple: make sure it all
+  comes out for both c# and c++.
+
+*** POSTPONED Remove annotations from stitch templates                :story:
+    CLOSED: [2019-04-08 Mon 10:58]
+    :LOGBOOK:
+    CLOCK: [2019-04-05 Fri 08:31]--[2019-04-05 Fri 08:45] =>  0:14
+    CLOCK: [2019-04-04 Thu 16:57]--[2019-04-04 Thu 17:05] =>  0:08
+    CLOCK: [2019-04-04 Thu 16:02]--[2019-04-04 Thu 16:57] =>  0:55
+    :END:
+
+In the new world, stitch templates don't have all of the required
+information to build the boilerplate:
+
+- they cannot expand wale templates because the KVPs will be in the
+  element itself, not the template. Strictly speaking this is not an
+  problem we have right now though.
+- more importantly, the include dependencies cannot be computed by the
+  template. This is because the dependencies are really a function of
+  the model type we are expressing on the template. Instead, we did a
+  quick hack and supplied the includes as KVPs. So they are kind of
+  parameters but kind of not really parameters because they are
+  hard-coded to the template. It solved the immediate problem of
+  having them formatted and placed in the right part of the file, but
+  now we can see this is not the right approach.
+
+In reality, we should not have any annotations at all in
+templates. The boilerplate and includes should be supplied as KVPs and
+applied as variables. They should be composed externally with access
+to data from the model element. Thus we then need a way to associate
+includes with model elements. This is captured as a separate story.
+
+*** POSTPONED Supply decorations as a stitch parameter                :story:
+    CLOSED: [2019-04-08 Mon 10:58]
+     :LOGBOOK:
+     CLOCK: [2019-04-05 Fri 13:01]--[2019-04-05 Fri 14:50] =>  1:49
+     CLOCK: [2019-04-05 Fri 11:43]--[2019-04-05 Fri 12:05] =>  0:22
+     CLOCK: [2019-04-05 Fri 10:38]--[2019-04-05 Fri 11:42] =>  1:04
+     CLOCK: [2019-04-05 Fri 10:24]--[2019-04-05 Fri 10:37] =>  0:13
+     CLOCK: [2019-04-05 Fri 10:08]--[2019-04-05 Fri 10:23] =>  0:15
+     CLOCK: [2019-04-05 Fri 10:02]--[2019-04-05 Fri 10:07] =>  0:05
+     CLOCK: [2019-04-05 Fri 09:20]--[2019-04-05 Fri 10:01] =>  0:41
+     :END:
+
+As explained in other story at present we are creating the decoration
+inside the stitch template. This won't work with new world. We need to
+supply it as KVP. For now we will leave everything else as is.
+
+Notes:
+
+- factor out commonalities between wale and stitch into object
+  template regarding keys.
+- add validation to ensure all expected keys have been found. Look at
+  how that's done in wale.
+- add a way to supply KVPs from the outside world into stitch template
+  instantiation.
+- no decoration for root module
+- cmake files are not going via boilerplate.
+
+** Deprecated
+*** CANCELLED Fix =cp= error on cmake with local third-party packages :story:
+    CLOSED: [2019-03-26 Tue 06:31]
+
+*Rationale*: we are no longer copying this file.
+
+We are getting strange errors in cmake:
+
+: cp: cannot stat ‘/usr/lib/i386-linux-gnu/libpthread.so.1.54.0’: No such file or directory
+
+*** CANCELLED Missing =enable_facet_XYZ= tests                        :story:
+    CLOSED: [2019-03-26 Tue 06:44]
+
+*Rationale*: with code-generated tests, we now have lots of uses of
+the test data facet. No need for a special test.
+
+- test data
+*** CANCELLED Implement qualified name efficiently                    :story:
+    CLOSED: [2019-03-28 Thu 12:04]
+
+*Rationale*: changes around qualified name are good enough.
+
+We should move qualified names to quilt. We can create a simple map of
+id to qualified name and add that to the formattables model.
+
+In addition we are using a map instead of unordered map due to some
+weird differences when serialising (the yarn serialisation tests are
+failing for some reason). This needs to be investigated. We've added a
+patch: =change_qualified_to_unordered_map.patch=.
+
+*Previous Understanding*
+
+We used a =std::map= to store qualified names. In practice, we don't
+need something this expensive.
+
+- instead of mapping names to languages, we could map them to
+  "styles". There are only a few "styles" across all programming
+  languages (e.g. =.= separated, =::= separated and so on).
+- we can also create an array of these styles. We know up front how
+  many styles there are.
+- finally we can create a enumeration to access the array. At present
+  this is not possible because we cannot disable invalid, nor is it
+  possible to move it to a different position (e.g. last). Also we
+  will have to static cast the enum to access the int, which is not
+  very pretty.
+
+Once all of this is done we can simply do, at O(1):
+
+: name.qualified[static_cast<unsigned int>(styles::double_colon_separated_style)]
+
+We can prettify it a bit: [[http://stackoverflow.com/questions/8357240/how-to-automatically-convert-strongly-typed-enum-into-int][How to automatically convert strongly typed
+enum into int?]]
+
+: template <typename E>
+: constexpr typename std::underlying_type<E>::type to_underlying(E e) {
+:     return static_cast<typename std::underlying_type<E>::type>(e);
+: }
+:
+: std::cout << foo(to_underlying(b::B2)) << std::endl;
+
+Giving us:
+
+: name.qualified[to_underlying(styles::double_colon_separated_style)]
+*** CANCELLED Consider creating a UI for editing type libraries  :story:
+    CLOSED: [2019-03-29 Fri 08:51]
+
+*Rationale*: this is deemed to be outside the scope of dogen.
+
+At present we have to edit the JSON files by hand; this is becoming
+increasingly painful as we rely more and more on the meta-data. It
+would be great to be able to edit these files in some sort of UI that
+would make repetitive operations quicker. This story captures all of
+the use cases for the UI.
+
+- there are many cases of types that require an inclusion directive
+  for the types facet but none for all other facets. It is really
+  painful to set each of the other facets to =inclusion_required=
+  false. However, perhaps a more sensible way to handle this is to
+  default inclusion required to false on all cases other than those
+  provided. Story will be raised for this.

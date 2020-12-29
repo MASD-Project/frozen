@@ -1,0 +1,447 @@
+#+title: Sprint Backlog 78
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- continue work on the cpp/quilt refactor.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2016-01-18 Mon 22:06]
+| <75>                                                                        |         |       |       |
+| Headline                                                                    | Time    |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| *Total time*                                                                | *32:03* |       |       |
+|-----------------------------------------------------------------------------+---------+-------+-------|
+| Stories                                                                     | 32:03   |       |       |
+| Active                                                                      |         | 32:03 |       |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  1:47 |
+| COMPLETED Supply formatter properties and settings directly to formatter    |         |       |  4:12 |
+| COMPLETED Rename =backend= to =quilt=                                       |         |       |  0:41 |
+| COMPLETED Rename =cpp= to =quilt.cpp=                                       |         |       |  7:24 |
+| COMPLETED Rename test data folder for yarn.dia files                        |         |       |  0:50 |
+| COMPLETED Sort out annoyances with current emacs setup                      |         |       |  0:50 |
+| COMPLETED Add support for clang in travis                                   |         |       |  2:39 |
+| COMPLETED Create a separate flow for yarn based types                       |         |       |  2:06 |
+| COMPLETED Document all of the Windows build errors                          |         |       |  0:44 |
+| COMPLETED Create a blog post on product backlogs                            |         |       | 10:02 |
+| POSTPONED Generate exceptions using yarn types                              |         |       |  0:22 |
+| POSTPONED Move non-entity properties to base formatter assistant            |         |       |  0:26 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-01-18 Mon 22:05]
+    CLOCK: [2016-01-18 Mon 12:15]--[2016-01-18 Mon 12:51] =>  0:36
+    CLOCK: [2016-01-13 Wed 23:39]--[2016-01-13 Wed 23:41] =>  0:02
+    CLOCK: [2016-01-07 Thu 20:20]--[2016-01-07 Thu 20:35] =>  0:15
+    CLOCK: [2016-01-07 Thu 19:55]--[2016-01-07 Thu 20:20] =>  0:25
+    CLOCK: [2016-01-07 Thu 06:10]--[2016-01-07 Thu 06:24] =>  0:20
+    CLOCK: [2016-01-06 Wed 23:28]--[2016-01-06 Wed 23:31] =>  0:03
+    CLOCK: [2016-01-04 Mon 21:28]--[2016-01-04 Mon 21:40] =>  0:12
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Update manual                                           :story:
+    CLOSED: [2016-01-18 Mon 22:06]
+
+Updates to manual.
+
+*** COMPLETED Supply formatter properties and settings directly to formatter :story:
+    CLOSED: [2016-01-06 Wed 22:29]
+    CLOCK: [2016-01-06 Wed 21:32]--[2016-01-06 Wed 22:29] =>  0:57
+    CLOCK: [2016-01-05 Tue 21:15]--[2016-01-05 Tue 23:11] =>  1:56
+    CLOCK: [2016-01-04 Mon 21:41]--[2016-01-04 Mon 23:00] =>  1:19
+
+In preparation for removing the cpp formattables, we need to supply
+the formatter properties and settings in the format method, rather
+than via the cpp type.
+
+Notes:
+
+- we must pass in the whole map into the formatter not just the
+  formatter properties for a given formatter.
+- we need to do some hackery around the formattables factory and pass
+  in the repositories as non-const references to populate them for the
+  hacked types. This will all be handled properly once we move to yarn
+  types.
+
+*** COMPLETED Rename =backend= to =quilt=                             :story:
+    CLOSED: [2016-01-07 Thu 23:33]
+    CLOCK: [2016-01-07 Thu 22:52]--[2016-01-07 Thu 23:33] =>  0:41
+
+As part of the quilt refactor, we need to rename =backend= to =quilt=.
+
+*** COMPLETED Rename =cpp= to =quilt.cpp=                             :story:
+    CLOSED: [2016-01-10 Sun 10:33]
+    CLOCK: [2016-01-10 Sun 09:55]--[2016-01-10 Sun 10:32] =>  0:37
+    CLOCK: [2016-01-09 Sat 22:41]--[2016-01-10 Sun 00:27] =>  1:46
+    CLOCK: [2016-01-08 Fri 23:20]--[2016-01-09 Sat 02:52] =>  3:32
+    CLOCK: [2016-01-08 Fri 21:11]--[2016-01-08 Fri 22:40] =>  1:29
+
+As part of the quilt refactor we need to rename =cpp= to =quilt.cpp=.
+
+Notes:
+
+- namespace documentation file is not part of master includer
+- not generating services
+
+*** COMPLETED Rename test data folder for yarn.dia files              :story:
+    CLOSED: [2016-01-10 Sun 10:42]
+    CLOCK: [2016-01-10 Sun 21:55]--[2016-01-10 Sun 22:10] =>  0:15
+    CLOCK: [2016-01-10 Sun 14:10]--[2016-01-10 Sun 14:40] =>  0:30
+    CLOCK: [2016-01-10 Sun 10:37]--[2016-01-10 Sun 10:42] =>  0:05
+
+Test data folder is still called =yarn_dia= rather than =yarn.dia=.
+
+*** COMPLETED Sort out annoyances with current emacs setup            :story:
+    CLOSED: [2016-01-10 Sun 23:00]
+    CLOCK: [2016-01-10 Sun 22:11]--[2016-01-10 Sun 23:01] =>  0:50
+
+We need to:
+
+- update to latest prelude and get latest of everything.
+- sort out problems with our fork of prelude.
+- comment out semantic.
+- hide ede top-level project to avoid clutter.
+
+*** COMPLETED Add support for clang in travis                         :story:
+    CLOSED: [2016-01-12 Tue 23:21]
+    CLOCK: [2016-01-13 Wed 13:50]--[2016-01-13 Wed 14:07] =>  0:17
+    CLOCK: [2016-01-12 Tue 23:22]--[2016-01-12 Tue 23:53] =>  0:31
+    CLOCK: [2016-01-12 Tue 21:30]--[2016-01-12 Tue 23:21] =>  1:51
+
+Since we had a few problems with clang some months ago due to a Debian
+transition, we stopped using it. We should try using it again to see
+if the transition is finished. We should also enable Travis support
+for clang to ensure we don't break clang.
+
+*** COMPLETED Create a separate flow for yarn based types             :story:
+    CLOSED: [2016-01-13 Wed 23:38]
+    CLOCK: [2016-01-13 Wed 22:26]--[2016-01-13 Wed 23:35] =>  1:09
+    CLOCK: [2016-01-06 Wed 22:30]--[2016-01-06 Wed 23:27] =>  0:57
+
+We won't be able to replace all cpp types in one go, so the best way
+to go about this is to incrementally update the formatters. This could
+be done by having two sets of elements to format, one formattable
+based and the other yarn based. We can update the interfaces, one type
+a time and have them share the same registrars etc.
+*** COMPLETED Document all of the Windows build errors                :story:
+    CLOSED: [2016-01-15 Fri 23:57]
+    CLOCK: [2016-01-15 Fri 23:10]--[2016-01-15 Fri 23:54] =>  0:44
+
+General:
+
+- lots of warnings in the guts of boost.
+
+**** Boost test
+
+- boost test warning:
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/impl/test_tools.ipp(369): warning C4273: 'boost::test_tools::tt_detail::format_assertion_result': inconsistent dll linkage [C:\proj
+: ects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+:   C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/tools/detail/fwd.hpp(96): note: see previous definition of 'format_assertion_result'
+
+- boost test errors:
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/impl/test_tools.ipp(396): error C2491: 'boost::test_tools::tt_detail::prod_report_format': definition of dllimport function not all
+: owed [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+
+: C:\Users\appveyor\.conan\data\Boost\1.60.0\lasote\stable\package\7569deb7626b9f88e03d1b57f5ad4b34f8383a6f\include\boost/test/tools/old/impl.hpp(118): error C2264: 'boost::test_tools::tt_detail::equal_impl': error in function definition or declaration; func
+: tion not called [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+
+It may be due to this:
+
+[[http://boost.2283326.n4.nabble.com/Test-Thread-Regression-since-9-December-td4670920.html][Regression since 9 December?]]
+
+**** Boost serialisation
+
+: C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(73): error C2668: 'dogen::config::register_types': ambiguous call to overloaded function [C:\projects\dogen\build\output\projects\config\spec\config_spec.vcxproj]
+:   C:\projects\dogen\projects\config\include\dogen/config/serialization/registrar_ser.hpp(32): note: could be 'void dogen::config::register_types<OutputArchive>(Archive &)'
+:           with
+:           [
+:               OutputArchive=boost::archive::binary_oarchive,
+:               Archive=boost::archive::binary_oarchive
+:           ]
+:   C:\projects\dogen\projects\config\spec\serialization_spec.cpp(30): note: or       'void register_types<OutputArchive>(Archive &)'
+:           with
+:           [
+:               OutputArchive=boost::archive::binary_oarchive,
+:               Archive=boost::archive::binary_oarchive
+:           ]
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(73): note: while trying to match the argument list '(boost::archive::binary_oarchive)'
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(121): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: roundtrip_produces_the_same_entity<boost::archive::binary_iarchive,boost::archive::binary_oarchive>(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(121): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: roundtrip_produces_the_same_entity<boost::archive::binary_iarchive,boost::archive::binary_oarchive>(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(116): note: while compiling class template member function 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::bi
+: nary_roundtrip_produces_the_same_entity(const dogen::config::knitting_options &)'
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/serialization_tester.hpp(130): note: see reference to function template instantiation 'void dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>::
+: binary_roundtrip_produces_the_same_entity(const dogen::config::knitting_options &)' being compiled
+:   C:\projects\dogen\projects\utility\include\dogen/utility/test/canned_tests.hpp(72): note: see reference to class template instantiation 'dogen::utility::test::serialization_tester<dogen::config::knitting_options_generator::result_type>' being compiled
+:   C:\projects\dogen\projects\config\spec\serialization_spec.cpp(54): note: see reference to function template instantiation 'void dogen::utility::test::roundtrip_type<dogen::config::knitting_options_generator>(void)' being compiled
+
+**** Dogen yarn exception
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(60): error C2063: 'boost::serialization::save': not a function [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(63): error C2063: 'boost::serialization::load': not a function [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3927: '->': trailing return type is not allowed after a non-function declarator [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3484: syntax error: expected '->' before the return type [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3613: missing return type after '->' ('int' assumed) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C3646: 'visit': unknown override specifier [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2988: unrecognizable template declaration/definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2059: syntax error: '(' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(67): error C2238: unexpected token(s) preceding ';' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(66): error C3668: 'dogen::yarn::exception::accept': method with override specifier 'override' did not override any base class methods [C:\projects\dogen\build\output\projects\yarn\src\y
+: arn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2628: 'dogen::yarn::exception' followed by 'void' is illegal (did you forget a ';'?) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2270: 'accept': modifiers not allowed on nonmember functions [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): error C2259: 'dogen::yarn::exception': cannot instantiate abstract class [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: due to following members:
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(83): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(82): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(81): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(80): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/exception.hpp(70): note: 'bool dogen::yarn::element::equals(const dogen::yarn::element &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(171): note: see declaration of 'dogen::yarn::element::equals'
+
+**** Dogen yarn primitive
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/serialization/primitive_fwd_ser.hpp(30): error C2143: syntax error: missing ';' before '{' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/serialization/primitive_fwd_ser.hpp(30): error C2447: '{': missing function header (old-style formal list?) [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2059: syntax error: 'public' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2143: syntax error: missing ';' before ':' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(47): error C2059: syntax error: ':' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(49): error C2059: syntax error: 'const' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(58): error C2059: syntax error: 'private' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): error C2255: 'friend': not allowed outside of a class definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): error C2244: 'save': unable to match function definition to an existing declaration [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(60): note: see declaration of 'save'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): error C2255: 'friend': not allowed outside of a class definition [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): error C2244: 'load': unable to match function definition to an existing declaration [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/primitive.hpp(63): note: see declaration of 'load'
+
+**** Dogen yarn enumeration
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(40): error C2990: 'dogen::yarn::enumerator': non-class template has already been declared as a class template [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(121): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator.hpp(121): error C2228: left of '.swap' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(52): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\pr
+: ojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(106): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(107): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(108): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumeration.hpp(109): error C3203: 'enumerator': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type [C:\projects\dogen\build\output\p
+: rojects\yarn\src\yarn.vcxproj]
+
+**** Dogen mock model factory
+
+: C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): error C2259: 'dogen::yarn::exception': cannot instantiate abstract class [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: due to following members:
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(83): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &)': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(82): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(81): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'void dogen::yarn::element::accept(const dogen::yarn::element_visitor &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(80): note: see declaration of 'dogen::yarn::element::accept'
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/test/mock_intermediate_model_factory.hpp(264): note: 'bool dogen::yarn::element::equals(const dogen::yarn::element &) const': is abstract
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/element.hpp(171): note: see declaration of 'dogen::yarn::element::equals'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(533): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(534): error C2079: 'r' uses undefined class 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(535): error C2228: left of '.name' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(535): note: type is 'int'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(536): error C2228: left of '.value' must have class/struct/union [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(536): note: type is 'int'
+: C:\projects\dogen\projects\yarn\src\test\mock_intermediate_model_factory.cpp(540): error C2027: use of undefined type 'dogen::yarn::enumerator' [C:\projects\dogen\build\output\projects\yarn\src\yarn.vcxproj]
+:   C:\projects\dogen\projects\yarn\include\dogen/yarn/types/enumerator_fwd.hpp(31): note: see declaration of 'dogen::yarn::enumerator'
+
+*** COMPLETED Create a blog post on product backlogs                  :story:
+    CLOSED: [2016-01-18 Mon 22:05]
+    CLOCK: [2016-01-17 Sun 21:29]--[2016-01-18 Mon 00:04] =>  2:35
+    CLOCK: [2016-01-17 Sun 00:45]--[2016-01-17 Sun 01:09] =>  0:24
+    CLOCK: [2016-01-16 Sat 22:05]--[2016-01-17 Sun 00:38] =>  2:33
+    CLOCK: [2016-01-16 Sat 17:34]--[2016-01-16 Sat 18:26] =>  0:52
+    CLOCK: [2016-01-16 Sat 16:15]--[2016-01-16 Sat 17:14] =>  0:59
+    CLOCK: [2016-01-16 Sat 14:21]--[2016-01-16 Sat 15:21] =>  1:00
+    CLOCK: [2016-01-14 Thu 06:28]--[2016-01-14 Thu 06:58] =>  0:30
+    CLOCK: [2016-01-10 Sun 23:02]--[2016-01-10 Sun 23:07] =>  0:05
+    CLOCK: [2016-01-10 Sun 13:47]--[2016-01-10 Sun 14:10] =>  0:23
+    CLOCK: [2016-01-10 Sun 13:33]--[2016-01-10 Sun 13:41] =>  0:08
+    CLOCK: [2016-01-07 Thu 06:25]--[2016-01-07 Thu 06:58] =>  0:33
+
+To do:
+
+- finding the right level of structure in the backlog is difficult; we
+  tried lots of structure but then it became expensive to maintain. At
+  the same time, stories become harder to find without structure so
+  there is less value. For example it would be nice to find all bugs
+  on a given component, or all visionary tasks, etc.
+- FIXME: we should not use the word "vision" as a label or category in
+  the backlog as it makes it confusing since its not the product
+  vision.
+- stories in backlog should have age/recency: time they were last
+  groomed. Devs must take a certain percentage of backlog stories
+  every sprint and groom them. The percentage is determined by the
+  rate at which stories are going in and out of backlog (some kind of
+  backlog growth rate).
+
+Done:
+
+- [[http://yarchive.net/comp/linux/bug_tracking.html][linus quote on bug trackers]]: Would be be good to have a better
+  bug-tracking setup? Yes. But I think it takes man-power, and it
+  would take something *fundamentally* better than bugzilla.
+- [[http://zerodollarbill.blogspot.co.uk/2012/06/how-to-learn-scrum-in-10-minutes-and.html][How to learn Scrum in 10 minutes and clean your house in the process]]
+- [[https://lh6.googleusercontent.com/-v2b40kpb2xc/t88cpeli6qi/aaaaaaaac_u/ig2qwsjlq_8/s800/scrum_iterative_development.jpg][Scrum Iteration Chart]]
+- jira as a fire and forget capture system.
+- title: on product backlog grooming? on product backlogs?
+- if your product backlog is empty your product is dead - find the
+  quote, probably Henney. When your product backlog is empty, your
+  product is dead @KevlinHenney twitter
+- provide a definition of product and backlog (e.g. dictionary) and
+  then of product backlog using an agile definition.
+- FIXME: find the Henney quote on how even if you write the same code
+  twice you would not write it the same way because you are not the
+  same.
+- find story on dead project that was on hacker news because the
+  number of open stories was too large.
+- talk about how useless and counter productive backlogs are in
+  professional places with large teams because the signal to noise
+  ratio is too high. People first start that sprint planning by going
+  through the backlog, then a subset of the backlog and then
+  eventually just ignore it all together because they spent the whole
+  sprint planning meet looking through the backlog.
+- [[http://tinyletter.com/programming-beyond-practices/letters/the-sad-graph-of-software-death][The sad graph of software death]]
+- how the management of the backlog is not the same as the management
+  of stories/tasks. A task management system is still useful.
+- issues in github are not a replacement for a backlog, but useful in
+  managing user interactions; the kind of stories that go into the
+  backlog are different.
+- find Kevlin Henney's graph on the relationship between product and
+  sprint backlog (had some arrows in a cycle). Also find some of his
+  quotes.
+- the importance of mission for a sprint as a function that determines
+  what to get out of the backlog. Tactics go along with missions.
+- the importance of vision as the function that determines if a story
+  should go in the backlog or not; and how stories refine the
+  vision. It starts hazy but then coalesces over time and comes to
+  define what the product means.
+- managing a backlog in org mode is very advantageous: one big flat
+  file, renderable in HTML; easy to fold and create structure as
+  required.
+- before writing a story try very hard to find prior art. You need to
+  find all stories in the backlog that have any vague relation to this
+  new story and either modify those or extract the commonalities from
+  those into this new story.
+- graph of features: a) all features in the world b) all features in
+  your product that are compatible with your vision c) all features in
+  the backlog d) all features in the sprint log.
+- define strategy has the set of steps required to implement the
+  vision.
+- Stories mature in the backlog. They are at different stages:
+  occasional one-liner/todo style story, which gets filled in over
+  time until it has enough information to become implementable; it
+  then waits until there is a sprint with a consistent mission. Or it
+  could be that the story has to mature within the sprint
+  itself. Mature stories get refined: trimmed in scope, re-targeted,
+  or even cancelled because they no longer fit with the
+  vision. Cancelled stories are important because we may came back to
+  them - its just very unlikely that we do.
+- backlog becomes stale so its important to do deep grooming very
+  frequently. This is an expensive activity as time goes by because
+  a good backlog increases in size with time. As the number of
+  developers will not grow in line with the size of the backlog, this
+  becomes more of a problem over time. However, its still very
+  important to avoid from letting it go stale.
+- if a product is the exploration of an unknown space, the backlog is
+  the sum total knowledge of that exploration, akin to a map of that
+  space. The backlog is akin to an historical map: it gives you the
+  thoughts of the person that last was in that area, in a given state
+  of mind. It is not a very accurate map, but then like those maps its
+  better than nothing.
+
+*** POSTPONED Generate exceptions using yarn types                    :story:
+    CLOSED: [2016-01-18 Mon 22:06]
+    CLOCK: [2016-01-14 Thu 21:52]--[2016-01-14 Thu 22:14] =>  0:22
+
+Tasks:
+
+- delete the quilt exception type;
+- remove transformation support for exception;
+- create a yarn element based assistant;
+- update the formatter interfaces to use yarn types;
+- update the yarn formatting workflow to process yarn exceptions;
+- update the stitch templates to make use of yarn exceptions.
+
+*** POSTPONED Move non-entity properties to base formatter assistant  :story:
+    CLOSED: [2016-01-18 Mon 22:06]
+    CLOCK: [2016-01-14 Thu 22:15]--[2016-01-14 Thu 22:41] =>  0:26
+
+As part of the "yarnification" of the formatters, we need to be able
+to use most of the entity formatter assistant properties over to the
+base formatter assistant. We should get rid of the trivial formatting
+assistant and entity formatting assistant and move all the code to the
+base. The two methods that require an entity should receive it as an
+input parameter.
+
+** Deprecated
+*** CANCELLED Consider renaming nested name                           :story:
+    CLOSED: [2016-01-07 Thu 20:18]
+
+*Rationale*: the final conclusion on this was that nested name is the
+best of a bad bunch. See Sprint 77 stories on renames for details.
+
+*New understanding*:
+
+This story requires further analysis. Blindly following the composite
+pattern was tried but it resulted in a lot of inconsistencies because
+we then had to follow MEC-33 and create =abstract_qname=; however, the
+nested qname does not really behave like a composite qname; its more
+like the difference between a type in isolation and a type
+instantiated as an argument of a function. For example, whilst the
+type in isolation may have unknown template parameters, presumably, as
+an argument of a function these have been instantiated with real
+types.
+
+One way to solve this is just to make the type name a bit more
+explicit rather than try to imply the composite pattern
+(e.g. "nested"). We need a name that signifies "instantiated
+type". Look at the C++ standard for the difference between defining a
+generic type and instantiating a generic type.
+
+No good names yet (type reference, type instantiation, instantiated
+name). What are we trying to represent: an identifier which points to
+a complete definition of a name such that the name can be instantiated
+as a type in the underlying language. By "instantiated" we mean used
+to define variables of this type. In this light: instantiable name,
+definable name? If we choose instantiable name, we could then rename
+"children" to type arguments.
+
+Other notes:
+
+- there is such a thing as a element instance identifier. We call it
+  nested name at present. The element instance identifier identifies
+  instantiations of types. It models two cases: for the case where the
+  type has no type parameters, the instance identifier is equal to the
+  element identifier; for all other cases, it is a hierarchical
+  collection of element identifiers, modeling the type parameter
+  structure.
+
+*Previous understanding*:
+
+We should just follow the composite pattern in the naming.

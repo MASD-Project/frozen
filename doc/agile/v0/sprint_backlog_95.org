@@ -1,0 +1,1193 @@
+#+title: Sprint Backlog 95
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- More work on C# support;
+- Start work on Upsilon.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-01-16 Mon 10:23]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *85:19* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 85:19   |       |       | 100.0 |
+| Active                                                                      |         | 85:19 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  0:46 |   0.9 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:57 |   1.1 |
+| COMPLETED Consider supporting multiple inheritance on non-proxy models      |         |       |  3:24 |   4.0 |
+| COMPLETED Add basic validation infrastructure                               |         |       |  8:40 |  10.2 |
+| COMPLETED Fix borked windows build                                          |         |       |  0:26 |   0.5 |
+| COMPLETED Clean up enumerator implementation                                |         |       |  1:05 |   1.3 |
+| COMPLETED Measure validation slowdown                                       |         |       |  6:38 |   7.8 |
+| COMPLETED Parsing should support dot notation                               |         |       |  2:54 |   3.4 |
+| COMPLETED Analysis for changes required in order to support containers      |         |       |  3:15 |   3.8 |
+| COMPLETED Add support for object based container types in C#                |         |       |  5:48 |   6.8 |
+| COMPLETED Understand the behaviour of helpers and assistants                |         |       |  1:13 |   1.4 |
+| CANCELLED Add support for generic parents in yarn                           |         |       |  0:35 |   0.7 |
+| COMPLETED Fix assorted windows warnings                                     |         |       |  0:19 |   0.4 |
+| COMPLETED Build dogen on windows locally                                    |         |       |  7:32 |   8.8 |
+| COMPLETED Fix borked windows build                                          |         |       |  1:54 |   2.2 |
+| COMPLETED Generate windows packages with WIX                                |         |       |  3:28 |   4.1 |
+| COMPLETED Add validation around instatitation of abstract classes           |         |       |  2:25 |   2.8 |
+| COMPLETED Add validation to ensure enumerators do not have types            |         |       |  0:21 |   0.4 |
+| COMPLETED Add appveyor support for bintray                                  |         |       |  2:23 |   2.8 |
+| COMPLETED Add read support for upsilon models                               |         |       | 13:26 |  15.7 |
+| POSTPONED Create an upsilon yarn frontend                                   |         |       | 10:32 |  12.3 |
+| POSTPONED Add auxiliary function properties to c#                           |         |       |  1:11 |   1.4 |
+| POSTPONED Add internal object dumper resolution                             |         |       |  4:51 |   5.7 |
+| POSTPONED Add support for generic container types to C#                     |         |       |  1:16 |   1.5 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-01-16 Mon 09:27]
+    CLOCK: [2017-01-16 Mon 09:15]--[2017-01-16 Mon 09:26] =>  0:11
+    CLOCK: [2017-01-07 Sat 13:41]--[2017-01-07 Sat 13:46] =>  0:05
+    CLOCK: [2017-01-03 Tue 17:06]--[2017-01-03 Tue 17:11] =>  0:05
+    CLOCK: [2017-01-03 Tue 17:02]--[2017-01-03 Tue 17:06] =>  0:04
+    CLOCK: [2016-12-28 Wed 12:02]--[2016-12-28 Wed 12:23] =>  0:21
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-12-28 Wed 13:01]
+    CLOCK: [2016-12-28 Wed 13:06]--[2016-12-28 Wed 13:23] =>  0:17
+    CLOCK: [2016-12-28 Wed 13:02]--[2016-12-28 Wed 13:05] =>  0:03
+    CLOCK: [2016-12-28 Wed 12:49]--[2016-12-28 Wed 13:01] =>  0:12
+    CLOCK: [2016-12-28 Wed 12:23]--[2016-12-28 Wed 12:48] =>  0:25
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.94.0, "Baía dos Tigres"
+
+#+begin_src markdown
+<p align="center">
+  <img src="http://www.redeangola.info/wp-content/uploads/2014/06/roteiro_deserto-namibe-5_Carlos-Lousada-580x361.jpg">
+<br>
+<figcaption><i>Parque Nacional do Iona, Namibe, Angola. (C) 2014 Pedro Cardoso. Obtained from the website of Rede Angola.</i></figcaption>
+</p>
+
+Overview
+=======
+The sprint's headline feature is the continued work on the C# kernel. It is still considered experimental and the generated code has an unstable API, liable to change without notice.
+
+User visible changes
+===============
+
+In this sprint, a number of user visible features were added to C#:
+
+- **improvements in the ```Types``` facet**: support for exceptions and enumerations, initial immutability support, complete constructors, improvements around equality, associations and inheritance with other model types, as well as support for modules (namespaces).
+- **basic ```IO``` facet support**: dumping the POCOs as a JSON stream. The JSON format is the same as used in C++.
+- **basic ```Test Data``` facet support**: We tried to use C# idioms for this, so Sequence Generators are based on ```IEnumerable```.
+
+Please refer to the test data sets for the sample model:
+
+- input: [Dia](https://github.com/DomainDrivenConsulting/dogen/blob/master/test_data/yarn.dia/input/CSharpModel.dia), [JSON](https://github.com/DomainDrivenConsulting/dogen/blob/master/test_data/yarn.json/input/CSharpModel.json)
+- output: [CSharpModel](https://github.com/DomainDrivenConsulting/dogen/tree/master/projects/test_models/CSharpModel)
+- tests: [CSharpModel.Tests](https://github.com/DomainDrivenConsulting/dogen/tree/master/projects/test_models/CSharpModel.Tests)
+
+C# development is being validated at present with Mono and MonoDevelop from Xamarin's Alpha channel, but should work equally well with any recent versions of Visual Studio.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_94.org).
+
+Next Sprint
+========
+The next sprint will continue to focus on C#, particularly the addition of collections.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX and Linux:
+
+- [dogen_0.94.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.94.0/dogen_0.94.0_amd64-applications.deb)
+- [dogen-0.94.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.94.0/dogen-0.94.0-Darwin-x86_64.dmg)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other operative systems you need to build it from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/814095968211791877][Tweet]]
+
+*** COMPLETED Consider supporting multiple inheritance on non-proxy models :story:
+    CLOSED: [2016-12-28 Wed 17:25]
+    CLOCK: [2016-12-28 Wed 16:03]--[2016-12-28 Wed 17:25] =>  1:22
+    CLOCK: [2016-12-28 Wed 14:01]--[2016-12-28 Wed 16:03] =>  2:02
+
+We need to be able to express relationships such as the ones used by
+C# containers. But first we need to build an inheritance graph of all
+relevant collections.
+
+Notes:
+
+- if we have leaves at all levels of an hierarchy, we may need to map
+  them to the base class. Actually, in practice, we only care about
+  leaves at the base class level.
+- we need to know which root parent we are visiting. So presumably the
+  question is: did we use root parent as a short-hand for visitation
+  root?
+- equals method is using root parent because apparently "service leafs
+  are not being processed atm". We should remove this check and add a
+  method to assistant that checks there is one root parent.
+- we need to (should?) introduce the validator to ensure non-proxy
+  model objects have only one parent and root parent.
+
+Validation check removed from transformer:
+
+:        /*
+:         * Ensure we have at most one parent as we do not support
+:         * multiple inheritance for objects.
+:         */
+:        if (parent_names.size() > 1) {
+:            BOOST_LOG_SEV(lg, error) << multiple_inheritance
+:                                     << po.id();
+:            BOOST_THROW_EXCEPTION(transformation_error(multiple_inheritance +
+:                    po.id()));
+:        }
+
+*** COMPLETED Add basic validation infrastructure                     :story:
+    CLOSED: [2017-01-03 Tue 17:50]
+    CLOCK: [2017-01-03 Tue 17:12]--[2017-01-03 Tue 17:55] =>  0:43
+    CLOCK: [2017-01-03 Tue 16:48]--[2017-01-03 Tue 17:01] =>  0:13
+    CLOCK: [2017-01-03 Tue 16:37]--[2017-01-03 Tue 16:47] =>  0:10
+    CLOCK: [2017-01-03 Tue 14:46]--[2017-01-03 Tue 16:36] =>  1:50
+    CLOCK: [2017-01-03 Tue 13:51]--[2017-01-03 Tue 14:45] =>  0:54
+    CLOCK: [2017-01-03 Tue 11:18]--[2017-01-03 Tue 12:51] =>  1:33
+    CLOCK: [2017-01-03 Tue 11:01]--[2017-01-03 Tue 11:18] =>  0:17
+    CLOCK: [2017-01-03 Tue 09:50]--[2017-01-03 Tue 10:40] =>  1:28
+    CLOCK: [2016-12-28 Wed 20:24]--[2016-12-28 Wed 21:25] =>  1:01
+    CLOCK: [2016-12-28 Wed 19:21]--[2016-12-28 Wed 20:23] =>  1:02
+    CLOCK: [2016-12-28 Wed 17:29]--[2016-12-28 Wed 17:36] =>  0:07
+
+The objective of this story is to create enough of the validation
+infrastructure required to ensure non-proxy models do not have
+multiple inheritance. We should add a couple of other validation rules
+to make sure the infrastructure is good enough. All other validation
+work will be moved to the backlog.
+
+Implemented checks:
+
+*Merged model checks*
+
+- enumerator name must not be empty
+- enumerator name must be unique
+- model name is non-empty.
+- property must have non-empty name.
+- duplicate checks: properties cannot have duplicate names; classes in
+  a package cannot have the same name; namespaces at the same level
+  cannot have the same name;
+- type_name is non-empty; cannot be blank or a variable name
+- type names, model names, etc must not contain spaces or other
+  invalid characters. They should also not be a keyword on the target
+  language (e.g. =if=, =default=, etc.). We should use a identifier
+  parser for name validation. We should have a data file that lists
+  keywords by language. See [[http://en.cppreference.com/w/cpp/keyword][C++ keywords]]. This is done in merged model
+  to ensure we can report provenience correctly. Note that we need to
+  be careful with built in models; these will use "invalid" type names
+  such as =int= etc.
+- all properties of types in current model must exist.
+- parent names and original parent names must exist in current model
+  (resolver?)
+- multiple inheritance is only allowed on non-proxy models.
+- refined concepts must not have properties (or methods) with clashing
+  names.
+- type name must not exist on any model: basically detect duplicate
+  element names. At present we simply silently drop duplicates.
+- leaves exist in current model.
+
+*Previous Understanding*
+
+#+begin_quote
+*Story*: As a dogen user, I want to know exactly why my diagram is not
+correct so that I can fix the issues. I also want dogen to pick up
+errors and generate valid code so that I don't have to figure out what
+went wrong by looking at the generated code and the compiler errors.
+#+end_quote
+
+We need a class responsible for checking the consistency of the yarn
+model.
+
+*** COMPLETED Fix borked windows build                                :story:
+    CLOSED: [2017-01-03 Tue 22:02]
+    CLOCK: [2017-01-03 Tue 21:35]--[2017-01-03 Tue 22:01] =>  0:26
+
+We've borked the windows build with the validator changes.
+
+:  C:\projects\dogen\projects\yarn\src\types\model_validator.cpp(48): error C2079: 'cpp_reserved' uses undefined class 'std::array<std::string,81>' [C:\projects\dogen\build\output\msvc\Debug\projects\yarn\src\yarn.vcxproj]
+:  C:\projects\dogen\projects\yarn\src\types\model_validator.cpp(62): error C2440: 'initializing': cannot convert from 'initializer list' to 'int' [C:\projects\dogen\build\output\msvc\Debug\projects\yarn\src\yarn.vcxproj]
+:  C:\projects\dogen\projects\yarn\src\types\model_validator.cpp(64): error C2079: 'cpp_builtins' uses undefined class 'std::array<std::string,11>' [C:\projects\dogen\build\output\msvc\Debug\projects\yarn\src\yarn.vcxproj]
+
+*** COMPLETED Clean up enumerator implementation                      :story:
+    CLOSED: [2017-01-03 Tue 22:37]
+    CLOCK: [2017-01-03 Tue 22:29]--[2017-01-03 Tue 22:37] =>  0:08
+    CLOCK: [2017-01-03 Tue 22:03]--[2017-01-03 Tue 22:28] =>  0:25
+    CLOCK: [2017-01-03 Tue 18:30]--[2017-01-03 Tue 19:02] =>  0:32
+
+- make enumerator nameable, and compute name correctly (qualified,
+  etc). This makes it conceptually consistent
+- move value computations to yarn so that in the future we can add
+  meta-data to override it.
+
+*** COMPLETED Add unit test benchmarking                              :story:
+    CLOSED: [2017-01-04 Wed 16:03]
+
+*Rationale*: the new benchmark infrastructure - external to the c++
+code - is good enough.
+
+#+begin_quote
+*Story*: As a dogen developer, I would like to know if any of my
+changes impact performance so that I can address these problems early.
+#+end_quote
+
+*New understanding*:
+
+Create a set of performance specific tests. These wont get executed by
+regular users (e.g. they are not part of =run_all_specs=) but they do
+get executed in the build machine. These are selected tests with big
+loops (say 1M times) doing things like reading dia diagrams etc. We
+could chose a few key things just to give us some metrics around
+performance.
+
+In fact, we could create a set of colossi models: models with really
+large number of classes (say 500), maybe 5 of these with
+references. We could then use the diagrams to test the individual
+workflows: dia, dia_to_sml, cpp and engine with no writing. We should
+avoid writing files to filesystem to avoid number jitter caused by the
+hard drive. There should be no comparisons between actual and expected
+for the same reason.
+
+We need to make sure the benchmark tests won't run on valgrind or else
+the nightly builds will take over 24 hours. However, if we had it
+running on continuous we'd spot regressions on every check-in. But we
+don't want to delay continuous any more than necessary. Perhaps we
+need a separate build called performance which is also continuous and
+only runs these tests. We could pass in some kind of variable to CMake
+so that if performance is on, it ignores all tests other than
+performance and vice-versa. We'd also need a performance target that
+only builds the performance binary, and a =run_performance= target
+that executes it.
+
+Perhaps we could use a ruby script to generate the test models?
+
+Also, investigate nonius:
+
+https://github.com/rmartinho/nonius
+
+*Old understanding*:
+
+[[https://svn.boost.org/trac/boost/ticket/7082][Raised ticket]]
+
+- nightly builds should run all unit tests in "benchmarking mode";
+- for each test we should find the sweet spot for N repetitions;
+- when plugged into ctest, make sure the benchmark tests have
+  different names from the main tests otherwise the timing history
+  will be nonsense.
+- [[http://lists.boost.org/boost-users/2011/01/65790.php][sent]] email to boost users mailing list asking for benchmarking
+  support.
+- some tips on using chrono to benchmark [[http://www.cookandcommit.eu/2014/11/simple-macro-for-algorithms-time.html][here]].
+
+*** COMPLETED Measure validation slowdown                             :story:
+    CLOSED: [2017-01-04 Wed 16:21]
+    CLOCK: [2017-01-04 Wed 16:10]--[2017-01-04 Wed 16:21] =>  0:11
+    CLOCK: [2017-01-04 Wed 13:41]--[2017-01-04 Wed 16:09] =>  2:28
+    CLOCK: [2017-01-04 Wed 11:49]--[2017-01-04 Wed 11:56] =>  0:07
+    CLOCK: [2017-01-04 Wed 11:34]--[2017-01-04 Wed 11:48] =>  0:14
+    CLOCK: [2017-01-04 Wed 09:01]--[2017-01-04 Wed 11:33] =>  2:32
+    CLOCK: [2017-01-03 Tue 22:37]--[2017-01-03 Tue 23:43] =>  1:06
+
+*Rationale*: The new benchmark infrastructure points to a small change
+in knit tests, and not a lot of movements in model generation. The
+movement is signed-off.
+
+It appears generating the dogen models is a lot slower with validation
+enabled. We need to measure this using the traditional benchmark. If
+there is really a slowdown, we need to add a command line flag to
+enable validation (disabled by default). This makes sense from a
+workflow perspective - one can occasionally check if the model is not
+quite right, but its probably not a requirement to always check
+validation.
+
+One of the reasons for the slowdown is probably the use of regular
+expressions to validate names. It is probably faster to hard-code a
+validator by hand, given that the regex is so trivial.
+
+Actually, having to manually benchmark is a pain in the backside. We
+need a simple script that performs a number of runs and records all
+the data in a CSV. We can then easily perform measurements (std dev,
+etc) and diff runs.
+
+: echo "elapsed real time, filesystem inputs, filesystem outputs, Max RSS, Avg RSS, Avg total memory, Avg unshared, Avg shared, Page faults, Soft page faults" > bench.csv && /usr/bin/time -f "%e,%I,%O,%M,%t,%K,%D,%X,%F,%R" -o bench.csv -a ./dogen.knit.tests
+
+Links:
+
+- [[https://gist.github.com/bytespider/3864921][bytespider/benchmark.sh]]
+
+**** Manual Measurements
+
+*Knit tests Validation Off*
+
+: $ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real  0m8.360s
+: user  0m6.340s
+: sys     0m1.780s
+: $ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real    0m9.576s
+: user    0m6.556s
+: sys     0m1.620s
+: $ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real    0m8.852s
+: user    0m6.752s
+: sys     0m1.780s
+
+*Knit tests Validation On*
+
+: [marco@lorenz bin(integration)]$ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real    0m9.755s
+: user    0m7.524s
+: sys     0m1.964s
+: $ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real    0m10.323s
+: user    0m6.720s
+: sys     0m1.684s
+: $ time ./dogen.knit.tests
+: Running 61 test cases...
+:
+: *** No errors detected
+:
+: real    0m9.172s
+: user    0m7.216s
+: sys     0m1.884s
+
+An increase of around 1s - 1.5s.
+
+*** COMPLETED Parsing should support dot notation                     :story:
+    CLOSED: [2017-01-04 Wed 22:20]
+    CLOCK: [2017-01-04 Wed 22:21]--[2017-01-04 Wed 22:42] =>  0:21
+    CLOCK: [2017-01-04 Wed 22:17]--[2017-01-04 Wed 22:20] =>  0:03
+    CLOCK: [2017-01-04 Wed 20:31]--[2017-01-04 Wed 22:16] =>  1:45
+    CLOCK: [2017-01-04 Wed 17:45]--[2017-01-04 Wed 17:55] =>  0:10
+    CLOCK: [2017-01-04 Wed 17:09]--[2017-01-04 Wed 17:44] =>  0:35
+
+At present we only support the c++ scope operator =::= as a separator
+for fully qualified names in a model. However, it probably would be
+quite trivial to have a "mode" in the parser and support either =.= or
+=::=, depending on a construction-supplied flag (inferred from the
+model language). This would allow C# users to enter their model in a
+more natural way, instead of forcing them to use C++ notation.
+
+Notes:
+
+- we seem to use a different parser for the external modules, which
+  means that we are still using the C++ scope operator for those even
+  after fixing the parser. We need to update the name builder to infer
+  the scope delimiter.
+- in fact we have multiple sources of names with scopes: a) parent
+  names via the meta-data (parsing expander via name builder) b) model
+  name via file name (name builder) c) external module path via
+  meta-data (name builder).
+
+*** COMPLETED Analysis for changes required in order to support containers :story:
+    CLOSED: [2017-01-07 Sat 13:43]
+    CLOCK: [2017-01-05 Thu 10:05]--[2017-01-05 Thu 12:22] =>  2:17
+    CLOCK: [2017-01-05 Thu 09:03]--[2017-01-05 Thu 09:15] =>  0:12
+    CLOCK: [2017-01-04 Wed 16:22]--[2017-01-04 Wed 17:08] =>  0:46
+
+Notes:
+
+- abstract types require knowing the leaves. We could use the existing
+  machinery to map them.
+- many c# types implement multiple interfaces; we need support for
+  multiple inheritance at the non-proxy model level.
+- we need a way to mark a type as abstract so that we don't attempt to
+  instantiate it.
+- at present we do not support inheritance from generic types, so we
+  need to update yarn for this in order to support generic collections
+  properly. This should be doable by making the parents a name tree
+  rather than a name. Validator will ensure only non-proxy models use
+  generic inheritance. In addition, when generating helpers for
+  abstract classes, we need to take into account additional generic
+  parameters supplied by the leaves. For example:
+
+: IDictionary<K, V> : ICollection<KeyValuePair<K, V>>
+
+  when we generate the helper for =ICollection<T>=, it must take into
+  account the =KeyValuePair<K, V>= when it tries to instantiate a
+  dictionary. In fact, it should probably just ignore it since we only
+  have =T= and we need =K= and =V=. So for =ICollection<T>=, only
+  descendants with a single type parameter should be leaf
+  candidates. However, if the user supplies:
+
+: ICollection<KeyValuePair<K, V>>
+
+  then we should consider =Dictionary<K, V>= as a leaf. This is quite
+  tricky. We need to navigate the name tree to figure out what
+  matches.
+- for collection IO we probably just need a method in the assistant
+  that loops through the =IEnumerable=, plus the usual assistant
+  machinery.
+- For test data and IO we have a problem: given a type presented as an
+  =object=, we cannot statically determine what generators/dumpers to
+  use. Thus for non-generic collections, we cannot dump its
+  contents. We have several possible solutions for this: a) create a
+  needle library, add the appropriate interfaces and a registrar, add
+  a dependency on the model. Downside is the models are no longer
+  self-contained. b) use castle - but its still not clear how
+  cross-model dependencies would work c) leave as is; anything
+  presented as an object will be dumped using the opaque object
+  dumper. d) mix-and-match: support dynamic dumper resolution, but
+  only within the current model. This should solve most of the
+  use cases. We could also extend it to look up on any dependant
+  models.
+
+Approach:
+
+- first we add support for all non-generic collections. This should
+  require no changes at all to the meta-model. It will prove the
+  helpers work correctly.
+- then we update the meta-model to have parent and original parent as
+  name trees (with validation to ensure only non-proxy models).
+- then we add support for trivial cases of generic collections such as
+  =List<T>=.
+- finally we handle dictionaries. The solution is to ignore
+  dictionaries on the =ICollection<KeyValuePair<K, V>>= scenario. We
+  basically filter out all leaves that require more than one type
+  parameter. As a result we end up creating a
+  =List<KeyValuePair<K, V>>= etc. This means we will add name trees as
+  parents purely to ensure we express the inheritance relationship
+  correctly but not actually make use of it. It will lay the ground
+  work to add generics in the future. We need to update the story in
+  the backlog to reflect these changes.
+
+Other notes:
+
+- removed unused helper families:
+
+:         "quilt.csharp.helper.family": "Number",
+:         "quilt.csharp.helper.family": "Character",
+:         "quilt.csharp.helper.family": "Boolean",
+:         "quilt.csharp.helper.family": "Object",
+:         "quilt.csharp.helper.family": "String",
+:         "quilt.csharp.helper.family": "Number",
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/0ytkdh4s(v%3Dvs.110).aspx][Commonly Used Collection Types]]
+
+**** Create an inheritance graph of the main collections
+
+System.Collections:
+
+: IEnumerable
+: ICollection: IEnumerable
+: IList : ICollection, IEnumerable
+: ArrayList : IList, ICollection, IEnumerable
+: IDictionary : ICollection
+: Hashtable : IDictionary, ICollection, IEnumerable
+: DictionaryEntry
+: HybridDictionary : IDictionary, ICollection, IEnumerable (System.Collections.Specialized)
+: IOrderedDictionary : IDictionary, ICollection, IEnumerable (System.Collections.Specialized)
+: NameValueCollection NameObjectCollectionBase (System.Collections.Specialized)
+:    ICollection, IEnumerable
+: BitArray : ICollection, IEnumerable
+: Queue : ICollection, IEnumerable
+: SortedList : IDictionary, ICollection, IEnumerable
+: Stack : ICollection, IEnumerable
+
+https://msdn.microsoft.com/en-us/library/system.collections.specialized.namevaluecollection(v=vs.110).aspx
+
+System.Collections.ObjectModel:
+
+: Collection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                 IEnumerable, IList, ICollection, IReadOnlyList<T>,
+:                 IReadOnlyCollection<T>
+: KeyedCollection<TKey, TItem> : Collection<TItem>
+
+System.Collections.Generic:
+
+: KeyValuePair<TKey, TValue> (structure)
+: IEnumerable<out T> : IEnumerable
+: ICollection<T> : IEnumerable<T>, IEnumerable
+: IList<T> : ICollection<T>, IEnumerable<T>, IEnumerable
+: IReadOnlyCollection<out T> : IEnumerable<T>, IEnumerable
+: IReadOnlyList<out T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+: IReadOnlyDictionary<K, V>: IReadOnlyDictionary<K, V> :
+:                            IReadOnlyCollection<KeyValuePair<K, V>>,
+:                            IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: ISet<T> : ICollection<T>, IEnumerable<T>, IEnumerable
+: HashSet<T> : ICollection<T>, IEnumerable<T>, IEnumerable,  ISet<T>,
+:              IReadOnlyCollection<T>
+: List<T> : IList<T>, ICollection<T>, IEnumerable<T>,  IEnumerable, IList,
+:           ICollection, IReadOnlyList<T>, IReadOnlyCollection<T>
+:           -> IList<T>, IReadOnlyList<T>
+: Queue<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
+: HashSet<T> : ICollection<T>, IEnumerable<T>, IEnumerable, ISet<T>,
+:              IReadOnlyCollection<T>
+: IDictionary<K, V> : ICollection<KeyValuePair<K, V>>,
+:                     IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: Dictionary<K, V> : IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                    IEnumerable<KeyValuePair<K, V>>, IEnumerable, IDictionary,
+:                    ICollection, IReadOnlyDictionary<K, V>,
+:                    IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedDictionary<K, V> : IDictionary<K, V>,
+:                          ICollection<KeyValuePair<K, V>>,
+:                          IEnumerable<KeyValuePair<K, V>>,
+:                          IEnumerable, IDictionary, ICollection,
+:                          IReadOnlyDictionary<K, V>,
+:                          IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedList<K, V> : IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                    IEnumerable<KeyValuePair<K, V>>, IEnumerable, IDictionary,
+:                    ICollection, IReadOnlyDictionary<K, V>,
+:                    IReadOnlyCollection<KeyValuePair<K, V>>
+: SortedSet<T> : ISet<T>, ICollection<T>, IEnumerable<T>, IEnumerable,
+:                ICollection, IReadOnlyCollection<T>
+: KeyedByTypeCollection<TItem> : KeyedCollection<Type, TItem>
+: LinkedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, ICollection,
+:                 IReadOnlyCollection<T>
+: Stack<T> : IEnumerable<T>, IEnumerable, ICollection, IReadOnlyCollection<T>
+: SynchronizedCollection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                             IEnumerable, IList, ICollection
+: SynchronizedKeyedCollection<K, T> : SynchronizedCollection<T>
+: SynchronizedReadOnlyCollection<T> : IList<T>, ICollection<T>, IEnumerable<T>,
+:                                     IEnumerable, IList, ICollection
+
+System.Collections.Immutable:
+
+: IImmutableList<T> : IReadOnlyList<T>,  IReadOnlyCollection<T>, IEnumerable<T>,
+:                     IEnumerable
+: ImmutableList<T>: IImmutableList<T>,  IList<T>, ICollection<T>, IList,
+:                   ICollection,, IReadOnlyList<T>,  IReadOnlyCollection<T>,
+:                   IEnumerable<T>, IEnumerable
+: IImmutableQueue<T> : IEnumerable<T>, IEnumerable
+: ImmutableQueue<T> : IImmutableQueue<T>, IEnumerable<T>,  IEnumerable
+: IImmutableStack<T> : IEnumerable<T>, IEnumerable
+: ImmutableStack<T> : IImmutableStack<T>, IEnumerable<T>,  IEnumerable
+: IImmutableDictionary<K, V> : IReadOnlyDictionary<K, V>,
+:                              IReadOnlyCollection<KeyValuePair<K, V>>,
+:                              IEnumerable<KeyValuePair<K, V>>, IEnumerable
+: ImmutableDictionary<K, V> : IImmutableDictionary<K, V>,
+:                             IReadOnlyDictionary<K, V>,
+:                             IReadOnlyCollection<KeyValuePair<K, V>>,
+:                             IDictionary<K, V>, ICollection<KeyValuePair<K, V>>,
+:                             IEnumerable<KeyValuePair<K, V>>, IDictionary
+:                             ICollection, IEnumerable
+: ImmutableSortedDictionary<K, V> : IImmutableDictionary<K, V>,
+:                                   IReadOnlyDictionary<K, V>,
+:                                   IReadOnlyCollection<KeyValuePair<K, V>>,
+:                                   IDictionary<K, V>,
+:                                   ICollection<KeyValuePair<K, V>>,
+:                                   IEnumerable<KeyValuePair<K, V>>,
+:                                   IDictionary, ICollection, IEnumerable
+: IImmutableSet<T> : IReadOnlyCollection<T>, IEnumerable<T>, IEnumerable
+: ImmutableSortedSet<T> : IImmutableSet<T>,  IReadOnlyList<T>,
+:                         IReadOnlyCollection<T>, IList<T>, ISet<T>,
+:                         ICollection<T>, IEnumerable<T>, IList, ICollection,
+:                          IEnumerable
+: ImmutableHashSet<T> : IImmutableSet<T>, IReadOnlyCollection<T>,
+:                       ISet<T>, ICollection<T>, IEnumerable<T>, ICollection,
+:                       IEnumerable
+
+System.Collections.Concurrent
+
+*** COMPLETED Add support for object based container types in C#      :story:
+    CLOSED: [2017-01-07 Sat 13:44]
+    CLOCK: [2017-01-07 Sat 13:30]--[2017-01-07 Sat 13:40] =>  0:10
+    CLOCK: [2017-01-07 Sat 13:24]--[2017-01-07 Sat 13:29] =>  0:05
+    CLOCK: [2017-01-07 Sat 13:12]--[2017-01-07 Sat 13:23] =>  0:11
+    CLOCK: [2017-01-07 Sat 12:58]--[2017-01-07 Sat 13:11] =>  0:13
+    CLOCK: [2017-01-07 Sat 12:30]--[2017-01-07 Sat 12:57] =>  0:27
+    CLOCK: [2017-01-07 Sat 11:02]--[2017-01-07 Sat 11:57] =>  0:55
+    CLOCK: [2017-01-06 Fri 22:01]--[2017-01-06 Fri 23:27] =>  1:26
+    CLOCK: [2017-01-06 Fri 17:52]--[2017-01-06 Fri 18:05] =>  0:13
+    CLOCK: [2017-01-06 Fri 17:37]--[2017-01-06 Fri 17:51] =>  0:14
+    CLOCK: [2017-01-06 Fri 17:32]--[2017-01-06 Fri 17:36] =>  0:04
+    CLOCK: [2017-01-06 Fri 16:40]--[2017-01-06 Fri 17:32] =>  0:52
+    CLOCK: [2017-01-05 Thu 14:01]--[2017-01-05 Thu 14:53] =>  0:52
+    CLOCK: [2017-01-05 Thu 12:26]--[2017-01-05 Thu 12:30] =>  0:04
+    CLOCK: [2017-01-05 Thu 12:23]--[2017-01-05 Thu 12:25] =>  0:02
+
+Add all the main object based containers and perform all the required
+changes to the framework in order to support them. Add also the
+interfaces.
+
+: IEnumerable
+: ICollection
+: IList
+: IDictionary
+: ArrayList
+: Queue
+: Stack
+: Hashtable
+: SortedList
+
+*Skipped collections and types*
+
+- =IOrderedDictionary=: no implementations in framework. This means
+  generators will not work.
+- =DictionaryEntry=: no use case.
+
+*** COMPLETED Understand the behaviour of helpers and assistants      :story:
+    CLOSED: [2017-01-08 Sun 10:24]
+    CLOCK: [2017-01-08 Sun 09:49]--[2017-01-08 Sun 10:24] =>  0:35
+    CLOCK: [2017-01-08 Sun 09:02]--[2017-01-08 Sun 09:40] =>  0:38
+
+Notes:
+
+- the difference in implementation between C++ and C# is that we
+  always call the helpers in C++, and the decision on whether to call
+  another helper or to use the class generator is made within the
+  helper. Helpers already contain all the information required to make
+  this decision (helper descriptor etc). In C# we are trying to decide
+  whether to call the assistant, or the class sequence generator or
+  the helper.
+- in types we are using helpers via the aspect properties: if a type
+  is floating point, we call the helper. Separately, we use the usual
+  helper binding mechanism to generate the helper. For assistants we
+  have taken a different approach: if the type requires an assistant,
+  via the assistant properties, we call the assistant across the board
+  on all facets which have assistants (test data and io). This works
+  so far because we do not have assistants in types, so any clashes
+  between is floating point and requires assistant are not causing
+  issues.
+- seems like a clear pattern is emerging. Use cases:
+  - template itself is sufficient to handle the case - e.g. baseline
+    case for most types;
+  - type dependent behaviour but still handled within the template -
+    i.e. we need some switch, but the code is self-contained at one
+    point.
+  - type dependent behaviour that requires calling "external" code -
+    i.e. the assistant. The calling code is "manually" generated. C#
+    only at present.
+  - type dependent behaviour that requires generating additional
+    code - i.e. helpers. The calling code is "automatically" generated
+    based on the types.
+- all of the above is associated with a property.
+- in addition to this, we then have the helper properties, which are
+  associated with an element. These are basically the other side of
+  use case four: the automatically generated code used by the calling
+  code. We may have n instances of calling code, but only one helper
+  (say if we have n properties of =std::vector<std::string>=).
+- in c++ we go a step further and add configuration of the helper
+  itself: streaming properties, requires hashing helper and so forth.
+- why do we make a distinction between helpers/assistants and say
+  =requires_manual_default_constructor=? Mainly because these are at
+  the element level? In addition, can we make these common across all
+  languages?
+- note that the behaviour of helpers is "homogeneous": we either do
+  not need helpers or if we do, all helpers provide the same
+  "functionality" but for different type parameters. E.g. it is never
+  the case (up to now) that we have one type that needs two different
+  helpers for two distinct purposes. This may be a consequence of
+  having facets.
+- note also that we cannot simply have a string with a method name to
+  call (which could either be the assistant, the helper or
+  nothing). This is because the function prototype is not always the
+  same. But we could possibly enforce this though, at least given the
+  current use cases.
+- the assistant is mapped to a type rather than an attribute. We just
+  check to see if the attribute's type is in the assistant properties
+  map.
+
+Conclusions:
+
+- some future taxonomy work is required to clean up these
+  concepts. This can be done as we move code from the kernels into
+  quilt.
+- add the concept of "auxiliary function". This is a string that is
+  set to either nothing, the helper invocation or the assistant
+  invocation. There is a map of attribute id to "auxiliary
+  function". Whenever we are processing an attribute we request its
+  auxiliary function first.
+
+*** CANCELLED Add support for generic parents in yarn                 :story:
+    CLOSED: [2017-01-08 Sun 10:24]
+    CLOCK: [2017-01-07 Sat 15:01]--[2017-01-07 Sat 15:36] =>  0:35
+
+*Rationale*: its not clear this is required at present. If so we can
+always revisit. This story should be tidied up and moved to product
+backlog.
+
+At present in yarn a parent can only be a name. This means that if we
+have a parent with type parameters, we cannot capture the value of the
+type parameter in the inheritance relationship. For example, say the
+parent is =std::vector<my_type>=. This is of course not a good idea as
+STL containers were not designed for inheritance but one can imagine
+the exact same approach with user types (were dogen to support the
+generation of generic types). Yarn would see only =std::vector=.
+
+We should be able to "trivially" extend yarn to cope with this though,
+by making parents and original parents name trees.
+
+Actually it is not entirely clear we need to do this. The core problem
+we are trying to solve is: if the user creates an =IList<T>=, we just
+need to iterate through the leaves of =IList= which have the same
+number of type parameters. So in this case =Dictionary<K, V>= would
+not be considered.
+
+We should attempt to implement generic collections with the existing
+yarn infrastructure first and see where/if it breaks.
+
+*** COMPLETED Fix assorted windows warnings                           :story:
+    CLOSED: [2017-01-10 Tue 16:30]
+    CLOCK: [2017-01-10 Tue 16:11]--[2017-01-10 Tue 16:30] =>  0:19
+
+There are a number of easy-to-fix windows warnings which we should get
+out of the way.
+
+*** COMPLETED Build dogen on windows locally                          :story:
+    CLOSED: [2017-01-10 Tue 16:30]
+    CLOCK: [2017-01-10 Tue 09:27]--[2017-01-10 Tue 12:00] =>  2:33
+    CLOCK: [2017-01-09 Mon 14:01]--[2017-01-09 Mon 19:00] =>  4:59
+
+At present we are building on AppVeyor and that works well
+enough. However, in order to fix the errors we are getting in AppVeyor
+we need to build locally on windows. This may not be quite so trivial
+due to proxy, etc.
+
+*** COMPLETED Fix borked windows build                                :story:
+    CLOSED: [2017-01-10 Tue 21:34]
+    CLOCK: [2017-01-11 Wed 08:52]--[2017-01-11 Wed 10:07] =>  1:15
+    CLOCK: [2017-01-10 Tue 20:55]--[2017-01-10 Tue 21:34] =>  0:39
+
+It seems that conan does not support static runtimes for boost or
+libxml. We need to use our build of boost instead.
+
+*** COMPLETED Windows build debug failures                             :epic:
+    CLOSED: [2017-01-10 Tue 21:35]
+
+*Rationale*: the changes around runtimes should fix this problem.
+
+The windows debug build fails to link with the following errors:
+
+: C:\projects\dogen\build\output\projects\config\tests\config.tests.vcxproj" (default target) (14) ->
+: (Link target) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\config\tests\config.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\dia\tests\dia.tests.vcxproj" (default target) (17) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\dia\tests\dia.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\dynamic\tests\dynamic.tests.vcxproj" (default target) (21) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\dynamic\tests\dynamic.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\formatters\tests\formatters.tests.vcxproj" (default target) (29) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\formatters\tests\formatters.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\knit\tests\knit.tests.vcxproj" (default target) (36) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\knit\tests\knit.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\knitter\src\knitter.vcxproj" (default target) (37) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\knitter\src\knitter.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\knitter\tests\knitter.tests.vcxproj" (default target) (38) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\knitter\tests\knitter.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\quilt.cpp\tests\quilt.cpp.tests.vcxproj" (default target) (39) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\quilt.cpp\tests\quilt.cpp.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\quilt\tests\quilt.tests.vcxproj" (default target) (40) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(default_attribute_names.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\quilt\tests\quilt.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\test_models\seam\tests\seam.tests.vcxproj" (default target) (41) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(core.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\test_models\seam\tests\seam.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\stitch\tests\stitch.tests.vcxproj" (default target) (46) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\stitch\tests\stitch.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\stitcher\src\stitcher.vcxproj" (default target) (47) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\stitcher\src\stitcher.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\stitcher\tests\stitcher.tests.vcxproj" (default target) (48) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\stitcher\tests\stitcher.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\test_models\test_model_sanitizer\tests\test_model_sanitizer.tests.vcxproj" (default target) (49) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\test_models\test_model_sanitizer\tests\test_model_sanitizer.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\utility\tests\utility.tests.vcxproj" (default target) (53) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\utility\tests\utility.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\yarn.dia\tests\yarn.dia.tests.vcxproj" (default target) (54) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\yarn.dia\tests\yarn.dia.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\yarn.json\tests\yarn.json.tests.vcxproj" (default target) (55) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\yarn.json\tests\yarn.json.tests.vcxproj]
+: "C:\projects\dogen\build\output\ALL_BUILD.vcxproj" (default target) (1) ->
+: "C:\projects\dogen\build\output\projects\yarn\tests\yarn.tests.vcxproj" (default target) (56) ->
+:   libboost_log-vc140-mt-gd-1_60.lib(unhandled_exception_count.obj) : fatal error LNK1112: module machine type 'X86' conflicts with target machine type 'x64' [C:\projects\dogen\build\output\projects\yarn\tests\yarn.tests.vcxproj]
+:     910 Warning(s)
+:     18 Error(s)
+
+This appears to be a mixing of 32-bit and 64-bit settings somewhere in
+the boost tests, according to SO:
+
+[[http://stackoverflow.com/questions/3563756/fatal-error-lnk1112-module-machine-type-x64-conflicts-with-target-machine-typ][fatal error LNK1112: module machine type 'x64' conflicts with target
+machine type 'X86']]
+
+Debug build is back down to =knit= target again.
+
+*** COMPLETED Generate windows packages with WIX                      :story:
+    CLOSED: [2017-01-11 Wed 16:22]
+    CLOCK: [2017-01-11 Wed 10:08]--[2017-01-11 Wed 10:52] =>  0:44
+    CLOCK: [2017-01-10 Tue 14:00]--[2017-01-10 Tue 15:09] =>  1:09
+    CLOCK: [2017-01-10 Tue 12:00]--[2017-01-10 Tue 13:35] =>  1:35
+
+It seems NSIS is no longer considered the right way of building
+windows installers. One should instead use WIX. Add support for WIX.
+
+*** COMPLETED Add validation around instatitation of abstract classes :story:
+    CLOSED: [2017-01-11 Wed 21:09]
+    CLOCK: [2017-01-11 Wed 22:48]--[2017-01-11 Wed 23:25] =>  0:37
+    CLOCK: [2017-01-11 Wed 21:10]--[2017-01-11 Wed 21:16] =>  0:06
+    CLOCK: [2017-01-11 Wed 20:25]--[2017-01-11 Wed 21:09] =>  0:44
+    CLOCK: [2017-01-11 Wed 19:53]--[2017-01-11 Wed 20:24] =>  0:31
+    CLOCK: [2017-01-11 Wed 19:25]--[2017-01-11 Wed 19:52] =>  0:27
+
+At present dogen allows one to create variables of an abstract
+class. We should have a validation rule to stop this.
+
+Rule:
+
+- Issue error when a property is a value of an abstract class: yarn
+  should fail to merge if the user attempts to create a property of a
+  base class. It should allow pointers to the base class though (raw,
+  shared pointers, boost optional etc).
+
+*** COMPLETED Add validation to ensure enumerators do not have types  :story:
+    CLOSED: [2017-01-11 Wed 22:48]
+    CLOCK: [2017-01-11 Wed 22:26]--[2017-01-11 Wed 22:47] =>  0:21
+
+In =upsilon= we set an object's type to enumeration by mistake. It
+resulted in an enumeration. The error should have been picked up by
+noticing the enumerators had a type. Add a validation error for this.
+
+*** COMPLETED Add appveyor support for bintray                        :story:
+    CLOSED: [2017-01-12 Thu 11:38]
+    CLOCK: [2017-01-12 Thu 11:18]--[2017-01-12 Thu 11:38] =>  0:20
+    CLOCK: [2017-01-12 Thu 11:02]--[2017-01-12 Thu 11:17] =>  0:15
+    CLOCK: [2017-01-12 Thu 09:10]--[2017-01-12 Thu 09:43] =>  0:33
+    CLOCK: [2017-01-11 Wed 22:10]--[2017-01-11 Wed 22:25] =>  0:15
+    CLOCK: [2017-01-10 Tue 15:10]--[2017-01-10 Tue 16:10] =>  1:00
+
+It seems appveyor also supports bintray:
+
+[[https://www.appveyor.com/docs/deployment/bintray/][Deploying to Bintray]]
+
+We need to change our targets to generate the MSI, and then try to
+deploy it over to bintray.
+
+Sample:
+
+: deploy:
+: - provider: BinTray
+:   username: johnsmith
+:   api_key:
+:     secure: AABBCC+DDD==
+:   subject: johnsmith
+:   repo: myrepo
+:   package: mypackage
+:   version: version
+:   publish: true
+:   override: true
+:   explode: true
+
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true
+
+Errors:
+
+: Deploying using BinTray provider
+: Uploading "dogen-0.95.0-Windows-AMD64.msi" to BinTray as domaindrivenconsulting/Dogen/Dogen/0.94.0/dogen-0.95.0-Windows-AMD64.msi...Error uploading artifact to BinTray (401 status): This resource requires authentication
+
+*** COMPLETED Downgrade Dia to last stable release                    :story:
+    CLOSED: [2017-01-13 Fri 09:50]
+
+It seems the version of Dia released with debian at present does not
+work very well. We need to downgrade it.
+
+Notes:
+
+: sudo apt-get install dia-common=0.97.3-1 dia-libs=0.97.3-1 dia=0.97.3-1
+: apt-get -o Acquire::Check-Valid-Until=false update
+: deb http://snapshot.debian.org/archive/debian/20140913T220820Z testing main
+: https://bugs.debian.org/cgi-bin/pkgreport.cgi?package=dia
+: http://snapshot.debian.org/archive/debian/20140913T220820Z/
+: http://mindref.blogspot.co.uk/2012/02/apt-revert-upgrade.html
+: https://packages.qa.debian.org/d/dia/news/20140913T163911Z.html
+: https://git.gnome.org/browse/dia/refs/
+
+*** COMPLETED Add read support for upsilon models                     :story:
+    CLOSED: [2017-01-13 Fri 12:32]
+    CLOCK: [2017-01-13 Fri 14:01]--[2017-01-13 Fri 14:16] =>  0:15
+    CLOCK: [2017-01-13 Fri 12:16]--[2017-01-13 Fri 12:27] =>  0:11
+    CLOCK: [2017-01-13 Fri 12:11]--[2017-01-13 Fri 12:15] =>  0:04
+    CLOCK: [2017-01-13 Fri 10:55]--[2017-01-13 Fri 12:10] =>  1:15
+    CLOCK: [2017-01-13 Fri 10:12]--[2017-01-13 Fri 10:54] =>  0:42
+    CLOCK: [2017-01-13 Fri 09:01]--[2017-01-13 Fri 10:11] =>  1:10
+    CLOCK: [2017-01-12 Thu 22:50]--[2017-01-12 Thu 23:28] =>  0:38
+    CLOCK: [2017-01-12 Thu 22:00]--[2017-01-12 Thu 22:49] =>  0:49
+    CLOCK: [2017-01-12 Thu 21:16]--[2017-01-12 Thu 21:59] =>  0:43
+    CLOCK: [2017-01-12 Thu 20:43]--[2017-01-12 Thu 21:15] =>  0:32
+    CLOCK: [2017-01-12 Thu 20:20]--[2017-01-12 Thu 20:42] =>  0:22
+    CLOCK: [2017-01-12 Thu 14:49]--[2017-01-12 Thu 15:51] =>  1:02
+    CLOCK: [2017-01-12 Thu 14:44]--[2017-01-12 Thu 14:48] =>  0:04
+    CLOCK: [2017-01-12 Thu 14:33]--[2017-01-12 Thu 14:43] =>  0:10
+    CLOCK: [2017-01-12 Thu 14:30]--[2017-01-12 Thu 14:32] =>  0:02
+    CLOCK: [2017-01-12 Thu 14:02]--[2017-01-12 Thu 14:29] =>  0:27
+    CLOCK: [2017-01-12 Thu 12:29]--[2017-01-12 Thu 12:49] =>  0:20
+    CLOCK: [2017-01-12 Thu 11:39]--[2017-01-12 Thu 12:28] =>  0:49
+    CLOCK: [2017-01-12 Thu 10:22]--[2017-01-12 Thu 11:01] =>  0:39
+    CLOCK: [2017-01-12 Thu 10:17]--[2017-01-12 Thu 10:21] =>  0:04
+    CLOCK: [2017-01-12 Thu 10:05]--[2017-01-12 Thu 10:16] =>  0:11
+    CLOCK: [2017-01-12 Thu 09:44]--[2017-01-12 Thu 10:04] =>  0:20
+    CLOCK: [2017-01-11 Wed 21:28]--[2017-01-11 Wed 21:46] =>  0:18
+    CLOCK: [2017-01-11 Wed 21:17]--[2017-01-11 Wed 21:28] =>  0:11
+    CLOCK: [2017-01-11 Wed 18:16]--[2017-01-11 Wed 18:32] =>  0:16
+    CLOCK: [2017-01-11 Wed 17:35]--[2017-01-11 Wed 18:15] =>  0:40
+    CLOCK: [2017-01-11 Wed 16:05]--[2017-01-11 Wed 17:17] =>  1:12
+
+A customer has models in a legacy format, which need to be imported
+into Dogen. The easiest thing to do is to create a simple frontend
+which imports these models into yarn. We will subsequently have to
+map these types into native types, depending on the language - or
+probably into LAM types.
+
+This task only covers the reading of the upsilon models.
+
+*** COMPLETED Use official boost with windows                         :story:
+    CLOSED: [2017-01-13 Fri 14:20]
+
+*Rationale*: this was due to the problems of static vs dynamic
+runtime. We are now using the dropbox build of boost, the official
+build should work just as well.
+
+We tried replacing the conan boost with the official boost but it
+resulted in additional errors:
+
+: libboost_system-vc140-mt-sgd-1_62.lib(error_code.obj) : error LNK2038:
+:   mismatch detected for 'RuntimeLibrary': value 'MTd_StaticDebug' doesn't
+:   match value 'MDd_DynamicDebug' in equality_tests.obj
+:   [C:\projects\dogen\build\output\msvc\Debug\projects\dia\tests\dia.tests.vcxproj]
+: libboost_serialization-vc140-mt-sgd-1_62.lib(basic_oarchive.obj) : error LNK2038:
+:   mismatch detected for 'RuntimeLibrary': value 'MTd_StaticDebug' doesn't match
+:   value 'MDd_DynamicDebug' in equality_tests.obj
+:   [C:\projects\dogen\build\output\msvc\Debug\projects\dia\tests\dia.tests.vcxproj]
+: libboost_serialization-vc140-mt-sgd-1_62.lib(extended_type_info.obj) : error LNK2038:
+:   mismatch detected for 'RuntimeLibrary': value 'MTd_StaticDebug' doesn't match
+:   value 'MDd_DynamicDebug' in equality_tests.obj
+:   [C:\projects\dogen\build\output\msvc\Debug\projects\dia\tests\dia.tests.vcxproj]
+: ...
+
+- see [[https://ci.appveyor.com/project/mcraveiro/dogen/build/2.2.485/job/6rseroy5hk2akvxe][this build]] for details.
+- boost binaries sourced [[https://sourceforge.net/projects/boost/files/boost-binaries/1.62.0/][from here]], boost_1_62_0-msvc-14.0-64.exe
+- binraries still available in dropbox, code to use them still in
+  appveyor.install.windows.ps1.
+
+*** POSTPONED Create an upsilon yarn frontend                         :story:
+    CLOSED: [2017-01-16 Mon 09:27]
+    CLOCK: [2017-01-15 Sun 14:51]--[2017-01-15 Sun 15:58] =>  1:07
+    CLOCK: [2017-01-15 Sun 12:49]--[2017-01-15 Sun 13:44] =>  0:55
+    CLOCK: [2017-01-15 Sun 12:02]--[2017-01-15 Sun 12:48] =>  0:46
+    CLOCK: [2017-01-15 Sun 11:36]--[2017-01-15 Sun 12:01] =>  0:5
+    CLOCK: [2017-01-15 Sun 10:23]--[2017-01-15 Sun 11:35] =>  1:12
+    CLOCK: [2017-01-14 Sat 23:40]--[2017-01-15 Sun 00:12] =>  0:32
+    CLOCK: [2017-01-14 Sat 21:15]--[2017-01-14 Sat 21:36] =>  0:21
+    CLOCK: [2017-01-14 Sat 17:43]--[2017-01-14 Sat 18:19] =>  0:36
+    CLOCK: [2017-01-14 Sat 17:31]--[2017-01-14 Sat 17:42] =>  0:11
+    CLOCK: [2017-01-14 Sat 17:09]--[2017-01-14 Sat 17:30] =>  0:21
+    CLOCK: [2017-01-14 Sat 16:54]--[2017-01-14 Sat 17:08] =>  0:14
+    CLOCK: [2017-01-14 Sat 16:45]--[2017-01-14 Sat 16:53] =>  0:08
+    CLOCK: [2017-01-14 Sat 15:35]--[2017-01-14 Sat 16:44] =>  1:09
+    CLOCK: [2017-01-13 Fri 18:19]--[2017-01-13 Fri 18:32] =>  0:13
+    CLOCK: [2017-01-13 Fri 17:41]--[2017-01-13 Fri 18:18] =>  0:37
+    CLOCK: [2017-01-13 Fri 14:17]--[2017-01-13 Fri 15:45] =>  1:28
+    CLOCK: [2017-01-13 Fri 12:28]--[2017-01-13 Fri 12:45] =>  0:17
+
+Now we can read upsilon models, we need to transform them into yarn
+models. This fairly straightforward as a meta-model
+transformation. There are however a few corner cases:
+
+- we need to inject model value into the yarn model
+- we need to inject a =Collection= type into the yarn model, which has
+  one type parameter.
+- we need to hard-code the model to a given language. At present we do
+  not have proper multi-language workflows. When a model comes out of
+  the frontend it has to either be C++, C# or LAM. To make life easy
+  we can just set it as either C++ or C# for now. Ideally we want to
+  retrieve a LAM model, mappable to C++ and C#. Actually that's not
+  quite right as we do not have the LAM types in the frontend. For now
+  lets just hack it and retrieve it either as C++ or C#. But perhaps
+  the right solution is to create a "upsilon language" which is
+  mappable to LAM/C++/C#. In fact we should just map against LAM, and
+  deduce the mappings for all other languages from there. The "upsilon
+  language" is not generatable, so it must be mapped. Which raises an
+  interesting point: there are two uses of "language": the language in
+  which the model is written and the language in which one wants to
+  output it. Normally they are the same. However, if I supply a LAM
+  model I may want to choose a language. For Dogen/JSON frontends this
+  is simply a meta-data extension. For upsilon we need to piggy-back
+  on the existing language infrastructure.
+- registration with "composite" extensions is not working; boost path
+  only returns the last extension - e.g. =.xml= instead of
+  =.Configuration.xml=.
+- We've created an "extension" method that returns all extensions for
+  a given file name. It wasn't very useful in the end. If needed in
+  the future its under =f83e9152e=.
+
+Problems:
+
+- we assume all languaes are "outputtable". Upsilon and LAM are
+  not. Language is not even a good name for these things either.
+- the pipeline assumes that we will generate only one final model; in
+  the mapping world this is not the case. A user may wish to map a
+  given model into n "outputtable" languages. In this case we need a
+  very different workflow: read each model natively, map them to the
+  outputtable language and then perform the workflow for the
+  outputtable language, possibly loading a different set of system
+  models.
+- we have no way of telling dogen what the output language are. This
+  can be done in the diagram itself for Dia and JSON but not for
+  upsilon. We could add command line arguments for this.
+- we have no way of describing mappings. We can use meta-data for
+  Dia/JSON but not for upsilon.
+- we need an end-to-end test for the upsilon model that includes the
+  translation to c++/c# and code generation.
+
+Upsilon as a language:
+
+- originally we envisioned that upsilon would exist all the way into
+  the meta-model as an intermediate model; we'd then go through
+  mapping to convert it into an outputtable language. However, we have
+  one slight problem: upsilon allows the user to create "string
+  typedefs". This means that many primitives are user primitives (say
+  a =SequenceId= could be an =int= in disguise). With the mapping
+  approach, we need to create a large map, model specific, with all of
+  these primitives. This could be done with the help of scripting
+  (primitives have an intrinsic type that can be mapped to a language
+  type). Alternatively, we could hard-code the mapping such that
+  =yarn.upsilon= would generate a model in an outputtable
+  language. This is easier but not reusable for LAM.
+- actually we could even use tailor to generate the mapping files,
+  given that the upsilon information already has all of the required
+  information.
+
+Tasks:
+
+- add new "upsilon" language which is not generatable; entire yarn
+  workflow should work for upsilon, but then quilt just does nothing.
+- add tailor support so that we can convert upsilon to JSON.
+
+*** POSTPONED Add auxiliary function properties to c#                 :story:
+    CLOSED: [2017-01-16 Mon 09:27]
+    CLOCK: [2017-01-08 Sun 11:27]--[2017-01-08 Sun 11:40] =>  0:13
+    CLOCK: [2017-01-08 Sun 10:56]--[2017-01-08 Sun 11:26] =>  0:30
+    CLOCK: [2017-01-08 Sun 10:50]--[2017-01-08 Sun 10:55] =>  0:05
+    CLOCK: [2017-01-08 Sun 10:37]--[2017-01-08 Sun 10:49] =>  0:12
+    CLOCK: [2017-01-08 Sun 10:28]--[2017-01-08 Sun 10:37] =>  0:09
+    CLOCK: [2017-01-08 Sun 10:25]--[2017-01-08 Sun 10:27] =>  0:02
+
+We need to associate a function with an attribute and a
+formatter. This could be the helper or the assistant (or nothing).
+
+Actually this is not quite so straightforward. In =io= (c#) we have:
+
+: assistant.Add("ByteProperty", value.ByteProperty, true/*withSeparator*/);
+
+This is a bit of a problem because we now need to different
+invocations, one for helper another for the assistant, which differ on
+the function prototype. For the helper we need something like:
+
+: Add(assistant, "ByteProperty", value.ByteProperty, true/*withSeparator*/);
+
+So a string is no longer sufficient. Maybe we could have a struct with
+auxiliary function properties:
+
+- auxiliary function types = enum with { assistant, helper }
+- auxiliary function name = string
+
+So we can have a map of attribute id to map of formatter id to
+auxiliary function properties.
+
+Actually we should also create "attribute properties" as a top-level
+container so that in the future we can latch on other attribute level
+properties.
+
+*** POSTPONED Add internal object dumper resolution                   :story:
+    CLOSED: [2017-01-16 Mon 09:27]
+    CLOCK: [2017-01-06 Fri 11:10]--[2017-01-06 Fri 12:55] =>  1:45
+    CLOCK: [2017-01-05 Thu 17:38]--[2017-01-05 Thu 18:01] =>  0:23
+    CLOCK: [2017-01-05 Thu 14:54]--[2017-01-05 Thu 17:37] =>  2:43
+
+We should try to resolve an object to a local dumper, if one exists;
+for all model types and primitives. Add a registrar for local dumpers.
+
+: using System;
+: using System.Collections.Generic;
+:
+: namespace Dogen.TestModels.CSharpModel
+: {
+:     static public class DynamicDumperRegistrar
+:     {
+:         public interface IDynamicDumper
+:         {
+:             void Dump(AssistantDumper assistant, object value);
+:         }
+:
+:         static private IDictionary<Type, IDynamicDumper> _dumpers = new Dictionary<Type, IDynamicDumper>();
+:
+:         static void RegisterDumper(Type type, IDynamicDumper dumper)
+:         {
+:         }
+:     }
+: }
+
+*** POSTPONED Add support for generic container types to C#           :story:
+    CLOSED: [2017-01-16 Mon 09:27]
+    CLOCK: [2017-01-07 Sat 20:43]--[2017-01-07 Sat 21:08] =>  0:25
+    CLOCK: [2017-01-07 Sat 18:05]--[2017-01-07 Sat 18:56] =>  0:51
+
+We should add all major container types and tests for them.
+
+: IEnumerable<T>
+: ICollection<T>
+: IList<T>
+: IDictionary<K, V>
+: List<T>
+: ConcurrentQueue<T>, ConcurrentStack<T>, LinkedList<T>
+: Dictionary<TKey, TValue>
+: SortedList<TKey, TValue>
+: ConcurrentDictionary<TKey, TValue>
+: KeyedCollection<TKey, TItem>
+
+Notes:
+
+- we need a way to determine if we are using a helper, the assistant
+  or a sequence generator directly.
+
+** Deprecated

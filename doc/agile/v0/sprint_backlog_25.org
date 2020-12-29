@@ -1,0 +1,102 @@
+#+title: Sprint Backlog 25
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 25.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2013-04-04 Thu 00:00]
+
+| Headline                                                      | Time   |      |      |
+|---------------------------------------------------------------+--------+------+------|
+| *Total time*                                                  | *2:01* |      |      |
+|---------------------------------------------------------------+--------+------+------|
+| Development Stories Implemented                               |        | 2:01 |      |
+| IMPLEMENTATION Clean up dia to SML transformer                |        |      | 1:25 |
+| Use explicit casting for versioned to unversioned conversions |        |      | 0:36 |
+#+end:
+
+*** COMPLETED Clean up dia to SML transformer                         :story:
+    CLOSED: [2013-04-15 Mon 23:12]
+    CLOCK: [2013-04-03 Wed 22:34]--[2013-04-03 Wed 22:54] =>  0:20
+
+**** IMPLEMENTATION Create a new graph class
+     CLOCK: [2013-04-03 Wed 22:54]--[2013-04-03 Wed 23:59] =>  1:05
+
+*** COMPLETED Add commenting of namespaces                            :story:
+    CLOSED: [2013-04-18 Thu 23:35]
+
+- if one creates a "comment box" with a well-known dogen
+  implementation specific parameter, that box is used as a comment for
+  the namespace.
+- if the comment box is inside of a package, it will be used for the
+  comments in the package.
+- comments are placed in a file with the name of the namespace,
+  e.g. =model_name.hpp=.
+- file does not get created if there are no comments.
+
+**** IMPLEMENTATION Add support for parsing UML notes
+
+*** COMPLETED Add support for multiple stereotypes to Dia             :story:
+    CLOSED: [2013-04-22 Mon 22:28]
+
+At present we can only have a single stereotype. We need to return a
+container of stereotypes.
+
+**** COMPLETED Add csv parsing support to identifier parser
+     CLOSED: [2013-04-19 Fri 22:19]
+**** COMPLETED Update transformer to return multiple stereotypes
+     CLOSED: [2013-04-20 Sat 02:24]
+     CLOCK: [2013-04-19 Fri 22:20]--[2013-04-20 Sat 02:24] =>  4:04
+
+**** COMPLETED Add stereotype validation
+     CLOSED: [2013-04-22 Mon 22:28]
+
+We need a validator class that takes a list of stereotypes and ensures
+that they can be combined.
+
+*** COMPLETED Optional io formatter has no space between stream and inserter :story:
+    CLOSED: [2013-04-22 Mon 23:06]
+
+Minor typo on formatter, should have used spaced inserter.
+
+*** COMPLETED Implement immutability                                  :story:
+    CLOSED: [2013-04-27 Sat 01:58]
+
+Create a stereotype that switches off the mutable members of a pod.
+
+*** COMPLETED Consider adding a fluent option                         :story:
+    CLOSED: [2013-04-27 Sat 02:48]
+
+It would be fairly trivial to allow generation of model types with
+setters that are fluent (e.g. return =this=).
+
+See: http://en.wikipedia.org/wiki/Fluent_interface
+
+This could also be a stereotype so that a model could have both fluent
+and non-fluent classes. This story is dependent on support for
+multiple stereotypes.
+
+*** COMPLETED Add new stereotype for versioning                       :story:
+    CLOSED: [2013-05-03 Fri 08:00]
+
+- versioned: add version property to class.
+
+*** COMPLETED Add visitor support                                     :story:
+    CLOSED: [2013-05-05 Sun 12:31]
+
+The base class of an inheritance hierarchy should be markable with the
+=visitable= stereotype. This would then result in the generation of
+visitor code:
+
+- a visitor class with a number of const and non-const methods that do
+  nothing by default
+- an =accept= method on the class that dispatches to the correct
+  method in visitor.
+
+** Deprecated Development Stories

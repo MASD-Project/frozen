@@ -1,0 +1,5 @@
+#+title: Scratch Pad
+#+options: date:nil toc:nil author:nil num:nil
+
+This document contains snippets of code that we want to preserve, most
+likely to avoid having to trek down git history to find it.

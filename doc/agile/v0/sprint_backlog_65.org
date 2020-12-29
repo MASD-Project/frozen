@@ -1,0 +1,862 @@
+#+title: Sprint Backlog 65
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission
+
+Implement as many formatters as possible using the new cpp
+architecture.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-05-10 Sun 23:13]
+
+| Headline                                                                   | Time    |       |      |
+|----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                               | *36:10* |       |      |
+|----------------------------------------------------------------------------+---------+-------+------|
+| Active                                                                     |         | 36:10 |      |
+| COMPLETED Sprint and product backlog grooming                              |         |       | 2:32 |
+| COMPLETED Fix borked gcc build                                             |         |       | 0:35 |
+| COMPLETED Output new world forward declarations                            |         |       | 2:36 |
+| COMPLETED Fix missing new line in enumeration forward declarations         |         |       | 0:32 |
+| COMPLETED Text of GPL V2 licence is the same as V3                         |         |       | 0:10 |
+| COMPLETED Inclusion provision needs to cater for optional case             |         |       | 0:21 |
+| COMPLETED Consider adding a ownership hierarchy method in registrar        |         |       | 0:15 |
+| COMPLETED Improve streaming of empty lines in stitch                       |         |       | 0:16 |
+| COMPLETED Implement serialization forward declarations formatter           |         |       | 0:17 |
+| COMPLETED Create a formatter helper                                        |         |       | 1:24 |
+| COMPLETED Add =is_final= in SML                                            |         |       | 0:17 |
+| COMPLETED Simplify logic around move construction                          |         |       | 0:06 |
+| COMPLETED Analysis on frontend activities that belong in SML               |         |       | 0:28 |
+| COMPLETED Add support for =disable_complete_constructor= in options copier |         |       | 1:06 |
+| COMPLETED Try making path expansion a merged model expansion               |         |       | 1:20 |
+| COMPLETED Remove merged and stand alone expansions                         |         |       | 0:13 |
+| COMPLETED Move injection to merging workflow                               |         |       | 0:29 |
+| COMPLETED Refactor SML association indexer                                 |         |       | 4:43 |
+| COMPLETED Tidy-up sml consumer interface                                   |         |       | 0:12 |
+| COMPLETED Refactor includes directive generation                           |         |       | 7:50 |
+| COMPLETED Add =static_formatter_name=                                      |         |       | 0:17 |
+| POSTPONED Improve references management                                    |         |       | 0:13 |
+| POSTPONED Assignment operator seems to pass types by value                 |         |       | 0:07 |
+| POSTPONED Implement types class header formatter using stitch              |         |       | 8:53 |
+| POSTPONED Implement options copier and remove options from context         |         |       | 0:50 |
+| POSTPONED Consider dropping the prefix inclusion in expansion              |         |       | 0:08 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-05-10 Sun 23:13]
+    CLOCK: [2015-05-03 Sun 09:14]--[2015-05-03 Sun 09:34] =>  0:20
+    CLOCK: [2015-05-01 Fri 16:02]--[2015-05-01 Fri 16:13] =>  0:11
+    CLOCK: [2015-04-28 Tue 11:15]--[2015-04-28 Tue 12:14] =>  0:59
+    CLOCK: [2015-04-27 Mon 14:15]--[2015-04-27 Mon 15:07] =>  0:52
+    CLOCK: [2015-04-27 Mon 14:05]--[2015-04-27 Mon 14:15] =>  0:10
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-05-10 Sun 23:13]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Fix borked gcc build                                    :story:
+    CLOSED: [2015-04-27 Mon 14:15]
+    CLOCK: [2015-04-27 Mon 13:00]--[2015-04-27 Mon 13:35] =>  0:35
+
+The last few builds on travis have failed. Figure out why and fix it.
+
+*** COMPLETED Output new world forward declarations                   :story:
+    CLOSED: [2015-04-27 Mon 17:01]
+    CLOCK: [2015-04-27 Mon 17:55]--[2015-04-27 Mon 18:06] =>  0:11
+    CLOCK: [2015-04-27 Mon 17:02]--[2015-04-27 Mon 17:35] =>  0:33
+    CLOCK: [2015-04-27 Mon 15:09]--[2015-04-27 Mon 17:01] =>  1:52
+
+We need to find a way to suppress class header formatter and enable
+forward declarations formatter; we want to start using new code from
+now on.
+
+We will also have to deal with all the breaks that this generates.
+
+*** COMPLETED Fix missing new line in enumeration forward declarations :story:
+    CLOSED: [2015-04-27 Mon 18:50]
+    CLOCK: [2015-04-27 Mon 18:48]--[2015-04-27 Mon 18:50] =>  0:02
+    CLOCK: [2015-04-27 Mon 18:08]--[2015-04-27 Mon 18:38] =>  0:30
+
+For now we put in a hack in the stitch template not to output
+those.
+
+*Tasks*
+
+- fix legacy formatters;
+- rebase the world
+- fix template.
+
+*** COMPLETED Text of GPL V2 licence is the same as V3                :story:
+    CLOSED: [2015-04-27 Mon 18:56]
+    CLOCK: [2015-04-27 Mon 18:55]--[2015-04-27 Mon 19:05] =>  0:10
+
+We seem to have copied and pasted the licence across.
+
+*** COMPLETED Inclusion provision needs to cater for optional case    :story:
+    CLOSED: [2015-04-27 Mon 19:51]
+    CLOCK: [2015-04-27 Mon 19:30]--[2015-04-27 Mon 19:51] =>  0:21
+
+While implementing forward declarations we hit a problem: Exceptions
+require includes for forward declarations but no other type requires
+this. In order for this to work, we need to refactor inclusion
+provision to allow for optional inclusion dependencies. For now we put
+in a massive hack that allows empty formatter names to be returned
+from provider.
+
+*Tasks*
+
+- add a class to represent the inclusion dependency rather than use a
+  pair of a list etc.
+- make the return type of the interface optional.
+- do the appropriate actions in inclusion dependency factory when
+  provider returns null for optional.
+
+*** COMPLETED Consider adding a ownership hierarchy method in registrar :story:
+    CLOSED: [2015-04-27 Mon 21:46]
+    CLOCK: [2015-04-27 Mon 21:31]--[2015-04-27 Mon 21:46] =>  0:15
+
+In a few cases we seem to need the ownership hierarchy for all
+formatters. We should move this logic to formatter registrar.
+
+*** COMPLETED Refactor boost and std helpers and enums                :story:
+    CLOSED: [2015-04-28 Tue 11:50]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+We shouldn't really have std and boost enums. These are just a repeat
+of the SML models. We should have a find object by name in a model which
+returns the appropriate qname given a type name. Then the helpers bind
+to those qnames; given a qname, they return the include information,
+etc. In the current implementation, the enums are basically a
+duplication of the static models.
+
+In reality we should really load up these models from a file, such
+that users can add their own bindings without having to change C++
+code. This could be done with a config file using boost property
+tree. However, one would need some kind of way of mapping types into
+primitives, sequence containers etc - some kind of "concepts".
+
+*** COMPLETED Implement include generation for class header formatter :story:
+    CLOSED: [2015-04-28 Tue 11:51]
+
+*Rationale*: this has been implemented and will be completed with the
+ current stitch template work.
+
+Now that we have finished generating the path spec details, we need to
+make sure includes generation works as expected. Add both formatter
+level includes as well as model level includes.
+
+We also need to deal with:
+
+- exposing formatter id as a static property so we can create
+  dependencies between formatters;
+- includes overrides via dynamic extensions, so we can start using
+  STL, Boost etc classes.
+- includes of STL, Boost etc that are formatter level dependencies -
+  this needs to be handled via traits.
+
+Notes:
+
+- rename header file to file name override or something else quite
+  distinct. We need to ensure it is obvious that this property is only
+  used for non-dogen models. Actually we can now just call it include
+  path.
+- however we still have a problem: when we compute the include path we
+  do not know if it is a system or user path. We need to change file
+  properties to take this into account. We need a include path class
+  with a include type: user or system. we could then use this.
+- add field definition =no_inclusion_required= and populate all
+  relevant primitives.
+
+We need to add the notion of aspects. This is because a lot of things
+we have dealt with individually are really all related to aspects. An
+aspect is a part of a formatter that can be enabled or disabled. For
+example:
+
+- manual move constructor
+- manual default constructor
+- inserter operator
+- swap function
+- etc.
+
+We could simply create aspect settings; local and global formatters
+would have a map of =aspect_settings= against an =aspect_name=. We
+need to remove the integrated facet approach and implement it in terms
+of this. We should go through the types formatter and figure out which
+aspects it has. For now we shall ignore relationships between aspects
+and facets (and any other kind of switching logic). For example, it is
+the responsibility of the user to ensure that if integrated io is
+used, the io facet is switched off. This is because it is very
+complicated to build in the generic logic of such dependencies. We
+have a story to handle this properly in the backlog, but it will
+require a lot of work.
+
+*** COMPLETED Includer generation should be done from dynamic extensions :story:
+    CLOSED: [2015-04-28 Tue 11:52]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+*New Understanding*
+
+The true use case of this story is not to allow users to add includes
+at random; it is actually only useful in one scenario:
+
+- *merging code generation*: users add code which requires additional
+  includes. Without support for this, merging code generation would
+  have limited usefulness.
+
+*Previous Understanding*
+
+It would be nice if we could determine which includer files to create
+by looking at the dynamic extensions. For this we need a notion of an
+inclusion group, defined at the model level:
+
+- =cpp.types.includers.general=
+- =cpp.types.includers.value_objects=
+- ...
+
+Under each of these one would configure the aspect:
+
+- =cpp.types.includers.general.generate=: =true=
+- =cpp.types.includers.general.file_name=: =a/b/c=
+- =cpp.types.includers.general.is_system=: =false=
+
+Then, each type, module etc would declare its membership (as a list):
+
+- =cpp.includers.member=: =cpp.types.includers.general=
+- =cpp.includers.member=: =cpp.types.includers.value_objects=
+- ...
+
+*Previous understanding*
+
+We should simply go through all the types in the SML model and for
+each type and each facet create the corresponding inclusion
+path. locator can be used to generate standard paths, and a model
+specific mapping is required for other models such as std.
+
+Include then takes the relationships extracted by extractor, the
+mappings generated by this mapper and simply appends to the inclusion
+list the file names. it also appends the implementation specific
+headers.
+
+*** COMPLETED Handling of modelines is incorrect in general settings  :story:
+    CLOSED: [2015-04-28 Tue 11:53]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+At present the general settings are hard-coded to look for a C++
+modeline. This will not work for CMake files, etc. We need to think
+how multiple modelines will be supported. See general settings factory
+in formatters.
+
+*** COMPLETED Add include files at the formatter level                :story:
+    CLOSED: [2015-04-28 Tue 11:54]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+We need to remove all the include files from =includer= which are
+related to formatter specific code. We need to inject these
+dependencies inside of the formatters.
+
+- implement includer in terms of json files
+- get includer to work off of object relationships
+- remove relationships from transformer
+- remove helper models boost and std
+
+*** COMPLETED Delete content types                                    :story:
+    CLOSED: [2015-04-28 Tue 11:54]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+Now we have the type system representing the content, we can delete
+this enumeration.
+
+*** COMPLETED Delete aspect types                                     :story:
+    CLOSED: [2015-04-28 Tue 11:54]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+Now we have the type system representing the aspects, we can delete
+this enumeration.
+
+*** COMPLETED Rename =codgen= targets                                 :story:
+    CLOSED: [2015-04-28 Tue 11:55]
+
+*Rationale*: fixed in previous sprint.
+
+These are really the =knitting= or =knitter= targets because we are
+calling =knitter=.
+
+*** COMPLETED Add support for spaces in template types                :story:
+    CLOSED: [2015-04-28 Tue 12:00]
+
+*Rationale*: Fixed in previous sprint.
+
+At present we do not allow any spaces when declaring a type that has
+template parameters:
+
+: std::exception::what: Failed to parse string: std::unordered_map<std::string, facet_settings>
+
+We need to look into how to add this to the spirit parsing rules as it
+causes a lot of pain.
+
+*** COMPLETED Formatters should cache qname formatting                :story:
+    CLOSED: [2015-04-28 Tue 12:02]
+
+*Rationale*: Will be done as part of architecture refactor.
+
+We seem to re-format the same qname lots of times. We should just use
+a =std::ostringstream= to format once and reuse the resulting
+string. Probably worth doing this change after the performance tests
+are in.
+
+*** COMPLETED Improve streaming of empty lines in stitch              :spike:
+    CLOSED: [2015-04-28 Tue 14:22]
+    CLOCK: [2015-04-28 Tue 14:06]--[2015-04-28 Tue 14:22] =>  0:16
+
+At present we stream empty lines as follows:
+
+: s << "" << std::endl;
+
+We should really be doing:
+
+: s << std::endl;
+
+*** COMPLETED Implement serialization forward declarations formatter  :story:
+    CLOSED: [2015-04-28 Tue 16:28]
+    CLOCK: [2015-04-28 Tue 16:10]--[2015-04-28 Tue 16:27] =>  0:17
+
+We didn't implement the serialization forward declarations
+formatter. It is totally separate from the types one so that's why it
+got missed. We need it for the class header formatter to work.
+
+*** COMPLETED Create a formatter helper                               :story:
+    CLOSED: [2015-04-29 Wed 17:24]
+    CLOCK: [2015-04-29 Wed 16:00]--[2015-04-29 Wed 17:24] =>  1:24
+
+We could implement most of the formatter interface in a common base
+class and then only have the descendants override what they need.
+
+In reality we need probably more than one base formatter: one for c++
+types, etc. We could handle all of the path and include generation
+here. Name: =cpp_base_formatter=?
+
+Actually maybe we just need a helper class. Prefer the name
+=assistant= to helper.
+
+Responsibilities:
+
+- obtain the formatter settings from a given entity;
+- validate the formatter settings (maybe needs a validate header,
+  validate implementation versions);
+- given string, generate file;
+- create the scoped boiler plate;
+- create the scoped namespace formatter;
+- it could own a =stringstream= too, making our life even easier.
+
+This way the stitch template can call the assistant and the format
+method does very little..
+
+*** COMPLETED Add =is_final= in SML                                   :story:
+    CLOSED: [2015-04-29 Wed 17:42]
+    CLOCK: [2015-04-29 Wed 17:25]--[2015-04-29 Wed 17:42] =>  0:17
+
+Finality should be an SML level concept. We could infer it using the
+same logic as =cpp= uses at present. Add it to SML, then cpp and then
+make use of it in the formatter.
+
+*** COMPLETED Simplify logic around move construction                 :story:
+    CLOSED: [2015-04-29 Wed 17:48]
+    CLOCK: [2015-04-29 Wed 17:42]--[2015-04-29 Wed 17:48] =>  0:06
+
+We are doing some computations in the template that should be done
+during transformation.
+
+*** COMPLETED Analysis on frontend activities that belong in SML      :story:
+    CLOSED: [2015-05-01 Fri 17:19]
+    CLOCK: [2015-05-01 Fri 16:13]--[2015-05-01 Fri 16:41] =>  0:28
+
+These tasks have been split into their own stories.
+
+*New Understanding*
+
+Actually it seems we need to handle different tasks in different
+classes:
+
+- leaves: this seems like a job for =association_indexer=.
+- inheritance: i.e. setting original parent name and is original
+  parent visitable. In =association_indexer=.
+- model references: should be done as part of the merging process? we
+  need a class to compute model references though ("dependency
+  manager"?). Actually, we could construe this as being associations
+  (relationships between models?). Finally decision: we need a
+  dependency manager. It has two roles: given a partial model,
+  computes all references.
+- identity processing: property indexer (identity is done via
+  properties)
+- containing module: No good place to put this in so create a new
+  class: =module_indexer=.
+
+*Previous Understanding*
+
+This story was spawned from "Refactor Dia to SML transformer". We need
+to create a create a "post-processing" workflow in SML that handles
+some of the work that is currently in Dia to SML. This will make life
+easier in terms of supporting JSON as a fully supported front-end.
+
+Post-processing tasks already identified:
+
+- population of model references: should be distinct step in workflow,
+  after transformation (=update_model_references=).
+- computation of leaves: See  also [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#dia-to-sml-workflow-should-post-process-model-by-leaves][this]] ticket. 
+- setting original parent name and is original parent visitable;
+  investigate all of the relationship population to see what else
+  applies (e.g. what else is inferrable).
+- identity processing: this should be done as a post-processing step
+  rather than during transformation.
+- containing module: this is not done in Dia to SML at the moment, its
+  only done in JSON hydrator. We are populating containment for the
+  global module in injector though; see
+  add_containing_module_to_non_contained_entities.
+
+We need to look into Dia to SML to see if there are any additional
+tasks that need to be moved across.
+
+As part of this work, we should also rename =sml::workflow= to perhaps
+=sml::merging_workflow= or something along these lines. This new
+workflow would then be =sml::augmenting_workflow= perhaps. We should
+also move any activities which are not related to merging into this
+workflow (e.g. injecting of system types, etc).
+
+*** COMPLETED Add support for =disable_complete_constructor= in options copier
+    CLOSED: [2015-05-01 Fri 17:30]
+    CLOCK: [2015-04-29 Wed 15:39]--[2015-04-29 Wed 15:59] =>  0:20
+    CLOCK: [2015-04-29 Wed 14:50]--[2015-04-29 Wed 15:07] =>  0:17
+    CLOCK: [2015-04-28 Tue 23:25]--[2015-04-28 Tue 23:54] =>  0:29
+
+Class header requires =disable_complete_constructor=.
+
+- add field to JSON.
+- update options copier to copy from options
+- implement reading in the type settings factory.
+- type settings cannot be optional as we need to know whether to
+  disable complete constructor.
+- stop passing in settings that can be derived.
+- bump up log file to reveal rest of class.
+
+*** COMPLETED Try making path expansion a merged model expansion      :story:
+    CLOSED: [2015-05-02 Sat 16:14]
+    CLOCK: [2015-05-02 Sat 15:45]--[2015-05-02 Sat 16:13] =>  0:28
+    CLOCK: [2015-05-01 Fri 22:32]--[2015-05-01 Fri 23:24] =>  0:52
+
+There shouldn't be any reason why path expansion cannot be done at the
+merged model level, provided we do it to all types (not just target
+model). Try it and see what happens.
+
+We seem to fail with a weird  file path error:
+
+: std::exception::what: Field not found: cpp.types.class_header_formatter.file_path
+
+However file paths are being generated as expected.
+
+The problem was related to the fact that we ignore non-target models
+and the merged model was not marked as target. Mark it as target for
+now.
+
+*** COMPLETED Remove merged and stand alone expansions                :story:
+    CLOSED: [2015-05-02 Sat 16:29]
+    CLOCK: [2015-05-02 Sat 16:16]--[2015-05-02 Sat 16:29] =>  0:13
+
+Now that we no longer require stand alone expansions, we need to
+remove all of the machinery we added for it:
+
+- registrar has two containers
+- enum
+- all code that makes use of workflow must not use enum
+- not required in frontend any more.
+
+*** COMPLETED Move injection to merging workflow                      :story:
+    CLOSED: [2015-05-02 Sat 16:42]
+    CLOCK: [2015-05-02 Sat 16:34]--[2015-05-02 Sat 16:42] =>  0:08
+    CLOCK: [2015-05-01 Fri 22:10]--[2015-05-01 Fri 22:31] =>  0:21
+
+*New Understanding*
+
+This can't be done because of expansion. We need the injected system
+types to exist or else expansion of inclusions will fail. This happens
+because the types do not exist during the stand alone model expansion
+and as such do not get their file paths set; when we do the merged
+model expansion, we fail because we cannot find the file paths. In
+order for this to work, we need to ensure stand alone model expansion
+happens in the merged model too - does it really need to be a partial
+model operation?
+
+*Previous Understanding*
+
+At present we are performing injection in the partial model. There
+doesn't seem to be any good reason for this. Try moving it to the
+merged model and see what breaks.
+
+*** COMPLETED Refactor SML association indexer                        :story:
+    CLOSED: [2015-05-02 Sat 22:59]
+    CLOCK: [2015-05-02 Sat 22:19]--[2015-05-02 Sat 22:59] =>  0:40
+    CLOCK: [2015-05-02 Sat 20:28]--[2015-05-02 Sat 21:30] =>  1:02
+    CLOCK: [2015-05-02 Sat 19:51]--[2015-05-02 Sat 20:28] =>  0:37
+    CLOCK: [2015-05-02 Sat 19:34]--[2015-05-02 Sat 19:50] =>  0:16
+    CLOCK: [2015-05-02 Sat 16:42]--[2015-05-02 Sat 17:34] =>  0:52
+    CLOCK: [2015-05-01 Fri 21:34]--[2015-05-01 Fri 22:09] =>  0:35
+    CLOCK: [2015-05-01 Fri 17:30]--[2015-05-01 Fri 17:51] =>  0:21
+    CLOCK: [2015-05-01 Fri 16:50]--[2015-05-01 Fri 17:04] =>  0:14
+    CLOCK: [2015-05-01 Fri 16:42]--[2015-05-01 Fri 16:48] =>  0:06
+
+There are a number of tasks that need to be done in association
+indexer:
+
+- remove context, pass model to methods that require it.
+- add leaf processing, original parent processing, etc.
+- add model references; the problem here is that we have already
+  merged. We need to figure out how references are used.
+
+Note:
+
+At present in =dia_to_sml::workflow::post_process_model_activity= we
+are post-processing by going through every single object; in reality
+we only need to go through the leaves.
+
+We've hit another difficulty. In order to inject we need to have
+leaves already generated; but in order to index the associations we
+need to have injected system types (as we may have associations
+against a system type). The only way to solve this is to break out
+leaves from associations. We could have a two stage association
+indexing: leaves and all other relationships.
+
+*** COMPLETED Tidy-up sml consumer interface                          :story:
+    CLOSED: [2015-05-02 Sat 23:42]
+    CLOCK: [2015-05-02 Sat 23:30]--[2015-05-02 Sat 23:42] =>  0:12
+
+After implementing the includes for the class header formatter we
+should figure out if we need the multiple passes machinery. Most
+likely all of that should be scraped.
+
+Actually do we even need the consumption workflow at all. At present
+no one seems to be using it. If so remove it and associated classes.
+
+*** COMPLETED Consider renaming SML workflow                          :story:
+    CLOSED: [2015-05-03 Sun 08:12]
+
+*Rationale*: Since we only have one workflow in SML, and since it is
+not likely we will need more than one for now, we'll leave it as is.
+
+Since the main SML workflow is focused on producing a merged model, we
+should perhaps rename it to =sml::merging_workflow= or something along
+these lines. However, we need to keep in mind that as well as merging
+we perform a lot of other activities on the models.
+
+*** COMPLETED Refactor includes directive generation                  :story:
+    CLOSED: [2015-05-08 Fri 16:46]
+    CLOCK: [2015-05-08 Fri 14:52]--[2015-05-08 Fri 16:46] =>  1:54
+    CLOCK: [2015-05-07 Thu 19:13]--[2015-05-07 Thu 19:51] =>  0:38
+    CLOCK: [2015-05-07 Thu 07:49]--[2015-05-07 Thu 08:36] =>  0:47
+    CLOCK: [2015-05-06 Wed 17:53]--[2015-05-06 Wed 18:06] =>  0:13
+    CLOCK: [2015-05-06 Wed 17:36]--[2015-05-06 Wed 17:43] =>  0:07
+    CLOCK: [2015-05-06 Wed 17:05]--[2015-05-06 Wed 17:35] =>  0:30
+    CLOCK: [2015-05-06 Wed 16:15]--[2015-05-06 Wed 17:05] =>  0:50
+    CLOCK: [2015-05-05 Tue 17:30]--[2015-05-05 Tue 18:00] =>  0:30
+    CLOCK: [2015-05-05 Tue 15:04]--[2015-05-05 Tue 17:25] =>  2:21
+
+At present inclusion directives and usage of inclusion dependencies is
+a bit messy. We need to clean it up a bit before we start using it on
+all formatters or else we will generate a lot of boilerplate code for
+no reason.
+
+Tasks:
+
+- create an inclusion assistant to make client code more readable.
+- create a inclusion directives repository with the inclusion
+  directives and a "does not require inclusion" set. Factory to use
+  the set to avoid generating inclusions for primitives. Client code
+  to use the set to check if a type needs inclusion. This way we avoid
+  logic errors where we forgot to generate an include where we should
+  have. Its not very efficient though.
+
+*** COMPLETED Add =static_formatter_name=                             :story:
+    CLOSED: [2015-05-08 Fri 17:47]
+    CLOCK: [2015-05-08 Fri 17:30]--[2015-05-08 Fri 17:47] =>  0:17
+
+At present formatter names are defined as traits, we should use the
+"static" approach. Facet names can stay as traits as they are common
+across formatters.
+
+We need this sooner rather than later because using the traits directly
+
+*** COMPLETED Tests failing on Windows and Linux                      :story:
+    CLOSED: [2015-05-08 Fri 21:27]
+
+At present both Ming and gcc 32-bit are borked. The failure is on
+trivial inheritance:
+
+: --- /home/ctest/build/Continuous/dogen/debian-testing-i686-gcc-4.7/build/stage/bin/../test_data/trivial_inheritance/expected/trivial_inheritance/src/test_data/move_ctor_base_td.cpp	2014-08-30 03:30:33.000000000 +0100
+: +++ /home/ctest/build/Continuous/dogen/debian-testing-i686-gcc-4.7/build/stage/bin/../test_data/trivial_inheritance/actual/trivial_inheritance/src/test_data/move_ctor_base_td.cpp	2015-05-06 06:42:32.357516805 +0100
+: @@ -47,8 +47,8 @@
+:  move_ctor_base_generator::result_type*
+:  move_ctor_base_generator::create_ptr(const unsigned int position) {
+:      if ((position % 1) == 0)
+: -        return dogen::test_models::trivial_inheritance::move_ctor_empty_descendant_generator::create_ptr(position);
+: -    return dogen::test_models::trivial_inheritance::move_ctor_descendant_generator::create_ptr(position);
+: +        return dogen::test_models::trivial_inheritance::move_ctor_descendant_generator::create_ptr(position);
+: +    return dogen::test_models::trivial_inheritance::move_ctor_empty_descendant_generator::create_ptr(position);
+:  }
+
+The problem is that generalisation indexer is now dependent on the
+order of the objects in the unordered map. Depending on which way we
+traverse up the tree, we end up with a differently ordered leaf
+container. We need to find a way to guarantee order. We should also
+look into how dia to sml guaranteed ordering.
+
+We could sort the leaves before slotting them into the types and
+model. We already do something similar in
+=sml/src/types/concept_indexer.cpp=, with =operator<=. This will
+probably move a lot of code on both test models and dogen models.
+
+*** POSTPONED Improve references management                           :story:
+    CLOSED: [2015-05-03 Sun 09:21]
+    CLOCK: [2015-05-01 Fri 17:04]--[2015-05-01 Fri 17:17] =>  0:13
+
+At present, we compute model references as follows:
+
+- in dia to sml we first loop through all types and figure out the
+  distinct model names. This is done by creating a "shallow" qname
+  with just the model name and setting its origin type to unknown.
+- when we merge, we take the references of target - the only ones we
+  care about - and then we check that against the list of the models
+  we are about to merge. If there are any missing models we complain
+  (see comments below). We then loop through the list of references
+  and "resolve" the origin type of the model.
+
+Note: We could actually also complain if there are too many models, or
+more cleverly avoid merging those models which are not required. Or
+even more cleverly, we could avoid loading them in the first place, if
+only we could load target first.
+
+A slightly better way of doing this would be:
+
+- in SML create a references updater that takes a model and computes
+  its reference requirements. It could also receive a list of "other"
+  models from which to get their origin types to avoid using =unknown=
+  at all, and checks that all reference requirements have been met.
+- the current step =update_references= is just a call to the
+  references updater, prior to merging, with the target model.
+
+*** POSTPONED Assignment operator seems to pass types by value        :story:
+    CLOSED: [2015-05-03 Sun 09:21]
+    CLOCK: [2015-05-01 Fri 11:32]--[2015-05-01 Fri 11:39] =>  0:07
+
+The code for the operator is as follows:
+
+:         stream_ << indenter_ << ci.name() << "& operator=(" << ci.name()
+:                << " other);" << std::endl;
+
+If this is the case we need to fix it and regenerate all models.
+
+Actually we have implemented assignment in terms of swap, so that is
+why we copy. We need to figure out if this was a good idea. Raise
+story in backlog.
+
+: diff --git a/projects/cpp/src/types/formatters/types/class_header_formatter.stitch b/projects/cpp/src/types/formatters/types/class_header_formatter.stitch
+: index f9f91af..663f0ac 100644
+: --- a/projects/cpp/src/types/formatters/types/class_header_formatter.stitch
+: +++ b/projects/cpp/src/types/formatters/types/class_header_formatter.stitch
+: @@ -253,7 +253,7 @@ public:
+:  <#+
+:                  if (!c.is_parent()) {
+:  #>
+: -    <#= c.name() #>& operator=(<#= c.name() #> other);
+: +    <#= c.name() #>& operator=(<#= c.name() #>& other);
+:  <#+
+:                  }
+:              }
+: diff --git a/projects/cpp_formatters/src/types/class_declaration.cpp b/projects/cpp_formatters/src/types/class_declaration.cpp
+: index c2eeb3c..534ab69 100644
+: --- a/projects/cpp_formatters/src/types/class_declaration.cpp
+: +++ b/projects/cpp_formatters/src/types/class_declaration.cpp
+: @@ -457,8 +457,8 @@ void class_declaration::swap_and_assignment(
+:  
+:      // assignment is only available in leaf classes - MEC++-33
+:      if (!ci.is_parent()) {
+: -        stream_ << indenter_ << ci.name() << "& operator=(" << ci.name()
+: -                << " other);" << std::endl;
+: +        stream_ << indenter_ << ci.name() << "& operator=(const " << ci.name()
+: +                << "& other);" << std::endl;
+:      }
+:  
+:      utility_.blank_line();
+: diff --git a/projects/cpp_formatters/src/types/class_implementation.cpp b/projects/cpp_formatters/src/types/class_implementation.cpp
+: index 5c9fe50..9276701 100644
+: --- a/projects/cpp_formatters/src/types/class_implementation.cpp
+: +++ b/projects/cpp_formatters/src/types/class_implementation.cpp
+: @@ -456,8 +456,8 @@ assignment_operator(const cpp::formattables::class_info& ci) {
+:          return;
+:  
+:      stream_ << indenter_ << ci.name() << "& "
+: -            << ci.name() << "::operator=(" << ci.name()
+: -            << " other) ";
+: +            << ci.name() << "::operator=(const " << ci.name()
+: +            << "& other) ";
+:  
+:      utility_.open_scope();
+:      {
+
+*** POSTPONED Implement types class header formatter using stitch     :story:
+    CLOSED: [2015-05-10 Sun 23:09]
+    CLOCK: [2015-05-08 Fri 22:18]--[2015-05-08 Fri 22:36] =>  0:18
+    CLOCK: [2015-05-08 Fri 22:05]--[2015-05-08 Fri 22:17] =>  0:12
+    CLOCK: [2015-05-08 Fri 18:28]--[2015-05-08 Fri 19:09] =>  0:41
+    CLOCK: [2015-05-08 Fri 18:09]--[2015-05-08 Fri 18:27] =>  0:18
+    CLOCK: [2015-05-08 Fri 17:47]--[2015-05-08 Fri 18:08] =>  0:21
+    CLOCK: [2015-05-01 Fri 14:45]--[2015-05-01 Fri 16:01] =>  1:16
+    CLOCK: [2015-05-01 Fri 14:25]--[2015-05-01 Fri 14:44] =>  0:19
+    CLOCK: [2015-04-30 Thu 19:11]--[2015-04-30 Thu 19:27] =>  0:16
+    CLOCK: [2015-04-30 Thu 19:01]--[2015-04-30 Thu 19:10] =>  0:09
+    CLOCK: [2015-04-30 Thu 18:37]--[2015-04-30 Thu 19:00] =>  0:23
+    CLOCK: [2015-04-30 Thu 08:00]--[2015-04-30 Thu 08:21] =>  0:21
+    CLOCK: [2015-04-30 Thu 07:39]--[2015-04-30 Thu 08:00] =>  0:21
+    CLOCK: [2015-04-29 Wed 22:09]--[2015-04-29 Wed 22:27] =>  0:18
+    CLOCK: [2015-04-29 Wed 21:58]--[2015-04-29 Wed 22:08] =>  0:10
+    CLOCK: [2015-04-29 Wed 21:42]--[2015-04-29 Wed 21:57] =>  0:15
+    CLOCK: [2015-04-29 Wed 21:20]--[2015-04-29 Wed 21:41] =>  0:21
+    CLOCK: [2015-04-29 Wed 17:49]--[2015-04-29 Wed 18:39] =>  0:50
+    CLOCK: [2015-04-28 Tue 17:21]--[2015-04-28 Tue 17:47] =>  0:26
+    CLOCK: [2015-04-28 Tue 14:27]--[2015-04-28 Tue 15:47] =>  1:20
+    CLOCK: [2015-04-28 Tue 14:22]--[2015-04-28 Tue 14:27] =>  0:05
+    CLOCK: [2015-04-28 Tue 13:53]--[2015-04-28 Tue 14:06] =>  0:13
+
+We need to implement a stitch template for the class header formatter
+in types, plug it in and start working through the diffs.
+
+To test diff:
+
+: head -n50 /home/marco/Development/DomainDrivenConsulting/dogen/projects/test_models/all_primitives/include/dogen/test_models/all_primitives/types/a_class.hpp > expected.txt && grep -B20 -A25 -e "\#ifndef DOGEN_TEST_MODELS_ALL_PRIMITIVES_TYPES_A_CLASS_HPP" /home/marco/Development/DomainDrivenConsulting/output/dogen/clang-3.5/stage/bin/log/knit/workflow_spec/all_primitives_model_generates_expected_code.log > actual.txt && diff -u expected.txt actual.txt 
+
+Notes:
+
+- we can't access disable complete constructor option. Figure out how
+  to.
+
+Remaining problems with trivial inheritance:
+
+- primitive types have includes; not honouring "requires include?"
+  flag.
+- leaf types do not have visitor methods. This is because
+  =is_original_parent_visitable= is not being populated.
+- too much space after end of namespaces and before end if.
+- no support for comments on classes and methods.
+- visitor includes in descendants.
+- class marked as service is being generated.
+
+Trivial inheritance is now green.
+
+Problems with std model:
+
+- keys are not final.
+- dependencies on hashes are not included
+- duplicate includes. after sort we need some kind of distinct. Or
+  perhaps the SML indexer should only add distinct qnames.
+
+*** POSTPONED Implement options copier and remove options from context :story:
+    CLOSED: [2015-05-10 Sun 23:09]
+    CLOCK: [2015-04-28 Tue 19:34]--[2015-04-28 Tue 19:43] =>  0:09
+    CLOCK: [2015-04-28 Tue 18:52]--[2015-04-28 Tue 19:33] =>  0:41
+
+At present the path derivatives expander is getting access to the C++
+options via the expansion context. This was obviously a temporary hack
+to get things moving. The right thing must surely be to add the root
+object to the context, and to read the options from the root
+object. These for now must be populated via the options copier; in the
+future one can imagine that users define them in diagrams.
+
+Actually, the directories supplied to dogen do need to be command line
+options. This is because they tend to be created by CMake on the fly
+as absolute paths and as such cannot be hard-coded into the
+diagram. This being the case, perhaps we should just supply the
+knitting options to the expansion context. This does mean that now
+expansion is a knitting thing - it could have been used by
+stitch. Needs a bit more thinking.
+
+*Tasks to read options from root object*
+
+Not yet clear this is the right solution, but if it is, this is what
+needs to be done.
+
+- check that we have all the required fields in JSON for all of the
+  c++ options we require for now.
+- update options copier to copy these options. In many cases we will
+  have to "redirect" the option. For example, =domain_facet_folder=
+  becomes the types directory and so forth. Having said that we
+  probably won't need these for now.
+- remove options from context, and add root object instead. We may
+  need to do the usual "locate root object" routine.
+- update the path settings factory to read these from the root object.
+- add options to type settings where it makes sense (e.g. disable
+  complete constructor) and implement the type settings factory.
+
+*** POSTPONED Consider dropping the prefix inclusion in expansion     :story:
+    CLOSED: [2015-05-10 Sun 23:09]
+    CLOCK: [2015-05-06 Wed 17:44]--[2015-05-06 Wed 17:52] =>  0:08
+
+*New Understanding*
+
+The problem with this is that "directive" does not have any
+meaning. We could get away with dependencies, but directive is very
+open ended. We cannot start changing meta-data keys (e.g. =directive=
+instead of =inclusion_directive=) because that would confuse users; so
+we would end up with two names in two different places, probably even
+more confusing.
+
+*Previous Understanding*
+
+At present we have really long class names because they all need
+"inclusion" on the name. In reality, we have two concepts:
+
+- directives
+- dependencies
+
+We don't need the prefix "inclusion" to make these understandable. We
+can probably get away with removing it from all of the expansion
+classes without significant loss of meaning.
+
+** Deprecated
+*** CANCELLED Add tests for main header file formatter with optionality :story:
+    CLOSED: [2015-04-28 Tue 11:50]
+
+*Rationale*: we already have tests for optionality at the boilerplate level.
+
+We should add a couple of tests that exercise the annotation
+factory. As it will have its own tests, we just need to make sure it
+works in general. For example, pass in an empty annotation.
+
+*** CANCELLED Strange logging behaviour in tests                      :story:
+    CLOSED: [2015-04-28 Tue 11:48]
+
+*Rationale*: can't reproduce.
+
+As reported by JS for some reason if a test has a null pointer
+de-reference, the next test will log to both files. This means the
+logger is not being switched off properly in the presence of exceptions.
+
+*** CANCELLED Rename =inserter_implementation=                        :story:
+    CLOSED: [2015-04-28 Tue 11:50]
+
+*Rationale*: won't be a problem after architecture refactor.
+
+We used =inserter_implementation= to provide all sorts of utility
+methods for IO. This class should really be named IO utility or
+something of the sort.

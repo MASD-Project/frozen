@@ -1,0 +1,494 @@
+#+title: Sprint Backlog 99
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Improve Visual Studio support.
+- Finish ODB/Oracle support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-03-20 Mon 11:35]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *59:10* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 59:10   |       |       | 100.0 |
+| Active                                                                      |         | 59:10 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  3:18 |   5.6 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:26 |   0.7 |
+| COMPLETED Add test model for all of the path meta-data                      |         |       |  2:58 |   5.0 |
+| COMPLETED ODB CMakeLists does not cope with changes to project paths        |         |       |  5:04 |   8.6 |
+| COMPLETED Split include and source directories                              |         |       |  5:22 |   9.1 |
+| COMPLETED Add C++-03 mode                                                   |         |       |  8:19 |  14.1 |
+| COMPLETED Add a LAM test model just to validate existing functionality      |         |       |  2:38 |   4.5 |
+| COMPLETED Split project should not include model name                       |         |       |  0:18 |   0.5 |
+| COMPLETED Always add multiple databases to ODB options                      |         |       |  0:03 |   0.1 |
+| COMPLETED Fix issues with dropbox downloads                                 |         |       |  3:38 |   6.1 |
+| COMPLETED Create a UML profile to formalise yarn concepts                   |         |       |  0:23 |   0.6 |
+| POSTPONED Check for incompatibility between input language and enabled kernels |         |       |  0:11 |   0.3 |
+| POSTPONED Build on tags for Windows                                         |         |       |  0:15 |   0.4 |
+| POSTPONED Add a "flat directory" mode                                       |         |       |  0:08 |   0.2 |
+| POSTPONED Handling of visual studio projects and solutions is incorrect     |         |       |  1:11 |   2.0 |
+| POSTPONED Implement the database model using Northwind                      |         |       | 24:58 |  42.2 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-03-20 Mon 11:18]
+    CLOCK: [2017-03-19 Sun 09:45]--[2017-03-19 Sun 12:02] =>  2:17
+    CLOCK: [2017-03-09 Thu 07:10]--[2017-03-09 Thu 07:22] =>  0:12
+    CLOCK: [2017-03-07 Tue 21:31]--[2017-03-07 Tue 21:36] =>  0:05
+    CLOCK: [2017-03-07 Tue 21:24]--[2017-03-07 Tue 21:30] =>  0:06
+    CLOCK: [2017-03-07 Tue 21:01]--[2017-03-07 Tue 21:23] =>  0:22
+    CLOCK: [2017-03-06 Mon 10:33]--[2017-03-06 Mon 10:49] =>  0:16
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-03-06 Mon 12:15]
+    CLOCK: [2017-03-06 Mon 10:49]--[2017-03-06 Mon 11:15] =>  0:26
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.98.0, "Santo Adrião"
+
+#+begin_src markdown
+![alt text](http://3.bp.blogspot.com/_QN04x6AzKRw/S3GrWbya3EI/AAAAAAAASdo/UiHYehVmWQE/s640/Igreja.jpg)
+Igreja de Santo Adrião, Namibe, Angola. (C) Blog Moçâmedes Saudade, in [blogspot](http://mocamedes-saudade.blogspot.co.uk/2007/05/blog-post_2275.html).
+
+Overview
+=======
+As with the previous sprint, this sprint was also a smuttering of unrelated commits, attempting to address problems we are facing in production at present. However a main theme emerged: major improvements in the ODB support.
+
+This was spurned by the ongoing series of blogposts on the integration of ODB with Dogen, using Oracle as the RDBMS:
+
+- [Nerd Food: Northwind, or Using Dogen with ODB - Part I](http://mcraveiro.blogspot.co.uk/2017/02/nerd-food-northwind-or-using-dogen-with.html)
+- [Nerd Food: Northwind, or Using Dogen with ODB - Part II](http://mcraveiro.blogspot.co.uk/2017/02/nerd-food-northwind-or-using-dogen-with_24.html)
+
+The purpose of these series of posts is to give Dogen's ORM functionality a through testing to ensure its good enough for production. The end result will be an update to the Database test model.
+
+Finally, we also took the chance to clean up the multiple test models we had in C++, and coalesced a number of them into a single, unified test model for C++, along the lines of what we had done for C#.
+
+User visible changes
+===============
+In this sprint, a small number of user visible changes were made:
+
+- **ODB Fixes**: a number of small fixes in the ODB support were performed, including fixing the CMake targets.
+- **Introduction of the ORM layer**: We create a layer of indirection between Dogen and ODB, allowing users to configure the object-relational mapping in "generic terms". This has the side-effect of greatly reducing the number of manual ODB pragmas required, because Dogen can now infer a lot of information from the meta-data supplied.
+- **Log directory is now configurable**: You can now send the Dogen logs to a directory of your choosing, making Dogen easier to integrate with existing builds, which may already have their own log directory.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_98.org).
+
+Next Sprint
+========
+The next sprint will continue to focus on ODB and Visual Studio support.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_0.98.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.98.0/dogen_0.98.0_amd64-applications.deb)
+- [dogen-0.98.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.98.0/dogen-0.98.0-Darwin-x86_64.dmg)
+- [dogen-0.98.0-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-0.98.0-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/838746103579291648][Tweet]]
+- [[https://www.linkedin.com/hp/update/6244512213571248128/][LinkedIn]]
+
+*** COMPLETED Add test model for all of the path meta-data            :story:
+    CLOSED: [2017-03-06 Mon 22:15]
+    CLOCK: [2017-03-06 Mon 22:10]--[2017-03-06 Mon 22:19] =>  0:09
+    CLOCK: [2017-03-06 Mon 21:02]--[2017-03-06 Mon 22:09] =>  1:07
+    CLOCK: [2017-03-06 Mon 20:36]--[2017-03-06 Mon 20:42] =>  0:06
+    CLOCK: [2017-03-06 Mon 20:21]--[2017-03-06 Mon 20:35] =>  0:14
+    CLOCK: [2017-03-06 Mon 20:05]--[2017-03-06 Mon 20:20] =>  0:15
+    CLOCK: [2017-03-06 Mon 18:22]--[2017-03-06 Mon 18:29] =>  0:07
+    CLOCK: [2017-03-06 Mon 17:02]--[2017-03-06 Mon 18:02] =>  1:00
+
+We are making use of directory and file settings, but we do not have
+any tests for it. Add a simple test model that exercises all settings
+in one go (at least those that are not mutually exclusive).
+
+*** COMPLETED ODB CMakeLists does not cope with changes to project paths :story:
+    CLOSED: [2017-03-07 Tue 13:33]
+    CLOCK: [2017-03-07 Tue 13:56]--[2017-03-07 Tue 14:06] =>  0:10
+    CLOCK: [2017-03-07 Tue 13:34]--[2017-03-07 Tue 13:55] =>  0:21
+    CLOCK: [2017-03-07 Tue 13:18]--[2017-03-07 Tue 13:33] =>  0:15
+    CLOCK: [2017-03-07 Tue 12:40]--[2017-03-07 Tue 13:17] =>  0:37
+    CLOCK: [2017-03-07 Tue 11:39]--[2017-03-07 Tue 12:02] =>  0:23
+    CLOCK: [2017-03-07 Tue 11:03]--[2017-03-07 Tue 11:38] =>  0:35
+    CLOCK: [2017-03-07 Tue 10:06]--[2017-03-07 Tue 10:40] =>  1:31
+    CLOCK: [2017-03-07 Tue 08:27]--[2017-03-07 Tue 10:05] =>  1:38
+    CLOCK: [2017-03-07 Tue 07:55]--[2017-03-07 Tue 08:26] =>  0:31
+
+We have hard-coded the path to the ODB directory in the CMakeLists
+file. This means that when we update the path to a different include,
+source or ODB directory, the CMake file will fail. We need to add these
+locations to fabric's CMakeLists and use the locator to populate it.
+
+Notes:
+
+- injection is done before the quilt workflow, so we do not have a
+  locator handy. CMakeLists population will have to be a two-step
+  process. We could add a CMakeLists expander (or somesuch other name)
+  which is responsible for populating these directories.
+- we may need to split CMakeLists into two: include and source. We
+  don't need these parameters for source.
+- we need the include directory name, path to source and include ODB
+  directories and path to ODB options file.
+
+Parameters not tested in the =all_path_and_directory_settings.dia=
+model due to this problem:
+
+: #DOGEN quilt.cpp.source_directory_name=some_source_dir
+: #DOGEN quilt.cpp.include_directory_name=some_include_dir
+: #DOGEN quilt.cpp.odb.directory=odb_dir
+
+*** COMPLETED Split include and source directories                    :story:
+    CLOSED: [2017-03-08 Wed 14:39]
+    CLOCK: [2017-03-08 Wed 16:30]--[2017-03-08 Wed 16:50] =>  0:20
+    CLOCK: [2017-03-08 Wed 15:52]--[2017-03-08 Wed 16:29] =>  0:37
+    CLOCK: [2017-03-08 Wed 15:47]--[2017-03-08 Wed 15:51] =>  0:04
+    CLOCK: [2017-03-08 Wed 15:16]--[2017-03-08 Wed 15:46] =>  0:30
+    CLOCK: [2017-03-08 Wed 14:40]--[2017-03-08 Wed 15:15] =>  0:35
+    CLOCK: [2017-03-08 Wed 14:25]--[2017-03-08 Wed 14:39] =>  0:14
+    CLOCK: [2017-03-08 Wed 13:56]--[2017-03-08 Wed 14:24] =>  0:28
+    CLOCK: [2017-03-08 Wed 13:35]--[2017-03-08 Wed 13:55] =>  0:20
+    CLOCK: [2017-03-08 Wed 11:39]--[2017-03-08 Wed 12:33] =>  0:54
+    CLOCK: [2017-03-08 Wed 11:16]--[2017-03-08 Wed 11:38] =>  0:22
+    CLOCK: [2017-03-08 Wed 09:42]--[2017-03-08 Wed 10:09] =>  0:27
+    CLOCK: [2017-03-06 Mon 16:30]--[2017-03-06 Mon 17:01] =>  0:31
+
+We removed a feature due to lack of use cases: splitting source and
+include directories. It allowed having them placed in different
+top-level directories. It also meant that the computation of managed
+directories required access to the root object. In case we need to
+reactivate this story (if we find a use case), we keep track of the
+commits that removed the feature here.
+
+- [[https://github.com/DomainDrivenConsulting/dogen/commit/6103de47af5fc7d33710b216cac0fb1943416448][remove support for split projects]]
+
+This will be implemented slightly differently this time round
+though. Instead of a "split project" option and two additional options
+for include and source, we'll just add a new option for include:
+
+: output-cpp-include-dir
+
+If present, it will be used for the c++ include directory. If not
+present, the behaviour will remain as is. We can propagate this
+information all the way to the locator, where it will do the right
+thing.
+
+Major problem: all of the CMake file relationships breakdown because
+they had assumed include and source had the same parent directory. We
+now need to:
+
+- compute relative paths between include and source;
+- move top-level CMake file to stay with source.
+
+Merged stories:
+
+*Handling of include cmakelists in split projects is not correct*
+
+At present we are only generating a cmakelists file for include
+folders on non-split projects. This means that the header files for
+split projects won't be packaged up. It also means that for ODB
+projects we won't get the ODB targets.
+
+*** COMPLETED Add C++-03 mode                                          :epic:
+    CLOSED: [2017-03-10 Fri 12:01]
+    CLOCK: [2017-03-10 Fri 11:28]--[2017-03-10 Fri 12:00] =>  0:32
+    CLOCK: [2017-03-10 Fri 11:02]--[2017-03-10 Fri 11:27] =>  0:25
+    CLOCK: [2017-03-10 Fri 10:12]--[2017-03-10 Fri 10:47] =>  0:35
+    CLOCK: [2017-03-09 Thu 15:33]--[2017-03-09 Thu 17:15] =>  1:42
+    CLOCK: [2017-03-09 Thu 15:08]--[2017-03-09 Thu 15:32] =>  0:24
+    CLOCK: [2017-03-09 Thu 15:00]--[2017-03-09 Thu 15:07] =>  0:07
+    CLOCK: [2017-03-09 Thu 13:42]--[2017-03-09 Thu 14:59] =>  1:17
+    CLOCK: [2017-03-09 Thu 08:21]--[2017-03-09 Thu 09:10] =>  0:49
+    CLOCK: [2017-03-08 Wed 23:32]--[2017-03-08 Wed 23:50] =>  0:18
+    CLOCK: [2017-03-08 Wed 22:15]--[2017-03-08 Wed 23:31] =>  1:16
+    CLOCK: [2017-03-08 Wed 20:26]--[2017-03-08 Wed 21:01] =>  0:35
+    CLOCK: [2017-03-08 Wed 17:32]--[2017-03-08 Wed 17:51] =>  0:19
+
+#+begin_quote
+*Story*: As a dogen user, I want to create models in C++ 03 so that I
+can interface with legacy code.
+#+end_quote
+
+It shouldn't be too hard to generate C++-03 code in addition to
+C++-14. We could follow the gcc/odb convention and have a =-std=
+option for this in meta-data. The only problem would be testing - at
+present the language settings comes from cmake, and we'd have to make
+sure the compiler is not in C++-14 mode when compiling test models
+in 03. Also, the mixing and matching of 03 with 14 may not be
+trivial. We should wait for a use case.
+
+It may be possible to add different flags to different projects in
+CMake.
+
+We should call this the c++ dialect.
+
+Tasks:
+
+- default ctors, final, noexcept. Need to manually add default
+  ctor (e.g. force it).
+- enums
+- need to disable ODB c++ 11 as well.
+
+*** COMPLETED Add a LAM test model just to validate existing functionality :story:
+    CLOSED: [2017-03-13 Mon 14:34]
+    CLOCK: [2017-03-10 Fri 20:40]--[2017-03-10 Fri 21:06] =>  0:26
+    CLOCK: [2017-03-10 Fri 15:31]--[2017-03-10 Fri 15:55] =>  0:24
+    CLOCK: [2017-03-07 Tue 14:07]--[2017-03-07 Tue 15:55] =>  1:48
+
+At present we have basic support for LAM. We should create a simple
+test model that uses a few of the mapped types just to make sure it
+vaguely works and does not
+
+*** COMPLETED Split project should not include model name             :story:
+    CLOSED: [2017-03-14 Tue 21:18]
+    CLOCK: [2017-03-14 Tue 17:53]--[2017-03-14 Tue 18:11] =>  0:18
+
+When we supply the C++ header output path, we should not add the model
+name to it.
+
+We should also omit the =include= directory too.
+
+*** COMPLETED Always add multiple databases to ODB options            :story:
+    CLOSED: [2017-03-14 Tue 21:25]
+    CLOCK: [2017-03-14 Tue 21:22]--[2017-03-14 Tue 21:25] =>  0:03
+
+At present we only add multiple databases when the user requests more
+than one database system. However, since we are asking for "common"
+this is causing problems. Always add this flag.
+
+*** COMPLETED Fix issues with dropbox downloads                       :story:
+    CLOSED: [2017-03-17 Fri 11:41]
+    CLOCK: [2017-03-17 Fri 14:05]--[2017-03-17 Fri 15:20] =>  1:15
+    CLOCK: [2017-03-17 Fri 11:26]--[2017-03-17 Fri 11:29] =>  0:03
+    CLOCK: [2017-03-17 Fri 11:19]--[2017-03-17 Fri 11:25] =>  0:06
+    CLOCK: [2017-03-17 Fri 11:14]--[2017-03-17 Fri 11:18] =>  0:04
+    CLOCK: [2017-03-17 Fri 10:59]--[2017-03-17 Fri 11:13] =>  0:14
+    CLOCK: [2017-03-17 Fri 10:52]--[2017-03-17 Fri 10:58] =>  0:06
+    CLOCK: [2017-03-17 Fri 09:01]--[2017-03-17 Fri 10:51] =>  1:50
+
+For some reason our access to the dropbox public folder is no longer
+working. We need to reinstate it or all our builds will remain red and
+we won't be able to release over the weekend.
+
+New links:
+
+- https://www.dropbox.com/s/28uz0mqvih5g3su/dogen_deps_clang_7_3_0_osx_amd64.tar.bz2
+- https://www.dropbox.com/s/axf22srjkiltvr7/dogen_deps_gcc_5.3_linux_amd64_v8.bz2
+- https://www.dropbox.com/s/ntz6moq7kg9a8m7/dogen_deps_vc14_windows_amd64_v4.7z
+
+*** COMPLETED Create a UML profile to formalise yarn concepts          :epic:
+    CLOSED: [2017-03-20 Mon 11:18]
+    CLOCK: [2017-03-17 Fri 15:21]--[2017-03-17 Fri 15:44] =>  0:23
+
+We should define all of the available stereotypes by creating a UML
+profile. This allows specialising the UML meta-model via
+stereotypes. The profile should help clarify Dogen's design.
+
+*** POSTPONED Check for incompatibility between input language and enabled kernels :story:
+    CLOSED: [2017-03-20 Mon 11:19]
+    CLOCK: [2017-03-06 Mon 22:20]--[2017-03-06 Mon 22:31] =>  0:11
+
+At present it is possible to have a model with input language of say
+C++ but with the C# kernel enabled. We should throw if the input
+language is incompatible with the enabled kernels.
+
+Sadly this is not trivial. This is because quilt only sees the mapped
+models; thus as far as knit is concerned, we ask for the input
+language (e.g. c++) and there is an enabled kernel for it. We don't
+look at it from the enabled kernel's perspective (e.g. "C# is enabled,
+why is there no input language for it?"). We could have a method in
+quilt that returns all enabled kernels; we could then look at all
+models we are going to build and if there is a mismatch we can
+throw. But extracting the =configuration_factory= out of quilt
+workflow is not going to be easy without screwing up the API.
+
+*** POSTPONED Build on tags for Windows                               :story:
+    CLOSED: [2017-03-20 Mon 11:19]
+    CLOCK: [2017-03-06 Mon 12:01]--[2017-03-06 Mon 12:16] =>  0:15
+
+At present we are not building and deploying for tags on Windows. This
+is a major pain because it means we must remember to always push the
+tag separately. We need to setup appveyor correctly.
+
+Links:
+
+- [[http://help.appveyor.com/discussions/problems/6209-build-is-not-triggered-for-tag][Build is not triggered for tag]]
+
+*** POSTPONED Add a "flat directory" mode                             :story:
+    CLOSED: [2017-03-20 Mon 11:19]
+    CLOCK: [2017-03-06 Mon 14:31]--[2017-03-06 Mon 14:39] =>  0:08
+
+It would be nice to have a mode in which all files get placed in a
+single-directory: no src, include, etc – just one big folder with all
+files.
+
+Actually we can already achieve this:
+
+- set =quilt.cpp.disable_facet_directories= to true
+- set =quilt.cpp.include_directory_name= to empty
+- set =quilt.cpp.source_directory_name= to empty
+
+It is however a bit painful. It would be nice to have a shorthand for
+this, which could be the "flat directory" mode. It is also compatible
+with split project mode (we just have flat directories in two
+different top-level directories), which is nice.
+
+We should check that =enable_unique_file_names= is set to true.
+
+*** POSTPONED Handling of visual studio projects and solutions is incorrect :story:
+    CLOSED: [2017-03-20 Mon 11:19]
+    CLOCK: [2017-03-09 Thu 06:39]--[2017-03-09 Thu 07:01] =>  0:22
+    CLOCK: [2017-03-07 Tue 20:56]--[2017-03-07 Tue 21:00] =>  0:04
+    CLOCK: [2017-03-07 Tue 20:10]--[2017-03-07 Tue 20:55] =>  0:45
+
+At present we added the extension of the solution/project to the
+element name, e.g.:
+
+: all_path_and_directory_settings.csproj
+
+This happens to work for the simpler cases, but if we try to add a
+postfix we then have a problem:
+
+: dogen.test_models.all_path_and_directory_settings.csproj_vc15_
+
+Projects and solutions do not seem to fit our conceptual model for the
+element space. We need to somehow have distinct element IDs but yet
+not associate the extension with the name directly. Up to now we never
+had two distinct elements with the exact same name but generating two
+different artefacts with different extensions.
+
+This is a problem because we will need to have the ability to generate
+multiple project files for different versions of visual studio.
+
+For now we removed the project and solution postfixes:
+
+: #DOGEN quilt.csharp.visual_studio.solution.postfix=_vs15_
+: #DOGEN quilt.csharp.visual_studio.project.postfix=_vc15_
+
+In order to fit our conceptual model, we need to make some adjustments
+to our implementation of projects and solutions. First, there is only
+one meta-model element for *both* projects and solutions. This is
+derived from the fact that they both share a common name. The
+conceptual model does not involve file extensions - or file paths for
+that matter; archetypes exist only in archetype space, and their
+"paths" in this space are only related to the facets they belong
+to. The physical location is a property of files, which are
+expressions of archetypes in "file space". Thus, there is only one
+single element, provisionally called "visual studio", which has
+multiple archetypes (and their associated formatters):
+
+- solution
+- project
+
+Second, a solution and project may be instantiated multiple times,
+depending on the version of visual studio and the associated
+compiler. Externally users supply a visual studio version and that
+internally will map to different instances of the formatters. We must
+instantiate the formatters for each supported version because we may
+need to create multiple versions simultaneously: his is the use case
+where users want to generate projects and solutions for multiple
+versions of VS at the same time.
+
+THe good news is that we already have something similar: master
+includes. We can adapt a lot of the logic we have for master
+includes. There are some differences though:
+
+- we will have multiple instances on the same facet.
+- we need some external mechanism to determine if a given version is
+  enabled. We could force users to enter the "enabled" property for
+  each version in the meta-data, but that would get really messy since
+  there are only a few valid combinations of solution and project
+  version. Its better if users supply the Visual Studio versions and
+  we infer the solution and projects to enable. But we do not have a
+  mechanism for this at present. We could add a "is enabled" to
+  formatters like we did for helpers, supplying the element; we would
+  then check the Visual Studio version in the element and return false
+  if it didn't match the formatters version. Or we could change the
+  formatter's interface to return optional artefact. Whilst this is a
+  bit more painful - we'd have to change all formatters - it fits the
+  code structure slightly better.
+- we need to have different file names depending on the
+  version. Worse: if there is just a single version we do not need to
+  have a "version prefix". If there are multiple versions we need to
+  add the prefix. The fist use case is easy: we already have archetype
+  prefixes; we just need to add a prefix for each version. The second
+  part requires some hacking. We could have an option in locator:
+  "apply archetype postfix" supplied as an argument. Since we have the
+  Visual Studio element we have visibility of all enabled versions.
+
+*** POSTPONED Implement the database model using Northwind            :story:
+    CLOSED: [2017-03-20 Mon 11:19]
+    CLOCK: [2017-03-19 Sun 21:40]--[2017-03-19 Sun 23:09] =>  1:29
+    CLOCK: [2017-03-19 Sun 20:15]--[2017-03-19 Sun 21:39] =>  1:24
+    CLOCK: [2017-03-19 Sun 17:54]--[2017-03-19 Sun 18:05] =>  0:11
+    CLOCK: [2017-03-19 Sun 17:32]--[2017-03-19 Sun 17:53] =>  0:21
+    CLOCK: [2017-03-19 Sun 17:05]--[2017-03-19 Sun 17:31] =>  0:26
+    CLOCK: [2017-03-19 Sun 16:15]--[2017-03-19 Sun 17:04] =>  0:49
+    CLOCK: [2017-03-18 Sat 22:16]--[2017-03-18 Sat 22:19] =>  0:03
+    CLOCK: [2017-03-18 Sat 20:51]--[2017-03-18 Sat 22:15] =>  1:24
+    CLOCK: [2017-03-18 Sat 17:08]--[2017-03-18 Sat 18:53] =>  1:45
+    CLOCK: [2017-03-17 Fri 11:30]--[2017-03-17 Fri 11:50] =>  0:20
+    CLOCK: [2017-03-16 Thu 19:39]--[2017-03-16 Thu 20:24] =>  0:45
+    CLOCK: [2017-03-14 Tue 22:11]--[2017-03-14 Tue 22:31] =>  0:20
+    CLOCK: [2017-03-14 Tue 21:40]--[2017-03-14 Tue 22:10] =>  0:30
+    CLOCK: [2017-03-14 Tue 18:11]--[2017-03-14 Tue 18:35] =>  0:24
+    CLOCK: [2017-03-14 Tue 06:40]--[2017-03-14 Tue 07:21] =>  0:41
+    CLOCK: [2017-03-13 Mon 21:11]--[2017-03-13 Mon 22:44] =>  1:33
+    CLOCK: [2017-03-13 Mon 20:17]--[2017-03-13 Mon 21:10] =>  0:53
+    CLOCK: [2017-03-13 Mon 19:35]--[2017-03-13 Mon 20:16] =>  0:41
+    CLOCK: [2017-03-13 Mon 17:57]--[2017-03-13 Mon 18:31] =>  0:34
+    CLOCK: [2017-03-13 Mon 16:45]--[2017-03-13 Mon 17:56] =>  1:11
+    CLOCK: [2017-03-13 Mon 15:51]--[2017-03-13 Mon 16:44] =>  0:53
+    CLOCK: [2017-03-13 Mon 15:16]--[2017-03-13 Mon 15:50] =>  0:34
+    CLOCK: [2017-03-13 Mon 13:54]--[2017-03-13 Mon 15:15] =>  1:21
+    CLOCK: [2017-03-13 Mon 13:35]--[2017-03-13 Mon 13:53] =>  0:18
+    CLOCK: [2017-03-13 Mon 11:02]--[2017-03-13 Mon 11:25] =>  0:23
+    CLOCK: [2017-03-13 Mon 10:30]--[2017-03-13 Mon 10:34] =>  0:04
+    CLOCK: [2017-03-13 Mon 09:12]--[2017-03-13 Mon 10:03] =>  0:51
+    CLOCK: [2017-03-12 Sun 21:37]--[2017-03-12 Sun 21:51] =>  0:14
+    CLOCK: [2017-03-12 Sun 20:13]--[2017-03-12 Sun 21:36] =>  1:23
+    CLOCK: [2017-03-12 Sun 17:21]--[2017-03-12 Sun 18:19] =>  0:58
+    CLOCK: [2017-03-12 Sun 15:05]--[2017-03-12 Sun 17:20] =>  2:15
+
+Now we are using Dogen in anger with ODB, we need to make sure the
+database model is actually exercising all of this functionality. One
+easy way of achieving this is to use Microsoft's Northwind Database as
+the base for the model.
+
+- [[https://northwinddatabase.codeplex.com/][Northwind Database]]
+
+We should implement it using Oracle and use this to test the changes
+to ODB's oracle support.
+
+Tasks:
+
+- add comment for ODB targets
+- add flag to mark a type as a value
+- case of the identifiers is a problem: sometimes we get them
+  uppercase (when we do them without quotes in sql plus) sometimes we
+  get them lowercase (from odb). use =--sql-name-case= upper/lower as
+  a flag.
+- schema initialisation from statics is not working; this is as
+  explained in [[http://www.codesynthesis.com/pipermail/odb-users/2013-May/001286.html][this email]]. We can force it by doing a query on that
+  entity, but that then causes an exception.
+- =head -n 200 northwind_ascii.sql | grep ^INSERT | cut -b 1-150 | uniq=
+- paper:
+
+** Deprecated

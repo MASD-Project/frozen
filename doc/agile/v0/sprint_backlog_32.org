@@ -1,0 +1,216 @@
+#+title: Sprint Backlog 32
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 32.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:03]
+
+| Headline                                                              | Time    |       |      |
+|-----------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                          | *17:29* |       |      |
+|-----------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                       |         | 17:29 |      |
+| COMPLETED Sprint and product backlog grooming                         |         |       | 0:35 |
+| COMPLETED Split transformation code from C++ model into its own model |         |       | 2:57 |
+| COMPLETED Create a formatting workflow in C++ formatters model        |         |       | 2:08 |
+| COMPLETED Tidy-up all C++ models                                      |         |       | 2:20 |
+| CANCELLED Make a more truthful C++ model                              |         |       | 9:29 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                       :task:
+    CLOSED: [2013-08-23 Fri 07:47]
+    CLOCK: [2013-08-15 Thu 18:22]--[2013-08-15 Thu 18:29] =>  0:07
+    CLOCK: [2013-08-08 Thu 08:23]--[2013-08-08 Thu 08:25] =>  0:02
+    CLOCK: [2013-08-05 Mon 23:24]--[2013-08-05 Mon 23:31] =>  0:07
+    CLOCK: [2013-08-05 Mon 23:05]--[2013-08-05 Mon 23:24] =>  0:19
+
+*** COMPLETED Split formatting code from C++ model into its own model :story:
+    CLOSED: [2013-08-05 Mon 23:27]
+
+The =cpp_formatters= model is responsible for taking a C++
+representation and writing it to file.
+
+*** COMPLETED Split transformation code from C++ model into its own model :story:
+    CLOSED: [2013-08-06 Tue 22:58]
+    CLOCK: [2013-08-06 Tue 22:13]--[2013-08-06 Tue 22:57] =>  0:44
+    CLOCK: [2013-08-06 Tue 21:55]--[2013-08-06 Tue 22:13] =>  0:18
+    CLOCK: [2013-08-06 Tue 18:14]--[2013-08-06 Tue 18:40] =>  0:26
+    CLOCK: [2013-08-06 Tue 17:56]--[2013-08-06 Tue 18:08] =>  0:12
+    CLOCK: [2013-08-06 Tue 08:24]--[2013-08-06 Tue 08:37] =>  0:13
+    CLOCK: [2013-08-06 Tue 07:46]--[2013-08-06 Tue 08:18] =>  0:32
+    CLOCK: [2013-08-05 Mon 23:24]--[2013-08-05 Mon 23:56] =>  0:32
+
+The SML to C++ transformer is responsible for taking an SML
+representation of a model and converting it to the C++ equivalent;
+this is =sml_to_cpp=, since its a unidirectional transformation. It
+would takes a lot of classes such as locator, includer, etc;
+
+*** COMPLETED Create a transformation workflow in C++ transformation model :story:
+    CLOSED: [2013-08-06 Tue 22:58]
+*** COMPLETED Create a formatting workflow in C++ formatters model    :story:
+    CLOSED: [2013-08-08 Thu 08:23]
+    CLOCK: [2013-08-08 Thu 08:01]--[2013-08-08 Thu 08:23] =>  0:22
+    CLOCK: [2013-08-07 Wed 19:01]--[2013-08-07 Wed 19:30] =>  0:29
+    CLOCK: [2013-08-07 Wed 08:28]--[2013-08-07 Wed 08:34] =>  0:06
+    CLOCK: [2013-08-07 Wed 07:47]--[2013-08-07 Wed 08:18] =>  0:31
+    CLOCK: [2013-08-06 Tue 22:59]--[2013-08-06 Tue 23:39] =>  0:40
+
+*** COMPLETED Tidy-up all C++ models                                  :story:
+    CLOSED: [2013-08-11 Sun 12:21]
+    CLOCK: [2013-08-09 Fri 23:04]--[2013-08-09 Fri 23:42] =>  0:38
+    CLOCK: [2013-08-09 Fri 18:27]--[2013-08-09 Fri 18:43] =>  0:16
+    CLOCK: [2013-08-08 Thu 19:10]--[2013-08-08 Thu 20:36] =>  1:26
+
+- add comments
+- fix model layout
+
+*** CANCELLED Make a more truthful C++ model                           :epic:
+    CLOCK: [2013-08-15 Thu 18:29]--[2013-08-15 Thu 19:05] =>  0:36
+    CLOCK: [2013-08-15 Thu 18:14]--[2013-08-15 Thu 18:22] =>  0:08
+    CLOCK: [2013-08-15 Thu 17:46]--[2013-08-15 Thu 18:02] =>  0:16
+    CLOCK: [2013-08-14 Wed 07:36]--[2013-08-14 Wed 08:20] =>  0:44
+
+Notes:
+
+This is not quite as trivial as first thought. The gist of it is as
+follows:
+
+- one could make a low-level model of the C++ language; this could be
+  done by either using clang/LLVM or by creating our own model. With
+  this approach, the formatter would either be the clang rewritter or
+  we could roll our own. The formatter would be very dumb, because the
+  AST contains a faithful description of the code to generate, down to
+  the last semi-colon. The downside to this approach is that
+  transforming an SML model into a clang AST (or any other AST that is
+  complete enough to generate C++ code) is a very error prone process
+  and it would be very difficult to maintain these transformers. Its
+  just too low-level to be practical.
+
+- one could make a high-level model of the C++ language: this was the
+  original approach, with concepts such as "visitor" and
+  "registrar". In this approach, we push some of the complexity of the
+  code generation into the type system, creating concepts such as
+  "header guards", "aspect types", "file types" and so on. None of
+  these concepts actually exist in the C++ language; these are just
+  high-level abstractions that enable us to express things in a less
+  verbose way than an AST would. The remaining complexity is then push
+  down to the formatters via hard-coding. This approach is great to
+  produce quick results because we just add whatever types we require
+  on the parts of the system we deem "variable" and hard-code at the
+  formatters level whatever we deem to be "constant". However,
+  this model is not very logical because its not modeling the C++
+  language; as such it looks haphazard in parts, and cobbled
+  together. It is also not very flexible; generating slightly
+  different classes requires adding more types because the model is
+  very rigid.
+
+- one could make an intermediate model of the C++ language: this seems
+  to be the right approach. In some cases we may need to go straight
+  down to the token level (e.g. pre-processor constructs); in some
+  other cases we may need high-level abstractions (e.g. forward
+  declaration, class implementation). We need a model that is loosely
+  based on a "reflection" model of the C++ language, but occasionally
+  drops down to the parsing level constructs.
+
+Previous understanding:
+
+The C++ model should really be a model of the _language_ not of
+high-level constructs such as exceptions, visitor, etc. We should only
+have a few types, and they should all be part of the C++
+language. Their names should match the names in the C++
+standard. Notes on types:
+
+- type: create a base class for everything that can be contained in a
+  file. types have names, comments.
+- file: files have a string property called licence, comments, the
+  include lists and a list of types.
+- include lists should be renamed to whatever terminology the standard
+  uses for include grouping; we should also check the names of user
+  and system includes.
+- namespace: type that contains types.
+- enum: contains just the enumerator.
+- variable: nested type.
+- function (which when in a class becomes a member
+  function). functions contain a member variable of type string called
+  implementation which has all the code for the function. they also
+  have a type argument for templates.
+- argument
+- class. has have a type argument for templates.
+- scope / visibility: public, private, protected.
+
+The job of the transformer is then to create the diversity of the
+classes needed to implement the different aspects and facets in a
+model. The class should contain:
+
+- licence
+- for each function, implementation; a string with the code for the
+  implementation of the function, as we would at present generate in
+  the formatter.
+
+We should end up with a single formatter which takes a file and
+converts it into C++ code. All the clever logic would be inside of the
+transformer.
+
+Once we have this in place, a transition to a clang based backend
+should be slightly easier, since the only (big) difference is the
+low-level AST generation inside of functions. It would still be a
+tough job.
+
+**** COMPLETED Create the basic set of classes with names out of the C++ standard
+     CLOSED: [2013-08-11 Sun 19:18]
+     CLOCK: [2013-08-11 Sun 17:49]--[2013-08-11 Sun 19:16] =>  1:27
+     CLOCK: [2013-08-11 Sun 16:00]--[2013-08-11 Sun 17:49] =>  1:49
+     CLOCK: [2013-08-11 Sun 12:21]--[2013-08-11 Sun 15:00] =>  2:39
+     CLOCK: [2013-08-11 Sun 12:00]--[2013-08-11 Sun 12:21] =>  0:21
+
+**** COMPLETED Rename =file_info= to source_file
+     CLOSED: [2013-08-11 Sun 23:46]
+     CLOCK: [2013-08-11 Sun 23:38]--[2013-08-11 Sun 23:51] =>  0:13
+     CLOCK: [2013-08-11 Sun 23:31]--[2013-08-11 Sun 23:39] =>  0:08
+     CLOCK: [2013-08-11 Sun 22:50]--[2013-08-11 Sun 23:31] =>  0:41
+
+**** CANCELLED Make members of =source_file= a pointer to element
+     CLOSED: [2013-08-12 Mon 07:53]
+
+Since the existing formatters are tactical and will be deleted when
+we're finished, there is no point in refactoring them. Instead, we'll
+just focus on the new formatters.
+
+**** IMPLEMENTATION Create a class to represent a namespace, with a scope
+     CLOCK: [2013-08-12 Mon 07:48]--[2013-08-12 Mon 08:15] =>  0:27
+
+**** Add scope to =source_file=
+**** Add licence as a member in =source_file=
+**** Create a mock factory for C++ model
+**** Create a basic =standard_transformer= that instantiates new classes
+**** Create a basic =standard_formatter= that formats new classes
+
+*** CANCELLED Create an SML level concept for facets
+
+In reality, "facets" are not a C++ thing; they are language
+neutral. They are, however, expressed differently in different
+languages. For example:
+
+- types: same on all languages
+- debug_printing: overloaded operator<< in C++, toString() in Java,
+  ToString() in C#, etc.
+- serialisation: slightly less obvious, but effectively the most
+  "native" serialisation available for the given programming
+  language. For C++ this is boost serialisation.
+- hashing: language specific support for hashing, in C++ either std
+  hash or boost hash, in Java/C# overloading of hash functions.
+- test_data: some facilities for test data generation
+- relational: bindings for relational databases. ODB in C++.
+
+We can introduce these concepts at the SML level, probably at the
+=model= and =abstract_object= level; we can then do further
+translation at the language level, as required.
+
+** Deprecated Development Stories

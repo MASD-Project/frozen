@@ -1,0 +1,190 @@
+#+title: Sprint Backlog 33
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 33.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:04]
+
+| Headline                                                            | Time    |       |      |
+|---------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                        | *25:23* |       |      |
+|---------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                     |         | 25:23 |      |
+| COMPLETED Sprint and product backlog grooming                       |         |       | 0:14 |
+| COMPLETED Remove prototype model                                    |         |       | 0:04 |
+| COMPLETED Create the initial skeleton for the intermediate model    |         |       | 9:44 |
+| COMPLETED Add a data directory and populate it with main data files |         |       | 4:00 |
+| COMPLETED Implement the preamble factory                            |         |       | 6:58 |
+| COMPLETED Create a modeline formatter                               |         |       | 1:38 |
+| COMPLETED Create a comments formatter                               |         |       | 2:08 |
+| CANCELLED Create a basic C++ workflow in SML to OM model            |         |       | 0:37 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                       :task:
+    CLOSED: [2013-09-09 Mon 08:13]
+    CLOCK: [2013-08-27 Tue 21:40]--[2013-08-27 Tue 21:41] =>  0:01
+    CLOCK: [2013-08-23 Fri 07:59]--[2013-08-23 Fri 08:00] =>  0:01
+    CLOCK: [2013-08-23 Fri 07:47]--[2013-08-23 Fri 07:59] =>  0:08
+
+*** COMPLETED Remove prototype model                                   :task:
+    CLOSED: [2013-08-23 Fri 08:04]
+    CLOCK: [2013-08-23 Fri 08:00]--[2013-08-23 Fri 08:04] =>  0:04
+
+We don't really need it any more, concepts can be tried directly with
+dogen.
+
+*** COMPLETED Create the initial skeleton for the intermediate model  :story:
+    CLOSED: [2013-09-07 Sat 18:03]
+    CLOCK: [2013-08-28 Wed 07:47]--[2013-08-28 Wed 08:17] =>  0:30
+    CLOCK: [2013-08-27 Tue 23:01]--[2013-08-27 Tue 23:12] =>  0:11
+    CLOCK: [2013-08-27 Tue 22:52]--[2013-08-27 Tue 23:01] =>  0:09
+    CLOCK: [2013-08-27 Tue 21:52]--[2013-08-27 Tue 22:48] =>  0:56
+    CLOCK: [2013-08-27 Tue 21:47]--[2013-08-27 Tue 21:51] =>  0:04
+    CLOCK: [2013-08-27 Tue 21:33]--[2013-08-27 Tue 21:39] =>  0:06
+    CLOCK: [2013-08-27 Tue 20:53]--[2013-08-27 Tue 21:33] =>  0:40
+    CLOCK: [2013-08-27 Tue 19:25]--[2013-08-27 Tue 19:55] =>  0:30
+    CLOCK: [2013-08-25 Sun 21:20]--[2013-08-25 Sun 23:36] =>  2:16
+    CLOCK: [2013-08-25 Sun 21:05]--[2013-08-25 Sun 21:20] =>  0:15
+    CLOCK: [2013-08-25 Sun 17:15]--[2013-08-25 Sun 20:30] =>  3:15
+    CLOCK: [2013-08-25 Sun 16:45]--[2013-08-25 Sun 17:15] =>  0:30
+    CLOCK: [2013-08-23 Fri 08:29]--[2013-08-23 Fri 08:38] =>  0:09
+    CLOCK: [2013-08-23 Fri 08:04]--[2013-08-23 Fri 08:17] =>  0:13
+
+This story is the result of the analysis story done on the previous
+iteration (see Make a more truthful C++ model). The end result is we
+need a model designed specifically for outputting across programming
+languages. The objective of this story is to model the main entities
+in the model, in particular on the data side.
+
+*** COMPLETED Add a data directory and populate it with main data files :story:
+    CLOSED: [2013-09-07 Sat 18:07]
+
+We need to make dogen more data driven. Things such as preambles,
+licences, etc should be read from file. In order to get this started
+we need generic support for data files, and it must integrate with
+packaging such that we find the data directory across all operative
+systems.
+
+**** CANCELLED Hard-code path to data directory
+     CLOSED: [2013-09-07 Sat 18:02]
+
+Cannot be done as the installer may override it.
+
+**** COMPLETED Find the path of the running binary
+     CLOSED: [2013-09-07 Sat 18:02]
+     CLOCK: [2013-09-07 Sat 14:01]--[2013-09-07 Sat 18:01] =>  4:00
+**** COMPLETED Make the path to the data directory relative to running binary
+     CLOSED: [2013-09-07 Sat 18:07]
+
+*** COMPLETED Implement the preamble factory                          :story:
+    CLOSED: [2013-09-08 Sun 14:36]
+    CLOCK: [2013-09-07 Sat 23:10]--[2013-09-07 Sat 23:41] =>  0:31
+
+**** COMPLETED load preambles from the data directory
+     CLOCK: [2013-09-07 Sat 20:10]--[2013-09-07 Sat 23:09] =>  2:59
+     CLOCK: [2013-09-07 Sat 18:15]--[2013-09-07 Sat 18:33] =>  0:18
+     CLOCK: [2013-09-07 Sat 18:04]--[2013-09-07 Sat 18:15] =>  0:11
+     CLOSED: [2013-09-07 Sat 23:10]
+
+**** COMPLETED Rename preamble to modeline
+     CLOSED: [2013-09-08 Sun 09:38]
+     CLOCK: [2013-09-08 Sun 09:04]--[2013-09-08 Sun 09:38] =>  0:34
+
+[[https://help.gnome.org/users/gedit/stable/gedit-plugins-modelines.html.en][Apparently]] that is the correct name.
+
+**** COMPLETED Add support for start and end modelines
+     CLOSED: [2013-09-08 Sun 11:41]
+
+**** COMPLETED Refactor directory code into utility
+     CLOSED: [2013-09-08 Sun 13:44]
+     CLOCK: [2013-09-08 Sun 12:01]--[2013-09-08 Sun 13:20] =>  1:19
+
+We should not duplicate the same code as we have in asserter but
+instead factor out the commonalities and put them in utility. The
+hydrator interface should deal only with an =std::istream= and all the
+file/directory manipulation should be external. this will make testing
+much easier and avoid code duplication.
+
+tests:
+
+- non-existent directory
+- directory is a file
+
+**** COMPLETED Add negative tests
+     CLOSED: [2013-09-08 Sun 14:35]
+     CLOCK: [2013-09-08 Sun 14:08]--[2013-09-08 Sun 14:35] =>  0:27
+     CLOCK: [2013-09-08 Sun 13:50]--[2013-09-08 Sun 14:08] =>  0:18
+     CLOCK: [2013-09-08 Sun 11:40]--[2013-09-08 Sun 12:01] =>  0:21
+
+- invalid INI format
+- must supply editor
+- not defaulting location defaults to top
+- invalid editor
+- invalid location
+
+*** COMPLETED Create a modeline formatter                             :story:
+    CLOSED: [2013-09-08 Sun 16:15]
+    CLOCK: [2013-09-08 Sun 16:15]--[2013-09-08 Sun 16:23] =>  0:08
+    CLOCK: [2013-09-08 Sun 14:45]--[2013-09-08 Sun 16:15] =>  1:30
+
+*** COMPLETED Create a comments formatter                             :story:
+    CLOSED: [2013-09-08 Sun 21:59]
+    CLOCK: [2013-09-08 Sun 21:00]--[2013-09-08 Sun 21:59] =>  0:59
+    CLOCK: [2013-09-08 Sun 17:44]--[2013-09-08 Sun 17:57] =>  0:13
+    CLOCK: [2013-09-08 Sun 16:48]--[2013-09-08 Sun 17:44] =>  0:56
+
+*** CANCELLED Create a basic C++ workflow in SML to OM model
+    CLOSED: [2013-09-09 Mon 08:13]
+    CLOCK: [2013-09-08 Sun 21:59]--[2013-09-08 Sun 22:36] =>  0:37
+
+*** CANCELLED Create an SML level concept for facets                  :story:
+    CLOSED: [2013-09-09 Mon 08:13]
+
+In reality, "facets" are not a C++ thing; they are language
+neutral. They are, however, expressed differently in different
+languages. For example:
+
+- types: same on all languages
+- debug_printing: overloaded operator<< in C++, toString() in Java,
+  ToString() in C#, etc.
+- serialisation: slightly less obvious, but effectively the most
+  "native" serialisation available for the given programming
+  language. For C++ this is boost serialisation.
+- hashing: language specific support for hashing, in C++ either std
+  hash or boost hash, in Java/C# overloading of hash functions.
+- test_data: some facilities for test data generation
+- relational: bindings for relational databases. ODB in C++.
+
+We can introduce these concepts at the SML level, probably at the
+=model= and =abstract_object= level; we can then do further
+translation at the language level, as required.
+
+*** CANCELLED Loading external models from file                       :story:
+    CLOSED: [2013-09-09 Mon 08:13]
+
+We should really use something like boost property tree to allow
+system models to be loaded from file. We can then convert primitives,
+boost, STL, etc to this. These "models" would then output both a SML
+model as well as some kind of CPP representation with include files,
+etc.
+
+We should call these "profiles" in the sense of ODB (the Qt profile,
+the boost profile, etc). A file should contain all types for that
+profile, from which we generate both the SML model and the inclusions
+for includer.
+
+Since INI files do not support nesting/collections, we probably need
+to use XML or JSON.
+
+See [[http://www.boost.org/doc/libs/1_53_0/doc/html/boost_propertytree/parsers.html#boost_propertytree.parsers.ini_parser][boost property tree]].
+
+Example file available at data/profiles/sample.ini
+
+** Deprecated Development Stories

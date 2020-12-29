@@ -1,0 +1,641 @@
+#+title: Sprint Backlog 00
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish ODB support;
+- Improve Visual Studio support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-04-03 Mon 10:19]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *44:50* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 44:50   |       |       | 100.0 |
+| Active                                                                      |         | 44:50 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  1:16 |   2.8 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:30 |   1.1 |
+| COMPLETED Header directory is not part of housekeeping                      |         |       |  0:49 |   1.8 |
+| COMPLETED Disable common support on ODB for a single database               |         |       |  0:08 |   0.3 |
+| COMPLETED Concepts cannot be placed inside of packages                      |         |       |  8:26 |  18.8 |
+| COMPLETED Use =cxx= extension with ODB files                                |         |       |  0:32 |   1.2 |
+| COMPLETED Implement the database model using Northwind                      |         |       |  6:11 |  13.8 |
+| COMPLETED ODB options does not cater for types placed in namespaces         |         |       |  0:16 |   0.6 |
+| COMPLETED Improve ODB implementation                                        |         |       | 14:26 |  32.2 |
+| COMPLETED Do not use underscores in ORM stereotypes                         |         |       |  0:13 |   0.5 |
+| COMPLETED Add msbuild targets for ODB                                       |         |       |  3:49 |   8.5 |
+| COMPLETED Add boilerplate for XML files                                     |         |       |  1:27 |   3.2 |
+| COMPLETED Exceptions in C++ 98 have C++ 14 keywords                         |         |       |  0:32 |   1.2 |
+| POSTPONED Allow users to override string prefixes in test data              |         |       |  1:52 |   4.2 |
+| POSTPONED Ignore ODB files automatically                                    |         |       |  1:55 |   4.3 |
+| POSTPONED Add a top-level "Visual Studio" knob                              |         |       |  0:33 |   1.2 |
+| POSTPONED Add support for Visual Studio C++ projects                        |         |       |  1:55 |   4.3 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-04-03 Mon 10:18]
+    CLOCK: [2017-03-25 Sat 22:28]--[2017-03-25 Sat 22:52] =>  0:24
+    CLOCK: [2017-03-23 Thu 06:24]--[2017-03-23 Thu 07:05] =>  0:41
+    CLOCK: [2017-03-20 Mon 11:11]--[2017-03-20 Mon 11:22] =>  0:11
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-03-20 Mon 11:53]
+    CLOCK: [2017-03-20 Mon 11:23]--[2017-03-20 Mon 11:53] =>  0:30
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.99.0, "Cine Estúdio"
+
+#+begin_src markdown
+![Cine Estúdio](http://photos1.blogger.com/blogger/5188/3180/1600/blog_IMG_0530.jpg)The unfinished Cine Estúdio, Namibe, Angola. (C) Blog O Desterro do Arquitecto, in [blogspot](http://odesterrodoarquitecto.blogspot.co.uk/2006/07/o-cine-estudio-do-namibe.html).
+
+Overview
+=======
+This sprint was mainly focused on improving our ORM/ODB support. We have continued our series of posts on it, with the third part of the series:
+
+- [Nerd Food: Northwind, or Using Dogen with ODB - Part III](http://mcraveiro.blogspot.co.uk/2017/03/nerd-food-northwind-or-using-dogen-with.html)
+
+We have also improved testing around a few areas:
+
+- all of the meta-data settings for paths and directories, fixing a few bugs in the process.
+- LAM: language agnostic models have now basic coverage and should work for both C# and C++.
+- ODB: the northwind project saw significant activity, as narrated in the blog posts.
+
+Finally, the other significant feature added in this sprint is support for C++ 98: It is now possible to generate models which do not use any of the C++ 11 (and above features).
+
+User visible changes
+===============
+In this sprint, a number of user visible changes were made:
+
+- **Split directory**: this feature was resurrected; it is now possible to place the include directory in a location other than the main project directory.
+- **Improvements in the ORM layer**: more features were added and quite a few fixes. See the [northwind](https://github.com/DomainDrivenConsulting/dogen/blob/09d7f7cd40b29ed0dded559b75d9dbcbad52f777/projects/input_models/northwind.dia) model for an example.
+- **C++ standard is now settable**: users can now choose C++ 98 or C++ 11/14 as the standard and the generated code will be compliant.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_099.org).
+
+Next Sprint
+========
+In the next sprint we'll wrap things up with our ODB work and start adding Visual Studio support.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_0.99.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.99.0/dogen_0.99.0_amd64-applications.deb)
+- [dogen-0.99.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.99.0/dogen-0.99.0-Darwin-x86_64.dmg)
+- [dogen-0.99.0-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-0.99.0-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/843812829148954625][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6249579000297975808/][LinkedIn]]
+
+*** COMPLETED Header directory is not part of housekeeping            :story:
+    CLOSED: [2017-03-21 Tue 11:46]
+    CLOCK: [2017-03-21 Tue 11:47]--[2017-03-21 Tue 11:52] =>  0:05
+    CLOCK: [2017-03-21 Tue 11:02]--[2017-03-21 Tue 11:46] =>  0:44
+
+At present the housekeeper is not deleting files in the header
+directory.
+
+*** COMPLETED Disable common support on ODB for a single database     :story:
+    CLOSED: [2017-03-21 Tue 12:09]
+    CLOCK: [2017-03-21 Tue 12:01]--[2017-03-21 Tue 12:09] =>  0:08
+
+We are always enabling common regardless of how many database systems
+the user has requested. Similar with multiple database support. We
+should disable all of this (at least for now) on the single database
+scenario.
+
+*** COMPLETED Concepts cannot be placed inside of packages            :story:
+    CLOSED: [2017-03-22 Wed 16:46]
+    CLOCK: [2017-03-22 Wed 16:47]--[2017-03-22 Wed 16:55] =>  0:08
+    CLOCK: [2017-03-22 Wed 16:32]--[2017-03-22 Wed 16:46] =>  0:14
+    CLOCK: [2017-03-22 Wed 15:59]--[2017-03-22 Wed 16:31] =>  0:32
+    CLOCK: [2017-03-22 Wed 15:48]--[2017-03-22 Wed 15:58] =>  0:10
+    CLOCK: [2017-03-22 Wed 15:21]--[2017-03-22 Wed 15:47] =>  0:26
+    CLOCK: [2017-03-22 Wed 14:35]--[2017-03-22 Wed 15:20] =>  0:45
+    CLOCK: [2017-03-22 Wed 14:03]--[2017-03-22 Wed 14:34] =>  0:31
+    CLOCK: [2017-03-22 Wed 12:44]--[2017-03-22 Wed 12:59] =>  0:15
+    CLOCK: [2017-03-22 Wed 10:02]--[2017-03-22 Wed 12:43] =>  2:41
+    CLOCK: [2017-03-21 Tue 20:01]--[2017-03-21 Tue 20:51] =>  0:50
+    CLOCK: [2017-03-21 Tue 17:53]--[2017-03-21 Tue 18:40] =>  0:47
+    CLOCK: [2017-03-21 Tue 15:30]--[2017-03-21 Tue 16:01] =>  0:31
+    CLOCK: [2017-03-21 Tue 14:10]--[2017-03-21 Tue 14:26] =>  0:16
+    CLOCK: [2017-03-21 Tue 12:10]--[2017-03-21 Tue 12:30] =>  0:20
+
+At present it is not possible to create a concept inside a
+package or reuse concepts across models. This is because we do not
+resolve the refines container of a concept, or the models container of
+an object. We could trivially add resolution to concept expansion but
+we do not have a use case for this yet. The approach should be similar
+to what we did for generalisation expansion: call the
+resolver. However, we need to refactor the resolver because we need to
+use the same algorithm but this time on the concepts container.
+
+*Previous Understanding*
+
+#+begin_quote
+*Story*: As a dogen user, I want to place concepts in packages so that
+I can scope them when required.
+#+end_quote
+
+At present it is not possible to create a concept inside a
+package. This is because the concept qualified name is assumed to be
+at top-level. In the future it may be useful to use scoping for
+concept names in the stereotype. We do not yet have a use case for
+this.
+
+This can be done trivially by:
+
+- allowing (or forcing?) the stereotype to have the package path;
+- using the package path in stereotype expansion when constructing the
+  concept name.
+
+Merged stories:
+
+*Concepts do not work in namespaces*
+
+We just fail to resole them and do not even throw an error.
+
+We can either always place concepts on the model namespace or we can
+fix resolver to default to current scope.
+
+*** COMPLETED Use =cxx= extension with ODB files                      :story:
+    CLOSED: [2017-03-22 Wed 18:10]
+    CLOCK: [2017-03-22 Wed 18:06]--[2017-03-22 Wed 18:10] =>  0:04
+    CLOCK: [2017-03-22 Wed 17:56]--[2017-03-22 Wed 18:05] =>  0:09
+    CLOCK: [2017-03-22 Wed 17:36]--[2017-03-22 Wed 17:55] =>  0:19
+
+At present we renamed the ODB extension to =.cpp=. This is to make the
+ODB files part of the project:
+
+: set(files "")
+: file(GLOB_RECURSE files RELATIVE
+:    "${CMAKE_CURRENT_SOURCE_DIR}/"
+:    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
+However, it's quite nice to have distinct extensions for ODB and Dogen
+files. We should add a conditional in CMake that detects ODB and if
+found adds:
+
+: set(odb_files "")
+: file(GLOB_RECURSE odb_files RELATIVE
+:    "${CMAKE_CURRENT_SOURCE_DIR}/"
+:    "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx")
+: set(files ${files} ${odb_files})
+
+*** COMPLETED Implement the database model using Northwind            :story:
+    CLOSED: [2017-03-25 Sat 19:48]
+    CLOCK: [2017-03-25 Sat 19:49]--[2017-03-25 Sat 20:27] =>  0:38
+    CLOCK: [2017-03-25 Sat 16:39]--[2017-03-25 Sat 19:48] =>  3:09
+    CLOCK: [2017-03-25 Sat 16:12]--[2017-03-25 Sat 16:38] =>  0:26
+    CLOCK: [2017-03-20 Mon 20:45]--[2017-03-20 Mon 22:43] =>  1:58
+
+Now we are using Dogen in anger with ODB, we need to make sure the
+database model is actually exercising all of this functionality. One
+easy way of achieving this is to use Microsoft's Northwind Database as
+the base for the model.
+
+- [[https://northwinddatabase.codeplex.com/][Northwind Database]]
+
+We should implement it using Oracle and use this to test the changes
+to ODB's oracle support.
+
+Tasks:
+
+- add comment for ODB targets
+- add flag to mark a type as a value
+- case of the identifiers is a problem: sometimes we get them
+  uppercase (when we do them without quotes in sql plus) sometimes we
+  get them lowercase (from odb). use =--sql-name-case= upper/lower as
+  a flag.
+- schema initialisation from statics is not working; this is as
+  explained in [[http://www.codesynthesis.com/pipermail/odb-users/2013-May/001286.html][this email]]. We can force it by doing a query on that
+  entity, but that then causes an exception.
+- =head -n 200 northwind_ascii.sql | grep ^INSERT | cut -b 1-150 | uniq=
+- paper:
+
+*** COMPLETED ODB options does not cater for types placed in namespaces :story:
+    CLOSED: [2017-03-25 Sat 22:48]
+    CLOCK: [2017-03-25 Sat 22:31]--[2017-03-25 Sat 22:47] =>  0:16
+
+At present the regexes assume the types are placed on the top-level
+ODB directory.
+
+*** COMPLETED Types in namespaces do not have ORM properties applied  :story:
+    CLOSED: [2017-03-25 Sat 22:48]
+
+*Rationale*: We now have a test for this in northwind model and seems
+to work ok.
+
+We seem to be missing the schema and in some cases primary key too.
+
+*** COMPLETED Improve ODB implementation                              :story:
+    CLOSED: [2017-03-25 Sat 22:49]
+    CLOCK: [2017-03-25 Sat 10:02]--[2017-03-25 Sat 11:28] =>  1:26
+    CLOCK: [2017-03-24 Fri 20:41]--[2017-03-24 Fri 20:50] =>  0:09
+    CLOCK: [2017-03-24 Fri 15:49]--[2017-03-24 Fri 15:56] =>  0:07
+    CLOCK: [2017-03-24 Fri 15:11]--[2017-03-24 Fri 15:48] =>  0:37
+    CLOCK: [2017-03-24 Fri 13:32]--[2017-03-24 Fri 13:39] =>  0:07
+    CLOCK: [2017-03-24 Fri 13:01]--[2017-03-24 Fri 13:31] =>  0:30
+    CLOCK: [2017-03-24 Fri 11:52]--[2017-03-24 Fri 11:57] =>  0:05
+    CLOCK: [2017-03-24 Fri 10:06]--[2017-03-24 Fri 11:51] =>  1:45
+    CLOCK: [2017-03-24 Fri 09:01]--[2017-03-24 Fri 10:05] =>  1:04
+    CLOCK: [2017-03-23 Thu 16:22]--[2017-03-23 Thu 18:01] =>  1:39
+    CLOCK: [2017-03-23 Thu 14:05]--[2017-03-23 Thu 16:21] =>  2:16
+    CLOCK: [2017-03-23 Thu 07:21]--[2017-03-23 Thu 12:02] =>  4:41
+
+We have a number of stories related to ODB problems. Basically our
+current implementation is too brittle:
+
+- we cannot easily ignore ODB files;
+- our ODB targets stop working when we place elements arbitrarily in
+  element space.
+
+The key problem is that we made a lot of assumptions about where the
+ODB files (both inputs and outputs) were to be placed and we are now
+paying the price. The right solution for this is to take out all of
+the inputs for the CMakeLists and create types for them:
+
+- augment ODB options with missing parameters;
+- add database types to formattables model, and add "to string";
+- create a type to represent the ODB targets and add it to
+  formattables model. Must also include the regexes too. We should
+  exclude all types that have "generate ORM mapping" set to false.
+
+With all of this data we can now:
+
+- supply it to CMakeLists and create explicit targets for each file.
+- create a msbuild proj file for windows with explicit targets.
+
+Notes:
+
+- we should move the ODB targets to the implementation cmakefile.
+- we should move odb options to source odb.
+- only generate targets for ORM objects.
+- we need to obtain a list of all ORM-enabled types. Each of these
+  will require two targets: the "mv" target and the "odb" target. We
+  should actually merge the two into a single CMake target.
+- if we use types from another model, ODB will fail due to inclusion
+  errors. We need to somehow supply the CMake include directories to
+  ODB. Example:
+
+: get_directory_property(outout include_directories)
+: message(STATUS ${output})
+: foreach(dir in ${output})
+:     -> add -I ${dir}
+
+- we should check that ODB_INCLUDE_DIRS has been set to avoid weird
+  ODB errors.
+
+Problem:
+
+- escaping in the shell is just too difficult. We are struggling to
+  get it to work on Linux with CMake, and it will be even harder to
+  get it to work under CMD on windows. We need to generate an options
+  file for each element - plus a common one for all common
+  options. The element options file will have all options that require
+  regexes.
+
+*** COMPLETED Start signing all tags                                  :story:
+    CLOSED: [2017-03-25 Sat 22:50]
+
+*Rationale*: We are now signing everything including commits and tags.
+
+We should really be signing all git tags.
+
+Links:
+
+- [[https://git-scm.com/book/tr/v2/Git-Tools-Signing-Your-Work][Git Tools - Signing Your Work]]
+- [[http://stackoverflow.com/questions/10161198/is-there-a-way-to-autosign-commits-in-git-with-a-gpg-key][Is there a way to “autosign” commits in Git with a GPG key?]]
+- [[http://emacs.stackexchange.com/questions/18514/how-to-automatically-sign-commits-with-magit][How to automatically sign commits with magit?]]
+
+*** COMPLETED Objects without primary keys do not have =no_id= set    :story:
+    CLOSED: [2017-03-25 Sat 22:50]
+
+*Rationale*: this seems to have gone away with the new ODB implementation.
+
+Previously we were automatically adding the ODB pragma =no_id= to
+objects that had no primary key set. This no longer seems to be
+happening.
+
+*** COMPLETED Do not use underscores in ORM stereotypes               :story:
+    CLOSED: [2017-03-26 Sun 10:14]
+    CLOCK: [2017-03-26 Sun 10:01]--[2017-03-26 Sun 10:14] =>  0:13
+
+We are able to use spaces in stereotypes so we should avoid using
+underscores.
+
+*** COMPLETED Add msbuild targets for ODB                             :story:
+    CLOSED: [2017-03-28 Tue 15:25]
+    CLOCK: [2017-03-28 Tue 14:12]--[2017-03-28 Tue 15:24] =>  1:12
+    CLOCK: [2017-03-28 Tue 12:09]--[2017-03-28 Tue 13:14] =>  1:05
+    CLOCK: [2017-03-28 Tue 11:20]--[2017-03-28 Tue 12:08] =>  0:48
+    CLOCK: [2017-03-28 Tue 10:35]--[2017-03-28 Tue 11:19] =>  0:44
+
+We need to start generating an msbuild project with targets for ODB so
+we can build ODB on windows.
+
+Sample:
+
+#+begin_example
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+    <!--[
+    .NAME: odb.targets
+
+    .SYNOPSIS:
+        Generates all of the ODB files for this project.
+
+    .DESCRIPTION:
+        Calls the ODB compiler against each of the files in this Dogen model that require
+        ODB compilation. Also moves the generated files to their correct location.
+
+    .INPUTS:
+
+    .OUTPUTS:
+
+  ]-->
+
+  <Target Name="odb_MODEL_NAME"
+          DependsOnTargets="odb_ MODEL_NAME _TARGET;
+">
+    <Message Importance="high" Text="ODB MODEL_NAME "/>
+  </Target>
+
+  <Target Name="odb_ MODEL_NAME _TARGET">
+    <Message Importance="high" Text="ODB MODEL_NAME TARGET"/>
+    <Exec WorkingDirectory="$(OutputDirectory)" Command="&quot;$(OdbPath)&quot; -D_SECURE_SCL=0 $(OdbIncludeDirectories) --options-file $(MSBuildThisFileDirectory)/src/odb/common_options.odb --options-file $(MSBuildThisFileDirectory)/SOURCE_PATH/TARGET_options.odb --output-dir $(MSBuildThisFileDirectory)/../../../INCLUDE_PATH/odb/NAMESPACE $(MSBuildThisFileDirectory)/../../../INCLUDE_PATH/odb/NAMESPACE /types/NAMESPACE/TARGET.hpp" />
+    <Move
+        SourceFiles="$(MSBuildThisFileDirectory)/../../../INCLUDE_PATH/odb/NAMESPACE/TARGET-odb.cxx"
+        DestinationFolder="$(MSBuildThisFileDirectory)src/odb/NAMESPACE/" />
+  </Target>
+  ...
+</Project>
+#+end_example
+
+*** COMPLETED Add boilerplate for XML files                           :story:
+    CLOSED: [2017-03-28 Tue 20:56]
+    CLOCK: [2017-03-28 Tue 20:39]--[2017-03-28 Tue 21:00] =>  0:21
+    CLOCK: [2017-03-28 Tue 20:31]--[2017-03-28 Tue 20:38] =>  0:07
+    CLOCK: [2017-03-28 Tue 19:31]--[2017-03-28 Tue 20:30] =>  0:59
+
+At present our boilerplate machinery does not support XML. Add support
+for it.
+
+*** COMPLETED Exceptions in C++ 98 have C++ 14 keywords               :story:
+    CLOSED: [2017-03-29 Wed 17:46]
+    CLOCK: [2017-03-29 Wed 17:47]--[2017-03-29 Wed 18:10] =>  0:23
+    CLOCK: [2017-03-29 Wed 17:37]--[2017-03-29 Wed 17:46] =>  0:09
+
+We need to add exceptions to the C++ 98 test model. At present they
+are using C++ 14 keywords and thus causing errors.
+
+*** COMPLETED Add option to capitalise column and table names         :story:
+    CLOSED: [2017-03-30 Thu 08:16]
+
+One very useful thing is to allow users to define types in camel case
+or underscore separated but then have the ODB names generated all in
+caps (schema name, table name, column name). The database we are
+currently working with is all in caps and we are forced to manually
+enter pragmas for every single type because of this. Instead, we
+should have some meta-data:
+
+: odb.use_capitals=true
+
+This would automatically generate the pragmas.
+
+One slight downside is that if a user then tries to manually override
+the pragmas, we will have duplicates, in effect:
+
+: #DOGEN odb_pragma=schema("northwind")
+: #DOGEN odb_pragma=schema("NORTHWIND")
+
+*** POSTPONED Allow users to override string prefixes in test data    :story:
+    CLOSED: [2017-04-03 Mon 10:18]
+    CLOCK: [2017-03-26 Sun 10:15]--[2017-03-26 Sun 11:30] =>  1:15
+    CLOCK: [2017-03-21 Tue 07:10]--[2017-03-21 Tue 07:24] =>  0:14
+    CLOCK: [2017-03-21 Tue 06:41]--[2017-03-21 Tue 07:04] =>  0:23
+
+At present we have a hard-coded string prefix in test data:
+=a_string_". This has been is fine up to now, but we have bumped into
+a problem when using it with ORM: some fields in the database are too
+small to fit the prefix (e.g. =VARCHAR[5]=). The quick solution for
+this is to make the prefix customisable when we instantiate the
+generator.
+
+Actually this is not quite that straightforward: in order to allow
+users to configure the string prefix, we'd have to extend all helpers
+to have a "prefix" argument of type string because we do not know
+which helpers are the string helpers. An alternative is to have a test
+data configuration, with the following configurable points:
+
+- string prefix
+- path prefix
+- numeric start
+- date start
+
+The configuration is an optional parameter supplied to the
+generator. If empty we use the default configuration which could
+potentially be read from meta-data, although we do not have a use case
+for this.
+
+However, we have a slight problem: if a model M0 has types from
+another model M1, we will end up with two configurations (one per
+model). When we call a M0 generator which calls an M1 generator, we
+need to somehow send the configuration across as well. Since they are
+different types (even though identical in layout) we need to copy the
+configuration across. This could be achieved with a template
+method. Alternatively we could make all helper methods a template
+method that takes in a configuration:
+
+#+begin_src c++
+template<typename Configuration>
+create_XYZ(unsigned int position, const Configuratio& c) {
+...
+}
+#+end_src
+
+Actually this won't work: we still have the problem of calling
+external generators.
+
+A simpler but less typed solution is to use =std::tuple=:
+
+: std::tuple<std::string, std::string, int, int> configuration
+
+The other interesting point is that this is perhaps an ORM
+problem. After all, we could have a =VARCHAR[2]= string, and
+configuring the prefix won't help. What we really need is to figure
+out how many digits one can put in the string, given the available
+size. Users can supply the sizes as part of the ORM configuration. We
+can then do a simple heuristic:
+
+- does the prefix fit? if not, drop it.
+- what is the max value for the counter that will fit the string size?
+  Use it as a modulus.
+
+Tasks:
+
+- inject a new fabric type for test data configuration. It can be a
+  simple struct.
+
+*** POSTPONED Ignore ODB files automatically                          :story:
+    CLOSED: [2017-04-03 Mon 10:18]
+    CLOCK: [2017-03-22 Wed 20:45]--[2017-03-22 Wed 22:01] =>  1:16
+    CLOCK: [2017-03-22 Wed 16:56]--[2017-03-22 Wed 17:35] =>  0:39
+
+At present we are adding the following regular expressions to knitter
+whenever we are using ODB with dogen:
+
+:        --ignore-files-matching-regex .*sql
+:        --ignore-files-matching-regex .*-odb.*)
+
+We should inject the ODB files automatically into the list of expected
+files. For a given element =foreign_key=, we will have a dogen file
+
+: foreign_key_pragmas.hpp
+
+We will also have the following ODB files:
+
+: foreign_key-odb.cxx
+: foreign_key-odb.hxx
+: foreign_key-odb.ixx
+
+The first file can either be on the =include/odb= directory or on the
+=src/odb= directory (it is moved by the ODB target). All other files
+are placed in the =include/odb= folder. Note that at present we are
+using =cpp= extension rather than =cxx=.
+
+In addition, on a multi-database environment we also have:
+
+- =repository-odb-oracle.hxx=
+- =repository-odb-pgsql.hxx=
+- ...
+
+Ideally we should also add the ODB include files to the master
+includes. However, we probably need a separate master include file
+just for ODB files.
+
+One of the amazing side-effects of this approach is that we will
+automatically delete any ODB files which are no longer required
+(because we will not generate ignores for them). At present we are
+manually deleting them.
+
+This also means we can add the ODB files to the visual studio project
+even before they get generated.
+
+*** POSTPONED Add a top-level "Visual Studio" knob                    :story:
+    CLOSED: [2017-04-03 Mon 10:19]
+    CLOCK: [2017-03-29 Wed 06:24]--[2017-03-29 Wed 06:57] =>  0:33
+
+We have a number of features that only make sense when on Windows and
+building for Visual Studio. We should have a top-level knob that
+enables or disables all of these features in one go:
+
+- =quilt.cpp.visual_studio.enabled=
+
+However, we don't really seem to have a way to "link" features such
+that when a feature is enabled all of its sub-features are enabled. We
+have some hacks for this for the relationship between facets and
+formatters but this is not general. We need a general way to declare a
+dependency between two "things" and to state a few rules for B depends
+on A:
+
+- if A is explicitly enabled, it does not matter if B is enabled or
+  disabled.
+- if A is not explicitly enabled, it is enabled if B is enabled and
+  vice-versa; it defaults to B.
+- if B is not explicitly enabled, it uses its default value.
+
+It should be possible to declare arbitrary graphs with these
+dependencies.
+
+In this way we'd see features as a graph, with platform-independent
+and platform-specific nodes:
+
+- platform independent: types, test_data, io, serialisation, visual
+  studio, etc.
+- platform specific: c++ types. c++ test data. boost serialisation,
+  c++ visual studio, etc.
+
+Dependencies between features can be static or dynamic:
+
+- static means that the state of the instances of the meta-model are
+  not relevant to determining the outcome.
+- dynamic means the opposite.
+
+For example, forward declarations has a dynamic dependency on types
+because depending on the state of the type we may need to force it to
+come out. For example, if there is a pointer.
+
+It would be nice if we could move all of these machinery into yarn or
+quilt. It doesn't make a lot of sense to place it in either, to be
+fair, since its not a platform-independent meta-model concept
+(e.g. yarn) and whilst it is a platform-specific concept, it is not
+kernel specific. Perhaps it should leave on its own model.
+
+There are several aspects:
+
+- the total list of formatters and facets
+- the relationships between them
+- functions for the dynamic dependencies that take in an element
+- the computation of the enablement.
+
+*** POSTPONED Add support for Visual Studio C++ projects              :story:
+    CLOSED: [2017-04-03 Mon 10:19]
+    CLOCK: [2017-03-30 Thu 06:58]--[2017-03-30 Thu 07:10] =>  0:12
+    CLOCK: [2017-03-30 Thu 06:31]--[2017-03-30 Thu 06:57] =>  0:26
+    CLOCK: [2017-03-29 Wed 22:18]--[2017-03-29 Wed 22:50] =>  0:32
+    CLOCK: [2017-03-29 Wed 21:41]--[2017-03-29 Wed 22:17] =>  0:36
+    CLOCK: [2017-03-29 Wed 18:11]--[2017-03-29 Wed 18:20] =>  0:09
+
+Visual studio project needs the files to be listed by hand. We can
+either generate the project or the user has to manually add the
+files. This is a problem every time they change. Requirements:
+
+- we need to be able to support multiple VS versions as well (user
+  configurable)
+- user may want to import property sheets
+- need guids (as per C# projects)
+- need additional library/include directories
+- need to add pre-compiled headers support with /FI.
+- add a solution for good measure, using the C# code.
+- add filter files for headers and source files.
+
+As per ODB, users may also want to build with different versions of
+VS. We should allow generating more than one solution and postfix them
+with the VS version.
+
+We should also generate filters for the project:
+
+- header files
+- source files
+- ODB header files
+- ODB source files
+
+The inclusion of ODB files must be done using regular expressions
+because we do not want to have to do two passes for knit; so we don't
+really know what files are available. However, if the ODB files have a
+=cxx= extension, we can just =CLInclude= =*cxx=.
+
+Links:
+
+- [[https://msdn.microsoft.com/en-us/library/2208a1f2.aspx][Project Files]]
+
+** Deprecated

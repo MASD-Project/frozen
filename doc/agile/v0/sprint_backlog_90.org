@@ -1,0 +1,965 @@
+#+title: Sprint Backlog 90
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- refactor dyamic and implement profiles
+- fix services
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-10-24 Mon 10:08]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *78:51* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 78:51   |       |       | 100.0 |
+| Active                                                                      |         | 78:51 |       | 100.0 |
+| STARTED Sprint and product backlog grooming                                 |         |       |  0:32 |   0.7 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:19 |   0.4 |
+| COMPLETED Improve bintray support                                           |         |       |  0:26 |   0.5 |
+| COMPLETED Refactor opaque infrastructure                                    |         |       |  1:17 |   1.6 |
+| COMPLETED Remove any remnants of annotations from quilt                     |         |       |  0:05 |   0.1 |
+| COMPLETED Solve the issue of too many "configurations"                      |         |       |  4:01 |   5.1 |
+| COMPLETED Merge decoration configuration and annotations factories          |         |       |  0:18 |   0.4 |
+| COMPLETED Move annotation factories into expander in yarn                   |         |       |  1:11 |   1.5 |
+| COMPLETED Clean up terminology in dynamic                                   |         |       | 15:12 |  19.3 |
+| COMPLETED Minor tidy-up of the quilt.cpp diagram                            |         |       |  0:29 |   0.6 |
+| COMPLETED Create a ownership hierarchy repository                           |         |       |  1:43 |   2.2 |
+| COMPLETED Use vector of elements in model                                   |         |       |  0:10 |   0.2 |
+| COMPLETED Rewrite profile support                                           |         |       | 11:50 |  15.0 |
+| COMPLETED Merge annotation type and profile folders                         |         |       |  0:20 |   0.4 |
+| COMPLETED Push stereotypes processing into yarn                             |         |       |  1:51 |   2.3 |
+| COMPLETED Implement defaulting within the profiler                          |         |       |  1:13 |   1.5 |
+| COMPLETED Add binding of stereotypes with profiles                          |         |       |  1:40 |   2.1 |
+| COMPLETED Update dogen models to use profiles                               |         |       |  0:19 |   0.4 |
+| COMPLETED Finish overwriting support                                        |         |       |  2:38 |   3.3 |
+| COMPLETED Remove service stereotype                                         |         |       |  3:32 |   4.5 |
+| COMPLETED IOable services                                                   |         |       |  0:06 |   0.1 |
+| COMPLETED Generate skeleton for "non-generatable" files                     |         |       |  0:51 |   1.1 |
+| COMPLETED Merge profiles with processed object in yarn.dia                  |         |       |  2:04 |   2.6 |
+| COMPLETED Fix yarn.dia tests                                                |         |       |  2:48 |   3.6 |
+| COMPLETED Perform the archetype / artefact renames                          |         |       | 12:12 |  15.5 |
+| COMPLETED Rename file formatter to artefact formatter                       |         |       |  1:20 |   1.7 |
+| COMPLETED Fix remaining issues with assistant API                           |         |       |  1:07 |   1.4 |
+| COMPLETED Document the conceptual model                                     |         |       |  5:48 |   7.4 |
+| COMPLETED Analysis work on adding artefact sources                          |         |       |  2:28 |   3.1 |
+| COMPLETED Minor refactor of quilt.cpp formatter workflow                    |         |       |  0:34 |   0.7 |
+| POSTPONED Integration of stitch and dogen                                   |         |       |  0:27 |   0.6 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** STARTED Sprint and product backlog grooming                       :story:
+    CLOCK: [2016-10-16 Sun 12:19]--[2016-10-16 Sun 12:22] =>  0:03
+    CLOCK: [2016-10-15 Sat 22:26]--[2016-10-15 Sat 22:31] =>  0:05
+    CLOCK: [2016-10-15 Sat 00:13]--[2016-10-15 Sat 00:15] =>  0:02
+    CLOCK: [2016-10-10 Mon 08:40]--[2016-10-10 Mon 09:02] =>  0:22
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2016-10-10 Mon 09:34]
+    CLOCK: [2016-10-10 Mon 09:35]--[2016-10-10 Mon 09:48] =>  0:13
+    CLOCK: [2016-10-10 Mon 09:28]--[2016-10-10 Mon 09:34] =>  0:06
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.89.0, "Cubal"
+
+#+begin_src markdown
+Overview
+========
+The refactorings continue, mainly focusing on the ```quilt.cpp``` model but with changes all over the code base. The only user visible change is:
+
+- improvement on visitor inclusions for descendants.
+
+For more details see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_89.org).
+#+end_src
+
+*** COMPLETED Improve bintray support                                 :story:
+    CLOSED: [2016-10-10 Mon 09:46]
+    CLOCK: [2016-10-10 Mon 09:02]--[2016-10-10 Mon 09:28] =>  0:26
+
+As with every end of sprint, try to massage bintray a bit more and see
+if we can fix some of the errors of the previous sprint.
+
+*** COMPLETED Refactor opaque infrastructure                          :story:
+    CLOSED: [2016-10-10 Mon 11:06]
+    CLOCK: [2016-10-10 Mon 11:00]--[2016-10-10 Mon 11:06] =>  0:06
+    CLOCK: [2016-10-10 Mon 09:48]--[2016-10-10 Mon 10:59] =>  1:11
+
+We seem to have created a mini-cottage-industry around opaqueness. The
+original idea was to provide some infrastructure for formatters to
+have their own settings in a way that is transparent to quilt.cpp. In
+practice:
+
+- we just have the odb formatter using them and it doesn't require
+  opacity (any more than any other formatter does). We just need to
+  ensure this configuration is not mandatory.
+- we are not sure this will really work for other formatters; we may
+  have hacked things for the odb formatter.
+
+We should wait for a proper external use case of this
+functionality. In the mean time, get rid of all of this paraphernalia
+and implement this just like we do all other formatters.
+
+Tasks:
+
+- create odb configuration and odb expander.
+- remove all opaque stuff.
+
+*Previous understanding*
+
+In addition we need to move all the other code (registrar, etc) into
+formattables.
+
+*** COMPLETED Remove any remnants of annotations from quilt           :story:
+    CLOSED: [2016-10-10 Mon 11:10]
+    CLOCK: [2016-10-10 Mon 11:07]--[2016-10-10 Mon 11:12] =>  0:05
+
+Grep the project for anyone still using this term and remove it.
+
+*** COMPLETED Rename properties to attributes in opaque configuration :story:
+    CLOSED: [2016-10-10 Mon 11:19]
+
+This was missed in rename.
+
+*** COMPLETED Solve the issue of too many "configurations"            :story:
+    CLOSED: [2016-10-10 Mon 21:37]
+    CLOCK: [2016-10-10 Mon 20:51]--[2016-10-10 Mon 21:36] =>  0:45
+    CLOCK: [2016-10-10 Mon 20:23]--[2016-10-10 Mon 20:50] =>  0:27
+    CLOCK: [2016-10-10 Mon 19:50]--[2016-10-10 Mon 20:22] =>  0:32
+    CLOCK: [2016-10-10 Mon 13:16]--[2016-10-10 Mon 13:32] =>  0:16
+    CLOCK: [2016-10-10 Mon 12:43]--[2016-10-10 Mon 13:15] =>  0:32
+    CLOCK: [2016-10-10 Mon 12:21]--[2016-10-10 Mon 12:42] =>  0:19
+    CLOCK: [2016-10-10 Mon 12:01]--[2016-10-10 Mon 12:20] =>  0:19
+    CLOCK: [2016-10-10 Mon 11:11]--[2016-10-10 Mon 12:00] =>  0:49
+
+We need a name for the "transient" configuration which is used inside
+factories and expanders to generate the "main" configuration. This is
+a common problem in quilt.cpp which we chose to ignore, but needs to
+be addressed as it is confusing to have so many classes with the
+postfix "configuration".
+
+One possible setup:
+
+- properties: data that is inferred from yarn and augmented in
+  formatter space. It is a "property" of the original data.
+- configuration: data used by the expander/factory internally in order
+  to do its work. It may come from meta-data/annotations, but it may
+  also come from other sources.
+
+With these definitions the ubiquitous language becomes clear for all
+four related terms: properties, configuration, attributes and
+annotations.
+
+Tasks:
+
+- rename all classes using configuration that should be using
+  properties.
+
+*** COMPLETED Merge decoration configuration and annotations factories :story:
+    CLOSED: [2016-10-10 Mon 21:56]
+    CLOCK: [2016-10-10 Mon 21:37]--[2016-10-10 Mon 21:55] =>  0:18
+
+As with quilt, get rid of the separation between annotations and
+configuration.
+
+*** COMPLETED Move annotation factories into expander in yarn         :story:
+    CLOSED: [2016-10-10 Mon 23:12]
+    CLOCK: [2016-10-10 Mon 22:43]--[2016-10-10 Mon 23:12] =>  0:29
+    CLOCK: [2016-10-10 Mon 22:33]--[2016-10-10 Mon 22:42] =>  0:09
+    CLOCK: [2016-10-10 Mon 22:18]--[2016-10-10 Mon 22:32] =>  0:14
+    CLOCK: [2016-10-10 Mon 21:58]--[2016-10-10 Mon 22:17] =>  0:19
+
+There were a couple of instances left out in the configuration
+refactor, in yarn.
+
+*** COMPLETED Clean up terminology in dynamic                         :story:
+    CLOSED: [2016-10-12 Wed 12:04]
+    CLOCK: [2016-10-12 Wed 12:30]--[2016-10-12 Wed 12:35] =>  0:05
+    CLOCK: [2016-10-12 Wed 12:01]--[2016-10-12 Wed 12:04] =>  0:03
+    CLOCK: [2016-10-12 Wed 11:30]--[2016-10-12 Wed 12:00] =>  0:30
+    CLOCK: [2016-10-12 Wed 10:39]--[2016-10-12 Wed 11:09] =>  0:30
+    CLOCK: [2016-10-12 Wed 10:29]--[2016-10-12 Wed 10:38] =>  0:09
+    CLOCK: [2016-10-12 Wed 10:19]--[2016-10-12 Wed 10:28] =>  0:09
+    CLOCK: [2016-10-12 Wed 10:14]--[2016-10-12 Wed 10:18] =>  0:04
+    CLOCK: [2016-10-12 Wed 09:53]--[2016-10-12 Wed 10:13] =>  0:20
+    CLOCK: [2016-10-12 Wed 09:46]--[2016-10-12 Wed 09:52] =>  0:06
+    CLOCK: [2016-10-12 Wed 09:39]--[2016-10-12 Wed 09:45] =>  0:06
+    CLOCK: [2016-10-12 Wed 09:21]--[2016-10-12 Wed 09:38] =>  0:17
+    CLOCK: [2016-10-12 Wed 08:20]--[2016-10-12 Wed 09:20] =>  1:00
+    CLOCK: [2016-10-11 Tue 23:48]--[2016-10-12 Wed 00:30] =>  0:42
+    CLOCK: [2016-10-11 Tue 22:38]--[2016-10-11 Tue 23:47] =>  1:09
+    CLOCK: [2016-10-11 Tue 22:29]--[2016-10-11 Tue 22:37] =>  0:08
+    CLOCK: [2016-10-11 Tue 20:44]--[2016-10-11 Tue 22:28] =>  1:44
+    CLOCK: [2016-10-11 Tue 19:45]--[2016-10-11 Tue 20:43] =>  0:58
+    CLOCK: [2016-10-11 Tue 17:06]--[2016-10-11 Tue 17:13] =>  0:07
+    CLOCK: [2016-10-11 Tue 17:04]--[2016-10-11 Tue 17:05] =>  0:01
+    CLOCK: [2016-10-11 Tue 16:49]--[2016-10-11 Tue 17:03] =>  0:14
+    CLOCK: [2016-10-11 Tue 15:52]--[2016-10-11 Tue 16:48] =>  0:56
+    CLOCK: [2016-10-11 Tue 15:31]--[2016-10-11 Tue 15:51] =>  0:20
+    CLOCK: [2016-10-11 Tue 15:05]--[2016-10-11 Tue 15:30] =>  0:25
+    CLOCK: [2016-10-11 Tue 14:40]--[2016-10-11 Tue 14:42] =>  0:02
+    CLOCK: [2016-10-11 Tue 14:31]--[2016-10-11 Tue 14:39] =>  0:08
+    CLOCK: [2016-10-11 Tue 13:39]--[2016-10-11 Tue 14:30] =>  0:51
+    CLOCK: [2016-10-11 Tue 12:58]--[2016-10-11 Tue 13:38] =>  0:40
+    CLOCK: [2016-10-11 Tue 12:45]--[2016-10-11 Tue 12:57] =>  0:12
+    CLOCK: [2016-10-11 Tue 09:30]--[2016-10-11 Tue 12:44] =>  3:14
+    CLOCK: [2016-10-10 Mon 21:56]--[2016-10-10 Mon 21:58] =>  0:02
+
+We have to do a number of renames to make space for profilers:
+
+- rename object aggregates to something slightly more sensible as it
+  clashes with previous uses of the term aggregation in dynamic.
+- rename property scope type to attribute in dynamic
+- rename fields to field_definitions in data;
+- rename definition types to instantiation types;
+- hydration workflow is field definition factory
+- json hydrator is field definition hydrator
+- repository is field definition repository
+- repository factory should be merged into field definition factory
+- repository selector is field definition selector
+
+Actually this rename is a bit more profound than we originally
+anticipated. The objective of dynamic is to provide a way to annotate
+objects in yarn (well, anywhere in theory). Interpreting some
+[[https://en.wikipedia.org/wiki/Text_annotation][annotation terminology]] fairly liberally we have:
+
+Done:
+
+- dynamic -> annotations
+- fields folder renamed to annotations. Note: it is annotations and
+  not annotation_types because we will also store profiles
+  here. However, we will need a way to figure out which ones are
+  profiles and which are annotation types. Perhaps the extension could
+  become =annotation_types.json=.
+- raw aggregate: scribbles, scribble group?
+- object aggregate: annotation group (and top level container
+  annotation groups). In annotation group we have parent and
+  children. Also add a flag for is master/root.
+- object -> annotation. The marker for the annotation is the linkage
+  between the annotation and the yarn element it annotates. Fields
+  become the body of the annotation.
+- workflow: annotation groups factory. Takes in scribble groups.
+- field instance -> merge this with value; there is no reason to have
+  two classes. We need to look at the factories and see if we can
+  merge them together.
+- repository ->  type_repository
+- json_hydrator -> type_hydrator
+- repository workflow: merge repository factory, repository workflow,
+  hydration workflow into a type repository factory.
+- field instance definition -> entry type.
+- field definition -> split into type and type template. JSON file can
+  contain both. Add some kind of meta-data to figure out the type.
+- field definition types: template types
+- scopes: remove unused scopes. Rest of the scopes should be root,
+  top-level, child (avoid references to yarn concepts). All in use.
+
+Large renames:
+
+- field definition -> type
+- repository -> type repository
+- repository selector -> type repository selector
+- workflow -> type repository workflow
+
+Sound on compilations:
+
+: && ogg123 -q  /usr/share/sounds/gnome/default/alerts/glass.ogg
+: || ogg123 -q  /usr/share/sounds/gnome/default/alerts/drip.ogg
+
+*** COMPLETED Minor tidy-up of the quilt.cpp diagram                  :story:
+    CLOSED: [2016-10-13 Thu 11:20]
+    CLOCK: [2016-10-13 Thu 10:40]--[2016-10-13 Thu 11:09] =>  0:29
+
+We need to do a minor cosmetic tidy-up of diagram after all the
+shuffling around we did on the previous sprint.
+
+*** COMPLETED Create a ownership hierarchy repository                 :story:
+    CLOSED: [2016-10-13 Thu 13:32]
+    CLOCK: [2016-10-13 Thu 12:18]--[2016-10-13 Thu 13:32] =>  1:14
+    CLOCK: [2016-10-13 Thu 11:33]--[2016-10-13 Thu 11:40] =>  0:07
+    CLOCK: [2016-10-13 Thu 11:10]--[2016-10-13 Thu 11:32] =>  0:22
+
+At present we are recomputing the available facets etc in a few
+places. In reality we could just have a repository with all of these
+queries pre-computed.
+
+*** COMPLETED Use vector of elements in model                         :story:
+    CLOSED: [2016-10-13 Thu 13:43]
+    CLOCK: [2016-10-13 Thu 13:33]--[2016-10-13 Thu 13:43] =>  0:10
+
+Since we already know the size of the model up front we should just
+use a vector instead of a list.
+
+After the change, performance did not move very much.
+
+*** COMPLETED Rewrite profile support                                 :story:
+    CLOSED: [2016-10-14 Fri 12:19]
+    CLOCK: [2016-10-14 Fri 12:17]--[2016-10-14 Fri 12:19] =>  0:02
+    CLOCK: [2016-10-14 Fri 11:53]--[2016-10-14 Fri 12:16] =>  0:23
+    CLOCK: [2016-10-14 Fri 11:07]--[2016-10-14 Fri 11:53] =>  0:46
+    CLOCK: [2016-10-14 Fri 09:16]--[2016-10-14 Fri 11:06] =>  1:50
+    CLOCK: [2016-10-13 Thu 23:25]--[2016-10-13 Thu 23:50] =>  0:25
+    CLOCK: [2016-10-13 Thu 22:45]--[2016-10-13 Thu 23:24] =>  0:39
+    CLOCK: [2016-10-13 Thu 21:24]--[2016-10-13 Thu 22:44] =>  1:20
+    CLOCK: [2016-10-13 Thu 20:29]--[2016-10-13 Thu 21:23] =>  0:54
+    CLOCK: [2016-10-13 Thu 20:23]--[2016-10-13 Thu 20:28] =>  0:05
+    CLOCK: [2016-10-13 Thu 20:08]--[2016-10-13 Thu 20:22] =>  0:14
+    CLOCK: [2016-10-13 Thu 16:40]--[2016-10-13 Thu 17:16] =>  0:36
+    CLOCK: [2016-10-13 Thu 14:43]--[2016-10-13 Thu 14:50] =>  0:07
+    CLOCK: [2016-10-13 Thu 13:44]--[2016-10-13 Thu 14:42] =>  0:58
+    CLOCK: [2016-10-13 Thu 09:38]--[2016-10-13 Thu 10:39] =>  1:01
+    CLOCK: [2016-10-12 Wed 21:41]--[2016-10-12 Wed 22:31] =>  0:50
+    CLOCK: [2016-10-12 Wed 20:43]--[2016-10-12 Wed 21:41] =>  0:58
+    CLOCK: [2016-10-12 Wed 20:20]--[2016-10-12 Wed 20:42] =>  0:22
+    CLOCK: [2016-10-12 Wed 12:35]--[2016-10-12 Wed 12:40] =>  0:05
+    CLOCK: [2016-10-12 Wed 12:15]--[2016-10-12 Wed 12:30] =>  0:20
+
+Our first stab at implementing profiles was a valiant effort but sadly
+it was not the right approach. Profiles need to be implemented
+directly into dynamic, and they must be totally transparent to the
+layers above.
+
+The profile structure is very similar to what we did in v1, but we
+must implement it in terms of dynamic infrastructure:
+
+- we need to make use of dynamic templates to expand facets and
+  formatters, and to refer to instances;
+
+Tasks:
+
+- implement all of the new dynamic classes
+- remove profiles in quilt.cpp and ensure the code works with the
+  profile expansion. Update models to make use of global profiles.
+- we need to supply a list of stereotypes to dynamic workflow, against
+  the id's that have them. If we can find a profile with the
+  stereotype name, apply it.
+
+Notes:
+
+- clean up names in knit workflow (repository, method name)
+  - supply ownership hierarchy to yarn workflow and to pre-merge workflow;
+- plug in profiler within annotation group factory.
+- we are not enabling cmake in types+io etc profiles. We
+  probably should. The names are becoming a bit large though.
+
+*** COMPLETED Merge annotation type and profile folders               :story:
+    CLOSED: [2016-10-14 Fri 12:41]
+    CLOCK: [2016-10-14 Fri 12:40]--[2016-10-14 Fri 12:41] =>  0:01
+    CLOCK: [2016-10-14 Fri 12:32]--[2016-10-14 Fri 12:40] =>  0:08
+    CLOCK: [2016-10-14 Fri 12:20]--[2016-10-14 Fri 12:31] =>  0:11
+
+At present we split "annotations" that is types from profiles. In
+reality this is all annotation data.
+
+Tasks:
+
+- rename all files in annotations to annotations.types.*
+  - rename all files in profiles to annotations.profiles.*
+- merge all files under annotations
+- change hydrators to look for files with the correct prefixes.
+
+*** COMPLETED Push stereotypes processing into yarn                   :story:
+    CLOSED: [2016-10-14 Fri 17:15]
+    CLOCK: [2016-10-14 Fri 17:01]--[2016-10-14 Fri 17:14] =>  0:13
+    CLOCK: [2016-10-14 Fri 15:26]--[2016-10-14 Fri 15:41] =>  0:15
+    CLOCK: [2016-10-14 Fri 14:42]--[2016-10-14 Fri 15:25] =>  0:43
+    CLOCK: [2016-10-14 Fri 14:10]--[2016-10-14 Fri 14:41] =>  0:31
+    CLOCK: [2016-10-14 Fri 13:40]--[2016-10-14 Fri 13:49] =>  0:09
+
+At present we have stereotypes as an enum, and the frontends are
+responsible for resolving the stereotypes. This is not ideal:
+
+- we assume unknown stereotypes are concepts;
+- we map visitable to a flag to map it to a stereotype;
+- we map fluent to a flag;
+- we had to hack in the profile stereotype binding;
+- the same work will have to be done in other frontends (e.g. JSON).
+
+The right thing is:
+
+- make stereotypes a string container;
+- frontend simply populates the container and does no judgement;
+- all stereotypes are put in the container, except those which are
+  used to dispatch the yarn type;
+- stereotypes expander figures out if the stereotype is one that is
+  actionable within yarn (immutable, visitor, modeled concepts) or one
+  to pass-through (binding stereotypes).
+- during dynamic expansion, we supply a list of the remaining
+  stereotypes against ids. If there is a match, they are used as
+  profiles.
+
+Merged stories:
+
+*Link profiles to stereotypes*
+
+Once we have profiles, we need to have a way to link them to
+stereotypes. At present we only have two use cases:
+
+- hand-crafted
+- formatter
+
+When we spot one of these, we should then automatically look for a
+profile with this name. If found apply it locally.
+
+*Previous Understanding*
+
+An element can be marked with the stereotype of handcrafted. We then
+have several things to determine for this element:
+
+- which formatters are disabled due to handcraft mode (e.g. all facets
+  other than types);
+- which formatters are enabled, but should only generate if there
+  isn't a file already in the file system (e.g. class header and class
+  implementation in types)
+- which formatters are enabled and should generate as usual
+  (e.g. forward declarations in types).
+
+We must also allow users to override these settings so that:
+
+- they can disable the types facet if required;
+- they can provide their own implementations for other facets;
+- they can ask the code generator to generate one for them
+  (serialisation, io).
+
+Finally, for the common case, we do not want users to have to set lots
+of meta-data; we need a sensible default behaviour.
+
+Actually, from a purely functional perspective, what is handcrafting?
+It is a shorthand for:
+
+- disable a set of formatters;
+- enable another set of formatters;
+- for a subset of the enabled formatters, generate only if there is no
+  file in the filesystem, otherwise do nothing;
+- for another subset of the enabled formatters, generate as usual.
+- do not add leaves to the registrar (unless asked to).
+
+One can conceive the notion of an enablement profile. These can be
+global or local. We can also have overwritting profiles. These can
+only be local. A sub-set of the enabled formatters can be set to
+overwrite=false. Examples:
+
+- default enablement profile: "enable all". Enables all facets and
+  formatters.
+- types and a facet profiles: "types and serialisation", "types and
+  io" etc.
+- "types class only": generates class header and implementation.
+- default overwrite profile: "overwrite all". Overwrites all
+  artefacts.
+
+Now handcrafting becomes much easier:
+
+- add meta-data to quilt: a) a way of specifying profiles for
+  overwriting and enabling b) a way of specifying if leaves contribute
+  to registration or not.
+- define a set of profiles in data for overwriting and enabling. Users
+  can provide their own profile directories.
+- Link the overwriting and enabling with stereotypes: given a
+  stereotype, we could map to a default profile. Actually this is more
+  of a profile group. We could then state that a stereotype maps to a
+  profile group.
+
+Note: we don't need to do leaf management:
+
+#+begin_quote
+- add a flag for leaf management. It defaults to true, unless
+  handcrafted. Add meta-data to allow overriding flag (or create story
+  for it as we don't yet have a use case).
+#+end_quote
+
+We just need to enable/disable serialisation and the code will work.
+
+- add a stereotype of handcrafted with a default profile.
+
+*** COMPLETED Implement defaulting within the profiler                :story:
+    CLOSED: [2016-10-14 Fri 21:36]
+    CLOCK: [2016-10-14 Fri 21:29]--[2016-10-14 Fri 21:36] =>  0:07
+    CLOCK: [2016-10-14 Fri 20:59]--[2016-10-14 Fri 21:28] =>  0:29
+    CLOCK: [2016-10-14 Fri 17:16]--[2016-10-14 Fri 17:39] =>  0:23
+    CLOCK: [2016-10-14 Fri 13:56]--[2016-10-14 Fri 14:10] =>  0:14
+
+We tried to do defaulting via the type's default value, but this is
+not ideal as it defaults for all scopes. Ideally we need a root level
+default, and no entity level defaults.
+
+Tasks:
+
+- remove scope types from profile
+- remove default value from profile type
+- create the notion of "scoped labels",
+  e.g. "default.root_module". If no profile is supplied, look for the
+  scope default. If none is found do nothing.
+- allow users to supply labels. These are checked after profile field.
+
+*** COMPLETED Add binding of stereotypes with profiles                :story:
+    CLOSED: [2016-10-14 Fri 23:19]
+    CLOCK: [2016-10-14 Fri 22:29]--[2016-10-14 Fri 23:18] =>  0:48
+    CLOCK: [2016-10-14 Fri 21:37]--[2016-10-14 Fri 22:28] =>  0:51
+
+During annotation expansion, we need to supply a list of the remaining
+stereotypes against ids. If there is a match, they are used as
+profiles.
+
+Problems:
+
+- scope is incorrect. Need to know which module is root.
+- we need to somehow make the candidate labels available after
+  annotations were generated.
+
+*** COMPLETED Update dogen models to use profiles                     :story:
+    CLOSED: [2016-10-15 Sat 00:13]
+    CLOCK: [2016-10-14 Fri 23:53]--[2016-10-15 Sat 00:12] =>  0:19
+
+We've updated test models but did not update dogen models.
+
+*** COMPLETED Finish overwriting support                              :story:
+    CLOSED: [2016-10-15 Sat 17:16]
+    CLOCK: [2016-10-15 Sat 16:23]--[2016-10-15 Sat 17:15] =>  0:52
+    CLOCK: [2016-10-15 Sat 15:15]--[2016-10-15 Sat 16:22] =>  1:07
+    CLOCK: [2016-10-14 Fri 23:19]--[2016-10-14 Fri 23:52] =>  0:33
+    CLOCK: [2016-10-14 Fri 13:49]--[2016-10-14 Fri 13:55] =>  0:06
+
+With profiles we have all the pieces in place to support overwrites,
+but there is some linkage missing:
+
+- global/local configuration needs to have an overwrite flag;
+- need to populate formatter configuration on the back of that;
+- need to read flag from formatter configuration and set it on file.
+
+Tasks:
+
+- add handcrafted profile with overwrite set to false
+- use overwrite flag in formatter workflow
+
+*** COMPLETED Remove service stereotype                               :story:
+    CLOSED: [2016-10-15 Sat 21:24]
+    CLOCK: [2016-10-15 Sat 21:11]--[2016-10-15 Sat 21:24] =>  0:13
+    CLOCK: [2016-10-15 Sat 21:09]--[2016-10-15 Sat 21:10] =>  0:01
+    CLOCK: [2016-10-15 Sat 20:16]--[2016-10-15 Sat 20:57] =>  0:41
+    CLOCK: [2016-10-15 Sat 19:31]--[2016-10-15 Sat 20:15] =>  0:44
+    CLOCK: [2016-10-15 Sat 19:16]--[2016-10-15 Sat 19:30] =>  0:14
+    CLOCK: [2016-10-15 Sat 18:46]--[2016-10-15 Sat 19:15] =>  0:29
+    CLOCK: [2016-10-15 Sat 18:42]--[2016-10-15 Sat 18:46] =>  0:04
+    CLOCK: [2016-10-15 Sat 18:18]--[2016-10-15 Sat 18:41] =>  0:23
+    CLOCK: [2016-10-15 Sat 17:34]--[2016-10-15 Sat 18:17] =>  0:43
+
+Once we've implemented binding of stereotypes to profiles and
+overwriting, we should be able to rename all of the existing services
+to a new stereotype =handcrafted=, and remove the hacks for services.
+
+Problems:
+
+- we're no longer generating cmakelists for test models.
+
+Merged stories:
+
+*Services and leaves are not properly handled*
+
+We are manually ignoring services when calculating leaves.
+
+*** COMPLETED IOable services                                         :story:
+    CLOSED: [2016-10-15 Sat 21:32]
+    CLOCK: [2016-10-15 Sat 21:26]--[2016-10-15 Sat 21:32] =>  0:06
+
+#+begin_quote
+*Story*: As a dogen user, I want to output all the state of my
+services without having to manually create code for it.
+#+end_quote
+
+Even though we do not code generate services, it would be nice if we
+could still setup their IO infrastructure - something basic just
+outputting the type and taking inheritance into account. We end up
+doing a lot of this manually anyway.
+
+Also, if a service has a bunch of attributes that are IOable, we
+should set them up too.
+
+We now have all the infrastructure of this to work. Do a simple proof
+of concept by looking at handcrafted types that implement io via
+regexes, remove the regexes and update the meta-data.
+
+*** COMPLETED Generate skeleton for "non-generatable" files           :story:
+    CLOSED: [2016-10-15 Sat 22:00]
+    CLOCK: [2016-10-15 Sat 22:01]--[2016-10-15 Sat 22:25] =>  0:24
+    CLOCK: [2016-10-15 Sat 21:33]--[2016-10-15 Sat 22:00] =>  0:27
+
+We probably just need to remove the hacks to be compatible with
+legacy: reset file contents when overwrite is false.
+
+*Previous Understanding*
+
+We are using non-generatable files quite a lot (at present called
+"services"). Every time we do this we end up copying manually the
+contents of the forward declarations to setup the skeleton of the
+file. Since we already have all of the boiler plate code such as
+licence, header guards, etc, we could just create a skeleton to stop
+us from having to copy and paste it.
+
+In addition to the class definition, it should also define all of the
+automatic constructors, and add a private section at the
+bottom. Ideally we should also generate stubs for all methods - adding
+a blank implementation with return types where required and commented
+out parameters, to make the code compilable out of the box. This will
+be possible once we start supporting operations.
+
+*** COMPLETED Merge profiles with processed object in yarn.dia        :story:
+    CLOSED: [2016-10-16 Sun 00:50]
+    CLOCK: [2016-10-15 Sat 23:47]--[2016-10-16 Sun 00:50] =>  1:03
+    CLOCK: [2016-10-15 Sat 23:10]--[2016-10-15 Sat 23:47] =>  0:37
+    CLOCK: [2016-10-15 Sat 22:57]--[2016-10-15 Sat 23:09] =>  0:12
+    CLOCK: [2016-10-15 Sat 22:44]--[2016-10-15 Sat 22:56] =>  0:12
+
+We have a lot of unnecessary fluff in yarn.dia with the separation
+between processed objects, profiled objects and profiles. In truth we
+just need the processed object, with all of the necessary information.
+
+*** COMPLETED Fix yarn.dia tests                                      :story:
+    CLOSED: [2016-10-16 Sun 12:18]
+    CLOCK: [2016-10-16 Sun 12:05]--[2016-10-16 Sun 12:18] =>  0:13
+    CLOCK: [2016-10-16 Sun 09:40]--[2016-10-16 Sun 12:04] =>  2:24
+    CLOCK: [2016-10-15 Sat 22:32]--[2016-10-15 Sat 22:43] =>  0:11
+
+A number of tests got disabled as part of the dynamic refactor in
+yarn.dia. Fix them.
+
+*** COMPLETED Clean up annotations and configuration in stitch        :story:
+    CLOSED: [2016-10-16 Sun 12:19]
+
+*Rationale*: this was done as part of some stitch clean up in the end.
+
+We deliberately skipped stitch on the clean up exercise for
+configuration/annotations, so we could look at it when doing wale
+templates.
+
+*** CANCELLED Split annotation expansion from parsing in stitch       :story:
+    CLOSED: [2016-10-16 Sun 12:21]
+
+*Rationale*: this doesn't make a lot of sense after all the
+refactorings.
+
+At present we are doing both the parsing and the annotation expansion
+within the parser. It makes more sense to keep the parser clean and do
+the expansion somewhere else.
+
+*** COMPLETED Perform the archetype / artefact renames                :story:
+    CLOSED: [2016-10-17 Mon 18:11]
+    CLOCK: [2016-10-18 Tue 15:40]--[2016-10-18 Tue 16:08] =>  0:28
+    CLOCK: [2016-10-17 Mon 22:33]--[2016-10-17 Mon 22:53] =>  0:20
+    CLOCK: [2016-10-17 Mon 21:12]--[2016-10-17 Mon 22:32] =>  1:20
+    CLOCK: [2016-10-17 Mon 20:18]--[2016-10-17 Mon 21:11] =>  0:53
+    CLOCK: [2016-10-17 Mon 19:57]--[2016-10-17 Mon 20:17] =>  0:20
+    CLOCK: [2016-10-17 Mon 18:05]--[2016-10-17 Mon 18:23] =>  0:18
+    CLOCK: [2016-10-17 Mon 17:50]--[2016-10-17 Mon 18:04] =>  0:14
+    CLOCK: [2016-10-17 Mon 17:32]--[2016-10-17 Mon 17:49] =>  0:17
+    CLOCK: [2016-10-17 Mon 17:11]--[2016-10-17 Mon 17:31] =>  0:20
+    CLOCK: [2016-10-17 Mon 16:40]--[2016-10-17 Mon 17:10] =>  0:30
+    CLOCK: [2016-10-17 Mon 16:25]--[2016-10-17 Mon 16:39] =>  0:14
+    CLOCK: [2016-10-17 Mon 16:10]--[2016-10-17 Mon 16:24] =>  0:14
+    CLOCK: [2016-10-17 Mon 12:47]--[2016-10-17 Mon 12:58] =>  0:11
+    CLOCK: [2016-10-17 Mon 12:41]--[2016-10-17 Mon 12:46] =>  0:05
+    CLOCK: [2016-10-17 Mon 12:34]--[2016-10-17 Mon 12:40] =>  0:06
+    CLOCK: [2016-10-17 Mon 12:30]--[2016-10-17 Mon 12:33] =>  0:03
+    CLOCK: [2016-10-17 Mon 12:16]--[2016-10-17 Mon 12:29] =>  0:13
+    CLOCK: [2016-10-17 Mon 12:11]--[2016-10-17 Mon 12:15] =>  0:04
+    CLOCK: [2016-10-17 Mon 12:04]--[2016-10-17 Mon 12:10] =>  0:06
+    CLOCK: [2016-10-17 Mon 12:00]--[2016-10-17 Mon 12:03] =>  0:03
+    CLOCK: [2016-10-17 Mon 11:43]--[2016-10-17 Mon 11:59] =>  0:16
+    CLOCK: [2016-10-17 Mon 11:30]--[2016-10-17 Mon 11:42] =>  0:12
+    CLOCK: [2016-10-17 Mon 11:23]--[2016-10-17 Mon 11:29] =>  0:06
+    CLOCK: [2016-10-17 Mon 11:00]--[2016-10-17 Mon 11:22] =>  0:22
+    CLOCK: [2016-10-17 Mon 10:48]--[2016-10-17 Mon 10:59] =>  0:11
+    CLOCK: [2016-10-17 Mon 10:37]--[2016-10-17 Mon 10:47] =>  0:10
+    CLOCK: [2016-10-17 Mon 10:32]--[2016-10-17 Mon 10:36] =>  0:04
+    CLOCK: [2016-10-17 Mon 10:16]--[2016-10-17 Mon 10:31] =>  0:15
+    CLOCK: [2016-10-17 Mon 09:58]--[2016-10-17 Mon 10:16] =>  0:18
+    CLOCK: [2016-10-17 Mon 09:47]--[2016-10-17 Mon 09:57] =>  0:10
+    CLOCK: [2016-10-17 Mon 09:34]--[2016-10-17 Mon 09:46] =>  0:12
+    CLOCK: [2016-10-17 Mon 09:20]--[2016-10-17 Mon 09:33] =>  0:13
+    CLOCK: [2016-10-17 Mon 09:01]--[2016-10-17 Mon 09:19] =>  0:18
+    CLOCK: [2016-10-17 Mon 00:27]--[2016-10-17 Mon 00:32] =>  0:05
+    CLOCK: [2016-10-17 Mon 00:22]--[2016-10-17 Mon 00:26] =>  0:04
+    CLOCK: [2016-10-17 Mon 00:06]--[2016-10-17 Mon 00:21] =>  0:15
+    CLOCK: [2016-10-16 Sun 23:32]--[2016-10-17 Mon 00:05] =>  0:33
+    CLOCK: [2016-10-16 Sun 23:25]--[2016-10-16 Sun 23:31] =>  0:06
+    CLOCK: [2016-10-16 Sun 23:17]--[2016-10-16 Sun 23:24] =>  0:07
+    CLOCK: [2016-10-16 Sun 22:53]--[2016-10-16 Sun 23:16] =>  0:23
+    CLOCK: [2016-10-16 Sun 22:35]--[2016-10-16 Sun 22:52] =>  0:17
+    CLOCK: [2016-10-16 Sun 21:28]--[2016-10-16 Sun 22:15] =>  0:47
+    CLOCK: [2016-10-16 Sun 14:12]--[2016-10-16 Sun 14:41] =>  0:29
+
+As per analysis story, we need to tidy-up terminology.
+
+Renames:
+
+- file: artefact
+- file formatter: artefact formatter, artefact generator? factory?
+- ownership_hierarchy: archetype_location, model_name becomes kernel,
+  facet name becomes facet and formatter name archetype. Add
+  sub-kernel.
+- Element concept becomes Entity.
+
+Notes:
+
+- are formatter properties really formatter properties or archetype
+  properties? that is, could we conceivably have a different kind of
+  formatter that works off of the same archetype to generate a
+  different artefact, or are they specific to the formatter. At first
+  blush they appear to be properties of the archetype. If so rename
+  them.
+- we still need to drop the postfix of formatter on the archetype and
+  add it to the formatter. This will cause a lot of breakage.
+- we need to go through the expanders and figure out if we are
+  referring to formatters when we mean archetypes and vice-versa.
+- rename formatter container to repository.
+
+*** COMPLETED Rename file formatter to artefact formatter             :story:
+    CLOSED: [2016-10-21 Fri 12:06]
+    CLOCK: [2016-10-21 Fri 12:07]--[2016-10-21 Fri 12:17] =>  0:10
+    CLOCK: [2016-10-21 Fri 11:26]--[2016-10-21 Fri 12:06] =>  0:40
+    CLOCK: [2016-10-21 Fri 10:55]--[2016-10-21 Fri 11:25] =>  0:30
+
+It seems this was missed in the great rename.
+
+*** COMPLETED Fix remaining issues with assistant API                 :story:
+    CLOSED: [2016-10-21 Fri 20:08]
+    CLOCK: [2016-10-21 Fri 19:35]--[2016-10-21 Fri 20:07] =>  0:32
+    CLOCK: [2016-10-21 Fri 12:35]--[2016-10-21 Fri 12:44] =>  0:09
+    CLOCK: [2016-10-21 Fri 12:18]--[2016-10-21 Fri 12:34] =>  0:16
+    CLOCK: [2016-10-21 Fri 12:07]--[2016-10-21 Fri 12:17] =>  0:10
+
+We left a few cases of formatter calls because they were resulting in
+test breaks. Get to the bottom of those.
+
+*** COMPLETED Refactor ownership hierarchy                            :story:
+    CLOSED: [2016-10-22 Sat 22:58]
+
+*Rationale*: implemented as part of the great archetype rename.
+
+Start implementing the archetype logic. Basically the ownership
+hierarchy is an archetype address in archetype space. It should also
+contain the type index for the underlying modeling type, since all
+points in archetype space map to a point in modeling space. With this
+we can now bucket addresses by type index in annotations' ownership
+hierarchy repository, which means that the expanders using the
+formatter container just for bucketing purposes can now rely on
+annotations. However, a few actually need access to the formatters
+(inclusion, canoncial formatter expander, etc).
+
+- rename it to =artefact_descriptor=. Actually archetype address as it
+  is a point (or set of points) in archetype space.
+- remove all dia fields; these are now file importer specific and
+  never reach dynamic.
+- add =kernel= field. This is set to =stitch= or =quilt=.
+- rename formatter field to =kind=
+
+Merged stories:
+
+*Consider adding "application" to ownership hierarchy*
+
+Not all fields make sense to all tools in the dogen suite; some are
+knit specific, some are stitch specific and some are shared. At
+present this is not a problem because stitch loads up all of knit's
+fields and assumes users won't make use of them. If they do, nothing
+bad "should" happen. But a better way to solve this may be to only
+load fields that belong to an application. We could add "application"
+to ownership hierarchy, and filter on that. Note though that we would
+need some way of saying "all applications" (e.g. at present, leave the
+field blank).
+
+*Consider renaming =ownership_hierarchy=*
+
+We came up with the name =ownership_hierarchy= because we could not
+think of anything else. However, it is not a particularly good name,
+and it is increasingly so now that we need to use it across models. We
+need a better name for this value type.
+
+This work must be integrated with the [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_69.org#thoughts-on-cpp-refactoring][archetype work]].
+
+*Split knitting from stitching settings*
+
+*Rationale*: with "kernel" we will have quilt and stitch.
+
+At present we only have a single common directory with all of the
+available fields. Not all fields apply to both stitching and
+knitting - but some do. We need a way to filter these. One possibility
+is to use an approach similar to the formatter groups in the ownership
+hierarchy. For now we simply have fields that have no meaning in
+stitching but can be supplied by users.
+
+*** COMPLETED Document the conceptual model                           :story:
+    CLOSED: [2016-10-23 Sun 20:23]
+    CLOCK: [2016-10-20 Thu 09:32]--[2016-10-20 Thu 11:42] =>  2:10
+    CLOCK: [2016-10-19 Wed 21:09]--[2016-10-19 Wed 22:49] =>  1:40
+    CLOCK: [2016-10-19 Wed 19:10]--[2016-10-19 Wed 21:08] =>  1:58
+
+We seem to be pretty close to the end of the conceptual model for
+dogen. We should write it up whilst its still fresh. We should try to
+use mathematical notation where possible to practice it. We should
+also get it reviewed.
+
+*** COMPLETED Analysis work on adding artefact sources                :story:
+    CLOSED: [2016-10-23 Sun 20:27]
+    CLOCK: [2016-10-23 Sun 20:10]--[2016-10-23 Sun 20:25] =>  0:15
+    CLOCK: [2016-10-22 Sat 21:10]--[2016-10-22 Sat 23:01] =>  1:51
+    CLOCK: [2016-10-21 Fri 20:09]--[2016-10-21 Fri 20:31] =>  0:22
+
+Notes:
+
+- introduce the concept of artefact source: stock formatter (current),
+  wale formatter, wale and stitch formatter. Other possible types:
+  null formatter, copy formatter.
+- rename formatters to stock formatters: in repository replace
+  formatter prefixes in attributes with stock formatter.
+
+Actually what we are really talking about is the configuration of the
+formatting rather than the source of archetypes/artefacts. Thus we
+should call it "formatting style" (for want of a better name). The
+properties become "formatting properties" - not formatter properties
+because these are not the properties of the formatter but of the
+formatting "process" for the archetype in question. Example field:
+
+: quilt.cpp.serialization.class_header.formatting_style=stock
+
+We can then have a generic "formatting input" container which is used
+to supply relative paths to inputs:
+
+: quilt.cpp.serialization.class_header.formatting_input=a/b/c.wale
+
+Paths are relative to the project directory. For wale and stitch, by
+default we will look for a file on the same directory as the file path
+of the artefact, unless already found in the formatting input
+container.
+
+However, one slight wrinkle is that we are asking the stock formatter
+for:
+
+- inclusion dependencies
+- inclusion directive
+- file path
+
+And yet we may not use the stock formatter to generate the file. As a
+first step we could suppress the generation of these things - other
+than file path since we need the same file path for all formatting
+styles. Or we could generate them and use only those that are relevant
+and look for a proper solution in the future when the implementation
+becomes clearer.
+
+Another thing is we do not want the stitch template to have decoration
+information; this must be obtained from the profile. Thus stitch (when
+used from a formatting style at least) will not generate a decoration
+region. We will have to use the boilerplate ourselves and generate the
+decoration preamble and postamble and then populate the wale kvp
+container with them. The inclusion region will be generated by stitch
+though. The inclusion region is merged with the hard-coded includes in
+the wale template (literally appended at the end or start via the kvp
+replacement).
+
+Stories that need to be raised:
+
+- add properties to artefact properties, add new expander and hook it
+  in with formattables workflow.
+- add new kinds of formatters to process wale templates, etc. Each
+  formatter should check for its required data. They can be mainly
+  stubs for now.
+- change the formatters workflow to dispatch to the correct formatter
+  type.
+- extend stitch to allow adding external kvps such as decoration. This
+  can probably be done manually but needs to be investigated.
+- extend stitch to support named regions; the text template will
+  preserve the names after template instantiation.
+- implement wale.
+- implement the new formatters by calling stitch and wale as required.
+- change one formatter at a time to use wale and wale & stitch
+  templates.
+
+*** COMPLETED Minor refactor of quilt.cpp formatter workflow          :story:
+    CLOSED: [2016-10-23 Sun 21:01]
+    CLOCK: [2016-10-23 Sun 20:26]--[2016-10-23 Sun 21:00] =>  0:34
+
+Perform a quick tidy-up of this class in preparation for the artefact
+sources work next sprint.
+
+*** POSTPONED Integration of stitch and dogen                         :story:
+    CLOSED: [2016-10-24 Mon 10:08]
+    CLOCK: [2016-10-16 Sun 13:44]--[2016-10-16 Sun 14:11] =>  0:27
+
+Now that we have implemented stitch and proved it works (more or
+less), we need to think how we can make using stitch from dogen
+easier. At present there is not integration at all:
+
+- users need to create regexes to ensure dogen does not trample on
+  stitch files:
+
+:    --ignore-files-matching-regex .*stitch
+:    --ignore-files-matching-regex .*_stitch.hpp
+:    --ignore-files-matching-regex .*_stitch.cpp
+
+- users need to manually create a header file for each stitch
+  template.
+- users need to create stitch targets and run them to ensure the
+  templates have been expanded. This means its possible to get dogen
+  and stitch out of sync (but for now not a big problem).
+
+In the ideal world, when we knit a model it would be nice if it could
+also stitch as required. This could be achieved as follows:
+
+- Create a meta-data tag that tells dogen a type has an associated
+  stitch template with it.
+- Create =cpp= types that represent the stitch header and
+  implementation.
+- Transformer needs to look for the meta-data tag and instantiate the
+  =cpp= types.
+- Create a =cpp= formatter for the header, as per regular
+  formatters. The slight challenge here is that the formatter needs to
+  be instantiable across facets, which we do not support at the
+  moment.
+- Create a cpp formatter for the implementation which instantiates
+  stitch with the template and uses it to create a file. Same
+  challenge as with the header.
+
+Random notes:
+
+- change artefact to have named regions; by default there is only one
+  region, with a name like "global". This is the output of a stock
+  formatter. Regions are stored in a vector and have name and
+  content.
+- in default stitch, the named regions are: 1) boilerplate preamble 2)
+  body. We will then introduce other named regions: inclusion function,
+  formatting function.
+- the wale and stitch artefact formatter will use the named regions as
+  inputs to the wale kvps.
+
+*Previous Understanding*
+
+- stitch can still be integrated with dogen. We could use meta-data to
+  link a formatter (well, any class that needs stitch really, but at
+  present just a formatter) with a stitch template. For example, a
+  =class_header_formatter= could have a "is stitchable" flag set to
+  on. This would then mean that dogen would look for a
+  =class_header_formatter.stitch= file in the same directory as the
+  CPP file. It would then use that to create a
+  =class_header_formatter_stitch.cpp= file. It would also
+  ignore/generate a =class_header_formatter_stitch.hpp= file and
+  automatically add it to the inclusion dependencies of
+  =class_header_formatter.cpp=. These are injected into stitch as we
+  instantiate the template since stitch supports meta-data (we do need
+  a way to inject the meta-data from dogen into the meta-data in the
+  template; perhaps a kvp container passed in to the stitch workflow
+  which could then be handed over to the parser). All these files are
+  automatically added to the list of "exceptions" for housekeeping so
+  that they do not get deleted. However, stitch would not know
+  anything at all about any of this; this is all knitter's
+  functionality. The problem is at present we haven't got a good place
+  to perform the stitching as part of knitter's workflows. Perhaps as
+  part of the expansion, we could set a number of stitch fields which
+  would then be picked up by some knit-specific workflow classes.
+
+** Deprecated

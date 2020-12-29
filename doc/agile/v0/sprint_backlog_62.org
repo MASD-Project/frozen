@@ -1,0 +1,936 @@
+#+title: Sprint Backlog 62
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission
+
+Make dynamic reflect the use cases we have found so far in
+formatters. Flesh out the analysis into well defined stories and start
+implementing them.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-03-29 Sun 22:35]
+
+| Headline                                                                 | Time    |       |      |
+|--------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                             | *70:47* |       |      |
+|--------------------------------------------------------------------------+---------+-------+------|
+| Active                                                                   |         | 70:47 |      |
+| COMPLETED Sprint and product backlog grooming                            |         |       | 1:44 |
+| COMPLETED Consider creating a rules based engine                         |         |       | 2:09 |
+| COMPLETED Rename =dynamic= to =dynamic::schema=                          |         |       | 1:44 |
+| COMPLETED Generate registrar correctly when using external model path    |         |       | 0:25 |
+| COMPLETED Create a JSON file format for field definitions                |         |       | 3:49 |
+| COMPLETED Apply relevant parts of dynamic refactor patch                 |         |       | 1:54 |
+| COMPLETED Convert all field definitions into JSON                        |         |       | 1:13 |
+| COMPLETED Analysis on the =cpp= refactoring                              |         |       | 1:18 |
+| COMPLETED Refactor settings classes                                      |         |       | 8:59 |
+| COMPLETED Add property to model to capture presence of generatable types |         |       | 0:14 |
+| COMPLETED Rename schema's object factory back to workflow                |         |       | 0:26 |
+| COMPLETED Use a list instead of a forward list in schema's registrar     |         |       | 0:28 |
+| COMPLETED Create a =dynamic::expansion= model with a sample operation    |         |       | 3:51 |
+| COMPLETED Determining the model module should be in SML                  |         |       | 0:38 |
+| COMPLETED Create a "default values" expander                             |         |       | 2:38 |
+| COMPLETED Create a "copy from options" expander                          |         |       | 0:47 |
+| COMPLETED Create a "copy from root" expander                             |         |       | 0:22 |
+| COMPLETED Add a graph to expansion workflow                              |         |       | 1:41 |
+| COMPLETED Expansion must be performed before merging                     |         |       | 1:22 |
+| COMPLETED Perform some analysis on how field definitions will be used    |         |       | 0:41 |
+| COMPLETED Implement the repository workflow                              |         |       | 1:45 |
+| COMPLETED Add JSON support to dynamic workflow                           |         |       | 0:50 |
+| COMPLETED Remove all field definitions in code                           |         |       | 4:25 |
+| COMPLETED Create a "populate file path" operation                        |         |       | 5:55 |
+| COMPLETED Improve performance in populating file path                    |         |       | 2:23 |
+| COMPLETED Implement the formatter settings factory                       |         |       | 1:14 |
+| COMPLETED Move injection out of the SML merging workflow                 |         |       | 0:17 |
+| COMPLETED Propagate file and include paths to the formatter              |         |       | 0:26 |
+| COMPLETED Implement the general settings workflow with root object       |         |       | 5:10 |
+| COMPLETED Consider creating field definition templates                   |         |       | 6:40 |
+| POSTPONED Create a "supported" expander                                  |         |       | 1:54 |
+| POSTPONED Create a "populate includes operation"                         |         |       | 3:13 |
+| POSTPONED Compute managed directories from knitting options              |         |       | 0:12 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-03-29 Sun 22:33]
+    CLOCK: [2015-03-28 Sat 19:13]--[2015-03-28 Sat 19:33] =>  0:20
+    CLOCK: [2015-03-25 Wed 15:06]--[2015-03-25 Wed 15:11] =>  0:05
+    CLOCK: [2015-03-21 Sat 17:12]--[2015-03-21 Sat 17:26] =>  0:14
+    CLOCK: [2015-03-07 Sat 19:16]--[2015-03-07 Sat 19:25] =>  0:09
+    CLOCK: [2015-03-07 Sat 17:44]--[2015-03-07 Sat 18:34] =>  0:50
+    CLOCK: [2015-02-15 Sun 23:36]--[2015-02-15 Sun 23:42] =>  0:06
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-03-29 Sun 22:33]
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Consider creating a rules based engine                  :story:
+    CLOSED: [2015-03-07 Sat 19:28]
+    CLOCK: [2015-03-07 Sat 17:38]--[2015-03-07 Sat 17:44] =>  0:06
+    CLOCK: [2015-03-07 Sat 17:20]--[2015-03-07 Sat 17:24] =>  0:04
+    CLOCK: [2015-02-16 Mon 20:03]--[2015-02-16 Mon 22:02] =>  1:59
+
+*New Understanding*
+
+After a considerable amount of thought, it became apparent that the
+current approach will not be particularly scalable. The fundamental
+requirements are:
+
+- a formatter must be supplied with all the data it requires to
+  format (and only the data it requires to format);
+- the data must be provided in a strongly typed form, such that the
+  formatter has the least amount of boiler plate code to access it
+  (casting, handling incorrect values, etc - but see next point);
+- formatters may have data that is specific to them and know one knows
+  about it (opaque settings); when the data is passed in, the
+  formatter will simply cast it to the expected type.
+
+At present we are failing on a number of these. The current settings
+implementation pushes a lot of the selection logic to the formatter,
+resulting on a lot of boiler plate just to access a flag, and more
+complex items require quite a lot of logic in the formatter.
+
+What we really need is a general settings engine that can be fed rules
+and then produces a =dynamic::object= with all the values populated
+for each formatter; we then have a settings class that is populated
+off of that dynamic object but does not require any knowledge about
+global and local settings, facet/formatter overrides, etc. It has a
+single "enabled" flag for the formatter, which may have been produced
+as a result of the model being enabled, the facet being enabled, the
+formatter being enabled, etc. Settings does not care (because the
+formatter does not care either).
+
+In this sense we split dynamic into two:
+
+- =schema=: what we currently call dynamic. Basically the strong types
+  around the dynamic extensions.
+- =expansion=: the rules engine that expands the basic dynamic object
+  populated by the user.
+
+For =schema=, very few changes are required:
+
+- rename dynamic model into dynamic/schema.
+- we need to load field definitions from file. Creating these manually
+  in code is a pain in the backside. Many of them are really similar
+  so copy and paste of text would increase productivity. We just need
+  to have the "traits" for the field name (as this is how we will
+  access the fields) but everything else can become data; a JSON
+  representation living in library.
+- we need to review infrastructure created for settings access; some
+  of it may no longer make sense (mainly indexer).
+
+Notes on how expansion will work:
+
+- it receives an SML model as input and produces an SML model with the
+  dynamic object expanded such that each object contains all the
+  required data.
+- it provides a registrar for client models to register their specific
+  operations. An operation is how we expand the dynamic object.
+- it will handle the includes, via operations provided by client
+  models.
+- it will handle file naming, via operations provided by client
+  models.
+- it will have dependencies between operations (or fixed order of
+  execution as supplied by client).
+- it will provide predicates and conditional operations; a conditional
+  operation will only execute if the predicate is true. It may also
+  provide an "else" for the predicate is false case.
+- operations are organised into a "transformation" sub-system because
+  we are transforming the dynamic object. However we always return a
+  new object rather than mutate the existing one.
+- as an example, the c++ model will supply a "create includes"
+  operation. This operation is instantiated by each formatter via a
+  data file. It is a composite operation made up of a set of
+  sub-operations. We need to break down each rule we use to determine
+  in includes and then provide a way to represent it as data. This is
+  the input for the operation. The output will be the set of includes
+  for the formatter. It will be slotted into the dynamic object.
+- we will also have an operation to create file paths. It will query
+  properties of the dynamic object to build up the ingredients. It
+  will then produce the final path.
+- each model will have its own "workflow" describing the order of
+  operations. Expander will execute each workflow in order. The
+  dynamic object will have the cumulative result of these
+  workflows.
+- a few operations are provided out of the box - copy global settings
+  locally (once upon a time called "merger"), etc. Perhaps we could
+  have a top-level workflow that executes these operations before the
+  model-specific workflows kick in.
+
+*Previous Understanding*
+
+It may be possible to reduce the relationships between models, facets,
+formatters and aspects to a set of rules, parsed by a rules engine:
+
+- objective: formatter is enabled; aspect is enabled.
+- aspect: streaming_operator
+- field definition: cpp.types.use_streaming_operator
+- implementation_includes: a, b, c
+- requires: io disabled
+
+This seems extremely complex but its worth starting a thought
+experiment.
+
+*** COMPLETED Rename =dynamic= to =dynamic::schema=                   :story:
+    CLOSED: [2015-03-07 Sat 21:45]
+    CLOCK: [2015-03-07 Sat 20:31]--[2015-03-07 Sat 21:45] =>  1:14
+    CLOCK: [2015-03-07 Sat 19:25]--[2015-03-07 Sat 19:55] =>  1:18
+
+As per analysis we need to create two "sub-models" in dynamic, so we
+need to move existing model into =dynamic::schema=.
+
+- registrar formatter does not use fully qualified name for registrars
+  on other models (serialisation).
+
+*** COMPLETED Generate registrar correctly when using external model path :story:
+    CLOSED: [2015-03-07 Sat 22:12]
+    CLOCK: [2015-03-07 Sat 21:47]--[2015-03-07 Sat 22:12] =>  0:25
+
+After the dynamic rename we borked the code generation of the
+registrar for serialisation. Fix it.
+
+*** COMPLETED Remove copyright notices from licence hydrator          :story:
+    CLOSED: [2015-03-08 Sun 23:44]
+
+At present there seems to be no use case for adding a copyright notice
+when hydrating a licence; these only make sense in the context of a
+model. We should remove this.
+
+*** COMPLETED Create a JSON file format for field definitions         :story:
+    CLOSED: [2015-03-08 Sun 23:45]
+    CLOCK: [2015-03-08 Sun 22:38]--[2015-03-08 Sun 23:45] =>  1:07
+    CLOCK: [2015-03-08 Sun 20:07]--[2015-03-08 Sun 20:21] =>  0:14
+    CLOCK: [2015-03-08 Sun 19:40]--[2015-03-08 Sun 19:56] =>  0:16
+    CLOCK: [2015-03-08 Sun 19:13]--[2015-03-08 Sun 19:31] =>  0:18
+    CLOCK: [2015-03-08 Sun 18:02]--[2015-03-08 Sun 18:50] =>  1:11
+    CLOCK: [2015-03-08 Sun 16:46]--[2015-03-08 Sun 17:52] =>  1:06
+
+We need to read the field definitions from file rather than hard-code
+them. We also need to figure out where to place them: in the central
+library folder or together with the models?
+
+The JSON support should live in =dynamic::schema=. We need a simple
+=hydrator= class with a simple test case.
+
+*** COMPLETED Apply relevant parts of dynamic refactor patch          :story:
+    CLOSED: [2015-03-09 Mon 13:48]
+    CLOCK: [2015-03-09 Mon 12:23]--[2015-03-09 Mon 13:47] =>  1:24
+    CLOCK: [2015-03-08 Sun 23:45]--[2015-03-09 Mon 00:15] =>  0:30
+
+We did a little tidy-up of dynamic that was put on hold due to some
+big-picture thinking. We need to figure out what part of it is still
+applicable, and copy it across from the patch.
+
+- rename content extensions to field selector
+- pick up registrar changes
+- rename workflow to factory
+
+*** COMPLETED Convert all field definitions into JSON                 :story:
+    CLOSED: [2015-03-10 Tue 18:08]
+    CLOCK: [2015-03-10 Tue 17:42]--[2015-03-10 Tue 18:06] =>  0:24
+    CLOCK: [2015-03-09 Mon 18:21]--[2015-03-09 Mon 19:10] =>  0:49
+
+- find all code that creates field definitions and move it to JSON.
+
+*** COMPLETED Analysis on the =cpp= refactoring                       :story:
+    CLOSED: [2015-03-13 Fri 22:53]
+    CLOCK: [2015-03-13 Fri 21:35]--[2015-03-13 Fri 22:53] =>  1:18
+
+We need to avoid past mistakes and start by designing the settings
+classes required by the formatters before we focus on the dynamic
+object representation.
+
+We shall settle on three types of settings:
+
+- general settings (as per formatters model)
+- principal settings (e.g. the settings common to all formatters of a given
+  language)
+- subsidiary settings (e.g. the settings that are only used by one or
+  a few formatters and which we cannot know about up front)
+
+For clarity we should also rename =settings::settings= to
+=settings::bundle=. We no longer require global, local, type, facet
+etc settings.
+
+Commit prior to refactoring: 909b9a6.
+
+*List of tasks*:
+
+- remove processing of includes and file names from formattables
+- remove all of the many settings from settings and implement the two
+  above ones; add inclusion related classes from formattables
+- remove path related classes from formatters (will be implemented as
+  operations/expansions)
+- remove all field definitions; instead add traits with the complete
+  name. We also need a field definition selector based on complete
+  name. Settings factories need to do a look-up for the required
+  fields on construction and cache the fields. Actually we probably
+  should have path ingredient settings; we can make use of these from
+  within the operation/expansion?
+
+*** COMPLETED Remove processing of includes and file names            :story:
+    CLOSED: [2015-03-19 Thu 09:45]
+
+This will be done via expansion. Remove also the entity properties.
+
+*** COMPLETED Remove path related classes from formatters             :story:
+    CLOSED: [2015-03-19 Thu 09:45]
+
+These will be implemented as operations/expansions.
+
+*** COMPLETED Remove provider                                         :story:
+    CLOSED: [2015-03-19 Thu 09:45]
+
+We no longer require the provider, provider interface etc. These will
+be done as part of the expansions. We will need a way to obtain a file
+type given a formatter ID. This could be done with a selector. It will
+be used by the inclusion expander.
+
+*** COMPLETED Refactor settings classes                               :story:
+    CLOSED: [2015-03-20 Fri 15:55]
+    CLOCK: [2015-03-20 Fri 14:54]--[2015-03-20 Fri 15:55] =>  1:01
+    CLOCK: [2015-03-20 Fri 11:14]--[2015-03-20 Fri 11:58] =>  0:44
+    CLOCK: [2015-03-18 Wed 22:14]--[2015-03-18 Wed 23:10] =>  0:56
+    CLOCK: [2015-03-18 Wed 21:15]--[2015-03-18 Wed 21:55] =>  0:40
+    CLOCK: [2015-03-18 Wed 13:15]--[2015-03-18 Wed 17:31] =>  4:16
+    CLOCK: [2015-03-13 Fri 22:57]--[2015-03-14 Sat 00:19] =>  1:22
+
+*Final Understanding*
+
+After much to-ing and fro-ing, the final names for the classes are as
+follows:
+
+- general settings: settings common to all formatters in all models
+  (e.g. c#, c++);
+- type settings: settings specific to a type (e.g. common to all
+  formatters using that type for that model);
+- formatter settings: settings for each formatter but which have the
+  same shape for all formatters;
+- opaque settings: settings that we do not know about. May be for a
+  specific formatter, or may be common to several formatters.
+
+*Previous Understanding*
+
+- remove all of the many settings from settings and implement the two
+  above ones;
+- add inclusion related classes from formattables
+- Create principal and subsidiary settings, and create a "type
+  settings" class or "settings for type"
+- create odb settings in settings namespace and delete the odb
+  settings classes.
+
+*** COMPLETED Add support for opaque formatter settings               :story:
+    CLOSED: [2015-03-20 Fri 16:04]
+
+*New Understanding*
+
+This is now taken care in the guise of subsidiary settings.
+
+*Previous Understanding*
+
+- create an empty opaque formatter settings class. Create a opaque
+  formatter settings factory interface class. Formatter interface to
+  return an opaque formatter settings factory interface.
+- add opaque formatter settings to local settings.
+- when formatting, cast additional formatter settings (if available)
+  and throw if cast fails. For formatters without opaque settings,
+  throw if any supplied.
+- we need multiple opaque settings (more than one formatter will need
+  them).
+- move provider and provider selector to top-level namespace and add a
+  provide opaque settings method to it.
+
+*** COMPLETED Add property to model to capture presence of generatable types :spike:
+    CLOSED: [2015-03-20 Fri 16:23]
+    CLOCK: [2015-03-20 Fri 16:09]--[2015-03-20 Fri 16:23] =>  0:14
+
+At present we have to return a pair from the SML workflow to denote
+whether the model is generatable or not. We should handle this with a
+boolean flag in the SML model.
+
+*** COMPLETED Rename schema's object factory back to workflow         :spike:
+    CLOSED: [2015-03-20 Fri 16:59]
+    CLOCK: [2015-03-20 Fri 16:33]--[2015-03-20 Fri 16:59] =>  0:26
+
+At some point we probably had multiple workflows in dynamic's schema
+and so decided to rename it to factory. However now there is only one
+and it is very confusing to see it called a factory rather than a
+workflow.
+
+*** COMPLETED Use a list instead of a forward list in schema's registrar :spike:
+    CLOSED: [2015-03-20 Fri 17:41]
+    CLOCK: [2015-03-20 Fri 17:13]--[2015-03-20 Fri 17:41] =>  0:28
+
+We need to use a list because we are now generating this type and
+dogen still has no support for forward lists.
+
+*** COMPLETED Create a =dynamic::expansion= model with a sample operation :story:
+    CLOSED: [2015-03-21 Sat 17:26]
+    CLOCK: [2015-03-20 Fri 17:41]--[2015-03-20 Fri 17:51] =>  0:10
+    CLOCK: [2015-03-20 Fri 17:05]--[2015-03-20 Fri 17:13] =>  0:08
+    CLOCK: [2015-03-20 Fri 16:23]--[2015-03-20 Fri 16:33] =>  0:10
+    CLOCK: [2015-03-20 Fri 16:04]--[2015-03-20 Fri 16:09] =>  0:05
+    CLOCK: [2015-03-19 Thu 17:19]--[2015-03-19 Thu 17:37] =>  0:18
+    CLOCK: [2015-03-19 Thu 15:59]--[2015-03-19 Thu 17:19] =>  1:20
+    CLOCK: [2015-03-19 Thu 15:21]--[2015-03-19 Thu 15:31] =>  0:10
+    CLOCK: [2015-03-19 Thu 14:28]--[2015-03-19 Thu 14:46] =>  0:18
+    CLOCK: [2015-03-19 Thu 09:54]--[2015-03-19 Thu 11:00] =>  1:06
+    CLOCK: [2015-03-19 Thu 09:47]--[2015-03-19 Thu 09:53] =>  0:06
+
+As per analysis we need to add support for predicates, operations and
+transformation. To start off with we should create a very simple
+operation (potentially with the predicate "true") that instantiates
+defaults. It goes through every field definition and for those with
+default values, it populates the field with it's default value.
+
+We probably just need a simple workflow that executes all operations
+on a supplied =dynamic::object= and returns the transformed
+=dynamic::object=. Operations are registered against the workflow.
+
+In terms of predicates: we do not seem to need fine grained
+predicates, that are then used to compose of a number of more complex
+predicates (e.g. "if path exists", "not", "true", etc.). It actually
+seems more wise to just have "preconditions" that are implemented in
+code (e.g. "ensure this list of fields exist"). This will avoid having
+a really complicated logic in data files that builds the
+preconditions. We could also have an optional precondition so that
+"true" is no longer required.
+
+Also we should name "operations" "expanders". After all we are
+executing the expansion workflow.
+
+*** COMPLETED Determining the model module should be in SML           :spike:
+    CLOSED: [2015-03-21 Sat 18:44]
+    CLOCK: [2015-03-21 Sat 18:06]--[2015-03-21 Sat 18:44] =>  0:38
+
+At present we have a number of methods looking for the model
+module. However, =merger= already knows who the "main" model module
+is. We need to either provide a method to find it in SML or a property
+in model to record it.
+
+Notes:
+
+- Actually this is done in =dia_to_sml::workflow=.
+- Actually we don't need to do anything: all we have to do is to look
+  up the model's name in the modules container.
+
+*** COMPLETED Create a "default values" expander                      :story:
+    CLOSED: [2015-03-21 Sat 23:04]
+    CLOCK: [2015-03-21 Sat 22:24]--[2015-03-21 Sat 23:04] =>  0:40
+    CLOCK: [2015-03-21 Sat 21:03]--[2015-03-21 Sat 22:19] =>  1:16
+    CLOCK: [2015-03-21 Sat 18:44]--[2015-03-21 Sat 18:51] =>  0:07
+    CLOCK: [2015-03-21 Sat 17:29]--[2015-03-21 Sat 18:04] =>  0:35
+
+We need a simple operation that takes the default values and
+instantiates them in the schema object. We may need to take into
+account the scope of the field.
+
+Tasks:
+
+- model module qname is in SML; remove local routine to find it (or
+  update it).
+- add non const setup method to expander
+- add setup expanders activity
+- pass in scope types to composite expander
+- add qname to expansion method
+- implement default values indexer in terms of scopes
+- implement expansion
+
+*** COMPLETED Create a "copy from options" expander                   :story:
+    CLOSED: [2015-03-21 Sat 23:49]
+    CLOCK: [2015-03-21 Sat 23:07]--[2015-03-21 Sat 23:54] =>  0:47
+
+*New Understanding*
+
+Actually we may not need to implement full support for the legacy
+options, or at least not just yet:
+
+- it is not yet known if its less work to simply add meta-data to all
+  models and get rid of the legacy options altogether instead of doing
+  a work around;
+- some options such as =project_directory_path= will remain as command
+  line options so we need to handle these correctly during include
+  file generation.
+
+For now we implemented all the machinery needed for this, but didn't
+yet bother to copy across all options. This can be revisited if/when
+required.
+
+*Previous Understanding*
+
+We need legacy interoperability. One way of achieving is to have some
+kind of copying of the config model into the schema object. Create a
+simple operation that does this. It does mean a dependency on =config=
+from =dynamic::expansion= but its temporary.
+
+*** COMPLETED Create a "copy from root" expander                      :story:
+    CLOSED: [2015-03-22 Sun 00:17]
+    CLOCK: [2015-03-21 Sat 23:55]--[2015-03-22 Sun 00:17] =>  0:22
+
+Some fields can only be populated at the root. However, we need them
+to be available on every dynamic object. We need an operation that
+takes into account the scope of the field and copies it. This may not
+be that straightforward. We should also look into other scopes to see
+what makes sense here to copy.
+
+This operation should execute after defaulting. It should live in
+dynamic.
+
+*** COMPLETED Add a graph to expansion workflow                       :story:
+    CLOSED: [2015-03-22 Sun 01:58]
+    CLOCK: [2015-03-22 Sun 00:17]--[2015-03-22 Sun 01:58] =>  1:41
+
+This simply looks at all the registered operations and their
+dependencies (simply a string with the operation name) and ensures
+that:
+
+- all dependencies are met; and
+- there are no cycles in the graph of dependencies.
+
+The graph is then used to execute the expansions in dependency order.
+
+*** COMPLETED Expansion must be performed before merging              :story:
+    CLOSED: [2015-03-23 Mon 15:10]
+    CLOCK: [2015-03-23 Mon 14:59]--[2015-03-23 Mon 15:10] =>  0:11
+    CLOCK: [2015-03-23 Mon 14:37]--[2015-03-23 Mon 14:59] =>  0:22
+    CLOCK: [2015-03-23 Mon 13:47]--[2015-03-23 Mon 14:36] =>  0:49
+
+We have placed the expansion after merging. However, this is not quite
+right: it is possible that each model has different settings on their
+root module. For example, one could use different source/include
+directories, extensions, etc for different modules. This means that
+the include paths computed will be different for each model. In order
+for this to work, we must expand each model separately and then merge.
+
+Also, this means that we must perform expansion for all models, even
+those that we are not going to generate or else the includes for those
+types will be wrong. This is unfortunate because it means the merged
+model is very large.
+
+Actually, some of the system modules do not require expansion - or
+worse, cannot be expanded or else we would be generating
+non-compilable code. For example, expansion of the boost or c++
+standard library models would result in computing includes, paths etc
+for standard types. We need to be able to switch off expansion for
+certain models. The obvious thing would be to do so for all system
+models (e.g. =origin_types::system=) but this is in effect a way of
+saying that dogen models cannot be system models, which is true right
+now but shouldn't be true forever. One can imagine the LAM (Language
+Agnostic Model) described in the backlog, etc. So instead we need to
+add a "is expandable" property:
+
+- set it to true in Dia to SML;
+- set it in the JSON and read it during hydration;
+- in front-end workflow, perform expansion if "is expandable" is
+  true. If model's module is not found and "is expandable" is true,
+  throw.
+
+*** COMPLETED Perform some analysis on how field definitions will be used :story:
+    CLOSED: [2015-03-23 Mon 16:43]
+    CLOCK: [2015-03-23 Mon 16:00]--[2015-03-23 Mon 16:41] =>  0:41
+
+We need to change our approach to field definition implementation,
+based on the use cases we gathered so far:
+
+- registrar is not useful because we are not using static registration;
+- indexer is not useful because we need to index (and query )in lots
+  of different places.
+
+What we need instead is:
+
+- a repository of field definitions, created once very early on and
+  passed around;
+- a repository workflow responsible for creating the repository from
+  file, indexing it, etc;
+- we need to pass the repository into the schema and expansion
+  workflows;
+- we need to pass the repository into the settings workflow in c++;
+- factories can then cache the field definitions on construction.
+- add support for default values in JSON.
+
+*** COMPLETED Implement the repository workflow                       :story:
+    CLOSED: [2015-03-23 Mon 20:27]
+    CLOCK: [2015-03-23 Mon 20:16]--[2015-03-23 Mon 20:27] =>  0:11
+    CLOCK: [2015-03-23 Mon 18:30]--[2015-03-23 Mon 19:04] =>  0:34
+    CLOCK: [2015-03-23 Mon 17:07]--[2015-03-23 Mon 18:07] =>  1:00
+
+Code all classes related to the repository workflow in schema, and
+hook it up.
+
+*** COMPLETED Add JSON support to dynamic workflow                    :story:
+    CLOSED: [2015-03-23 Mon 22:01]
+    CLOCK: [2015-03-23 Mon 15:39]--[2015-03-23 Mon 16:00] =>  0:21
+    CLOCK: [2015-03-23 Mon 15:10]--[2015-03-23 Mon 15:39] =>  0:29
+
+We need to create the required activities in the dynamic schema's
+workflow to read in all the JSON files.
+
+- create a workflow that reads in all field definitions and then
+  registers them.
+
+*** COMPLETED Remove all field definitions in code                    :story:
+    CLOSED: [2015-03-24 Tue 10:54]
+    CLOCK: [2015-03-24 Tue 10:00]--[2015-03-24 Tue 10:54] =>  0:54
+    CLOCK: [2015-03-24 Tue 09:17]--[2015-03-24 Tue 09:59] =>  0:42
+    CLOCK: [2015-03-24 Tue 08:58]--[2015-03-24 Tue 09:17] =>  0:19
+    CLOCK: [2015-03-24 Tue 07:28]--[2015-03-24 Tue 08:57] =>  1:29
+    CLOCK: [2015-03-23 Mon 21:47]--[2015-03-23 Mon 22:01] =>  0:14
+    CLOCK: [2015-03-23 Mon 21:21]--[2015-03-23 Mon 21:44] =>  0:23
+    CLOCK: [2015-03-23 Mon 16:43]--[2015-03-23 Mon 17:07] =>  0:24
+
+Instead add traits with the complete name for all relevant fields.
+
+*** COMPLETED Create a "populate file path" operation                 :story:
+    CLOSED: [2015-03-26 Thu 10:31]
+    CLOCK: [2015-03-25 Wed 22:30]--[2015-03-25 Wed 23:44] =>  1:14
+    CLOCK: [2015-03-25 Wed 21:40]--[2015-03-25 Wed 22:03] =>  0:23
+    CLOCK: [2015-03-25 Wed 20:50]--[2015-03-25 Wed 21:22] =>  0:32
+    CLOCK: [2015-03-25 Wed 17:28]--[2015-03-25 Wed 18:14] =>  0:46
+    CLOCK: [2015-03-25 Wed 15:11]--[2015-03-25 Wed 17:27] =>  2:12
+    CLOCK: [2015-03-24 Tue 23:11]--[2015-03-24 Tue 23:24] =>  0:13
+    CLOCK: [2015-03-24 Tue 13:03]--[2015-03-24 Tue 13:34] =>  0:31
+
+We need an operation that uses all the ingredients for a file path and
+generates the file path. It is unconditional. It depends on
+defaulting.
+
+This should populate both the inclusion path (and delimiter) and the
+full path. It should take into account overriding.
+
+We should consider having two operations: the full path and the
+inclusion path.
+
+This operation should live in c++.
+
+Tasks:
+
+- all formatters, file types and facet; all fields for the facet and
+  formatter.
+- add a field for the file path if it doesn't yet exist;
+- implement path settings factory, adding any missing fields;
+- create a file path expander that calls the factory for every
+  formatter
+
+*** COMPLETED Default value expansion is not very efficient           :story:
+    CLOSED: [2015-03-26 Thu 15:49]
+
+We added an expansion that generates the default values for all fields
+not supplied by the user. However, this is not particularly efficient;
+its easy to query for the field in the settings factory and if not
+found, use the default value. This would make the objects a lot
+smaller. In theory all we need to do is to remove this
+expansion. Factories are being coded to use the default value.
+
+*** COMPLETED Improve performance in populating file path             :story:
+    CLOSED: [2015-03-26 Thu 15:55]
+    CLOCK: [2015-03-26 Thu 15:45]--[2015-03-26 Thu 15:55] =>  0:10
+    CLOCK: [2015-03-26 Thu 15:28]--[2015-03-26 Thu 15:44] =>  0:16
+    CLOCK: [2015-03-26 Thu 14:11]--[2015-03-26 Thu 15:27] =>  1:16
+    CLOCK: [2015-03-26 Thu 13:31]--[2015-03-26 Thu 13:41] =>  0:10
+    CLOCK: [2015-03-26 Thu 10:48]--[2015-03-26 Thu 11:19] =>  0:31
+
+We now have major performance issues. This is because we took the
+easiest path. We need to do a few tweaks:
+
+- for each expander that needs data from the root object, create it
+  during setup and cache it. This means we need to split the path
+  factory into two (root and formatter).
+- do not expand default values
+- do not copy from root object
+- for general settings, create an expander that uses the formatter
+  field, unless none is found in which case it uses the root object
+  field. Actually this is the role of the bundle factory; we just need
+  access to the root object.
+- only populate include path if inclusion_required is true.
+- do not compute file paths for non-targets. Supply the generatability
+  enum to the expander to decide.
+
+*** COMPLETED Implement the formatter settings factory                :story:
+    CLOSED: [2015-03-26 Thu 17:14]
+    CLOCK: [2015-03-26 Thu 15:59]--[2015-03-26 Thu 17:13] =>  1:14
+
+We need to start reading the formatter settings again so we can go
+back to formatting.
+
+*** COMPLETED Move injection out of the SML merging workflow          :story:
+    CLOSED: [2015-03-26 Thu 17:31]
+    CLOCK: [2015-03-26 Thu 17:14]--[2015-03-26 Thu 17:31] =>  0:17
+
+*Final Understanding*
+
+Actually since it was just the injector, we ended up removing it from
+the merging workflow and using it directly. We did consider creating
+an "enrichment" workflow but then almost all the operations "enrich"
+the model (but all others require a merged model) so it doesn't make a
+lot of sense. It would be nice to somehow create a workflow that
+handles injection and expansion, but not quite sure where to put it;
+SML cannot depend on expansion and expansion shouldn't really
+inject. For now it stays in frontend, the least hacky approach of a
+set of very hacky options.
+
+*Previous Understanding*
+
+We need to do all of the non-merging aspects of the SML workflow
+before expansion takes place. This is because otherwise the generated
+types won't have the correct meta-data. We need to split the workflow
+into a "merging" workflow and a "enriching" workflow.
+
+*** COMPLETED Propagate file and include paths to the formatter       :story:
+    CLOSED: [2015-03-26 Thu 17:54]
+    CLOCK: [2015-03-26 Thu 17:31]--[2015-03-26 Thu 17:54] =>  0:23
+    CLOCK: [2015-03-26 Thu 15:56]--[2015-03-26 Thu 15:59] =>  0:03
+
+Now we are generating file and include paths again we should re-enable
+the new formatting workflow, so we can keep track of changes by
+looking at the log files.
+
+*** COMPLETED Convert all files in library into JSON                  :story:
+    CLOSED: [2015-03-27 Fri 16:24]
+
+We started off by using the INI format, but then subsequently found it
+too inexpressive to be able to carry SML representations and started
+using JSON. However, modeline groups, etc are still in INI format.
+
+*** COMPLETED Implement the general settings workflow with root object :story:
+    CLOSED: [2015-03-27 Fri 18:13]
+    CLOCK: [2015-03-27 Fri 18:01]--[2015-03-27 Fri 18:13] =>  0:12
+    CLOCK: [2015-03-27 Fri 16:26]--[2015-03-27 Fri 18:01] =>  1:35
+    CLOCK: [2015-03-27 Fri 14:41]--[2015-03-27 Fri 16:23] =>  1:42
+    CLOCK: [2015-03-26 Thu 22:21]--[2015-03-27 Fri 00:02] =>  1:41
+
+We need to change the settings workflow to take in the root object;
+and we then need to pass it to the general settings workflow so that
+we first check to see if a field exists on the current object; if it
+doesn't we then either use the root object or the default value.
+
+Tasks:
+
+- create a hydration workflow that reads in all the data and pass it
+  in to the factory; we probably need something like a repository to
+  contain the data;
+- remove =make_only_if_overriden=;
+- convert modelines to JSON
+- pass in root object and "key" for the modeline group;
+- read generate_preamble from the dynamic object.
+
+*** COMPLETED Consider creating field definition templates            :story:
+    CLOSED: [2015-03-29 Sun 22:25]
+    CLOCK: [2015-03-29 Sun 22:20]--[2015-03-29 Sun 22:25] =>  0:05
+    CLOCK: [2015-03-29 Sun 21:32]--[2015-03-29 Sun 22:20] =>  0:48
+    CLOCK: [2015-03-29 Sun 20:40]--[2015-03-29 Sun 20:53] =>  0:13
+    CLOCK: [2015-03-29 Sun 18:43]--[2015-03-29 Sun 19:02] =>  0:19
+    CLOCK: [2015-03-29 Sun 17:03]--[2015-03-29 Sun 18:43] =>  1:40
+    CLOCK: [2015-03-29 Sun 15:37]--[2015-03-29 Sun 16:35] =>  0:58
+    CLOCK: [2015-03-29 Sun 14:51]--[2015-03-29 Sun 15:36] =>  0:45
+    CLOCK: [2015-03-29 Sun 14:18]--[2015-03-29 Sun 14:39] =>  0:21
+    CLOCK: [2015-03-28 Sat 21:17]--[2015-03-28 Sat 21:54] =>  0:37
+    CLOCK: [2015-03-28 Sat 20:20]--[2015-03-28 Sat 21:14] =>  0:54
+
+At present we need to copy and paste a lot of field definitions to
+instantiate it for each formatter. It would be great if we could
+somehow mark a field definition as a facet or formatter template and
+then have it automatically instantiated for each facet/formatter. This
+could be done as part of the repository workflow.
+
+- augment field definition with template information; perhaps
+  =template_types= with =formatter_template=, =facet_template= and
+  =not_a_template=. If a template, then cannot have ownership
+  hierarchy details.
+- JSON hydrator returns the field definitions as templates.
+- repository workflow locates templates and for every template expands
+  it against each formatter/facet, saving the results to the
+  repository.
+- we need some kind of "model registration" for this so that we know
+  of all models, facets and formatters in repository workflow; we
+  cannot access the formatter registry. This could be done by
+  supplying a list of =ownership_hierarchy= produced by each
+  model. This is done by looking at the registered formatters. We
+  don't need static registration, just a way of the backend to
+  generate the list and then knit can supply it to the repository
+  formatter.
+- the non-common fields such as the include details cannot be
+  templatised (because they don't apply to all formatters). We need to
+  keep these in each JSON file.
+
+Rules:
+
+- all field definitions must have a field definition type.
+- no template can have qualified name.
+- global template: cannot have ownership hierarchy.
+- facet template: cannot have formatter name or facet name. If model
+  name is filled in, only applies to facets in that model.
+- formatter template: cannot have formatter name. If model name or
+  facet name is filled in, only applies to formatters in that model
+  and or facet.
+- instance: throws not a template.
+
+*** POSTPONED Create a "supported" expander                           :story:
+    CLOSED: [2015-03-29 Sun 22:33]
+    CLOCK: [2015-03-19 Thu 14:30]--[2015-03-19 Thu 15:19] =>  0:49
+    CLOCK: [2015-03-19 Thu 11:51]--[2015-03-19 Thu 12:05] =>  0:14
+    CLOCK: [2015-03-19 Thu 11:00]--[2015-03-19 Thu 11:51] =>  0:51
+
+This needs a bit more analysis. The gist of it is that not all types
+support all formatters. We need a way to determine if a formatter is
+not supported. This probably should be inferred by a "is dogen model"
+property (see backlog); e.g. non-dogen models need their types to have
+an inclusion setup in order to be "supported", otherwise they should
+default to "not-supported". However the "supported" flag is populated,
+we then need to take into account relationships and propagate this
+flag across the model such that, if a type =A= in a dogen model has a
+property of a type =B= from a non-dogen model which does not support a
+given formatter =f=, then =A= must also not support =f=.
+
+In order to implement this feature we need to:
+
+- update the SML grapher to take into account relationships
+  (properties that the class has) as well as inheritance.
+- we must only visit related types if we ourselves do not have values
+  for all supported fields.
+- we also need a visitor that detects cycles; when a cycle is found we
+  simply assume that the status of the revisited class is true (or
+  whatever the default value of "supported" is) and we write a warning
+  to the log file. We should output the complete path of the cycle.
+- users can override this by setting supported for all formatters
+  where there are cycles.
+- we could perhaps have a bitmask by qname; we could start by
+  generating all bitmasks for all qnames and setting them to default
+  value. We could then find all qnames that have supported set to
+  false and update the corresponding bitmasks. Then we could use the
+  graph to loop through the qnames and "and" the bitmasks of each
+  qname with the bitmasks of their related qnames. The position of
+  each field is allocated by the algorithm (e.g. the first "supported"
+  field is at position 0 and so on). Actually the first position of
+  the bitmask could be used to indicate if the bitmask has already
+  been processed or not. In the presence of a cycle force it to true.
+- we need a class that takes the SML model and computes the supported
+  bitmasks for each qname; the supported expander then simply takes
+  this (perhaps as part of the expansion context), looks up for the
+  current qname and uses the field list to set the flags
+  appropriately.
+- we should remove all traces of supported from a settings
+  perspective; supported and multi-level enabled are just artefacts of
+  the meta-data. From a settings perspective, there is just a
+  formatter level (common formatter settings) enabled which determines
+  whether the formatter is on or off. How that flag came to be
+  computed is not relevant outside the expansion process. This also
+  means we can have simpler or more complex policies as time allows us
+  improve on this story; provided we can at least set all flags to
+  enabled we can move forward.
+
+*** POSTPONED Create a "populate includes operation"                  :story:
+    CLOSED: [2015-03-29 Sun 22:33]
+    CLOCK: [2015-03-28 Sat 20:09]--[2015-03-28 Sat 20:19] =>  0:10
+    CLOCK: [2015-03-28 Sat 19:33]--[2015-03-28 Sat 20:08] =>  0:35
+    CLOCK: [2015-03-28 Sat 18:21]--[2015-03-28 Sat 19:05] =>  0:44
+    CLOCK: [2015-03-27 Fri 22:38]--[2015-03-27 Fri 23:12] =>  0:34
+    CLOCK: [2015-03-27 Fri 21:56]--[2015-03-27 Fri 22:37] =>  0:41
+    CLOCK: [2015-03-27 Fri 18:13]--[2015-03-27 Fri 18:42] =>  0:29
+
+This operation needs to be implemented by every formatter. It queries
+the model to look for all the types it depends on and obtains the
+corresponding include paths from them. It places them in a formatter
+specific list of includes. It depends on the inclusion path operation.
+
+Notes:
+
+- we need to remember the model after setup.
+- we could use a base inclusion expander that sets up the formatter
+  properties and remembers the model, etc. Derived expanders just
+  need to provide an expansion method. We could even have a utility
+  method to set the field back into the dynamic object.
+- massive impedance mismatch between the boilerplate formatters and
+  the inclusion dependency meta-data. We should probably just use a
+  =std::list<std::string> to represent includes at the formatter
+  level, but we need to check. Actually no one is yet using this code
+  so we can change it at will.
+- we need to simplify the story around include paths. There are two
+  use cases: the include path ready to be stamped as an include
+  statement and the header guards. The include path for the include
+  statement could come with delimiters (<>, "", etc). The header
+  guards however cannot. So due to this we have split the two things
+  so we can recombine them later. However, this just generates a whole
+  load of unnecessary complexity. To make matters worse, there is only
+  a need to compute header guards for dogen types since the user is
+  not expected to overload them (one can, possibly, configure its
+  generation but not supply an override). Perhaps the cleaner solution
+  is to have a header guards field and a include directive field, both
+  generated as part of the path expansion. Formatter settings extract
+  both.
+
+Tasks:
+
+- remove delimiter field, create a header guards field.
+- rename include path field to include directive; add delimiters to
+  all usages of this field.
+- populate header guards in path expander, copying code from the
+  formatter (upper-casing etc.).
+- update header guards in boilerplate to take in a string, and to do
+  nothing to the supplied header guard string (other than outputting
+  it).
+- when generating include directive field for dogen types, add the
+  appropriate delimiters.
+- change include formatter to use a list of strings.
+
+*** POSTPONED Compute managed directories from knitting options       :story:
+    CLOSED: [2015-03-29 Sun 22:33]
+    CLOCK: [2015-03-29 Sun 14:39]--[2015-03-29 Sun 14:51] =>  0:12
+
+At present the backend is returning empty managed directories. This
+means housekeeping will fail in the new world. We need to change the
+interface of this method to take in the knitting options and return
+the managed directories.
+
+This is not entirely trivial. At present the managed directories are
+computed in the locator. It takes into account split project, etc to
+come up with all the directories used by the backend. We need to make
+these decisions during path expansion, expect we only need manged
+directories for the root object. However we do not know which object
+is the root object at present, during the expansion. We could identify
+it via the QName and the SML model in context thought. We could then
+populate the managed directories as a text collection. We then need
+some settings and a factory to pull out the managed directories from
+the root object. This could be done in =managed_directories=, by
+having an SML model as input.
+
+** Deprecated
+*** CANCELLED Add an "enabled" expander                               :story:
+    CLOSED: [2015-03-19 Thu 15:20]
+
+*New Understanding*
+
+Actually this is the same operation as supported.
+
+*Previous Understanding*
+
+We need an operation that is able to look at the model, facet,
+formatter values for the enabled field and determine what value to use
+for the formatter. It's predicate is =true=. Or perhaps we need
+conditional and unconditional operations.
+
+This operation should execute after copy from root. It should live in
+dynamic.
+
+*** CANCELLED Create a "populator" utility in Schema                  :story:
+    CLOSED: [2015-03-26 Thu 15:50]
+
+*Final Understanding*
+
+Actually by caching the field definitions we have made the code a lot
+smaller so there is no need for further hacking.
+
+*Previous Understanding*
+
+Create a utility class in schema that has a table of names to
+lambdas. Users supply lambdas. Utility resolves the field, uses the
+default value if the field is not in dynamic object, and supplies this
+value to lambda. Lambda knows of the underlying object. Converts value
+to appropriate type and sets it.

@@ -1,0 +1,635 @@
+#+title: Sprint Backlog 60
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Commentary
+
+** Mission
+
+Replace all uses of meta-data with dynamic across the entire code
+base.
+
+** Retrospective
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2015-02-02 Mon 20:19]
+
+| Headline                                                              | Time    |       |      |
+|-----------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                          | *39:48* |       |      |
+|-----------------------------------------------------------------------+---------+-------+------|
+| Active                                                                |         | 39:48 |      |
+| COMPLETED Sprint and product backlog grooming                         |         |       | 2:27 |
+| COMPLETED Updates to the manual and readme files                      |         |       | 0:49 |
+| COMPLETED Add annotation fields and remove meta-data usage            |         |       | 2:15 |
+| COMPLETED Add field definition to odb formatters                      |         |       | 1:09 |
+| COMPLETED Consider defaulting doxygen docs to false                   |         |       | 0:05 |
+| COMPLETED Refactor hierarchy ownership of fields                      |         |       | 1:03 |
+| COMPLETED Create field definitions for all c++ fields                 |         |       | 4:55 |
+| COMPLETED Add default value support to dynamic field definitions      |         |       | 0:35 |
+| COMPLETED Update c++ settings factory to use dynamic object           |         |       | 1:34 |
+| COMPLETED Update mock factory to generate dynamic fields              |         |       | 1:56 |
+| COMPLETED Rename namespace =meta-data= to =dynamic=                   |         |       | 0:26 |
+| COMPLETED Update facet settings factory to use dynamic object         |         |       | 1:17 |
+| COMPLETED Delete tags class in SML                                    |         |       | 0:22 |
+| COMPLETED Create a container of field definitions in field definition |         |       | 1:15 |
+| COMPLETED Dynamic workflow is recreated for every model               |         |       | 1:27 |
+| COMPLETED Remove optionality from =obtain_field_definition=           |         |       | 2:50 |
+| COMPLETED Perform an analysis on the current state of formatters      |         |       | 1:59 |
+| COMPLETED Deeper analysis of the C++ model                            |         |       | 0:43 |
+| COMPLETED Create a =settings= namespace in =cpp=                      |         |       | 1:54 |
+| COMPLETED Create a =formattables= namespace in =cpp=                  |         |       | 3:33 |
+| COMPLETED Move registrar into formatters namespace                    |         |       | 0:13 |
+| POSTPONED Facet and formatter settings factories to use definitions   |         |       | 6:52 |
+| POSTPONED Split global settings by formatter and facet                |         |       | 0:09 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-02-02 Mon 20:19]
+    CLOCK: [2015-01-30 Fri 16:35]--[2015-01-30 Fri 16:51] =>  0:16
+    CLOCK: [2015-01-30 Fri 08:40]--[2015-01-30 Fri 08:50] =>  0:08
+    CLOCK: [2015-01-27 Tue 23:46]--[2015-01-28 Wed 00:01] =>  0:15
+    CLOCK: [2015-01-26 Mon 19:36]--[2015-01-26 Mon 19:59] =>  0:23
+    CLOCK: [2015-01-21 Wed 23:30]--[2015-01-21 Wed 23:36] =>  0:06
+    CLOCK: [2015-01-21 Wed 23:07]--[2015-01-21 Wed 23:13] =>  0:06
+    CLOCK: [2015-01-21 Wed 19:10]--[2015-01-21 Wed 20:00] =>  0:50
+    CLOCK: [2015-01-20 Tue 23:56]--[2015-01-21 Wed 00:02] =>  0:06
+    CLOCK: [2015-01-20 Tue 22:40]--[2015-01-20 Tue 22:55] =>  0:15
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                  :story:
+    CLOSED: [2015-02-02 Mon 20:19]
+    CLOCK: [2015-01-29 Thu 20:01]--[2015-01-29 Thu 20:50] =>  0:49
+
+Use downtime to update the manual and / or readme file.
+
+*** COMPLETED Fix windows nightly build                               :story:
+    CLOSED: [2015-01-21 Wed 08:43]
+
+Note: this was fixed some time ago.
+
+The nightly build for windows has been broken for quite a while. The
+problem is we have hit a limit in COFF in the serialisation of context
+(=sml_to_cpp=):
+
+: cd /E/mingw/msys/1.0/home/ctest/build/Nightly/dogen/mingw-1.0.17-i686-gcc-4.7/build/projects/sml_to_cpp/src && /e/mingw/bin/g++.exe   -DBOOST_ALL_DYN_LINK -isystem /e/usr/local/pfh/include -std=gnu++0x -D_WIN32_WINNT=0x0501 -DBOOST_TEST_SOURCE  -g -O0 -Wall -Wextra -pedantic -Werror -Wno-system-headers -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage -std=gnu++11 -frtti -fvisibility-inlines-hidden -fvisibility=default @CMakeFiles/sml_to_cpp.dir/includes_CXX.rsp   -o CMakeFiles/sml_to_cpp.dir/io/std_types_io.cpp.obj -c /e/mingw/msys/1.0/home/ctest/build/Nightly/dogen/mingw-1.0.17-i686-gcc-4.7/source/projects/sml_to_cpp/src/io/std_types_io.cpp
+: /e/cmake/bin/cmake.exe -E cmake_progress_report /E/mingw/msys/1.0/home/ctest/build/Nightly/dogen/mingw-1.0.17-i686-gcc-4.7/build/CMakeFiles 
+: [ 77%] Building CXX object projects/sml_to_cpp/src/CMakeFiles/sml_to_cpp.dir/serialization/context_ser.cpp.obj
+: cd /E/mingw/msys/1.0/home/ctest/build/Nightly/dogen/mingw-1.0.17-i686-gcc-4.7/build/projects/sml_to_cpp/src && /e/mingw/bin/g++.exe   -DBOOST_ALL_DYN_LINK -isystem /e/usr/local/pfh/include -std=gnu++0x -D_WIN32_WINNT=0x0501 -DBOOST_TEST_SOURCE  -g -O0 -Wall -Wextra -pedantic -Werror -Wno-system-headers -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage -std=gnu++11 -frtti -fvisibility-inlines-hidden -fvisibility=default @CMakeFiles/sml_to_cpp.dir/includes_CXX.rsp   -o CMakeFiles/sml_to_cpp.dir/serialization/context_ser.cpp.obj -c /e/mingw/msys/1.0/home/ctest/build/Nightly/dogen/mingw-1.0.17-i686-gcc-4.7/source/projects/sml_to_cpp/src/serialization/context_ser.cpp
+: e:/mingw/bin/../lib/gcc/mingw32/4.7.2/../../../../mingw32/bin/as.exe: CMakeFiles/sml_to_cpp.dir/serialization/context_ser.cpp.obj: too many sections (32795)
+
+This problem is solved with visual studio using the =/bigobj= flag,
+but this is not available on mingw at the moment. Support has been
+[[https://sourceware.org/ml/binutils/2014-03/msg00114.html][checked in]] to mingw64 trunk, so hopefully it will make its way to
+32-bits too. See also: [[http://sourceforge.net/p/mingw-w64/bugs/341/][#341 Too many sections aka /bigobj replacement
+flag]].
+
+*** COMPLETED Add annotation fields and remove meta-data usage        :story:
+    CLOSED: [2015-01-21 Wed 21:05]
+    CLOCK: [2015-01-21 Wed 21:36]--[2015-01-21 Wed 21:56] =>  0:20
+    CLOCK: [2015-01-21 Wed 20:45]--[2015-01-21 Wed 21:02] =>  0:17
+    CLOCK: [2015-01-21 Wed 20:00]--[2015-01-21 Wed 20:37] =>  0:37
+    CLOCK: [2015-01-20 Tue 23:31]--[2015-01-20 Tue 23:56] =>  0:25
+    CLOCK: [2015-01-20 Tue 22:55]--[2015-01-20 Tue 23:31] =>  0:36
+
+Add all required field definitions for the formatters field; rename
+meta-data namespace to dynamic and re-implement factory using dynamic
+fields instead of =ptree=.
+
+We need to inject:
+
+- copyright
+- licence
+- modeline_group
+
+We also need to sort out the upper case/lower case naming of these
+fields in various diagrams, as well as the licence vs licence name,
+etc.
+
+*** COMPLETED Add field definition to odb formatters                  :story:
+    CLOSED: [2015-01-21 Wed 22:45]
+    CLOCK: [2015-01-21 Wed 22:45]--[2015-01-21 Wed 22:51] =>  0:06
+    CLOCK: [2015-01-21 Wed 22:10]--[2015-01-21 Wed 22:45] =>  0:35
+    CLOCK: [2015-01-21 Wed 21:05]--[2015-01-21 Wed 21:33] =>  0:28
+
+We need a hack in order to cope with ODB pragmas. The easiest way is
+to define the field definitions in the formatters - this is the right
+way at any rate - but then do some kind of hack to extract the field
+from the meta-data. For example we could call the field definition
+directly from the =cpp_formatters= model.
+
+*** COMPLETED Consider defaulting doxygen docs to false               :story:
+    CLOSED: [2015-01-21 Wed 23:21]
+    CLOCK: [2015-01-21 Wed 23:16]--[2015-01-21 Wed 23:21] =>  0:05
+
+At present we do build all quite a lot, but never really look at the
+docs. We should not have to pay the cost of doxygenation. It would be
+better to default it to false even in the presence of the doxygen
+binary.
+
+*** COMPLETED Refactor hierarchy ownership of fields                  :story:
+    CLOSED: [2015-01-24 Sat 18:53]
+    CLOCK: [2015-01-24 Sat 17:49]--[2015-01-24 Sat 18:52] =>  1:03
+
+Since we cannot know the name of the fields for each formatter, we
+need a way to pull out all fields for a given formatter when building
+the formatter settings. We need to model this kind of hierarchical
+information so we can query fields by it.
+
+*** COMPLETED Create field definitions for all c++ fields             :story:
+    CLOSED: [2015-01-24 Sat 20:46]
+    CLOCK: [2015-01-24 Sat 20:38]--[2015-01-24 Sat 20:46] =>  0:08
+    CLOCK: [2015-01-24 Sat 20:34]--[2015-01-24 Sat 20:37] =>  0:03
+    CLOCK: [2015-01-24 Sat 20:32]--[2015-01-24 Sat 20:34] =>  0:02
+    CLOCK: [2015-01-24 Sat 20:28]--[2015-01-24 Sat 20:32] =>  0:04
+    CLOCK: [2015-01-24 Sat 20:06]--[2015-01-24 Sat 20:28] =>  0:22
+    CLOCK: [2015-01-24 Sat 19:01]--[2015-01-24 Sat 20:06] =>  1:05
+    CLOCK: [2015-01-23 Fri 23:15]--[2015-01-24 Sat 00:04] =>  0:49
+    CLOCK: [2015-01-22 Thu 21:43]--[2015-01-22 Thu 23:25] =>  1:42
+    CLOCK: [2015-01-22 Thu 20:50]--[2015-01-22 Thu 21:30] =>  0:40
+
+We need to go through all of the fields used by the C++ factories and
+create definitions for them. We also need to remove the traits class.
+
+This is actually a lot more complicated than expected. We need to do
+the following:
+
+- create a proper hierarchical structure for fields rather than a flat
+  owner. This is to cope with the fields that belong to facets or
+  formatters. Update all of the existing field definitions. Split
+  into its own story.
+- add a class header file name field. This is so we can override it
+  for STL, boost, etc. We only need it for class header file names (by
+  convention).
+- create all of the field definitions for all of the formatters and
+  inject them via the initialisers.
+
+*** COMPLETED Add default value support to dynamic field definitions  :story:
+    CLOSED: [2015-01-24 Sat 21:21]
+    CLOCK: [2015-01-24 Sat 20:46]--[2015-01-24 Sat 21:21] =>  0:35
+
+We need to add a default value to the field definition. We also need
+to go through all the existing fields and add default values where
+required.
+
+*** COMPLETED Update c++ settings factory to use dynamic object       :story:
+    CLOSED: [2015-01-25 Sun 22:49]
+    CLOCK: [2015-01-25 Sun 22:40]--[2015-01-25 Sun 22:49] =>  0:09
+    CLOCK: [2015-01-25 Sun 18:50]--[2015-01-25 Sun 19:03] =>  0:13
+    CLOCK: [2015-01-25 Sun 18:20]--[2015-01-25 Sun 18:33] =>  0:13
+    CLOCK: [2015-01-25 Sun 17:14]--[2015-01-25 Sun 17:50] =>  0:36
+    CLOCK: [2015-01-24 Sat 23:47]--[2015-01-25 Sun 00:10] =>  0:23
+
+Make use of default values in dynamic's field definitions and read
+fields from the dynamic object.
+
+*** COMPLETED Update mock factory to generate dynamic fields          :story:
+    CLOSED: [2015-01-27 Tue 18:39]
+    CLOCK: [2015-01-26 Mon 22:01]--[2015-01-26 Mon 23:39] =>  1:38
+    CLOCK: [2015-01-25 Sun 22:53]--[2015-01-25 Sun 23:11] =>  0:18
+
+At present the mock factory is generating meta-data fields. We need it
+to generate dynamic fields. We should hard-code the field names using
+local constants - and not add dependencies on the different models due
+to field definitions.
+
+*** COMPLETED Rename namespace =meta-data= to =dynamic=               :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+    CLOCK: [2015-01-22 Thu 19:15]--[2015-01-22 Thu 19:25] =>  0:10
+    CLOCK: [2015-01-21 Wed 22:51]--[2015-01-21 Wed 23:07] =>  0:16
+
+*New Understanding*
+
+Actually it may make more sense to remove the namespace altogether. We
+only have the field definitions and the factories, but because they
+are a "bridge" between dynamic and a strong type, its not obvious if
+they should be in the =dynamic= namespace. For now, remove the
+namespace.
+
+*Previous Understanding*
+
+We have created a number of "meta-data extension" namespaces, which is
+where we transform the ptree into a strongly typed object. These
+should be renamed to =dynamic= to make it consistent.
+
+*** COMPLETED Update facet settings factory to use dynamic object     :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+    CLOCK: [2015-01-27 Tue 22:01]--[2015-01-27 Tue 23:18] =>  1:17
+
+*New Understanding*
+
+Actually we don't need to tackle default values just yet - simply
+replace usages of meta_data for now.
+
+*Previous Understanding*
+
+This requires a bit of cleverness because we need to make use of the
+hierarchical properties for ownership. We also need to add default
+values to field definitions and remove the default facet properties.
+
+- group by facet where formatter is null
+- in each group, locate the facet settings and copy them over
+
+*** COMPLETED Update formatter settings factory to use dynamic object :story:
+    CLOSED: [2015-01-27 Tue 23:17]
+
+We don't need to tackle default values just yet - simply
+replace usages of meta_data for now.
+
+*** COMPLETED Replace uses of meta-data with dynamic object           :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+
+Find all places where we are using ptree and use the dynamic object
+instead. This should be mainly in meta-data factories.
+
+The exception is =json_hydrator= since we use property tree to parse
+the JSON.
+
+*** COMPLETED Inject unit test field definitions                      :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+
+We need to inject fields like =KEY= etc used by unit tests in the unit
+tests themselves. Take the opportunity to lower-case them.
+
+*** COMPLETED Remove uses of meta-data in tests                       :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+
+Where we are checking for the presence of meta-data fields, we need to
+look for dynamic fields instead.
+
+*** COMPLETED Remove all references to =ptree=                        :story:
+    CLOSED: [2015-01-27 Tue 23:18]
+
+Delete reader and writer classes and remove meta-data from
+=Extensible=.
+
+*** COMPLETED Remove dependency of writer on tags                     :story:
+    CLOSED: [2015-01-27 Tue 23:19]
+
+We seem to be using the tags to detect containers. We need to get rid
+of this dependency.
+
+*** COMPLETED Delete tags class in SML                                :story:
+    CLOSED: [2015-01-27 Tue 23:41]
+    CLOCK: [2015-01-27 Tue 23:19]--[2015-01-27 Tue 23:41] =>  0:22
+
+This class does not make sense any more as each model will be
+responsible for their own tags.
+
+Can only be done once we delete writer and reader.
+
+*** COMPLETED Create a container of field definitions in field definition :story:
+    CLOSED: [2015-01-28 Wed 12:56]
+    CLOCK: [2015-01-28 Wed 12:33]--[2015-01-28 Wed 12:56] =>  0:23
+    CLOCK: [2015-01-28 Wed 08:27]--[2015-01-28 Wed 09:19] =>  0:52
+
+It would be good if we could just return all field definitions in one
+go from within the field definition class itself instead of calling
+each of them in the initialiser; it is more likely that one would
+remember to add the field to the list when adding new fields. It would
+also mean there is only one file to change.
+
+We could use =std::reference_wrapper= for this.
+
+Note: reference wrapper was just too cumbersome. As the fields are
+expected to be initialised once and reused for the life time of the
+run, this is probably not needed just yet.
+
+*** COMPLETED Dynamic workflow is recreated for every model           :story:
+    CLOSED: [2015-01-29 Thu 13:20]
+    CLOCK: [2015-01-28 Wed 23:11]--[2015-01-29 Thu 00:38] =>  1:27
+
+We should create the dynamic workflow once and pass it to the dia to
+sml instances. Instead we are recreating it in every transformer
+instance. Since the workflow is const, we should be able to pass
+references to it around.
+
+Same problem applies to json hydrator.
+
+*** COMPLETED Remove optionality from =obtain_field_definition=       :story:
+    CLOSED: [2015-01-29 Thu 14:32]
+    CLOCK: [2015-01-29 Thu 12:15]--[2015-01-29 Thu 12:55] =>  0:40
+    CLOCK: [2015-01-28 Wed 22:34]--[2015-01-28 Wed 23:11] =>  0:37
+    CLOCK: [2015-01-28 Wed 21:57]--[2015-01-28 Wed 22:23] =>  0:26
+    CLOCK: [2015-01-28 Wed 21:19]--[2015-01-28 Wed 21:55] =>  0:36
+    CLOCK: [2015-01-28 Wed 18:09]--[2015-01-28 Wed 18:32] =>  0:23
+    CLOCK: [2015-01-28 Wed 08:23]--[2015-01-28 Wed 08:27] =>  0:04
+    CLOCK: [2015-01-27 Tue 23:42]--[2015-01-27 Tue 23:46] =>  0:04
+
+In order to progress in stages we made fields optional in dynamic
+workflow; if a definition is not found we skip it. We need to remove
+this once all field definitions have been added.
+
+Missing fields:
+
+- cpp.type.family: we need a "choice" value type for this.
+- cpp.type.requires_manual_default_constructor
+- cpp.*.is_system: done
+
+Notes:
+
+- need more context when a field has an invalid field definition or
+  when the scope is invalid, e.g. which field are we currently
+  processing.
+- in cases like the SML model we need a way to switch off validation
+  for fields in tests. This is because we cannot have dependencies on
+  models that are further downstream nor do we want to copy and paste
+  lots of field definitions just to get the tests to pass. We should
+  have a flag =throw_on_missing_field= passed in to dynamic
+  workflow. This controls the exception throwing.
+- actually, thus approach won't work for dia to sml - we need to pass
+  in the flag via the workflow, into the transformer. For that amount
+  of work, its easier to solve the dynamic workflow re-creation story
+  and just pass it in rather than the flag.
+
+*** COMPLETED Rename the include tags and add them to CPP model       :story:
+    CLOSED: [2015-01-30 Fri 08:48]
+
+Update all the JSON files with names in the form
+=cpp.include.types.header_file=. Add properties in =cpp= to capture
+these.
+
+While we're at it, add support for =family= too.
+
+*** COMPLETED Perform an analysis on the current state of formatters  :story:
+    CLOSED: [2015-01-30 Fri 12:02]
+    CLOCK: [2015-01-30 Fri 11:33]--[2015-01-30 Fri 12:02] =>  0:29
+    CLOCK: [2015-01-30 Fri 08:50]--[2015-01-30 Fri 10:20] =>  1:30
+
+We need to get up to speed of where the formatting code is, and what
+were the problems we had faced previously, before we embarked on the
+dynamic refactoring.
+
+*Random Thoughts*
+
+- we need to create default facet and formatter settings from dynamic
+- add =opaque_settings= to both facet and formatter settings.
+- create a top-level interface: =opaque_settings_factory=. These
+  generate =opaque_settings=. Each facet or formatter can register
+  factories for these in the registrar. When the facet/formatter
+  settings factory is about to execute, it checks the registrar for
+  any opaque settings factories that apply; if any are found, they are
+  used to generate opaque settings.
+- formatters can query global settings for facet and formatter
+  settings. They can dynamic cast opaque settings.
+- generation of file names no longer needs to be done from within the
+  formatter. We can now use global settings to query for all of the
+  required data.
+- naming file_header after the formatter was not a win. In reality,
+  these are two separate concepts. This should probably be some kind
+  of facet level property, quite distinct from the formatter; file
+  name overrides of some kind.
+
+*Final Understanding*
+
+- generate a settings namespace to contain all the settings related
+  machinery. It is basically a translation of dynamic extensions into
+  the c++ model. Nothing else should leave there.
+- create a top-level class - current name: =settings= - that contains
+  both local and global settings.
+- global settings are as they currently exist.
+- local settings have: general, file name settings (for the file name
+  overrides), type settings, additional includes. Presumably all of
+  these need to be optional. We need to ensure general settings have a
+  scope of any.
+- update formatter and facet settings to split them by qname, by
+  formatter. This includes the work required to split the default
+  settings too. Change global settings to have facet/formatter
+  settings by qname, by formatter. We should probably also generate
+  local overrides for general settings immediately. This means the
+  formatter can go straight to the local settings.
+- create a "file name generator" (name needs thinking) that will
+  receive the settings as input and generate file names per formatter
+  for each qname. It will use the postfixes for facet/formatter
+  settings to generate the file name. It will take into account file
+  name overrides in file name settings. We no longer need help from
+  the formatter - the algorithm just uses the settings. Remove all
+  file name related code from formatters.
+- create an "includes generator" (name needs thinking) that will
+  receive the file names from the "file name generator" as well as the
+  settings and produce includes per qname per formatter. It will
+  delegate to each formatter for the includes generation. Formatters
+  to take into account the additional includes settings.
+- rename file settings to file properties because these are not a
+  direct translation from dynamic.
+- create a file properties factory that merges the output of the
+  includes generator and file name generator and spits out file
+  properties per qname, per formatter.
+- use the file properties factory in transformer.
+- transformer also needs a way of populating the class aspects via the
+  type settings and via information obtained in the SML model. We may
+  want to create a class to handle this logic.
+- remove merger from dynamic as we don't need it for now.
+- formatter to check for local overrides to global settings.
+
+*** COMPLETED Consider using formatter container only in formatter's workflow :story:
+    CLOSED: [2015-01-31 Sat 14:26]
+
+At present we are populating the registrar via a formatter
+container. In reality, the registrar should only really know of
+formatters in general.
+
+Final decision on this: since the work done inside of the registrar is
+trivial, it was deemed that populating the container is not outside of
+the remit of the registrar. If the registrar had a list of formatters,
+we would have to then do work traversing that list - perhaps with some
+visitation - to split it into a formatter container. We definitely
+need the formatters split as they are in the container since, for a
+given type, we need to format it with all the compatible
+formatters. So the current setup is acceptable.
+
+*** COMPLETED Deeper analysis of the C++ model                        :story:
+    CLOSED: [2015-01-31 Sat 14:23]
+    CLOCK: [2015-01-31 Sat 13:40]--[2015-01-31 Sat 14:23] =>  0:43
+
+In reality the c++ model is split into four components:
+
+- *formattables*: the types that represent the SML model with a
+  shape ready for presentation - formatting;
+- *settings*: items that control how the presentation will be done;
+- *formatters*: the guys responsible for presenting the formatters,
+  controlled by the knobs in settings;
+- *orchestrators*: the top-level entities that create the entire
+  workflow, by instantiating all of the sub-workflows. This is mainly
+  the top-level workflow and any direct collaborators which do not fit
+  in the above classification.
+
+In this view, we could now have three top-level namespaces containing
+the respective types, each with a cohesive workflow; and then a
+top-level workflow that ties them together. This will make the code
+much easier to understand. We should:
+
+- do /all/ settings processing from within the settings workflow
+  including general settings. This is due to local settings - it just
+  makes life easier. What is saved in doing this once for all
+  programming languages is then spent in increasing the interface of
+  the backend workflow. We can revisit this decision later.
+- move registrar to formatters now that they are only used to keep the
+  formatters.
+- create a base class of =formattable=, a list of which is the output of
+  =formattable::workflow=. Formatters take these and dispatch them
+  accordingly.
+- create helpers in the formatter's namespace - a la
+  =dynamic::indexer= - that return just the names of the facets
+  declared by the formatters and the names of the formatters
+  themselves. These will be required by the settings workflow. This
+  reduces the coupling between these namespaces.
+
+*** COMPLETED Create a =settings= namespace in =cpp=                  :story:
+    CLOSED: [2015-01-31 Sat 16:07]
+    CLOCK: [2015-01-31 Sat 14:23]--[2015-01-31 Sat 16:07] =>  1:44
+    CLOCK: [2015-01-30 Fri 16:54]--[2015-01-30 Fri 17:04] =>  0:10
+
+*New Understanding*
+
+As per the deeper analysis, we actually will split the settings into
+its own namespace. Whilst the below points against it are valid, it is
+also valid to say that the processing and generation of settings is a
+well defined task, with its own workflow; to encapsulate it in its own
+namespace will make the code much more maintainable because now one
+knows where to look for any settings related issues.
+
+Note that we will avoid foolish consistency here. We will not create
+settings namespaces for every model where there are uses of
+dynamic. The point of settings is just to isolate the complexity of
+building the top-level settings objects; the usage of dynamic is
+incidental. In cases where the building of top-level settings is
+trivial (i.e. =formatters=), there is no need to create a namespace.
+
+*Previous Understanding*
+
+Actually, the case for a settings namespace is not yet clear:
+
+- we just [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_60.org#rename-namespace-meta-data-to-dynamic][moved away from the =meta_data= namespace]] because really it
+  should only contain the meta-data factories but not the settings and
+  even the factories presence is questionable; with this story, we
+  create would the same duality with dynamic: should it be the
+  =dynamic= namespace (=field_definitions=, factories) or =settings=
+  (factories, settings classes).
+- since the classes need to have =settings= on their names anyway,
+  because their names are a bit weak (=global_settings= and so forth),
+  the namespace adds redundancy rather than clarity.
+
+This story will be cancelled.
+
+*Previous Understanding*
+
+Create a settings namespace to contain all the settings related
+machinery. It is basically a translation of dynamic extensions into
+the c++ model. Nothing else should live there.
+
+Move of all the existing settings to it.
+
+*** COMPLETED Create a =formattables= namespace in =cpp=              :story:
+    CLOSED: [2015-02-01 Sun 01:37]
+    CLOCK: [2015-01-31 Sat 22:18]--[2015-02-01 Sun 01:37] =>  3:19
+    CLOCK: [2015-01-31 Sat 16:12]--[2015-01-31 Sat 16:26] =>  0:14
+
+As per analysis story below, we need to move all the formattable types
+and their factories into their own namespace. Use the plural in
+keeping with =formatters= and =settings=.
+
+*** COMPLETED Move registrar into formatters namespace                :story:
+    CLOSED: [2015-02-01 Sun 01:54]
+    CLOCK: [2015-02-01 Sun 01:41]--[2015-02-01 Sun 01:54] =>  0:13
+
+We should only use the registrar to register formatters, and to access
+the registered formatters when formatting. As such it makes sense to
+make it an exclusive formatter register.  Once we remove all of the
+default formatter and facets nonsense, we can move this type into the
+formatters namespace.
+
+*** POSTPONED Facet and formatter settings factories to use definitions :story:
+    CLOSED: [2015-02-02 Mon 20:19]
+    CLOCK: [2015-02-01 Sun 16:41]--[2015-02-01 Sun 19:10] =>  2:29
+    CLOCK: [2015-02-01 Sun 16:39]--[2015-02-01 Sun 16:41] =>  0:02
+    CLOCK: [2015-02-01 Sun 16:01]--[2015-02-01 Sun 16:34] =>  0:33
+    CLOCK: [2015-01-30 Fri 22:22]--[2015-01-30 Fri 22:36] =>  0:14
+    CLOCK: [2015-01-30 Fri 22:09]--[2015-01-30 Fri 22:22] =>  0:13
+    CLOCK: [2015-01-30 Fri 21:13]--[2015-01-30 Fri 22:08] =>  0:55
+    CLOCK: [2015-01-30 Fri 19:50]--[2015-01-30 Fri 20:27] =>  0:37
+    CLOCK: [2015-01-30 Fri 19:00]--[2015-01-30 Fri 19:50] =>  0:50
+    CLOCK: [2015-01-30 Fri 18:07]--[2015-01-30 Fri 18:41] =>  0:34
+    CLOCK: [2015-01-30 Fri 17:15]--[2015-01-30 Fri 17:40] =>  0:25
+
+*Analysis*
+
+We need a way to obtain the set of facets and formatters "implied" by
+the registered field definitions. We could do this like we did with
+content extensions by adding a set of helper methods that process
+field definitions.
+
+Actually, since we need to build "indexes" it makes more sense to have
+some kind of class with state: =indexer=.
+
+We also need to fix the naming of facets and formatters in field
+definitions: we need to make use of traits.
+
+*Action Items*
+
+- rename =facet_id= and =formatter_id= to =facet_name= and
+  =formatter_name=.
+- use traits when generating field definitions (facet and formatter
+  names).
+- remove generation of default facet settings.
+- pass a list of facet names into facet factory. This is obtained by
+  querying the registered formatters (activity in workflow). Actually,
+  we don't really need this. We should just throw if a formatter looks
+  for a facet/formatter name in the settings that does not exist.
+- create a =dynamic::indexer= that indexes by facet name.
+- pass the indexer into facet factory, or just the results of the
+  indexer.
+- for each facet in the list, get all fields from default values from
+  the indexer; get the corresponding field instance if any; find the
+  matching property in facet settings and set it with either the field
+  instance or the default value.
+
+*** POSTPONED Split global settings by formatter and facet            :story:
+    CLOSED: [2015-02-02 Mon 20:19]
+    CLOCK: [2015-01-30 Fri 17:05]--[2015-01-30 Fri 17:14] =>  0:09
+
+*Analysis*
+
+Update formatter and facet settings to split them by qname, by
+formatter. This includes the work required to split the default
+settings too. Change global settings to have facet/formatter settings
+by qname, by formatter. We should probably also generate local
+overrides for general settings immediately. This means the formatter
+can go straight to the local settings.
+
+For defaults: at present we are manually generating default settings
+for both facets and formatters. We should do these from dynamic's
+field definitions.
+
+Dynamic could provide field definition aggregation services for
+formatter and facet.
+
+** Deprecated
+*** CANCELLED Add merger to dynamic                                   :story:
+    CLOSED: [2015-01-30 Fri 16:41]
+
+*Rationale*: we don't seem to need merging support at present.
+
+We need a class that takes two objects and merges them. For example
+the root module meta-data object and any type. Could be called
+merger. Should have a lhs and a rhs and produce a result.
+
+*Note*: we still need to prove the use case; it may be that we do not
+need merging at all.
+
+*** CANCELLED Add dynamic merging to SML workflow                     :story:
+    CLOSED: [2015-01-30 Fri 16:44]
+
+*Rationale*: we don't seem to need merging support at present.
+
+We need an extra activity in the SML workflow that makes use of the
+=dynamic::merger= to produce the final dynamic object.
+
+*Note*: we still need to prove the use case; it may be that we do not
+need merging at all.

@@ -1,0 +1,1429 @@
+#+title: Sprint Backlog 23
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Mission Statement
+
+- Start work on the generation refactor.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-04-05 Sun 21:27]
+| <75>                                                      |         |       |       |       |
+| Headline                                                  | Time    |       |       |     % |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                              | *80:22* |       |       | 100.0 |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                   | 80:22   |       |       | 100.0 |
+| Active                                                    |         | 80:22 |       | 100.0 |
+| Edit release notes for previous sprint                    |         |       |  7:27 |   9.3 |
+| Create a demo and presentation for previous sprint        |         |       |  0:28 |   0.6 |
+| Sprint and product backlog grooming                       |         |       |  6:21 |   7.9 |
+| Rename archetypes model to physical model                 |         |       |  0:28 |   0.6 |
+| Rename assets model to logical model                      |         |       |  0:29 |   0.6 |
+| Consider renaming "meta-model" namespace                  |         |       |  0:37 |   0.8 |
+| Rename engine to orchestration                            |         |       |  1:04 |   1.3 |
+| Merge extraction model with physical model                |         |       |  4:35 |   5.7 |
+| Remove manual feature in profile merge transform          |         |       |  0:08 |   0.2 |
+| Add variability domains to the dumpspecs activity         |         |       |  0:12 |   0.2 |
+| Add org-mode option to dumpspacs                          |         |       |  0:53 |   1.1 |
+| Analysis on designing and implement physical types        |         |       |  6:52 |   8.5 |
+| Remove =element= from the modeling location               |         |       |  0:02 |   0.0 |
+| Fix clang-cl LNK4217 warnings                             |         |       |  1:04 |   1.3 |
+| Analysis on creating a masd kernel model                  |         |       |  0:53 |   1.1 |
+| Rename generation models to =m2t=                         |         |       |  1:04 |   1.3 |
+| Move all generation features away from generation         |         |       |  0:17 |   0.4 |
+| Rename generation transforms                              |         |       |  4:49 |   6.0 |
+| Remove kernel from models                                 |         |       |  0:36 |   0.7 |
+| Rename the default MASD kernel                            |         |       |  0:44 |   0.9 |
+| Consider removing archetype location by family            |         |       |  0:40 |   0.8 |
+| Add part to physical location                             |         |       |  1:16 |   1.6 |
+| Add names to logical model                                |         |       |  1:48 |   2.2 |
+| Consider generating a colour palette procedurally         |         |       |  2:48 |   3.5 |
+| Add support for clang-10                                  |         |       |  0:44 |   0.9 |
+| Make physical location entries simple names               |         |       | 20:37 |  25.7 |
+| Consider upgrading to clang 10 on windows                 |         |       |  0:08 |   0.2 |
+| Make m2t interfaces header only                           |         |       |  0:18 |   0.4 |
+| Rename physical names to meta-names                       |         |       |  3:42 |   4.6 |
+| Supply artefacts to formatters                            |         |       |  2:30 |   3.1 |
+| Handling of non-existent stitch templates is dodgy        |         |       |  0:23 |   0.5 |
+| Implement archetype locations from physical meta-model    |         |       |  5:43 |   7.1 |
+| Implement the generation model in terms of "formattables" |         |       |  0:42 |   0.9 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2020-03-19 Thu 19:47]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 08:01]--[2020-03-20 Fri 08:51] =>  0:50
+    CLOCK: [2020-03-19 Thu 21:01]--[2020-03-19 Thu 21:58] =>  0:57
+    CLOCK: [2020-03-19 Thu 20:00]--[2020-03-19 Thu 20:03] =>  0:03
+    CLOCK: [2020-03-19 Thu 19:48]--[2020-03-19 Thu 19:59] =>  0:11
+    CLOCK: [2020-03-19 Thu 19:02]--[2020-03-19 Thu 19:47] =>  0:45
+    CLOCK: [2020-03-18 Wed 20:05]--[2020-03-18 Wed 23:59] =>  3:54
+    CLOCK: [2020-03-18 Wed 19:01]--[2020-03-18 Wed 19:33] =>  0:32
+    CLOCK: [2020-03-16 Mon 08:51]--[2020-03-16 Mon 09:06] =>  0:15
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.22, "Cine Teatro Namibe"
+
+#+BEGIN_SRC markdown
+![Cine Teatro Namibe](https://i.pinimg.com/originals/8c/09/18/8c091838ed68d58681fd1beb6e619945.jpg)
+_Cine Teatro Namibe, Moçamedes, Angola. (C) 2015 [MESSYNESSY](https://www.messynessychic.com/2015/06/17/documenting-africas-old-cinemas)._
+
+# Introduction
+
+Welcome to yet another busy Dogen sprint! Originally, we had intended to focus on the fabled "generation refactor" but, alas, it was not to be (yet again). Our preparatory analysis revealed some fundamental deficiencies on the variability implementation and, before you knew it, we were stuck wading in the guts of the variability subsystem for the entirety of the sprint. On the plus side, the end product was a much better designed subsystem, free of unwanted dependencies, and a newly found clarity in the conceptual model with regards to both logical and physical dimensions. On the down side, the refactor produced a lot of churn with regards to stereotypes and feature names, resulting on a fair bit of breakage to user diagrams. In other words, it was quite the eventful sprint. Let's see how we fared in more detail.
+
+# User visible changes
+
+This section covers stories that affect end users, with the video providing a quick demonstration of the new features, and the sections below describing them in more detail. There have been a number of breaking changes, which have been highlighted with the symbol :warning:.
+
+[![Sprint 1.0.22 Demo](https://img.youtube.com/vi/RysjvA2eZ4o/0.jpg)](https://youtu.be/RysjvA2eZ4o)
+_Video 1: Sprint 22 Demo._
+
+## Split templatised from non-templatised variability meta-model elements
+
+A pet peeve of ours, pretty much since profiles were introduced to the meta-model [many moons ago](https://github.com/MASD-Project/dogen/releases/tag/v1.0.16), was the name chosen for the stereotype: ```masd::variability::profile_template```. The postfix ```_template``` was a glaring leak from the implementation; a result of trying to be "too clever by half" in generalising all profiles to be "profile templates", when, in reality, there were only 2 or 3 cases of _actual_ profile template instantiation across the code base. As it was, with this story we _finally_ tackled this annoyance. However, before we proceed, a word is probably needed on what is meant by "templates" and "instantiation" in this context. The explanation will also prove helpful in understanding much of the remaining work carried out in the release.
+
+### Setting the Scene: Quick Primer on Variability Templates
+
+As with many other modeling approaches, MASD divides the modeling of software products into two distinct dimensions: the logical dimension and the physical dimension. The logical dimension is pretty much what you are used to when creating UML class diagrams: the structural world of classes and their relationships (though, of course, in MASD there is a twist to it, but we need to leave _that_ for another time). The physical dimension is, predictably, the world of files and directories. So far, so similar to UML and the like. What MASD does differently, however, is to impose a _well-defined shape_ into the entities that live in the physical dimension, as well as a process by which these instances are derived. That shape is governed by the physical model's _meta-model_, which has existed since the early days of Dogen, albeit in an implicit manner. It is composed of vocabulary such as kernel (_e.g._, "masd"), backend  (_e.g._, C++, C#), facet  (_e.g._, "types", "hash", "serialisation" and so forth) and archetype  (_e.g._, "class header", "class implementation", _etc._).
+
+![Feature bundles](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_coding_features.png)
+_Figure 1_: Examples of Dogen feature bundles prior to the refactor.
+
+The shape of the physical dimension is a function of the implementation; that is, as we add formatters (model-to-text transforms)  to generate new kinds of output, these inject archetypes and facets and so on, augmenting the physical dimension. It became clear early on that adding features needed by all formatters manually was too painful. For example, we need to know if a kernel, backend, facet or archetype is enabled or disabled by the users. Thus a feature called ```enabled``` must exist for every element of the physical meta-model. We started by doing this manually, but it soon became obvious that what we were after was a generic way of saying that a feature with a given name ```n``` applies to every registered ```x``` - with ```x``` being an element of a set ```X```, composed of kernels, backends, facets or archetypes. And so it was that variability templates were born. These were subsequently modeled within the logical model as both "feature bundles" (_i.e._, providing _feature definitions_, as per _Figure 1_) and "profile templates" (_i.e._, groups of configurations created by users for reuse purposes, performing _feature selection_; see _Figure 2_). In both cases we had the notion of an "instance template":
+
+```
+#DOGEN masd.variability.template_kind=instance
+```
+
+This was a "pseudo" or "identity" template, which does not really get instantiated but is instead copied across. We also had "real templates", associated with one of the "levels" in physical space (_e.g._, all, backend, facet, archetype):
+
+```
+#DOGEN masd.variability.template_kind=archetype
+```
+
+An additional modeling error was that, whilst profile templates only allowed a template kind at the profile level (that is, all attributes in the profile are of the same ```template_kind```), we did not take the same approach for feature bundles, opening the gates for all sorts of weird and wonderful permutations: one attribute could be a template of kind ```instance``` whereas another could be a template of kind ```archetype```. In practice, we were disciplined enough to avoid any such crazy stunts but, as old saying goes, "a good domain model should make invalid states unrepresentable".
+
+![Dogen's profiles Model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/profiles_model.png)
+_Figure 2_: Dogen's Profiles model before the refactor.
+
+One final word on the dependency between the variability model and the physical model. Though its clear that there is a _connection_ between the two models - at the end of the day, templates can only be initialised when we know the lay of the physical land - it is not necessarily the case that the coupling needs to be made in terms of "direct dependencies" (_i.e._ using a type from the physical model), because it comes at a cost: the graph of dependencies is made more complex because variability is used by many models, and these are then coupled to the physical model by way of this small connection. In truth, these models were joined more due to expediency than thought, for, as we mentioned, most features do not actually need template instantiation. Therefore, our core objective was to _decouple_ the physical model from the variability model.
+
+### The tidy-up
+
+One of the side-effects of the decoupling was to make us focus on creating a clear separation between the templatised and non-templatised elements of the logical model modeling variability. This was mainly to avoid increasing the end users cognitive load for no good reason ("why is this a 'template'? what's an 'instance template'?", _etc._). As a result, the stereotypes are now as follows:
+
+> :warning: **Breaking change**: the names and meaning of these stereotypes have changed. User diagrams must be updated.
+
+|Stereotype|Description|
+|--------------|----------------|
+|```masd::variability::profile_template```| Meta-model element defining a profile template. The template is instantiated over a _domain_, as we shall explain in the next section.|
+|```masd::variability::profile```|Meta-model element defining a non-templatised profile. This is equivalent to the deprecated template kind of ```instance```.|
+|```masd::variability::feature_template_bundle```|Meta-model element defining a feature bundle template. As with profile templates, the template is instantiated over a domain. Note that all features belong to the same domain and all are templates, cleaning up the previous modeling mistake.|
+|```masd::variability::feature_bundle```|Meta-model element defining a non-templatised feature bundle. This is equivalent to the deprecated template kind of ```instance```.|
+|```masd::variability::initializer```|Replaces the previous ```masd::variability::feature_template_initializer```, providing initialisation for both feature templates and features.|
+
+_Table 1_: Stereotypes related to feature bundles and profiles.
+
+While we were at it, we took the opportunity to update the colour theme, making the distinction between these elements more obvious:
+
+![Dogen's profiles Model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_variability_palette.png)
+_Figure 3_: Colour theme for all variability meta-model elements.
+
+In addition to the stereotype changes, we also modified the approach to template instantiation, as explained on the next story.
+
+## Introduce "Domains" for Template Instantiation
+
+The concept of _domains_ was introduced as a way to achieve the before mentioned decoupling of the variability model from the physical model. Domains are simple sets of strings that can be used as the basis for template instantiation. When users declare templates (_e.g._, profile templates or feature bundle templates), they must now also provide the domain under which instantiation will take place:
+
+```#DOGEN masd.variability.instantiation_domain_name=masd```
+
+This is, of course, a breaking change:
+
+> :warning: **Breaking change**: ```masd.variability.template_kind``` is no longer supported and must be replaced with ```masd.variability.instantiation_domain_name```. This feature can only be used at the top level with ```masd::variability::profile_template``` and ```masd::variability::feature_template_bundle```.
+
+The following domains are available (with ```${X}``` representing a "pseudo-code" variable):
+
+|Domain name|Sample ```X``` Value|Description|
+|------------------|----------------|---------------|
+|```${kernel}```|```masd```|The only supported kernel at present. All backends, facets, and archetypes are part of it.|
+|```${kernel}.backend```|```masd.backend```|All backends in the MASD kernel. At present, C++ and C#.|
+|```${kernel}.facet```|```masd.facet```| All facets in the MASD kernel, across all backends.|
+|```${kernel}.archetype```|```masd.archetype```|All archetypes in the MASD kernel, across all backends and facets.|
+|```${backend}.facet```|```masd.generation.cpp.facet```|All facets in the C++ backend of the MASD kernel.|
+|```${backend}.archetype```|```masd.generation.cpp.archetype```|All archetypes in the C++ backend of the MASD kernel.|
+|```${facet}.archetype```|```masd.generation.cpp.types.archetype```|All archetypes in the ```types``` facet, in the C++ backend of the MASD kernel.|
+
+_Table 2_: List of domains available out of the box.
+
+Mind you, not all of these domains are being used at present, but, for completeness sake, we created a simple combinatorial function over the existing physical type to generate all sensible permutations. With this very simple approach we get all of the functionality we had previously, without any direct dependencies between the variability and physical models.
+
+## Remove name duplication from feature bundles and profiles
+
+As you can clearly see from both _Figure 1_ and _Figure 2_, defining a profile or a feature bundle often resulted in a great deal of duplication of feature name prefixes, _e.g._, ```masd.generation.decoration``` in the case of the ```decoration``` profile:
+
+```
+masd.generation.decoration.enabled
+masd.generation.decoration.licence_name
+masd.generation.decoration.modeline_group_name
+...
+```
+
+This release introduces a new feature that allows setting a prefix for all features in the bundle or profile:
+
+```
+#DOGEN masd.variability.key_prefix=masd.generation.decoration
+```
+
+Given a sensible profile or feature bundle name, the individual attributes should be meaningful enough to determine what they are about, with minimal repetition. For cases where mixing and matching is required, the old behaviour is still available.
+
+## Mapped default values for feature templates
+
+In the past we found certain weird cases of feature templates where we needed the feature to expand over a domain, but we required different defaults for certain elements of the domain. For example, take the ```postfix``` feature. Ideally, each facet should have the postfix set to a string that correlates with a facet name (say ```hash```) but sometimes to a smaller string (say ```lc``` for ```lexical_cast```) or sometimes to the empty string (say for ```types```). This setup was so complicated we just decided to create these features manually.
+
+With this release we found a solution for the problem in the form of _mapped default values_. These are KVPs as follows:
+
+```
+#DOGEN masd.variability.default_value_override.cpp.tests="tests"
+#DOGEN masd.variability.default_value_override.cpp.hash="hash"
+#DOGEN masd.variability.default_value_override.cpp.lexical_cast="lc"
+#DOGEN masd.variability.default_value_override.cpp.io="io"
+...
+```
+
+With this new feature, we managed to model with one single feature template features that previously required tens of instances.
+
+## Add command line option to dump all specs
+
+Dogen relies heavily on dynamic registration for a lot of its functionality, be it for injectors, features, backends and so forth. To top it all off, we keep changing names of things in our quest for tidying up the conceptual model. As a result, we find ourselves often grepping the code base to figure out what is available - an option that is not exactly practical for end users. With this release we've added a new activity to the command line client: ```dumpspecs```. It works like so:
+
+```
+$ ./dogen.cli dumpspecs
+Group: Injection
+Purpose: Read external formats into Dogen.
+    injection.dia: Decodes Dia diagrams. Extension: '.dia'
+    injection.json: Decodes diagrams in JSON format. Extension: '.json'
+
+Group: Conversion
+Purpose: Output to an external format from a Dogen model.
+    injection.dia: Encodes diagrams as JSON documents. Extension: '.json'
+
+Group: Generators
+Purpose: Available backends for code generation.
+    masd.generation.cpp: Generates C++ code according to the MASD generative model.
+    masd.generation.csharp: Generates C# code according to the MASD generative model.
+
+Group: Features
+Purpose: Available features for configuration.
+    masd.decoration.modeline.editor: Editor to use in this modeline. Binding point: 'any'. Value type: 'masd::variability::text'.
+    masd.decoration.modeline.location: Where to place the modeline. Binding point: 'any'. Value type: 'masd::variability::text'.
+    masd.decoration.modeline.technical_space: Technical space targeted by the modeline. Binding point: 'any'. Value type: 'masd::variability::text'.
+    masd.enumeration.add_invalid_enumerator: If true, adds an enumerator to represent an invalid choice. Binding point: 'element'. Default value: ''. Value type: 'masd::variability::boolean'.
+    masd.enumeration.underlying_element: Name of the underlying element to use for the enumeration. Binding point: 'element'. Value type: 'masd::variability::text'.
+...
+```
+
+Though the documentation may not be the best, we did go through all features and provided _some_ kind of description. Note also that for feature templates, all instances share the same comment.
+
+## Renaming of Extraction Features
+
+With the merging of the extraction model into the physical model (see internal stories below), we found ourselves having to rename a number of features. These names are not final, but at least they avoid referring to a model that no longer exists.
+
+> :warning: **Breaking change**: Users that are making use of any of these features must update their diagrams as per Table 3.
+
+|Old Feature Name| New Feature Name|
+|------------------------|----------------------------|
+|```masd.extraction.delete_extra_files```|```masd.physical.delete_extra_files```|
+|```masd.extraction.output_technical_space```|```masd.physical.output_technical_space```|
+|```masd.extraction.force_write```|```masd.physical.force_write```|
+|```masd.extraction.delete_empty_directories```|```masd.physical.delete_empty_directories```|
+|```masd.extraction.enable_backend_directories```|```masd.physical.enable_backend_directories```|
+
+_Table 3_: List of renamed features.
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see the [sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_22.org).
+
+## Significant Internal Stories
+
+The sprint was mostly dominated by a large number of small refactors that changed the internals of Dogen dramatically - though in many cases, mainly with regards to naming and location of classes. We've aggregated all of these stories under two themes.
+
+### The Variability Model Refactor
+
+The majority of the work in refactoring the variability model had user facing consequences, and so is described in great detail above. The main internal consequence was a dramatic reduction on the number of features required, due to an increased use of feature templates now that we can default them correctly; but there were also other smaller tasks related to this work:
+
+- dramatic simplification of the template instantiation code, which now merely loops through the list of elements in the domain when instantiating feature templates and profile templates.
+- changes related to ensuring lists and key value pairs within variability are stable sorted. In the past we had used unordered maps in the processing of variability data, resulting on tests breaking across operative systems due to re-ordering. We ended up having to make a fairly difficult surgical intervention, which resulted in a fair amount of breakage.
+
+> :warning: **Breaking change**: Order of header files may change with this release. Other values dependent of order of lists and KVPs may also change such as order of database systems in ORM, and so forth.
+
+### The Physical Model Refactor
+
+The second largest refactor this sprint was related to the physical model. This was comprised of a number of tasks:
+
+- rename the ```assets``` model to ```logical```. In truth, assets has always been the model housing all of the meta-modeling elements for the logical model, so it makes sense to name it after its function.
+- rename the ```archetypes``` model ```physical``` model, and merge it with the extraction model. It took us a long time to understand that the extraction model was really the physical model in disguise. Originally, we had only used it to write files into the filesystem, but now it has taken on additional responsibilities such as defining the types in the physical meta-model.
+- move features related to physical aspects to physical model. This task was started but has not yet been completed.
+- rename the namespace ```meta-model``` used in a number of models to ```entities```. The name was more or less meaningless the way it was being used. In addition, now that we need a meta-model for the physical model, it was becoming confusing. The "blander" name entities should avoid this confusion.
+- deletion of unused types in the generation model, as well as the removal of the partially implemented support for RapidJSON in the C++ model.
+
+## Resourcing
+
+All and all, it was a very successful sprint from a resourcing perspective. At  51%, our utilisation rate was high but not quite the highest it's ever been (the previous sprint wins on that front at 56%). The high utilisation rate was a reflection of the fact that we worked full time for a big portion of the sprint. Sadly, this indicator is scheduled for a massive drop next sprint as we resume part-time work on Dogen proper, but hey-ho, we should celebrate the wins and this sprint was surely one on this front. Additionally, due to the undivided focus we managed to allocate over 82% of the commitment to stories directly related to the sprint's mission, including a couple of spikes (6.8% on unexpected tests breakage). We spent 17.5% on process, with a solid 10% on backlog grooming. Over half of the product backlog was reviewed this sprint, which we consider to be [a task of vital importance](https://mcraveiro.blogspot.com/2016/01/nerd-food-on-product-backlogs.html). In addition, the cost of the demo has gone down dramatically since we started doing "one take demos", and we achieved a new low this sprint of 0.5%. The quality may not be quite what it used to be, but given the [worse is better](https://en.wikipedia.org/wiki/Worse_is_better) approach we favour so much, we deem it to be "good enough". A final note on Emacs, which had some minor blips but was overall fairly well behaved, costing us around 1.3%.
+
+![Story Pie Chart](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_22_pie_chart.jpg)
+_Figure 4: Cost of stories for sprint 22._
+
+## Roadmap
+
+The road map continues to work rather like a Delphic oracle, and we keep trying to divine some kind of prediction that makes sense in terms of the current work. Thus far, it has failed to provide any such information but the visualisation of the gantt chart seems to be reassuring us that there is an end in sight - even though, like the proverbial carrot, it keeps moving forwards.
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_22_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_22_resource_allocation_graph.png)
+
+# Next Sprint
+
+We finally started the generation refactor this sprint, though, to be fair, we just about scratched the surface. Next sprint we will hopefully proceed in anger onto the generation breach and finally make a dent on it.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen/1.0.22) for OSX and Linux (all 64-bit):
+
+- [dogen_1.0.22_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.22/dogen_1.0.22_amd64-applications.deb)
+- [dogen-1.0.22-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.22/DOGEN-1.0.22-Darwin-x86_64.dmg)
+
+**Note 1:**: Due to a bug on the build scripts, Windows binaries were not generated for this release. If you do not want to build Windows from source, you can grab the unstable binaries for the next sprint: [dogen-1.0.23-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.23-Windows-AMD64.msi).
+**Note 2:** The OSX and Linux binaries are not stripped at present and so are larger than they should be. We have [an outstanding story](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped) to address this issue, but sadly CMake does not make this a trivial undertaking.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+
+Happy Modeling!
+#+END_SRC markdown
+
+- [[https://twitter.com/MarcoCraveiro/status/1240728672128172033][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6646494675207278592/][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2020-03-19 Thu 19:47]
+    :LOGBOOK:
+    CLOCK: [2020-03-19 Thu 18:02]--[2020-03-19 Thu 18:30] =>  0:28
+    :END:
+
+Time spent creating the demo and presentation. Use the demo project:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2020-04-05 Sun 21:27]
+    :LOGBOOK:
+    CLOCK: [2020-04-04 Sat 16:56]--[2020-04-04 Sat 17:10] =>  0:14
+    CLOCK: [2020-04-04 Sat 13:04]--[2020-04-04 Sat 13:15] =>  0:11
+    CLOCK: [2020-04-03 Fri 20:05]--[2020-04-03 Fri 20:25] =>  0:20
+    CLOCK: [2020-04-03 Fri 13:28]--[2020-04-03 Fri 14:00] =>  0:32
+    CLOCK: [2020-04-02 Thu 21:51]--[2020-04-02 Thu 22:16] =>  0:25
+    CLOCK: [2020-04-01 Wed 08:30]--[2020-04-01 Wed 08:40] =>  0:10
+    CLOCK: [2020-03-31 Tue 21:31]--[2020-03-31 Tue 21:35] =>  0:10
+    CLOCK: [2020-03-29 Sun 13:41]--[2020-03-29 Sun 13:55] =>  0:14
+    CLOCK: [2020-03-27 Fri 13:58]--[2020-03-27 Fri 14:10] =>  0:12
+    CLOCK: [2020-03-27 Fri 08:01]--[2020-03-27 Fri 08:39] =>  0:38
+    CLOCK: [2020-03-26 Thu 21:22]--[2020-03-26 Thu 21:42] =>  0:20
+    CLOCK: [2020-03-25 Wed 08:06]--[2020-03-25 Wed 08:50] =>  0:44
+    CLOCK: [2020-03-23 Mon 08:25]--[2020-03-23 Mon 08:40] =>  0:15
+    CLOCK: [2020-03-22 Sun 11:33]--[2020-03-22 Sun 11:45] =>  0:12
+    CLOCK: [2020-03-21 Sat 09:25]--[2020-03-21 Sat 09:32] =>  0:07
+    CLOCK: [2020-03-20 Fri 14:17]--[2020-03-20 Fri 14:30] =>  0:13
+    CLOCK: [2020-03-20 Fri 11:23]--[2020-03-20 Fri 11:52] =>  0:29
+    CLOCK: [2020-03-18 Wed 19:01]--[2020-03-18 Wed 19:44] =>  0:43
+    CLOCK: [2020-03-16 Mon 09:07]--[2020-03-16 Mon 09:16] =>  0:09
+    CLOCK: [2020-03-16 Mon 08:41]--[2020-03-16 Mon 08:50] =>  0:09
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Rename archetypes model to physical model               :story:
+    CLOSED: [2020-03-16 Mon 10:15]
+    :LOGBOOK:
+    CLOCK: [2020-03-16 Mon 09:17]--[2020-03-16 Mon 09:45] =>  0:28
+    :END:
+
+According to the new understanding, the role of the archetypes model
+is to model entities in the physical dimension of MASD. Rename the
+model accordingly, and create the new entities namespace while we're
+at it.
+
+*** COMPLETED Rename assets model to logical model                    :story:
+    CLOSED: [2020-03-16 Mon 10:15]
+    :LOGBOOK:
+    CLOCK: [2020-03-16 Mon 09:46]--[2020-03-16 Mon 10:15] =>  0:29
+    :END:
+
+- rename all references to archetypes to "physical", e.g.:
+  =artefact_properties= should be renamed, etc.
+
+*** COMPLETED Consider renaming "meta-model" namespace                :story:
+    CLOSED: [2020-03-16 Mon 10:43]
+    :LOGBOOK:
+    CLOCK: [2020-03-16 Mon 10:43]--[2020-03-16 Mon 10:54] =>  0:11
+    CLOCK: [2020-03-16 Mon 10:16]--[2020-03-16 Mon 10:42] =>  0:26
+    :END:
+
+Originally we created a number of namespaces in models called
+"meta-model". It started with assets, where it really was the
+meta-model, but we now have meta-models on pretty much all models
+(injection, extraction, etc). Its no longer clear what value this
+prefix adds. In addition its a technical word, so it seems to imply
+there is some meaning to it, but since pretty much we have in dogen is
+a meta-model of something, its not exactly useful. We need a term that
+is more neutral.
+
+Ideas:
+
+- elements
+- entities
+
+Notes:
+
+- look for ideas on other projects.
+
+*** COMPLETED Rename engine to orchestration                          :story:
+    CLOSED: [2020-03-16 Mon 11:59]
+    :LOGBOOK:
+    CLOCK: [2020-03-16 Mon 10:55]--[2020-03-16 Mon 11:59] =>  1:04
+    :END:
+
+Since this model is responsible for the top-level orchestration, its
+probably a more meaningful name. Whilst we are at it, might as well do
+this rename now.
+
+While we were at it we also created namespaces in physical model.
+
+*** COMPLETED Merge extraction model with physical model              :story:
+    CLOSED: [2020-03-17 Tue 12:56]
+    :LOGBOOK:
+    CLOCK: [2020-03-17 Tue 16:29]--[2020-03-17 Tue 16:41] =>  0:12
+    CLOCK: [2020-03-17 Tue 15:12]--[2020-03-17 Tue 15:24] =>  0:12
+    CLOCK: [2020-03-17 Tue 12:57]--[2020-03-17 Tue 13:05] =>  0:08
+    CLOCK: [2020-03-17 Tue 08:53]--[2020-03-17 Tue 12:56] =>  4:03
+    :END:
+
+It is becoming clear that the extraction model is just an instance of
+the physical meta-model. We should just merge the two.
+
+Notes:
+
+- rename the kernel model to "meta-model".
+- remove origin_element_id
+
+*** COMPLETED Remove manual feature in profile merge transform        :story:
+    CLOSED: [2020-03-20 Fri 09:00]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 08:52]--[2020-03-20 Fri 09:00] =>  0:08
+    :END:
+
+We are still using features manually in the profile merge transform
+even though we have generated code for it.
+
+*** COMPLETED Add variability domains to the dumpspecs activity       :story:
+    CLOSED: [2020-03-20 Fri 09:13]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 09:01]--[2020-03-20 Fri 09:13] =>  0:12
+    :END:
+
+At present we have no way of knowing what the valid variability
+domains are. We should dump them when we dump the specs.
+
+*** COMPLETED Add org-mode option to dumpspecs                        :story:
+    CLOSED: [2020-03-20 Fri 10:04]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 10:05]--[2020-03-20 Fri 10:08] =>  0:03
+    CLOCK: [2020-03-20 Fri 09:14]--[2020-03-20 Fri 10:04] =>  0:50
+    :END:
+
+It should be possible to output the specs in org mode format.
+
+*** COMPLETED Analysis on designing and implement physical types      :story:
+    CLOSED: [2020-03-20 Fri 11:22]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 10:09]--[2020-03-20 Fri 11:22] =>  1:13
+    CLOCK: [2020-03-17 Tue 08:40]--[2020-03-17 Tue 08:53] =>  0:13
+    CLOCK: [2020-03-17 Tue 08:25]--[2020-03-17 Tue 08:39] =>  0:14
+    CLOCK: [2020-03-16 Mon 20:41]--[2020-03-16 Mon 21:46] =>  1:05
+    CLOCK: [2020-03-16 Mon 12:42]--[2020-03-16 Mon 16:49] =>  4:07
+    :END:
+
+- implement locator in terms of new types.
+- get kernels to export the new information.
+- using the information compute the paths. Create a new field so that
+  we can diff new and old paths.
+- once there are no differences, remove all locator related legacy
+  code.
+
+Notes:
+
+- start by removing all types which are no longer needed. Then create
+  new types in the physical model.
+- replace references to archetypes location with physical location.
+- create a model for the physical world, and replace the archetype
+  location repository with it. Kernels return the components of the
+  model.
+- kernel model is meta-model.
+- physical model and extraction model need to merge. We must supply
+  the artefact for updates to the formatters.
+- generation has a pair of logical element, artefact (e.g. formattable
+  by another name).
+- physical model properties must exist in the artefact.
+- enablement and overwrites are physical model concerns.
+- artefact / archetype properties are physical model concerns (mainly
+  enablement, really).
+- decoration should move to the logical model.
+- create a top-level interface called "kernel". It should return the
+  kernel meta-data of the physical model. Get the backends to register
+  with the kernel, and the facets and formatters to register with the
+  backends, so that we return a complete physical meta-model. Create a
+  MASD kernel.
+
+*** CANCELLED Remove =element= from the modeling location             :story:
+    CLOSED: [2020-03-20 Fri 11:55]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 11:53]--[2020-03-20 Fri 11:55] =>  0:02
+    :END:
+
+*Rationale*: this is in use by attributes at present.
+
+We introduced this for inner classes, but its (probably) not being
+used. If so, remove it and add a story for inner classes, if one does
+not yet exist.
+
+*** COMPLETED Fix clang-cl LNK4217 warnings                           :story:
+    CLOSED: [2020-03-20 Fri 18:26]
+    :LOGBOOK:
+    CLOCK: [2020-03-22 Sun 11:10]--[2020-03-22 Sun 11:23] =>  0:13
+    CLOCK: [2020-03-20 Fri 14:44]--[2020-03-20 Fri 15:35] =>  0:51
+    :END:
+
+We also have a number of warnings left to clean up, all related to
+boost.log:
+
+: masd.dogen.utility.lib(lifecycle_manager.cpp.obj) : warning LNK4217: locally defined symbol
+: ?get_tss_data@detail@boost@@YAPEAXPEBX@Z (void * __cdecl boost::detail::get_tss_data(void const *))
+: imported in function "public: struct boost::log::v2s_mt_nt6::sinks::basic_formatting_sink_frontend<char>::formatting_context * __cdecl boost::thread_specific_ptr<struct boost::log::v2s_mt_nt6::sinks::basic_formatting_sink_frontend<char>::formatting_context>::get(void)const " (?get@?$thread_specific_ptr@Uformatting_context@?$basic_formatting_sink_frontend@D@sinks@v2s_mt_nt6@log@boost@@@boost@@QEBAPEAUformatting_context@?$basic_formatting_sink_frontend@D@sinks@v2s_mt_nt6@log@2@XZ)
+
+Since we can't get to the bottom of this, try to ignore the warnings
+instead: /IGNORE:LNK4217
+
+Notes:
+
+- opened issue: [[https://github.com/Microsoft/vcpkg/issues/5336][Building with clang-cl on windows generates warnings
+  from vcpkg-installed libraries]]
+- it seems that the log files show a lot more warnings than those
+  reported by cdash,
+- Updated issue on CDash parsing problems for clang-cl: [[https://github.com/Kitware/CDash/issues/733][Parsing of
+  errors and warnings from clang-cl]]
+- sent email to clang mailinglist:
+  [[http://lists.llvm.org/pipermail/cfe-dev/2019-February/061326.html][Clang-cl -
+  errors and warning messages slightly different from MSVC]]. Clang
+  [[http://lists.llvm.org/pipermail/cfe-dev/2019-February/061339.html][have patched]] the diffs now.
+- we are now seeing all the warnings.
+- [[https://stackoverflow.com/questions/50274547/windows-clang-hello-world-lnk4217/57788067#57788067][Windows clang Hello World lnk4217]]
+- [[https://stackoverflow.com/questions/6979491/how-to-delete-warnings-lnk4217-and-lnk4049/6979586#6979586][How to delete warnings LNK4217 and LNK4049]]
+- [[https://docs.microsoft.com/en-us/cpp/build/reference/ignore-ignore-specific-warnings?view=vs-2019][/IGNORE (Ignore Specific Warnings)]]
+
+*** COMPLETED Analysis on creating a masd kernel model                :story:
+    CLOSED: [2020-03-21 Sat 09:24]
+    :LOGBOOK:
+    CLOCK: [2020-03-21 Sat 08:31]--[2020-03-21 Sat 09:24] =>  0:53
+    :END:
+
+Idea:
+
+- create a kernel interface and a backend interface in generation.
+- add a registrar for kernels.
+- create a new model called masd. Implement the kernel
+  interface. Return the meta-model by calling all registered backends.
+- implement the backend interface in the existing backends.
+
+Notes:
+
+- actually, we assumed the notion of a "kernel" without thinking too
+  much about it. In reality there is not need for multiple
+  kernels. This is because the logical model (and to an extent, the
+  physical model) are designed to house MASD principles. Therefore
+  they are only useful to output code that conforms to MASD
+  principles. If a user was to want to define a new kernel - say for
+  example for protobufs - then it would either:
+
+  - be fitted into the MASD logical model, as we have done thus far
+    with all facets; in which case it is part of the MASD kernel; or
+  - require a new logical model, in which case it would be outside of
+    Dogen, really.
+
+  Therefore it doesn't make a lot of sense to have more than one
+  kernel.
+- in addition, terms such as kernel, backend, formatter, generation
+  etc are not MDE terms, and we have been using them for historic
+  reasons. In reality, the generation model is the entry point of the
+  model-to-text (M2T) chain; the backend models are specialisations of
+  the M2T chain for specific technical spaces; and formatters are M2T
+  transforms.
+- in light of this we could align Dogen to MDE with a small number of
+  changes:
+  - drop kernel from archetype location, meta-model, features,
+    etc. Features become located at =masd.m2t=. Conceptually this is
+    equivalent to a kernel, but its non-optional. We could call this
+    the "prefix" and have it set in the meta-model. Or have a
+    "traits-like" class in the physical model.
+  - rename =generation= to =m2t=.
+  - rename interfaces to =m2t_chain= (top-level),
+    =m2t_technical_space_chain= (interface), =m2t_cpp_chain= (backend),
+    =m2t_transform= (formatter) and so forth.
+
+*** COMPLETED Rename generation models to =m2t=                       :story:
+    CLOSED: [2020-03-21 Sat 14:49]
+    :LOGBOOK:
+    CLOCK: [2020-03-21 Sat 15:18]--[2020-03-21 Sat 15:28] =>  0:10
+    CLOCK: [2020-03-21 Sat 14:50]--[2020-03-21 Sat 15:00] =>  0:10
+    CLOCK: [2020-03-21 Sat 14:48]--[2020-03-21 Sat 14:49] =>  0:01
+    CLOCK: [2020-03-21 Sat 14:30]--[2020-03-21 Sat 14:47] =>  0:17
+    CLOCK: [2020-03-21 Sat 09:33]--[2020-03-21 Sat 09:59] =>  0:26
+    :END:
+
+These models are really just containers of M2T transforms, so name
+them accordingly.
+
+*** COMPLETED Move all generation features away from generation      :story:
+    CLOSED: [2020-03-21 Sat 15:17]
+    :LOGBOOK:
+    CLOCK: [2020-03-21 Sat 15:00]--[2020-03-21 Sat 15:17] =>  0:17
+    :END:
+
+Rename the meta-data keys of the generation features from
+=masd.generation= to =masd.m2t=.
+
+*** COMPLETED Rename generation transforms                            :story:
+    CLOSED: [2020-03-21 Sat 23:57]
+    :LOGBOOK:
+    CLOCK: [2020-03-22 Sun 17:28]--[2020-03-22 Sun 17:31] =>  0:03
+    CLOCK: [2020-03-22 Sun 16:53]--[2020-03-22 Sun 17:21] =>  0:28
+    CLOCK: [2020-03-21 Sat 20:42]--[2020-03-21 Sat 23:57] =>  3:15
+    CLOCK: [2020-03-21 Sat 18:30]--[2020-03-21 Sat 19:26] =>  0:56
+    CLOCK: [2020-03-21 Sat 15:29]--[2020-03-21 Sat 15:36] =>  0:07
+    :END:
+
+Renames:
+
+- top-level: =m2t_chain=
+- interface: =m2t_technical_space_chain=
+- backend: =m2t_cpp_chain=
+- formatter: =m2t_transform=
+- namespaces
+
+*** COMPLETED Remove kernel from models                               :story:
+    CLOSED: [2020-03-22 Sun 09:33]
+    :LOGBOOK:
+    CLOCK: [2020-03-22 Sun 08:57]--[2020-03-22 Sun 09:33] =>  0:36
+    :END:
+
+We don't really need the notion of kernel in MASD, so remove
+it. However, make sure we still preserve the notion of a top-level
+container for backends - for now =masd.generation=.
+
+*** COMPLETED Rename the default MASD kernel                          :story:
+    CLOSED: [2020-03-22 Sun 11:24]
+    :LOGBOOK:
+    CLOCK: [2020-03-20 Fri 15:36]--[2020-03-20 Fri 16:20] =>  0:44
+    :END:
+
+Up to now we have conflated the generation model with the default MASD
+kernel. The generation model is responsible for expanding the logical
+model into the physical dimension and then using all available kernels
+to populate the content of the artefacts. Given this we should really
+start to separate generation from the MASD default kernel, which is
+the current implementation of the model to text transforms. We need a
+name for the kernel because we can't keep calling it "generation" as
+its just confusing. The name needs to also be distinct from MASD since
+we use it as the prefix all all features (e.g. =masd.masd= would not
+be enlightening). We could just give it a distinctive name which is
+not particularly meaningful: =genie= (from generation, little
+generator). Then we'd have =masd.genie.enabled=, etc. It would also
+allow users to create their own kernels with distinctive names,
+e.g. =ddc.xyz.enabled=.
+
+*** COMPLETED Consider removing archetype location by family          :story:
+    CLOSED: [2020-03-22 Sun 16:52]
+    :LOGBOOK:
+    CLOCK: [2020-03-22 Sun 16:12]--[2020-03-22 Sun 16:52] =>  0:40
+    :END:
+
+Check to see if this container is in use and if not, remove it and all
+associated infrastructure.
+
+*** COMPLETED Add part to physical location                           :story:
+    CLOSED: [2020-03-24 Tue 08:45]
+    :LOGBOOK:
+    CLOCK: [2020-03-24 Tue 07:45]--[2020-03-24 Tue 08:45] =>  1:00
+    CLOCK: [2020-03-22 Sun 17:44]--[2020-03-22 Sun 17:52] =>  0:08
+    CLOCK: [2020-03-22 Sun 11:24]--[2020-03-22 Sun 11:32] =>  0:08
+    :END:
+
+We need to express the idea that archetypes live in different parts of
+a component. Add a part to the physical location, and update all model
+to text transforms to populate it. Then, change the archetype name to
+use the part as well as the facet on the name.
+
+A slight issue is that the part name cannot be fully qualified. For
+example, say:
+
+: masd.cpp.include
+
+is not a good part name, at least inside of the location. If we do
+that, then when we add the facet, we get:
+
+: masd.cpp.types.masd.cpp.include.
+
+In truth, we have been using the fully qualified name incorrectly all
+along. We should really have a location that only denotes each
+"region":
+
+- backend: =masd.cpp=
+- facet: =types= (not =masd.cpp.types=)
+- part: =include=
+- archetype: =class_header=
+
+And then the fully qualified name for the archetype.becomes:
+
+: masd.cpp.types.include.class_header
+
+This also means we are completely symmetric with the logical model. So
+we really should have a notion of a name (simple, qualified) with a
+location. The ID is the qualified name.
+
+*** COMPLETED Add names to logical model                              :story:
+    CLOSED: [2020-03-27 Fri 22:06]
+    :LOGBOOK:
+    CLOCK: [2020-03-24 Tue 21:59]--[2020-03-24 Tue 23:06] =>  0:47
+    CLOCK: [2020-03-22 Sun 17:22]--[2020-03-22 Sun 17:28] =>  0:06
+    CLOCK: [2020-03-22 Sun 11:46]--[2020-03-22 Sun 12:21] =>  0:35
+    :END:
+
+We need to move towards the same approach as we have in the logical
+model but for the physical model:
+
+- have a name class with =simple= and =qualified= and a
+  location. =qualified= is the location plus simple.
+- Use =qualified= as the ID on any container (e.g. archetype location
+  repository).
+- containers with facets must have a concatenation of =backend= plus
+  =facet=.
+- create a name builder and/or name factory that make qualified names.
+
+*** COMPLETED Consider generating a colour palette procedurally       :story:
+    CLOSED: [2020-03-29 Sun 23:11]
+    :LOGBOOK:
+    CLOCK: [2020-03-29 Sun 22:53]--[2020-03-29 Sun 23:11] =>  0:18
+    CLOCK: [2020-03-29 Sun 20:51]--[2020-03-29 Sun 22:52] =>  2:01
+    CLOCK: [2020-03-29 Sun 16:15]--[2020-03-29 Sun 16:44] =>  0:29
+    :END:
+
+See if we can create a colour palette using a script. This can be done
+manually and then pasted into the existing script.
+
+Links:
+
+- [[https://seaborn.pydata.org/tutorial/color_palettes.html][seaborn: Choosing color palettes]]
+- [[https://seaborn.pydata.org/installing.html][seaborn: Installing and getting started]]
+- [[https://stackoverflow.com/questions/38249454/extract-rgb-or-6-digit-code-from-seaborn-palette][SO: Extract RGB or 6 digit code from Seaborn palette]]
+
+*** COMPLETED Add support for clang-10                                :story:
+    CLOSED: [2020-04-01 Wed 21:58]
+    :LOGBOOK:
+    CLOCK: [2020-04-01 Wed 21:59]--[2020-04-01 Wed 22:10] =>  0:11
+    CLOCK: [2020-04-01 Wed 21:25]--[2020-04-01 Wed 21:58] =>  0:33
+    :END:
+
+The latest clang has been released. Try compiling with it and see if it works.
+
+*** COMPLETED Make physical location entries simple names             :story:
+    CLOSED: [2020-04-03 Fri 20:04]
+    :LOGBOOK:
+    CLOCK: [2020-04-03 Fri 19:52]--[2020-04-03 Fri 20:04] =>  0:12
+    CLOCK: [2020-04-03 Fri 15:45]--[2020-04-03 Fri 17:18] =>  1:33
+    CLOCK: [2020-04-03 Fri 14:01]--[2020-04-03 Fri 15:20] =>  1:19
+    CLOCK: [2020-04-03 Fri 11:31]--[2020-04-03 Fri 12:10] =>  0:39
+    CLOCK: [2020-04-01 Wed 22:11]--[2020-04-01 Wed 22:40] =>  0:29
+    CLOCK: [2020-04-01 Wed 21:02]--[2020-04-01 Wed 21:25] =>  0:23
+    CLOCK: [2020-03-31 Tue 21:58]--[2020-03-31 Tue 22:30] =>  0:32
+    CLOCK: [2020-03-31 Tue 21:36]--[2020-03-31 Tue 21:57] =>  0:21
+    CLOCK: [2020-03-28 Sat 21:21]--[2020-03-29 Sun 00:18] =>  2:57
+    CLOCK: [2020-03-27 Fri 17:35]--[2020-03-27 Fri 17:43] =>  0:08
+    CLOCK: [2020-03-27 Fri 14:10]--[2020-03-27 Fri 17:21] =>  3:11
+    CLOCK: [2020-03-27 Fri 13:06]--[2020-03-27 Fri 13:57] =>  0:59
+    CLOCK: [2020-03-27 Fri 10:28]--[2020-03-27 Fri 12:03] =>  1:35
+    CLOCK: [2020-03-27 Fri 08:40]--[2020-03-27 Fri 10:10] =>  1:48
+    CLOCK: [2020-03-20 Fri 14:30]--[2020-03-20 Fri 14:44] =>  0:14
+    CLOCK: [2020-03-20 Fri 13:01]--[2020-03-20 Fri 14:16] =>  1:15
+    CLOCK: [2020-03-26 Thu 21:00]--[2020-03-26 Thu 21:21] =>  0:21
+    CLOCK: [2020-03-26 Thu 08:01]--[2020-03-26 Thu 08:45] =>  0:44
+    CLOCK: [2020-03-25 Wed 22:01]--[2020-03-26 Thu 00:13] =>  2:12
+    CLOCK: [2020-03-22 Sun 17:32]--[2020-03-22 Sun 17:43] =>  0:11
+    :END:
+
+At present all names in a location are qualified, e.g. =types= facet
+is given as:
+
+: masd.cpp.types
+
+We need these to be simple, e.g.: =types=. We should do this after we
+move to names because we will need a way to obtain the qualified
+name - e.g. what we currently call the archetype. First step should be
+to populate the logical name with the correct qualified name, then
+replace calls to archetype with calls to qualified name, then do this
+change.
+
+Notes:
+
+- one of the problems of this work is that in some cases we do need
+  the qualified name to a facet or archetype (e.g. when building
+  dependencies, etc). However, when creating the archetype name we
+  want the simple name of all components. If we change traits we will
+  change both at the same time, which will cause everything to
+  break. The easiest thing to do for now is to create a =_sn= trait
+  for every case where we already have a qualified name and then
+  replace those that need it with the =_sn= version. This should
+  minimise breakage.
+- we can easily add the physical meta-model to all contexts; we just
+  need to create a transform based on the work in context factory,
+  then call the transform from context factory for now. The model can
+  be mostly empty at the start. Then we just unpack the name
+  repository as we do now.
+- once we change all names to simple names, we need to update at the
+  same time:
+  - template instantiation;
+  - formatters (c++ and c#)
+  - registrars (c++ and c#)
+  - expansion of archetype properties (well, enablement properties)
+- we cannot have part in the location. If we do, then the feature
+  names will also have to have part in them and that does not make any
+  sense. Therefore it has to be a property of the archetype, and we
+  need to resolve it as required when building the file paths. For
+  now, remove it from location and add it to archetype.
+- add docs for location and qualified in physical name.
+- when querying for features for a given backend, we need to assemble
+  the qualified name.
+
+*** CANCELLED Consider upgrading to clang 10 on windows               :story:
+    CLOSED: [2020-04-04 Sat 14:53]
+    :LOGBOOK:
+    CLOCK: [2020-04-04 Sat 14:45]--[2020-04-04 Sat 14:53] =>  0:08
+    :END:
+
+We have a number of failures on windows that we can't quite
+explain. May be worth seeing if latest clang fixes them.
+
+Actually we are using the appvetor supplied clang so its probably not
+a good idea.
+
+*** COMPLETED Make m2t interfaces header only                         :story:
+    CLOSED: [2020-04-05 Sun 10:58]
+    :LOGBOOK:
+    CLOCK: [2020-04-05 Sun 10:40]--[2020-04-05 Sun 10:58] =>  0:18
+    :END:
+
+It seems we have implementation files on this at present.
+
+*** COMPLETED Rename physical names to meta-names                     :story:
+    CLOSED: [2020-04-05 Sun 11:20]
+    :LOGBOOK:
+    CLOCK: [2020-04-05 Sun 10:58]--[2020-04-05 Sun 11:20] =>  0:22
+    CLOCK: [2020-04-05 Sun 09:13]--[2020-04-05 Sun 10:40] =>  1:34
+    CLOCK: [2020-04-05 Sun 07:48]--[2020-04-05 Sun 08:35] =>  0:47
+    CLOCK: [2020-04-04 Sat 20:51]--[2020-04-04 Sat 21:57] =>  1:06
+    :END:
+
+We made a modeling error: we called the physical names "names". These
+are not really names. Physical names are file names. What we really
+mean is physical meta-names. We need to rename this type to avoid
+confusion.
+
+Notes:
+
+- passes:
+  - name repository, name repository parts, name group. *Done*.
+  - name builder, qualified name builder, name validator, name
+    factory. *Done*
+  - model to text chains. *Done*
+  - registrar: member variables. *Done*
+  - model to text interface and implementations physical name,
+    meta-name should be logical meta-name. *Done*
+  - assistant: physical name. *Done*
+- change model artefacts: =std::list<boost::shared_ptr<artefact>>=. *Done*
+
+*** COMPLETED Supply artefacts to formatters                          :story:
+    CLOSED: [2020-04-05 Sun 17:25]
+    :LOGBOOK:
+    CLOCK: [2020-04-05 Sun 17:26]--[2020-04-05 Sun 17:28] =>  0:02
+    CLOCK: [2020-04-05 Sun 15:30]--[2020-04-05 Sun 17:25] =>  1:55
+    CLOCK: [2020-04-05 Sun 11:49]--[2020-04-05 Sun 11:55] =>  0:06
+    CLOCK: [2020-04-05 Sun 11:21]--[2020-04-05 Sun 11:48] =>  0:27
+    :END:
+
+Instead of generating artefacts inside of the formatter, we need to
+supply them as references.
+
+Notes:
+
+- do a check that the physical name of the artefact and formatter
+  match.
+- rename the model generation chains in orchestration.
+- rename the generation context in orchestration.
+
+*** COMPLETED Handling of non-existent stitch templates is dodgy      :story:
+g    CLOSED: [2020-04-05 Sun 21:20]
+    :LOGBOOK:
+    CLOCK: [2020-04-05 Sun 21:01]--[2020-04-05 Sun 21:20] =>  0:19
+    CLOCK: [2020-04-05 Sun 17:29]--[2020-04-05 Sun 17:33] =>  0:04
+    :END:
+
+At present when we do not find a stitch template we seem to create an
+artefact with an empty path:
+
+:    /*
+:     * If the template does not yet exist, we should just create an
+:     * empty artefact.
+:     *
+:     * This scenario happens when creating a new model or when adding
+:     * a new artefact formatter for the first time.
+:     */
+:    if (!boost::filesystem::exists(stitch_template)) {
+:        BOOST_LOG_SEV(lg, debug) << "Stitch template not found: "
+:                                 << fp.generic_string();
+:        // ast.update_artefact();
+:
+:        // FIXME: what is the name/path for the artefact?! This may
+:        // FIXME: explain empty artefacts!
+:        a.overwrite(ast.new_artefact_properties().overwrite());
+:
+:        physical::entities::operation op;
+:        using ot = physical::entities::operation_type;
+:        op.type(a.overwrite() ? ot::write : ot::create_only);
+:        a.operation(op);
+:        return;
+:    }
+
+What we should really be doing instead is setting up the path and
+using a default stitch template. We have a story for this. For now
+this is causing artefacts with blank paths which is causing issues in
+the physical pipeline. We need to address this and then remove those
+hacks.
+
+Actually this is quite complicated, and will probably require a
+default wale template for the stitch template that takes into account
+the template used for the header etc. For now the easiest thing to do
+is to warn and not generate any artefacts. This should solve the empty
+path problem. We should then reinstate the checks.
+
+In addition, the entire workflow around stitch templates needs to be
+revisited. We are doing all sorts of hackery to associate the
+templates to the meta-model element (take the path of the file for the
+element but use the stitch extension, etc), completely bypassing the
+meta-model. The right approach is to have a meta-model element for the
+template and have a meta-model concept of association. We have this
+captured in a story somewhere (double-check that the story makes
+sense).
+
+A quick hack revealed that it is easy to generate empty files:
+
+: --- a/projects/dogen.m2t.cpp/src/types/transforms/stitch_transform.cpp
+: +++ b/projects/dogen.m2t.cpp/src/types/transforms/stitch_transform.cpp
+: @@ -73,10 +73,10 @@ void stitch_transform::apply(const model_to_text_transform& stock_transform,
+:      if (!boost::filesystem::exists(stitch_template)) {
+:          BOOST_LOG_SEV(lg, debug) << "Stitch template not found: "
+:                                   << fp.generic_string();
+: -        // ast.update_artefact();
+:
+:          // FIXME: what is the name/path for the artefact?! This may
+:          // FIXME: explain empty artefacts!
+: +        a.name().qualified(fp);
+:          a.overwrite(ast.new_artefact_properties().overwrite());
+:
+:          physical::entities::operation op;
+
+We just did a quick hack to avoid adding artefacts after stitch
+template expansion when content is empty. With this we managed to
+reinstate the checks for empty paths so that is good enough for now.
+
+*** COMPLETED Implement the generation model in terms of "formattables" :story:
+    CLOSED: [2020-04-10 Fri 09:33]
+     :LOGBOOK:
+     CLOCK: [2020-04-03 Fri 20:26]--[2020-04-03 Fri 21:08] =>  0:42
+     :END:
+
+ We need to find a way to expand the generation model into a pair of:
+
+ - element
+ - artefact
+
+ In effect, a formattable. Then we need to update the backends to stop
+ expanding across physical space and instead use the expansion created
+ by the generation model. We then need to update formattables to have
+ an artefact, and supply the artefact to all formatters.
+
+ Notes:
+
+ - next task is to use the artefact from pair inside c++ and c# instead
+   of creating one inside each formatter.
+ - we need to also perform the archetype expansion within =m2t= not
+   logical model.
+ - we need to add artefacts to formatters and get them to populate
+   them.
+
+*** POSTPONED Implement archetype locations from physical meta-model  :story:
+    CLOSED: [2020-04-05 Sun 21:26]
+    :LOGBOOK:
+    CLOCK: [2020-04-05 Sun 21:21]--[2020-04-05 Sun 21:27] =>  0:06
+    CLOCK: [2020-04-04 Sat 14:54]--[2020-04-04 Sat 16:55] =>  2:01
+    CLOCK: [2020-04-04 Sat 12:14]--[2020-04-04 Sat 13:03] =>  0:49
+    CLOCK: [2020-03-28 Sat 21:07]--[2020-03-28 Sat 21:20] =>  0:13
+    CLOCK: [2020-03-28 Sat 15:50]--[2020-03-28 Sat 16:14] =>  0:24
+    CLOCK: [2020-03-27 Fri 22:01]--[2020-03-27 Fri 22:58] =>  0:57
+    CLOCK: [2020-03-17 Tue 17:15]--[2020-03-17 Tue 17:24] =>  0:09
+    CLOCK: [2020-03-17 Tue 15:25]--[2020-03-17 Tue 16:29] =>  1:04
+    :END:
+
+We need to use the new physical meta-model to obtain information about
+the layout of physical space, replacing the archetype locations.
+
+Tasks:
+
+- make the existing backend interface return the layout of physical
+  space.
+- create a transform that populates all of the data structures needed
+  by the current code base (archetype locations).
+- replace the existing archetype locations with a physical meta-model.
+- remove all the archetype locations data structures.
+
+Notes:
+
+- template instantiation domains should be a part of the physical
+  meta-model. Create a transform to compute these.
+
+Merged stories:
+
+*Clean-up archetype locations modeling*
+
+We now have a large number of containers with different aspects of
+archetype locations data. We need to look through all of the usages of
+archetype locations and see if we can make the data structures a bit
+more sensible. For example, we should use archetype location id's
+where possible and only use the full type where required.
+
+Notes:
+
+- formatters could return id's?
+- add an ID to archetype location; create a builder like name builder
+  and populate ID as part of the build process.
+
+*Implement the physical meta-model*
+
+We need to replace the existing classes around archetype locations
+with the new meta-model types.
+
+Notes:
+
+- formatters should add their data to a registrar that lives in the
+  physical model rather than expose it via an interface.
+
+** Deprecated
+*** CANCELLED Consider adding =artefact_set= to extraction model      :story:
+    CLOSED: [2020-03-18 Wed 08:16]
+
+*Rationale*: with the recent merge of the physical model, this is no
+longer required.
+
+We are using collections of artefacts quite a bit, and it makes sense
+to create an abstraction for it such as a =artefact_set=. However, for
+this to work properly we need to add at least one basic behaviour: the
+ability to merge two artefact sets. Or else we will end up having to
+unpack the artefacts, then merging them, then creating a new artefact
+set.
+
+Problem is, we either create the artefact set as a non-generatable
+type - not ideal - or we create it as generatable and need to add this
+as a free function. We need to wait until dogen has support for
+merging code generation.
+
+*** CANCELLED Check if enable kernel directories is on extraction     :story:
+    CLOSED: [2020-03-18 Wed 08:28]
+
+*Rationale*: this story has bit-rotted.
+
+When we moved the kernel logic into yarn from quilt, we did not rename
+the traits.
+*** CANCELLED Consider renaming formatter groups and model groups to sets :story:
+    CLOSED: [2020-03-20 Fri 11:45]
+
+*Rationale*: with the new physical meta-model we won't need formatter
+groups.
+
+We should try to keep the words groups and sets to their mathematical
+as much as possible - modulus our limited understanding. As such,
+where we are using "group" we probably mean "set" since there is no
+associated operation with the set; it is merely a way of gathering
+elements.
+
+*** CANCELLED Consider adding support for formatter tags or labels    :story:
+    CLOSED: [2020-03-20 Fri 11:45]
+
+*Rationale*: any such properties must be reflected in the physical
+meta-model, and should only be added when we have use cases for
+them. We should avoid a generic "label" concept unless we have a
+really strong use case.
+
+At present there is a presumption that if a formatter belongs to say
+=types= it cannot belong to any other facet. This means facets are
+used purely for hierarchical purposes. However, in certain cases it
+may make sense to "tag" or "label" formatters. For example, we may
+need to know of all header or implementation files; or of all build
+files, or of all files that belong to the main class, and so
+forth. For this tags are more appropriate. We have started to hack
+things slightly (such as =file_types=) but a generic solution for this
+would be preferable.
+
+*** CANCELLED Initialise formatters in the formatter's translation unit :story:
+    CLOSED: [2020-03-20 Fri 11:46]
+
+*Rationale*: formatters should register against facets and facets
+against backends. This will be done with the current generation
+refactor.
+
+At present we are initialising the formatters in each of the facet
+initialisers. However, it makes more sense to initialise them on the
+translation unit for each formatter. This will also make life easier
+when we move to a mustache world where there may not be a formatter
+header file at all.
+
+*** CANCELLED Allow multiple types to go into a single formatter      :story:
+    CLOSED: [2020-03-20 Fri 11:47]
+
+*Rationale*: this approach violates the current MASD
+thinking. Modeling elements model the entities in a file. If we have
+more than one "programming entity", a single model entity should
+contain all the information required to generate it. There should
+always be a 1-1 mapping.
+
+We have found a number of cases where it may be useful to have more
+than one type going into a formatter:
+
+- [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#add-support-for-inner-classes][inner classes]];
+- declaring all/some of the following in a single header: exceptions,
+  enumerations, built-ins.
+- typedefs ([[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#manual-typedef-generation][manual]], [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#automatic-typedef-generation][automatic]])
+- [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#include-groups][include groups]] (and to be fair, [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#consider-renaming-includers]["master" headers]] too).
+- grouping a number of forward declarations into a file.
+
+There are probably a few more in the backlog. What all these use cases
+share in common is that in some cases we want to be able to send
+several types into a given formatter. This is actually not that hard
+to do:
+
+- find a way to "label" types in yarn, perhaps for a given formatter;
+- transfer those labels across to CPP's formattables;
+- group formattables by label;
+- have a separate interface for formatters that take multiple
+  formattables; one of the methods of this interface is the label;
+- for each formatter, find all types with matching label and pass them
+  on.
+
+One thing to bear in mind though is that the labeling is done at the
+yarn level; and for a given yarn entity, we may have a number of
+formattables. Should all be passed in?
+
+Merged stories:
+
+*Types that share one file*
+
+#+begin_quote
+*Story*: As a dogen user, I want to generate a single file for a
+number of related classes so that I don't have to deal with lots of
+files when they are not needed.
+#+end_quote
+
+At present we force all types etc to have their own file. However, in
+cases it may be useful to have multiple types sharing the same
+file. For instance, one may want to have all enumerations in one file,
+or all exceptions, etc.
+
+We could implement this using dynamic extensions.
+
+*** CANCELLED Special purpose formatters                               :epic:
+    CLOSED: [2020-03-20 Fri 11:50]
+
+*Rationale*: there is no such thing as a special purpose
+formatter. Formatters belong to kernels, which gives them a
+"theme". Any formatters which do not fit the MASD kernel should be
+placed on an appropriate kernel.
+
+In the future, when the creation of formatters is made easier, we may
+start designing formatters that are totally a application specific and
+may not have any particular use for any other application. They should
+be accepted in mainline Dogen:
+
+- to make sure we don't break this code;
+- to allow other people to copy and paste to generate their own
+  formatters;
+- because sometimes what one thinks is special purpose actually much
+  more general.
+
+However, we need to make sure we don't start cluttering the code base
+with these formatters. We will also have to start to worry about
+things like defining stable interfaces:
+
+- at which point do we decide that some code has bitrot and
+  deprecated, so will have to be removed?
+- what happens when a formatter moves from version 1 to version 2 of
+  some dependent library, must we create a version 1 and version 2
+  formatter or just update the existing one? what if it breaks code
+  for people using version 1 that do not wish to move to version 2?
+- do we mandate compilation tests for all formatters? This would mean
+  our build machine would be full of third-party libraries (some
+  potentially not available in Debian), and quite hard to
+  maintain. Alternatively we could mandate that if you have a
+  formatter you must setup a CTest agent with a compilation for that
+  formatter and publish the results of the build to dashboard; if your
+  build becomes consistently red we are allowed to remove the
+  formatter.
+- for the diff tests, is it acceptable if someone refactors the code?
+  Once "your" formatter is merged in it is now owned by the community
+  and it is entirely possible that someone will improve it/extend it,
+  etc. In order for this to work they need to be very sure they have
+  not broken the original use case.
+
+We probably just need to setup a very simple policy to start off with,
+but its best to keep track of these potential pitfalls.
+
+Merged with this story:
+
+*Private formatters*
+
+We should look into code we do in dogen that is highly repetitive and
+create "private formatters" for it. For example, field definitions are
+more or less exclusive to dogen so it doesn't make it any sense to add
+it to the "public" side of dogen; but it would be nice to create a
+formatter to generate them so that we don't have to do it
+manually. For these "private formatters" we would need to load a SO
+with them into a dogen binary.
+*** CANCELLED Protect against double-initialisation                   :story:
+    CLOSED: [2020-03-20 Fri 14:27]
+
+*Rationale*: we have a more comprehensive solution for this problem
+that takes this issue into account.
+
+We need to look into static initialisation and make sure the code can
+cope with it being called several times.
+
+At present it seems we would re-register fields, backends, etc so
+multiple initialisation would fail.
+
+In addition to this, we should also look into passing the registrars
+into the initialisers. At present we are calling the static methods
+directly. This is not ideal, because just like with singletons, we are
+hiding the dependencies. We should really pass the registrars in the
+initialise function so we can see the dependencies at the top-level.
+
+A second related problem is the lack of initialisation. We need to
+have some really meaningful exception that tells users when they
+forgot to initialise the framework.
+
+This story will eventually become irrelevant once we move to Boost.DI.
+
+*** CANCELLED Generate a feature initialiser for all initialisers     :story:
+    CLOSED: [2020-03-20 Fri 14:28]
+
+*Rationale*: we have a more comprehensive solution for this problem
+that takes this issue into account.
+
+At present we are code-generating the features and the initialiser for
+the features in each model. However, we then need to remember to call
+all of the initialisers. This is done, somewhat arbitrarily, in the
+context factory:
+
+: variability::meta_model::feature_template_repository
+: make_feature_template_repository() {
+:     variability::helpers::feature_template_registrar rg;
+:     injection::features::initializer::register_templates(rg);
+:     assets::features::initializer::register_templates(rg);
+:     generation::features::initializer::register_templates(rg);
+:     templating::initializer::register_templates(rg);
+:     variability::features::initializer::register_templates(rg);
+:     archetypes::features::initializer::register_templates(rg);
+:     extraction::features::initializer::register_templates(rg);
+:     generation::cpp::feature_initializer::register_templates(rg);
+:     generation::csharp::feature_initializer::register_templates(rg);
+:     features::initializer::register_templates(rg);
+:     const auto r(rg.repository());
+:     return r;
+: }
+
+It would be much better if we could just extend the initialiser to
+know of all dependent initialisers and call them. This way the
+initialiser in engine would already call all of the initialisers. This
+can probably be easily done by:
+
+- allowing more than one initialiser in the merged model
+- as part of the merge, keep track of the "dependent" models, and of
+  their initialisers. We probably already do something similar for the
+  registrar.
+- ensure the initialisers only do something the first time they are
+  called. We already have a story for this somewhere in the backlog.
+*** CANCELLED Consider adding tests for pipeline components           :story:
+    CLOSED: [2020-03-25 Wed 09:21]
+
+*Rationale*: these tests are just too high maintenance and had very
+little value. We should just stick to end-to-end tests, which break
+only when something really goes wrong.
+
+With regards to the existing injection.dia/injection.json test data
+set: this is actually not a bad idea. Basically what we are saying is
+that there is value in freezing a set of inputs in time and then use
+them to check parts of the pipeline. These are not expected to move
+(because the model contents are frozen). We could take the existing
+reference models and copy them for this. We could also extend this
+approach to the other parts of the pipeline. We would only update
+these frozen models very infrequently, at which point we'd have to
+rebaseline all data files. The only downside is that we'd need
+serialisation for all models (coding, generation, formatting). These
+models would break every time we change something in the pipeline (add
+new fields, change formatters, etc).
+
+In the past these tests were a bit painful and broke a lot. Also, it
+was not entirely clear how to rebase the data files - required a lot
+of black magic every time it happened and did not happen often enough
+to build muscle memory.
+
+However the tests are very useful: when we are making internal
+changes, its good to see the breaks and look into the diffs to ensure
+only what we expect has changed.
+*** CANCELLED Consider renaming =coding::name=                        :story:
+    CLOSED: [2020-03-26 Thu 21:26]
+
+*Rationale*: we are happy enough with this name and the pattern has
+now propagated into the physical model so it seems its here to stay.
+
+Now that we are using the name "name" to mean a plain string (exomodel
+related classes), it raises a question as to whether name (and
+nametree) are named correctly. If we had a better name for name we
+could then make "name" the "simple" property and make =Nameable= a
+concept that is used by both exomodel entities and the "new name"
+class. However, we never managed to find a good name for this class.
+*** CANCELLED Tidy-up assistant API                                   :story:
+    CLOSED: [2020-03-26 Thu 21:31]
+
+*Rationale*: this story is superseded by the generation / physical
+model clean up.
+
+Now we have element in assistant we can start removing the need for
+element in the calls, making the templates simpler.
+
+*** CANCELLED Augment element ID with meta-model type                 :story:
+    CLOSED: [2020-03-26 Thu 21:34]
+
+*Rationale*: its not clear what we'd gain by doing this work. We can't
+use the information in the code (its supposed to be opaque) and we
+haven't had the need for it for troubleshooting thus far.
+
+The element ID is considered to be a system-level, opaque
+identifier. It could, for all intents and purposes, be a large int. We
+have decided to use a string so we can dump it to the log and figure
+out what is going on without having to map IDs to a human-readable
+value. In the same vein, we could also add another component to the ID
+that would contain the meta-model element for that ID. This
+information could be placed at the start.
+
+Of course, we will not be able to remove the look-ups we have at
+present that try to figure out the meta-model element because they are
+related to resolution. But for any other cases it may result in
+slightly more performant code. We need to look at all the use cases.
+
+*** CANCELLED Why do we need helpers and io for some types?           :story:
+    CLOSED: [2020-03-26 Thu 21:38]
+
+*Rationale*: this will be superseded by the move to PDMs.
+
+At present we have helper support for maps, sets, pairs etc. We also
+seem to have utility support for these. Originally the idea was that
+we needed utility so that users could have a map of dogen types and
+still have streaming support. This is useful. However, what is
+slightly less clear is why we don't just use the utility methods
+inside the IO subsystem to output these types, but instead use
+helpers. We should try doing that and see what breaks, there may be a
+reasons for this.
+
+In theory we just have to remove the helpers in IO for utility
+supported types and add the includes to the meta-data; regenerate and
+see what breaks. It could be related to the ordering of template
+functions or some such problem. If so we need to document this in
+manual. We should also do a quick search in backlog for this.
+
+*** CANCELLED Use dots in data files extensions                       :story:
+    CLOSED: [2020-03-26 Thu 21:41]
+
+*Rationale*: we don't really have data files any longer. If there are
+any legacy ones, they should be removed.
+
+At the moment we use extensions such as =xmlyarn=. It should really be
+=.xml.yarn= or something of the kind.
+*** CANCELLED Add support for selectively disabling helpers on a family :story:
+    CLOSED: [2020-03-27 Fri 08:35]
+
+*Rationale*: Helpers and helper families will be deprecated in favour
+of PDMs.
+
+At present when a type belongs to a helper family it must provide all
+helpers across all facets. This means that we can't support the cases
+where a helper is required for one facet for one type but not for
+others. For example, we cannot create a family for =Dereferenceable=
+including both smart pointers and optionals because optional does not
+need a helper for =types=.
+
+One solution for this is to allow disabling the helper for a given
+type on a given facet. However, our templating mechanism in dynamic is
+not able to cope with this use case. Changes required:
+
+- add a "component" to ownership hierarchy. This would be "helper" in
+  our case. We should also set "type" which has been hacked via the
+  qualified name.
+- create a supported/enabled field with a component of helper and a
+  facet template. We could change this to formatter template if
+  required in the future.
+- merge the families of optional and smart pointer into
+  =Dereferenceable=.
+- disable the helper for types for optional.
+- update the helper settings to read this new field.
+- enabled method now checks the helper properties.
+
+Links:
+
+- [[https://www.sciencedirect.com/topics/computer-science/product-line-engineering][Product Line Engineering]]
+*** CANCELLED Test data extensions are not ideal                      :story:
+    CLOSED: [2020-04-03 Fri 13:56]
+
+*Rationale*: these files have now been removed.
+
+At present we use extensions for test data like so:
+
+- =.diaxml=
+- =.yarnxml=
+
+It would be nicer to have these files called =.dia.xml= etc but when
+we tried to do this, the first extension started contributing to the
+model name (as expected) so we had to revert the change. Still, these
+are not very nice extensions.

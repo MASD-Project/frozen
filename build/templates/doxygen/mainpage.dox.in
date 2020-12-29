@@ -1,0 +1,21 @@
+/* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
+
+/**
+ * @mainpage About
+ *
+ * This is the API documentation for @b Dogen. Dogen is the Domain
+ * Generator - a code generator that creates object models for Domain
+ * Driven programming.
+ *
+ * Dogen's source code is available in git:
+ *
+ * - <A HREF="https://github.com/DomainDrivenConsulting/dogen">GitHub</A>
+ * - <A HREF="https://bitbucket.org/marco_craveiro/dogen">BitBucket</A>
+ *
+ * You can find details on the ongoing work in the <A HREF="https://github.com/DomainDrivenConsulting/dogen/tree/master/doc/agile">Agile folder</A>. Look for the latest sprint.
+ *
+ * For more details on Dogen itself, please have a look at <A HREF="https://github.com/DomainDrivenconsulting/dogen/blob/master/doc/manual/manual.org">the manual</A>.
+ *
+ * @e commit: ${CURRENT_GIT_COMMIT}
+ *
+ */

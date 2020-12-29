@@ -1,0 +1,599 @@
+#+title: Sprint Backlog 49
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 49.
+
+The *Mission Statement* for this sprint is to integrate tags with the
+inner workings of knitter once and for all.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:00]
+
+| Headline                                                   | Time    |       |      |
+|------------------------------------------------------------+---------+-------+------|
+| *Total time*                                               | *24:00* |       |      |
+|------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                            |         | 24:00 |      |
+| COMPLETED Sprint and product backlog grooming              |         |       | 3:44 |
+| COMPLETED Updates to the manual and readme files           |         |       | 2:12 |
+| COMPLETED Remove the roadmap                               |         |       | 0:05 |
+| COMPLETED Design an end-to-end solution to the tag problem |         |       | 3:23 |
+| COMPLETED Rename the =COMMENT= tag to =dia.comment=        |         |       | 0:21 |
+| COMPLETED Add support for unique log files                 |         |       | 0:16 |
+| COMPLETED Print model name to the console on failure       |         |       | 1:23 |
+| COMPLETED Tidy-up =knitting_settings_validator= specs      |         |       | 0:34 |
+| COMPLETED Tidy-up knitter main                             |         |       | 1:07 |
+| COMPLETED How to supply concrete entities to formatters    |         |       | 2:21 |
+| COMPLETED Split formatting settings from knitting settings |         |       | 4:49 |
+| COMPLETED Rename =source_file= back to =file_info=         |         |       | 0:21 |
+| COMPLETED Blog post for interesting                        |         |       | 1:41 |
+| CANCELLED Tidy-up =sml_to_cpp= model                       |         |       | 0:19 |
+| CANCELLED Use formatting settings in formatters model      |         |       | 1:20 |
+| CANCELLED Move all the configuration options into tags     |         |       | 0:04 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-05-27 Tue 13:00]
+    CLOCK: [2014-05-15 Thu 22:52]--[2014-05-15 Thu 23:40] =>  0:48
+    CLOCK: [2014-05-13 Tue 07:56]--[2014-05-13 Tue 08:10] =>  0:14
+    CLOCK: [2014-05-12 Mon 21:55]--[2014-05-12 Mon 22:35] =>  0:40
+    CLOCK: [2014-05-09 Fri 08:24]--[2014-05-09 Fri 08:38] =>  0:14
+    CLOCK: [2014-05-09 Fri 07:55]--[2014-05-09 Fri 08:03] =>  0:08
+    CLOCK: [2014-05-08 Thu 21:47]--[2014-05-08 Thu 22:25] =>  0:38
+    CLOCK: [2014-05-06 Tue 07:55]--[2014-05-06 Tue 08:18] =>  0:23
+    CLOCK: [2014-05-05 Mon 17:22]--[2014-05-05 Mon 17:37] =>  0:15
+    CLOCK: [2014-05-05 Mon 07:50]--[2014-05-05 Mon 08:14] =>  0:24
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-05-27 Tue 13:00]
+    CLOCK: [2014-05-12 Mon 18:08]--[2014-05-12 Mon 18:32] =>  0:24
+    CLOCK: [2014-05-10 Sat 23:21]--[2014-05-10 Sat 23:55] =>  0:34
+    CLOCK: [2014-05-10 Sat 23:08]--[2014-05-10 Sat 23:21] =>  0:13
+    CLOCK: [2014-05-10 Sat 16:01]--[2014-05-10 Sat 17:02] =>  1:01
+
+Use build downtime to update the manual and / or readme file.
+
+*** COMPLETED Remove the roadmap                                      :story:
+    CLOSED: [2014-05-05 Mon 08:21]
+    CLOCK: [2014-05-05 Mon 08:15]--[2014-05-05 Mon 08:20] =>  0:05
+
+Originally we thought it would give us a good idea of where we are
+heading, but in reality:
+
+- the backlog already has all the stories for the future. It just
+  doesn't assign them to iterations (and it doesn't do so for very
+  good reasons).
+- the road map is rather waterfall. We realised this when we created
+  it, but didn't think it would be /that/ bad. It is. It gives you the
+  impression of failure because it does not deal with uncertainty.
+- it may give users the false impression that we know when features
+  are going in. It was never designed to do that.
+- we spend time rejigging the road map every iteration. This is time
+  best spent coding.
+
+The intentions were good, but it didn't work out as expected.
+
+*** COMPLETED Design an end-to-end solution to the tag problem        :story:
+    CLOSED: [2014-05-05 Mon 17:22]
+    CLOCK: [2014-05-05 Mon 16:40]--[2014-05-05 Mon 16:53] =>  0:13
+    CLOCK: [2014-05-05 Mon 11:28]--[2014-05-05 Mon 12:13] =>  0:45
+    CLOCK: [2014-05-05 Mon 10:21]--[2014-05-05 Mon 11:27] =>  1:06
+
+We have created a new tag structure in Sprint 44; we need to revisit
+it and complete it.
+
+This time we need to get to a point where the tag data is being used
+to ensure we did not come up with yet another solution which does not
+solve the problems entirely.
+
+**** COMPLETED Create a complete list of tags                          :task:
+     CLOSED: [2014-05-05 Mon 16:14]
+     CLOCK: [2014-05-05 Mon 16:14]--[2014-05-05 Mon 16:40] =>  0:26
+     CLOCK: [2014-05-05 Mon 15:21]--[2014-05-05 Mon 16:14] =>  0:53
+
+*Dia Model*
+
+- =dia.comment=: bool. Only on dia notes. Processed by the
+  =dia_to_sml= transformer.
+
+*Config Model*
+
+These can only be present in the =model= itself; no other type can
+have these tags.
+
+- =annotation.generate_preamble=: bool
+- =annotation.copyright=: string; can be repeated for multiple
+  holders.
+- =annotation.licence=: string; valid licence name.
+- =annotation.modeline_group=: string; valid modeline group
+  name. can be repeated for multiple modelines.
+- =annotation.code_generation_marker.enabled=: bool
+- =annotation.code_generation_marker.add_date_time=: bool
+- =annotation.code_generation_marker.add_warning=: bool
+- =annotation.code_generation_marker.message=: string.
+- =cpp.enabled=: bool
+- =cpp.split_project=: bool
+- =cpp.project_directory=: string
+- =cpp.source_directory=: string
+- =cpp.include_directory=: string
+- =cpp.header_extension=: string
+- =cpp.source_extension=: string
+- =cpp.disable_facet_folders=: bool
+- =cpp.disable_unique_file_names=: bool
+- =cpp.disable_facet_includers=: bool
+- =cpp.use_integrated_io=: bool
+- =cpp.disable_versioning=: bool
+- =cpp.disable_complete_constructor=:
+- =cpp.types.enabled=: bool. remove this option.
+- =cpp.types.facet_folder=: string
+- =cpp.types.facet_folder=: string
+- =cpp.std_hash.enabled=: bool
+- =cpp.std_hash.facet_folder=: string
+- =cpp.boost_serialization.enabled=: bool
+- =cpp.boost_serialization.facet_folder=: string
+- =cpp.boost_serialization.xml.enabled=: bool
+- =cpp.boost_serialization.eos.enabled=: bool
+- =cpp.io.enabled=: bool
+- =cpp.io.facet_folder=: string
+- =cpp.test_data.enabled=: bool
+- =cpp.test_data.facet_folder=: string
+- =cpp.cmake.enabled=: bool
+- =cpp.odb.enabled=: bool
+- =cpp.odb.facet_folder=: string
+
+These get transformed into configuration options.
+
+*Dia to SML Model*
+
+- =modeling.is_final=: bool. Can be on any class.
+- =modeling.identity_attribute=: bool. Can be on any property.
+
+These get absorbed by the SML types.
+
+*SML to CPP Model*
+
+Only in Library models, potentially for every type:
+
+- =cpp.include.types.header_file=: string with include path.
+- =cpp.include.std_hash.header_file=: string with include path.
+- =cpp.include.boost_serialization.header_file=: string with include
+  path.
+- =cpp.include.io.header_file=: string with include path.
+- =cpp.include.test_data.header_file=: string with include path.
+- =cpp.include.odb.header_file.file_name=: string with include path.
+- =cpp.odb.pragma=: string; list.
+
+These get transformed into includes.
+
+*CPP Model*
+
+Only in Library models, potentially for every type:
+
+- =cpp.type_family=: string, to convert to enum. e.g.: =smart_pointer=.
+
+These get transformed into CPP types.
+
+*General notes*
+
+Actually by writing these lists it became clear why things were so
+confusing up til now. Most tags are just a configuration
+interface. They have nothing at all to do with the modeling data. We
+just need to plug them into the configuration model.
+
+The remaining tags have behaviour specific to that model and should be
+left alone until one reaches the transformer for that model.
+
+*** COMPLETED Rename the =COMMENT= tag to =dia.comment=               :story:
+    CLOSED: [2014-05-05 Mon 18:01]
+    CLOCK: [2014-05-05 Mon 17:40]--[2014-05-05 Mon 18:01] =>  0:21
+
+Actually, we already had started to do this, but it seems a few files
+still use the old name. Remove all remnants of =COMMENT=.
+
+*** COMPLETED Remove =formatter::entity= and property sheets          :story:
+    CLOSED: [2014-05-06 Tue 22:33]
+
+These is no longer required with the config approach. We can now make
+C++ entity generatable.
+
+*** COMPLETED Add support for unique log files                        :spike:
+    CLOSED: [2014-05-07 Wed 09:07]
+    CLOCK: [2014-05-07 Wed 08:24]--[2014-05-07 Wed 08:40] =>  0:16
+
+*Spike Rationale*: Had to look into this because its impossible to
+figure out which model has error when making with =-jN=.
+
+At present all of the targets for code generation use the same log
+file, in the output directory. This is a problem if =-jN= where N > 1
+because we now have an unreadable log file. What we really need is
+some kind of command line parameter to name the log file, perhaps
+appending the target name; anything that would create unique,
+identifiable log file names.
+
+*** COMPLETED Print model name to the console on failure              :spike:
+    CLOSED: [2014-05-07 Wed 19:52]
+    CLOCK: [2014-05-07 Wed 19:35]--[2014-05-07 Wed 19:52] =>  0:17
+    CLOCK: [2014-05-07 Wed 18:20]--[2014-05-07 Wed 19:10] =>  0:50
+    CLOCK: [2014-05-07 Wed 08:24]--[2014-05-07 Wed 08:40] =>  0:16
+
+At present we cannot tell which model failed when we code generate
+with =-jN=.
+
+*** COMPLETED Tidy-up =knitting_settings_validator= specs             :spike:
+    CLOSED: [2014-05-08 Thu 08:28]
+    CLOCK: [2014-05-08 Thu 07:54]--[2014-05-08 Thu 08:28] =>  0:34
+
+Split tests so that each have a single proposition rather than test
+several things at once.
+
+*** COMPLETED Tidy-up knitter main                                    :spike:
+    CLOSED: [2014-05-06 Tue 23:48]
+    CLOCK: [2014-05-06 Tue 22:42]--[2014-05-06 Tue 23:49] =>  1:07
+
+We should really have a small workflow in knitter rather than expose
+the whole thing in main. Should be a quick exercise to fix.
+
+*** COMPLETED Add comments in =formatters= model                      :story:
+    CLOSED: [2014-05-08 Thu 22:18]
+
+We haven't got any documentation at all in the new formatters
+morel. We need a small blurb about the language neutral formatting
+support the model is supposed to provide.
+
+*** COMPLETED How to supply concrete entities to formatters           :story:
+    CLOSED: [2014-05-15 Thu 22:52]
+    CLOCK: [2014-05-15 Thu 22:30]--[2014-05-15 Thu 22:52] =>  0:22
+    CLOCK: [2014-05-15 Thu 18:06]--[2014-05-15 Thu 18:51] =>  0:45
+    CLOCK: [2014-05-15 Thu 07:56]--[2014-05-15 Thu 08:43] =>  0:47
+    CLOCK: [2014-05-13 Tue 08:10]--[2014-05-13 Tue 08:37] =>  0:27
+
+*New Understanding*
+
+Actually the solution for this has been staring us in the
+face. Basically:
+
+- add types for each formattable "thing" - e.g. we need to add a new
+  type for includer and forward declaration.
+- remove file types and aspect types
+- create a class to represent a pair of file type and facet. this is
+  what formatters will register on.
+- remove content types; this is now all done via the type system.
+- rename source file back to file info and and info to entity; all the
+  domain types in c++ now have info.
+- formatters to think solely in terms of content; they wont generate
+  files, but just content. this is done by passing in a stream. if
+  the stream is empty there is no content to generate.
+- create a registrar against which the formatters register
+- create a file generator that takes a file info and an entity and
+  formats it using the formatters from the registrar. this will have
+  state and will be spun off as a task in a parallel world.
+- remove factory and repository at least from c++ model until we have
+  a use for it.
+- remove key implementation as it seems we only have spurious
+  differences at the moment
+- if a type is a user defined service set the file override to
+  true. file info could have an override flag for this.
+- make includer a bit tidier: we should be able to figure out what
+  logic applies for what formatter at a glance rather than having the
+  logic scattered.
+- is content descriptor a good name?
+
+*Previous Understanding*
+
+If we supply abstract entities to formatters, we need to use a visitor
+to resolve them to concrete types. This then results in a lot of state
+machinery passed around as our visitors do not know about files and
+streams, etc. We do not want state because it interferes with
+parallelism. It also means that we are not making invalid states
+unrepresentable - e.g. one can pass an entity to a formatter that does
+not support it and the type system won't help us detect this until we
+reach the formatter and cast the entity to a concrete type.
+
+So it would make our life easier if the formatters didn't have to
+resolve types - if they receive concrete entities to format. We have
+several options here:
+
+- merge =source_file= with =entity=. The downside of that is that an
+  entity is not a file: that is, we re-target the same entity to
+  multiple files according to the content descriptor. The positive
+  side is that we can then perform visitation outside of the formatter
+  (in the workflow) and pass the concrete type to the formatter.
+- convert =source_file= to a template class, instantiated with the
+  concrete entities. The downside is we can no longer code generate
+  it, nor can we generate =project=. Also, templated code is always a
+  bit fiddly. On the plus side, the formatter interfaces can then rely
+  on the instantiated types (source file with the concrete entity).
+- do not use composition of =source_file= and =entity=. We could
+  express this relationship as a tuple for example. We can then have
+  tuples using the concrete entities in =project= and pass those to
+  the formatters. This would be trivial to extend to support multiple
+  entities in one file. The downside is that the contents of the file
+  (header guards, file names, etc) at present only make sense for the
+  entity in question. Again we create an opportunity for invalid
+  states (entity with wrong file). Also, the project class will became
+  a bit messy.
+- we could take the hit and accept that invalid states are
+  representable in this case because we could not think of a better
+  idea. In this case we could cast the entity in the formatter and if
+  the cast fails we throw. This is because there is a logic error
+  somewhere for this to happen since the formatter registers for a
+  particular content descriptor and the descriptor implies a concrete
+  type
+- another alternative, is to unpack the source file before we invoke
+  the formatter. We could use the visitor for type resolution.
+
+If we were to merge =source_file=, the below tasks would be required.
+
+**** Copy all useful properties across                                 :task:
+
+At present only includes seems necessary.
+
+**** Add entries per type in =project= again                           :task:
+
+No need to work at the entity level here. Transformer to populate
+project correctly.
+
+*** COMPLETED Split formatting settings from knitting settings        :story:
+    CLOSED: [2014-05-15 Thu 22:54]
+
+Since we have one set of settings which are read from the command
+line, and another set which are obtained from parsing the meta-data,
+we should split them. This would mean we can still have const settings
+instead of modifying them mid-way through the pipeline.
+
+**** COMPLETED Move the verbose option to top-level settings           :task:
+     CLOSED: [2014-05-09 Fri 18:23]
+     CLOCK: [2014-05-06 Tue 18:08]--[2014-05-06 Tue 18:47] =>  0:39
+     CLOCK: [2014-05-06 Tue 08:19]--[2014-05-06 Tue 08:40] =>  0:21
+
+We should be using the top-level verbose to initialise the logger and
+not using it after that. We are trying to minimise the usage of the
+settings prior to the target model loading.
+
+**** COMPLETED Add missing config options like annotations to =config= :task:
+     CLOSED: [2014-05-06 Tue 22:41]
+     CLOCK: [2014-05-06 Tue 22:22]--[2014-05-06 Tue 22:37] =>  0:15
+
+We should use the exact same approach, naming conventions etc. We
+should also take the opportunity to delete these from formatters since
+they don't belong there (close associated story).
+
+**** COMPLETED Split formatting settings from knitting settings        :task:
+     CLOSED: [2014-05-07 Wed 22:44]
+     CLOCK: [2014-05-07 Wed 21:40]--[2014-05-07 Wed 22:44] =>  1:04
+     CLOCK: [2014-05-07 Wed 08:07]--[2014-05-07 Wed 08:24] =>  0:17
+
+Its a bit ugly to have a =const= set of settings and then mutate them
+when we read in the model. Best to split the settings by source:
+command line settings, model settings. However, these names are not in
+line with the model-neutral nature of =config=. We need something that
+fits =config= better.
+
+Actually, these are just library specific settings:
+
+- knitting settings
+- formatting settings
+
+For now the C++ settings belong to both - until we fully transition.
+
+**** COMPLETED Tidy-up knit workflow                                   :task:
+     CLOSED: [2014-05-09 Fri 22:52]
+     CLOCK: [2014-05-09 Fri 22:17]--[2014-05-09 Fri 22:51] =>  0:34
+     CLOCK: [2014-05-09 Fri 18:21]--[2014-05-09 Fri 18:57] =>  0:36
+     CLOCK: [2014-05-09 Fri 18:20]--[2014-05-09 Fri 18:21] =>  0:01
+     CLOCK: [2014-05-09 Fri 08:39]--[2014-05-09 Fri 09:20] =>  0:41
+     CLOCK: [2014-05-08 Thu 08:33]--[2014-05-08 Thu 08:40] =>  0:07
+
+We need to make the method names resemble more the workflow
+terminology, with subworkflows, activities, etc. Prepare the code to
+slot in the formatting settings.
+
+**** CANCELLED Merge provider into workflow in =knit=                  :task:
+     CLOSED: [2014-05-09 Fri 09:16]
+     CLOCK: [2014-05-08 Thu 08:28]--[2014-05-08 Thu 08:32] =>  0:04
+     CLOCK: [2014-05-07 Wed 07:56]--[2014-05-07 Wed 08:06] =>  0:10
+
+*Rationale*: this is not required, we can just extract the formatting
+ settings from the merged model.
+
+If we are going to override the settings we must make sure the code is
+as linear as possible. The provider is actually some kind of SML
+loading sub-workflow.
+
+*** COMPLETED Rename =source_file= back to =file_info=                :story:
+    CLOSED: [2014-05-15 Thu 23:25]
+    CLOCK: [2014-05-15 Thu 23:04]--[2014-05-15 Thu 23:25] =>  0:21
+
+Source file is just confusing and unclear as to what we mean - is this
+just the implementation?
+
+*** COMPLETED Blog post for interesting                               :story:
+    CLOSED: [2014-05-27 Tue 12:43]
+    CLOCK: [2014-05-27 Tue 10:02]--[2014-05-27 Tue 11:43] =>  1:41
+
+Every iteration we should do a blog post with interesting links.
+
+*** CANCELLED Tidy-up =sml_to_cpp= model                              :story:
+    CLOSED: [2014-05-15 Thu 22:53]
+    CLOCK: [2014-05-12 Mon 18:46]--[2014-05-12 Mon 18:52] =>  0:06
+    CLOCK: [2014-05-12 Mon 18:32]--[2014-05-12 Mon 18:45] =>  0:13
+
+*Rationale*: this story has been superseded; what hasn't was copied
+ across.
+
+As part of all the deep thinking on the structure of formatters, we
+more or less concluded that the current approach is the best we can
+come up with. However, we should try to make the transformation model
+as clean as possible:
+
+- rename aspects to file sets as per manual and add missing file sets
+  such as includer and forward declarations.
+- consider merging the file types with file sets, e.g. =main_header=,
+  =main_implementation=, etc.
+- make includer a bit tidier: we should be able to figure out what
+  logic applies for what formatter at a glance rather than having the
+  logic scattered.
+- is content descriptor a good name?
+- what exactly is content type? the name is so vague as to be almost
+  completely useless.
+- Split name from content descriptor: The qualified name is not really
+  a part of the content descriptor, it was put there for expediency.
+
+*** CANCELLED Use formatting settings in formatters model             :story:
+    CLOSED: [2014-05-27 Tue 12:44]
+     CLOCK: [2014-05-10 Sat 14:41]--[2014-05-10 Sat 16:01] =>  1:20
+
+We need to replace the references to the c++ settings directly with
+formatter settings.
+
+*** CANCELLED Move all the configuration options into tags            :story:
+    CLOSED: [2014-05-27 Tue 12:44]
+    CLOCK: [2014-05-06 Tue 07:47]--[2014-05-06 Tue 07:51] =>  0:08
+
+Parameters as per analysis story.
+
+**** Create a tags class in =config=                                   :task:
+
+We need to declare all the tags we're exporting.
+
+**** Create a =property_tree_parser= that outputs settings             :task:
+
+The parser should take the existing settings as an input and return
+an overridden version of them.
+
+**** Plug the parser into the SML sub-workflow                         :task:
+
+When we do this we need to make sure everyone is using the same
+settings; there are many places where the settings have been passed in
+by reference. Also, we need to make sure the target model is the first
+one to be processed.
+
+**** Update all models and tests to use the new tags                   :task:
+
+Once the config options are in we need to start making use of them to
+ensure they work exactly as before.
+
+**** Remove all C++ command line settings                              :task:
+
+Once the overrides have been proven to work, we need to remove the
+command line options and make sure nothing breaks.
+
+** Deprecated Development Stories
+*** CANCELLED Rename =property_sheets= to =profile=                   :story:
+    CLOSED: [2014-05-05 Mon 17:34]
+
+*Rationale*: These are now understood to be configuration options so
+they will live in the =config= model.
+
+We need to split the property sheets so that they are more cohesive
+and rename them to profiles (after a lot of name brainstorming this is
+the least bad name). We need the following profiles:
+
+- =file_system_profile=: directory names, file names, etc
+- =annotation_profile=: properties of annotation
+- =extended_file_system_profile=: additional directory, file and
+  extension names, in C++ model.
+- =class_profile=: properties of the class.
+
+The idea is to split:
+
+- the /things/ we want to output - e.g. classes, properties, etc
+- from the options that control their formatting - these go into the
+  profiles and are sourced from the meta-data.
+
+**** Split general property sheets                                     :task:
+
+These have two kinds of data:
+
+- =file_system_profile=
+- =annotation_profile=
+*** CANCELLED Consider renaming =config= in light of weaving changes  :story:
+    CLOSED: [2014-05-08 Thu 22:13]
+
+*Rationale*: with the settings splitting, this is no longer an issue.
+
+It's not clear if the =config= domain is the configuration of =knit=
+only or whether its slightly more generic.
+
+*** CANCELLED Consider renaming =provider_interface=                  :story:
+    CLOSED: [2014-05-08 Thu 22:14]
+
+*Rationale*: Provider will be merged with the =knit= workflow, so the
+interface will be removed.
+
+This name is very generic. We need something that reflects the dia to
+sml sub-workflow. In addition we are not even using it for IoC, so
+consider either using IoC or removing the interface.
+
+*** CANCELLED Add formatter workflow to the engine workflow           :story:
+    CLOSED: [2014-05-08 Thu 22:16]
+
+*Rationale*: seems like a =om= related story. No longer applicable.
+
+Even though we do not yet have anyone implementing these interfaces,
+we can already add the general workflow into the engine and make sure
+it doesn't break anything.
+
+*** CANCELLED Update meta-data processing                             :story:
+    CLOSED: [2014-05-09 Fri 07:59]
+
+*Rationale*: covered by settings work.
+
+The problem with the meta-data is that there is no single place where
+it is used; instead, we need it in different places. The best way is
+to distribute the responsibility of converting meta-data into the type
+system in the places that know about it:
+
+- in dia transformers (the comment)
+- in SML (is final, etc); copying across the feature graph into the
+  types with no knowledge of its contents;
+- in C++ transformer: transforming all of the meta-data it knows
+  of.
+
+Each model should define the tags that it knows of in a =tags= class.
+
+We also need to create a step in SML that converts settings into tags.
+
+*** CANCELLED OM: Add tests for properties and compiler generated functions :story:
+    CLOSED: [2014-05-09 Fri 08:28]
+
+*Rationale*: seems like a =om= related story. No longer applicable.
+
+We need to ensure the generation of properties and compiler generated
+functions works correct in types formatter.
+
+*** CANCELLED OM: Add tests for module in model                       :story:
+    CLOSED: [2014-05-09 Fri 08:28]
+
+*Rationale*: seems like a =om= related story. No longer applicable.
+
+We need to ensure we handle namespaces correctly in types formatter.
+
+*** CANCELLED OM: Add tests for tagging of abstract objects           :story:
+    CLOSED: [2014-05-09 Fri 08:28]
+
+*Rationale*: seems like a =om= related story. No longer applicable.
+
+We should explore the different meta data tags that affect the types
+formatter in the unit tests.
+
+*** CANCELLED Add tagging for propagatable parameters                 :story:
+    CLOSED: [2014-05-09 Fri 08:31]
+
+*Rationale*: tags will no longer be propagatable.
+
+Some implementation specific parameters should be propagated along the
+composition graph (e.g. boost serialisation status disabled). We could
+spot these parameters whilst building the model and do the propagation
+there and then.
+
+We need to create language specific classes to propagate parameters,
+assign proper defaults to them, etc.

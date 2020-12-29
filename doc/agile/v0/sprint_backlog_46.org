@@ -1,0 +1,144 @@
+#+title: Sprint Backlog 46
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 46.
+
+The *Mission Statement* for this sprint is to get the build
+environment back up and running across all the build agents. We
+started this process but didn't complete it and the build farm is now
+very messy. By the end of this sprint we intend to have all build
+agents with green builds, and the packages uploaded to GDrive.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:06]
+
+| Headline                                                       | Time    |       |      |
+|----------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                   | *14:59* |       |      |
+|----------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                |         | 14:59 |      |
+| COMPLETED Sprint and product backlog grooming                  |         |       | 1:22 |
+| COMPLETED Updates to the manual and readme files               |         |       | 7:59 |
+| COMPLETED Investigate a =systemd= approach for debian machines |         |       | 5:38 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                      :task:
+    CLOSED: [2014-03-18 Tue 08:02]
+    CLOCK: [2014-03-05 Wed 08:04]--[2014-03-05 Wed 08:17] =>  0:13
+    CLOCK: [2014-03-05 Wed 08:02]--[2014-03-05 Wed 08:05] =>  0:03
+    CLOCK: [2014-03-05 Wed 08:04]--[2014-03-05 Wed 08:05] =>  0:01
+    CLOCK: [2014-03-04 Tue 18:08]--[2014-03-04 Tue 18:17] =>  0:09
+    CLOCK: [2014-03-03 Mon 17:51]--[2014-03-03 Mon 17:57] =>  0:06
+    CLOCK: [2014-03-03 Mon 07:58]--[2014-03-03 Mon 08:48] =>  0:50
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-03-18 Tue 08:02]
+    CLOCK: [2014-03-14 Fri 18:26]--[2014-03-14 Fri 19:08] =>  0:42
+    CLOCK: [2014-03-14 Fri 07:55]--[2014-03-14 Fri 08:36] =>  0:41
+    CLOCK: [2014-03-13 Thu 18:50]--[2014-03-13 Thu 19:51] =>  1:01
+    CLOCK: [2014-03-13 Thu 18:00]--[2014-03-13 Thu 18:43] =>  0:43
+    CLOCK: [2014-03-13 Thu 07:54]--[2014-03-13 Thu 08:41] =>  0:47
+    CLOCK: [2014-03-12 Wed 18:06]--[2014-03-12 Wed 18:53] =>  0:47
+    CLOCK: [2014-03-12 Wed 07:52]--[2014-03-12 Wed 08:40] =>  0:48
+    CLOCK: [2014-03-05 Wed 08:17]--[2014-03-05 Wed 08:41] =>  0:24
+    CLOCK: [2014-03-04 Tue 18:17]--[2014-03-04 Tue 18:55] =>  0:38
+    CLOCK: [2014-03-04 Tue 07:55]--[2014-03-04 Tue 08:43] =>  0:48
+    CLOCK: [2014-03-03 Mon 17:57]--[2014-03-03 Mon 18:37] =>  0:40
+
+Use build downtime to update the manual and / or readme file.
+
+*** COMPLETED Investigate a =systemd= approach for debian machines    :story:
+    CLOSED: [2014-03-18 Tue 08:02]
+    CLOCK: [2014-03-15 Sat 23:30]--[2014-03-16 Sun 02:10] =>  2:40
+    CLOCK: [2014-03-05 Wed 07:52]--[2014-03-05 Wed 08:03] =>  0:11
+    CLOCK: [2014-03-04 Tue 21:46]--[2014-03-04 Tue 23:03] =>  1:17
+    CLOCK: [2014-03-03 Mon 22:50]--[2014-03-04 Tue 00:20] =>  1:30
+
+As we concluded earlier, integral is simply an attempt of making a
+ctest service in ruby. As it happens Linux already has an extensible service
+management infrastructure - systemd. We need to:
+
+- Investigate the current state of systemd on debian unstable
+- Figure out how hard it is to create a service based on our ctest
+  script. We will have to find out how to detect the number of CPUs,
+  the current user, etc from systemd, as these are parameters required
+  for the ctest script to run.
+
+The objective is to have the following setup:
+
+- two docker containers on 64-bit: clang and gcc
+- two virtual box VMs on 32-bit: clang and gcc; each with their own
+  docker container.
+
+On the back of this analysis story, we then need to raise stories for
+the actual work:
+
+- Create the =systemd= script
+- Install it across all the linux boxes
+
+The =systemd= scripts will be added to the integral project.
+
+Initial notes:
+
+- both docker and systemd are available from the unstable packages:
+  docker.io and systemd. Installation was straightforward on lorenz,
+  but problematic on erdos - errors in obtaining the package index:
+
+- docker does not share any files or folders with the "host" OS; we
+  need to debbootstrap a directory with bare-bones debian, then
+  apt-get all the dev tools such as gcc, clang, cmake, etc. We will
+  also have to manually build and install odb, eos, etc.
+
+- postgres poses an interesting question: should one install postgres
+  on each container?
+
+- we will need a very large amount of disk space per image: enough for
+  both continuous and nightly builds.
+
+- developers should use the exact same images as the build machine. In
+  fact, we should have a shared repository of images - initially just
+  32-bit and 64-bit - which we could pull. It may make sense to upload
+  these to Docker, so we can get them from wherever we go. Account in
+  docker has been created.
+
+- sanity does not make a lot of sense for Linux; as we originally
+  thought, we should be able to get away with a simple =systemd=
+  "service script" that starts and stops ctest.
+
+- docker is very much like a chroot or a jail, except its taken to the
+  next level: the kernel is partitioned internally to isolate the
+  containers. Whilst chroots have some basic file system level
+  isolation and so on, their processes are still seen by the kernel as
+  regular (non-isolated) processes and they share all other
+  resources. With containers is different: the kernel creates isolated
+  areas for each container, each with their own pids, networks,
+  etc. Its sort of the logical conclusion of a chroot, if you take it
+  to its limit. Unlike a VM, there is no need to have a kernel and a
+  hyper-visor, nor is there any need to install a full blown
+  OS and run services on top of services. However, as far as I can
+  see, there is no file sharing between the container and the host
+  OS. This means one still has to bootstrap a minimal debian inside of
+  debian, as with a chroot.
+
+*Final conclusion*:
+
+- creating a container using debootstrap was easy, but even a trivial
+  container with just gcc on it is quite large (~350MB). As we already
+  have disk space issues in some of the files systems, its not
+  practical to setup these images at present. We need to rebuild the
+  boxes with large partitions for root, etc.
+- we could not get the containers to start. This could be a problem
+  with the version of lxc we have in testing at the moment.
+- we should wait until a) the containers become more mature b) the
+  boxes get rebuild. For now we should continue to get integral to
+  work without docker support.
+
+** Deprecated Development Stories

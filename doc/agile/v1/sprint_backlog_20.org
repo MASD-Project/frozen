@@ -1,0 +1,1075 @@
+#+title: Sprint Backlog 20
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Mission Statement
+
+- Incorporate the relational model into Dogen.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-01-21 Tue 20:38]
+| <75>                                                |         |       |       |       |
+| Headline                                            | Time    |       |       |     % |
+|-----------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                        | *83:01* |       |       | 100.0 |
+|-----------------------------------------------------+---------+-------+-------+-------|
+| Stories                                             | 83:01   |       |       | 100.0 |
+| Active                                              |         | 83:01 |       | 100.0 |
+| Edit release notes for previous sprint              |         |       | 11:24 |  13.7 |
+| Create a demo and presentation for previous sprint  |         |       |  2:31 |   3.0 |
+| Sprint and product backlog grooming                 |         |       |  4:42 |   5.7 |
+| Fix OSX build errors                                |         |       |  0:25 |   0.5 |
+| Fix broken build due to incorrect postgres library  |         |       |  2:31 |   3.0 |
+| Fix borked nightly due to serialisation link errors |         |       |  1:18 |   1.6 |
+| Create a profile called =untested=                  |         |       |  0:17 |   0.3 |
+| Remove =odb_properties= in element properties       |         |       |  2:36 |   3.1 |
+| Allow non-throwing casts for enums                  |         |       |  0:41 |   0.8 |
+| Add type overrides to primitives                    |         |       |  8:55 |  10.7 |
+| Create a string-based tracing backend interface     |         |       |  5:22 |   6.5 |
+| Create a tracing registrar                          |         |       |  1:10 |   1.4 |
+| Move member variable name to assets                 |         |       |  0:09 |   0.2 |
+| Create a transform instance ID property             |         |       |  0:31 |   0.6 |
+| Laptop issues                                       |         |       |  0:18 |   0.4 |
+| Do not compute the timestamp at formatting time     |         |       |  1:53 |   2.3 |
+| Record a SHA1 of loaded injection models            |         |       |  5:38 |   6.8 |
+| Add relational tracing support                      |         |       | 30:08 |  36.3 |
+| Nightly code coverage is not being reported         |         |       |  0:23 |   0.5 |
+| Move registrar into assets                          |         |       |  2:09 |   2.6 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2019-11-22 Fri 09:50]
+    :LOGBOOK:
+    CLOCK: [2019-11-22 Fri 20:41]--[2019-11-22 Fri 21:37] =>  0:56
+    CLOCK: [2019-11-22 Fri 09:51]--[2019-11-22 Fri 10:36] =>  0:45
+    CLOCK: [2019-11-22 Fri 08:16]--[2019-11-22 Fri 09:50] =>  1:34
+    CLOCK: [2019-11-21 Thu 20:58]--[2019-11-21 Thu 22:01] =>  1:03
+    CLOCK: [2019-11-21 Thu 19:52]--[2019-11-21 Thu 20:57] =>  1:05
+    CLOCK: [2019-11-21 Thu 18:30]--[2019-11-21 Thu 19:51] =>  1:21
+    CLOCK: [2019-11-21 Thu 00:16]--[2019-11-21 Thu 00:30] =>  0:14
+    CLOCK: [2019-11-20 Wed 23:00]--[2019-11-21 Thu 00:15] =>  1:15
+    CLOCK: [2019-11-20 Wed 18:49]--[2019-11-20 Wed 19:47] =>  0:58
+    CLOCK: [2019-11-19 Tue 17:41]--[2019-11-19 Tue 18:28] =>  0:47
+    CLOCK: [2019-11-19 Tue 07:45]--[2019-11-19 Tue 08:28] =>  0:43
+    CLOCK: [2019-11-18 Mon 17:30]--[2019-11-18 Mon 18:13] =>  0:43
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.19, "Impala Cine"
+
+#+BEGIN_SRC markdown
+**DRAFT: this release notes are still being worked on**
+
+![Imapala Cine](https://cdn.record.pt/images/2019-02/img_920x519$2019_02_11_02_32_57_1503852.jpg)
+
+_The open air cinema Impala Cine, in the city of Moçâmedes, Namibe, Angola. (C) 2019 [Jornal O Record](https://www.record.pt/modalidades/aventura/detalhe/mocamedes---a-terra-do-faria)_
+
+# Introduction
+
+Whilst a long time in coming due to our return to gainful employment, Sprint 19 still managed to pack a punch both in terms of commitment as well as in exciting new features. To be fair, we didn't really plan to add _any_ of these features beforehand - instead, we found ourselves having to do so in order to progress the real work we _should_ have been focusing on. Alas, nothing ever changes in the life and times of a software developer.
+
+But lets not dilly-dally! Without further ado, here's the review of yet another roller-coaster of a Dogen sprint.
+
+# User visible changes
+
+This section covers stories that affect end users, with the video providing a quick demonstration of the new features, and the sections below describing them in more detail. Note that breaking changes are annotated with  :warning:.
+
+[![Sprint 1.0.19 Demo](https://img.youtube.com/vi/TkYQTW_jAGk/0.jpg)](https://youtu.be/TkYQTW_jAGk)
+
+## Add support for variability overrides in Dogen
+
+The sprint's key feature is _variability overrides_. It was specifically designed to allow for the overriding of model profiles. In order to understand how the feature came about, we need to revisit a fair bit of Dogen history. As you may recall, since early on, Dogen has enabled users to supply meta-data to determine  what source code gets generated for each modeling element. By toggling different meta-data switches, we can express quite differently two otherwise identical model elements: say, one can generate hashing support whereas the other can generate serialisation.
+
+Observing its usage, we soon realised that the toggle switches added more value when organised into "configuration sets" that modeling elements could _bind_ against, and this idea eventually morphed into the present concept of _profiles_. Profiles are named configurations which provide a defaulting mechanism for individual configurations, so that they could be reused across modeling elements and, eventually, across models. That is to say, profiles stem from the very simple observation that the meta-data used for configuration is, in many cases, common to several models and therefore should be shared. In the [MDE](https://en.wikipedia.org/wiki/Model-driven_engineering) domain, these ideas have been generalised into the field of _Variability Modeling_, because, taken as a whole, they give you a dimension in which you can "vary" how any given modeling element is expressed; hence why they are also known in Dogen as "variability modeling", as we intend to be as close as possible to domain terminology.
+
+![Dogen's profile model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/profiles_model.png)
+_Figure 1: Snippet from ```dogen.profiles.dia``` model._
+
+Of course, like all variability information carried in Dogen models, profiles are _themselves_ associated to models via nothing but plain old meta-data - that is, its just configuration too . A typical Dogen model contains an entry like so:
+
+```
+#DOGEN masd.variability.profile=dogen.profiles.base.default_profile
+```
+
+The ```masd.variability.profile``` tells Dogen to reuse the configuration defined by the profile called ```default_profile``` - an entitty in the referenced model ```dogen.profiles``` (_c.f._ Figure 1).
+
+This approach has served us well thus far, but it carried an implicit assumption: that models are associated with  _only one profile_. As always, reality turned out to be far messier than our simplistic views. After some thinking, we realised that we have not one but _two_ distinct and conflicting requirements for the generation of Dogen's own models:
+
+- **parsimony**: from a production perspective, we want to generate the smallest amount of code required so that we avoid bloating our binaries with unnecessary kruft. Thus we want our profiles to be lean and mean and our builds to be fast.
+- **coverage**: from a development and Q&A perspective, we want to test all possible facets with realistic use cases so that we can validate empirically the quality of the generated code. Dogen's own models are a great sample point for this validation, and should therefore make use of as many facets as possible. In this scenario, we don't mind slow builds and big binaries if it means a higher probability of detecting incorrect code.
+
+This dilemma was not entirely obvious at the start because we could afford to generate _all_ facets for _all_ models and just ignore the bloat. However, as the number of facets increased and as the number of elements in each model grew, we eventually started to ran out of build time to compile all of the generated code. If, at this juncture, you are getting a strange sense of _déjà vu_, you are not alone. Indeed, we had experienced this very issue in the past, leading us to separate the reference models for [C#](https://github.com/MASD-Project/csharp_ref_impl) and [C++](https://github.com/MASD-Project/cpp_ref_impl) from the core Dogen product in Sprint [8](https://github.com/MASD-Project/dogen/releases/tag/v1.0.08). But this time round the trouble is with Dogen _itself_, and there is nothing left to offload because there are no other obvious product boundaries like before. Interestingly, I do not blame the "short" build times offered by the free CI systems; instead, I see it as a feature, not a bug, because the limited build time has forced us to consider very carefully the impact of growth in our code base.
+
+At any rate, as in the past with the reference models, we limped along yet again for a number of sprints, and resorted to "clever" hacks to allow these two conflicting requirements to coexist for as long as possible, such as enabling only a few facets in certain models. However, we kept increasing the generated code _a lot_, first with the addition of generated tests ([Sprint 13](https://github.com/MASD-Project/dogen/releases/tag/v1.0.13)) and this sprint with the relational model. The CI just took too many hits and there were no quick hacks that could fix it. As a result, CI become less and less useful because you started to increasingly ignore build statuses. Not being able to trust your CI is a showstopper, of course, so this sprint we finally sat down to solve this problem in a somewhat general manner. We decided to have two separate builds, one for each use case: nightlies for the coverage, since it runs overnight and no one is waiting for them, and CI for the regular production case. And as you probably guessed by now, we needed a way to have a comprehensive profile for nightlies that generates [everything but the kitchen sink](https://knowyourphrase.com/everything-but-the-kitchen-sink) whereas for regular CI we wanted to create the aforementioned lean and mean profiles. Variability overrides was the chosen solution. From a technical standpoint, we found this approach very satisfying because it makes _variability itself variable_ - something any geek would appreciate.
+
+The implementation is as follows. A new command line option was added to the Processing section, named ```--variability-override```:
+
+```
+Processing:
+<snip>
+  --variability-override arg     CSV string with a variability override. Must
+                                 have the form of [MODEL_NAME,][ELEMENT_NAME,][ATT
+                                 RIBUTE_NAME,]KEY,VALUE
+```
+
+The first three optional elements are used to bind to the target of the override (_e.g._, ```[MODEL_ID,][ELEMENT_ID,][ATTRIBUTE_ID,]```). The binding logic is somewhat contrived:
+
+1. if no model is supplied, the override applies to _any_ model, else it applies to the requested model;
+2. if no element is supplied, the override is applicable only to the model itself;
+3. if an element is supplied, the binding applies to that specific element;
+4. an attribute can only be supplied if an element is supplied. The binding will only activate if it finds a matching element and a matching attribute.
+
+To be honest, given our use case, we only really needed the first type of binding; but since we didn't want to hard-code the functionality, we came up with the simplest possible generalisation we can think of and implemented it. There are no use cases for overrides outside of profiles, so this implementation is as good as any; as soon as we have use cases, the rules can be refined.
+
+Dogen uses this new command line option like so:
+
+```
+    if (WITH_FULL_GENERATION)
+        set(profile "dogen.profiles.base.test_all_facets")
+        set(DOGEN_PROCESSING_OPTIONS ${DOGEN_PROCESSING_OPTIONS}
+            --variability-override masd.variability.profile,${profile})
+    endif()
+```
+By supplying ```WITH_FULL_GENERATION``` to the nightlies CMake, we then generate all facets and tests for all facets. We then build and run all of the generated code, including generated tests. Surprisingly, we did not have many issues with most generated code - with a few exceptions, which we had to ignore for now. There are also two failures which require investigation and shall be looked into next sprint. Once the change went in, the CI build times decreased dramatically and are now consistently always below the time out threshold.
+
+![CDash](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/cdash_builds.png)
+_Figure 2: Continuous and nightly builds in CDash after the change._
+
+One last mention goes to code coverage. We hummed and harred a lot about the _right_ approach for code coverage. On one side, generated tests gave us _a lot_ of code coverage, which was very satisfying - we went from 30-40% to 80%! On the other hand, these "tests" were just validating basic functionality for Dogen types, not actual domain functionality. So, in some ways, it is misleading to use generated tests to determine overall product coverage, because it is covering different "kinds" of aspects about the code. At the same time, it is very important to know the generated tests coverage because  it is indicative of missing sanity checks in Dogen. We finally settled on having two different coverage reports, fed by the two different builds. This vision has not yet been fully materialised as the nightlies are not updating [codecov](https://codecov.io/gh/MASD-Project/dogen) for some reason, but will hopefully happen in the near future.
+
+## Tracing of model dependencies
+
+The second feature implemented this sprint is the addition of model references tracing. This work was done in the same vein as the transforms tracing (See [Sprint 12](https://github.com/MASD-Project/dogen/releases/tag/v1.0.12) for details) and reused much of the same infrastructure; you'll get the new tracing reports for free when you enable tracing via the existing flags. As an example, Dogen uses the following configuration when we require tracing:
+
+ ```
+--tracing-enabled --tracing-level detail --tracing-format org-mode --tracing-guids-enabled
+```
+Like with transforms, we can generate three different types of tracing reports depending on the choice of ```--tracing-format```:  ```plain```, ```org-mode``` and ```graphviz```. ```plain``` is just a text mode representation of the references graph:
+
+![Dogen's profile model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/plain_references_graph.png)
+_Figure 3: References graph in ```plain``` format._
+
+The ```org-mode``` version offers the usual interactivity available to org-mode documents in Emacs such as folding, unfolding, querying and so on:
+
+![Dogen's profile model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/org_mode_references_graph.png)
+_Figure 4: References graph in ```org-mode``` format._
+
+Finally, [as before](https://github.com/MASD-Project/dogen/releases/tag/v1.0.12), the ```graphviz``` output requires further processing with the ```dot``` tool before it can be visualised:
+
+```
+dot -Tpdf references_graph.dot -O
+```
+The resulting PDF can be opened with any PDF viewer. We find it very useful because it gives a clear indication of the "complexity" of a given model. Of course, at some point in the future, we will want to convert these visual "complexity" indicators into metrics that can be used to determine the "health" of a model, but, as always, there are just not enough hours in the day to implement all these cool features.
+
+![Dogen's profile model](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/graphviz_references_graph.png)
+_Figure 5: References graph in ```graphviz``` format, after processing with ```dot``` tool._
+
+### Split generated tests from manual tests
+
+As we've already mentioned, generated tests were added to Dogen in [Sprint 13](https://github.com/MASD-Project/dogen/releases/tag/v1.0.13) as a way to sanity check all generated code. Though we did test generated code prior to this, we did so manually - _read_ haphazardly, as we kept forgetting to add manual tests to new types. When we implemented it originally, we thought it would be a good idea to mix-and-match generated tests with manual tests, as we do with all other facets. However, given the requirements discussed above in the variability overrides story, it was rather inconvenient to have this mixture because it meant we could not rely on the presence of the required build files.
+
+This sprint we took the decision to split generated tests from manual tests, and it must be said, it has improved the project design a fair bit. After all, the purpose of generated tests is just to make sure Dogen generated code is working as expected, and that is largely an internal concern of Dogen developers. More work is required in this area to polish up the support for manual tests though.
+
+## Small bug fixes
+
+Several small but important bug fixes went in with this release:
+
+- **Meta-data keys are processed in the inverse order**: A very old but rather annoying bug we had in Dogen is that meta-data keys were being processed in _reverse_ order of entry. For example, if a model _A_ referenced models _B_ and _C_, for some unfathomable reason, Dogen would process it as _C_ and _B_. This resulted in a great deal of confusion when troubleshooting because we assumed all references in log files _etc._ would first start with _B_, not _C_. This release fixes the bug, but as a result, a lot of the generated code will move places. It should be semantically equivalent, just with a different order. :warning:
+- **Tracer numbering of dumped models is incorrect**: for some reason our trace files were skipping numbers (e.g. ```000``` then ```002```, and so forth). This was very distracting when trying to analyse a problem. In addition, the previous logic of numbering the traces after a transform was abandoned; instead of having ```000``` for both the input and output of a transform, we now have ```000``` and ```001```. It was a nice thought but required a lot of complexity to implement.
+- **Creating reference cycles produces strange errors**: In the past, adding a reference cycle in a model resulted in very puzzling errors, entirely unconnected to the problem at hand. With this release we now correctly detect cycles and refuse to generate code. We do not yet have use cases for models with cycles, so for now we just took the brute force approach. Note that we also check for references to the model itself - a typo that in the past resulted in long investigations. It is now correctly detected and reported to the user.
+- **Error on duplicate references**: Similarly to cycles, adding the same reference more than once is now considered a bug and it is detected and reported to the user. In the past, we used to silently ignore these. The main reason why is because it normally happens as a result of copy and paste bugs, and so its best to inform users immediately. :warning:
+
+## Deprecations
+
+"Master headers" were a feature of Dogen which we haven't really used all that much. It enabled you to have a single include file for all files in a facet (_e.g._ a serialisation include, or a hashing include) and a top-level include file that included every single file in a model. These were used in the past when we had manual tests for the generated code, just to save us the effort of manually including a whole load of files. With the arrival of generated tests in [Sprint 13](https://github.com/MASD-Project/dogen/releases/tag/v1.0.13), the feature was no longer used within Dogen. In addition, these days most C++ developers consider these "master includes" as anti-patterns, and a violation of "pay for what you use" because you invariably end up including more files than you need. Due to all of this we removed the feature from Dogen. :warning:
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see the [sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_19.org).
+
+## Milestones
+
+This is the 100th release of Dogen made from GitHub. Overall, its the 120th release, but had a private repo for those first 20 releases and the tags were lost in translation somewhere.
+
+![100th release](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/milestones_100_releases.png)
+_Figure 6: 100th release of Dogen from GitHub._
+
+## Significant Internal Stories
+
+Given that most stories had a user-facing impact, this sprint is short on user facing stories. There are a couple that are worth a mention though.
+
+### Updating to Boost 1.70
+
+We've started yet another of those mammoth efforts of trying to update all of our dependencies to use the latest version of Boost. It would be fairer to call this story "updating of toolchains across the estate" since it more or less involves that kind of effort. Now that we are on vcpkg, this should be a straightforward task, but in practice it never is. The main problems are OSX and Windows, two operative systems that somehow seem to always cause weird and wonderful problems. Predictably, we completed the work for Linux, did some of it for Windows and pretty much none of it for OSX. At present, our local setup on OSX is, well and truly borked and we just do not have enough cycles to work on fixing it so the story will remain parked for the foreseeable future.
+
+### Implementing the relational model
+
+We had great ambitions this sprint of implementing a relational model for tracing that would enable us to write complex queries to diagnose problems across the Dogen pipeline. We did do quite a lot of work on this, but it was entirely overshadowed by the other problems we had to solve. We won't spend too much time talking about this feature this sprint, waiting instead for its completion.
+
+### Recording of coding sessions
+
+Since we've started Dogen all those years ago, we've been searching for "motivational tools" that enable us to continue working on such a long term endeavour without losing the initial hunger. A few successful tools have been incorporated in this way:
+
+- blog posts narrating particular aspects of Dogen development - _e.g._ [Nerd Food: The Refactoring Quagmire](https://mcraveiro.blogspot.com/2018/01/nerd-food-refactoring-quagmire.html).
+- agile management of sprints using org-mode, giving us a fine grained view of the activity on a sprint - _e.g._ [sprint backlog](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_19.org) and a highly curated [product backlog](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org). For the importance of curation, see [Nerd Food: On Product Backlog](https://mcraveiro.blogspot.com/2016/01/nerd-food-on-product-backlogs.html).
+- creation of release notes at the end of every sprint as a way to reflect on what was achieved - the document you are reading.
+- creation of demos to visualise the features implemented.
+
+This sprint we found yet another "motivational tool": the recording of coding sessions as YouTube videos. This idea was _completely_ inspired on [Andreas Kling](https://www.youtube.com/channel/UC3ts8coMP645hZw9JSD3pqQ)'s channel, which we _highly_ recommend to anyone who likes programming and C++ in particular.  For our "channel", we decided to create a playlist with 13 episodes narrating much of the coding that happened this sprint: [MASD - Dogen Coding: Relational Model for Tracing](https://www.youtube.com/playlist?list=PLwfrwe216gF3EzrrvwNFivnLSZ2l8X9k6). At over 10 hours of video, the playlist is for the true die-hard fan of Dogen, to be sure. But the most important aspect from our perspective was that the recording of videos had a positive impact:
+
+- it forces  you to think about what you're doing, just as when you are pair programming;
+- it impeled us to work on days were perhaps we wouldn't have. This may be the novelty factory of seeing oneself on YouTube, of course, but it certainly worked for this sprint. We even managed to get one subscriber and one comment, which was rather surprising.
+
+The one downside is that it is very difficult to focus on complex tasks whilst talking and recording. It is thus [no  silver bullet](https://en.wikipedia.org/wiki/No_Silver_Bullet), but certainly a useful weapon in the arsenal. We shall continue recording videos next sprint. You can watch the first video of the playlist here, and it is mercifully only 10 minutes long:
+
+[![MASD - Dogen Coding: Relational Model for Tracing - Part 1](https://img.youtube.com/vi/re36Sr1u0Iw/0.jpg)](https://www.youtube.com/watch?v=re36Sr1u0Iw&list=PLwfrwe216gF3EzrrvwNFivnLSZ2l8X9k6&index=2)
+
+## Resourcing
+
+This sprint was marked by the return to "part-time" development on  Dogen. After a cadence of eight successful 2-week sprints, it was rather difficult to adjust back to the long, drawn-out process of cobbling together a release from whatever spare time one can find. As you may recall, the target for a "part-time" sprint is to clock around 80 hours worth of work over a rather unpredictable period of time. To be fair, most of Dogen has been developed in this fashion, but it is just not ideal fodder for programming. This is because part-time sprints naturally lend themselves to more fragmented work, given both the typically short-duration time slots available, and the fact that most of these are of rather dubious quality. The 22:00 slot comes particularly to mind - also fondly known known as the graveyard shift. Whilst there are advantages to _some_ resource starvation - described at length in [Nerd Food: Dogen: Lessons in Incremental Coding](https://mcraveiro.blogspot.com/2014/09/nerd-food-dogen-lessons-in-incremental.html) - it is also undoubtedly true that it is much harder to focus on complex tasks that require loading a lot of state into the brain. Nonetheless, “you go to war with the army you have, not the army you might want or wish to have at a later time”, and excuses do not write code, so one must make the most of the prevailing conditions.
+
+To be fair, not all was gloom and doom with Sprint 19, and much was achieved. Let's review how the resourcing (~87 hours) was distributed across stories. At 11.5% of the ask, upgrading to Boost 1.70 was the biggest story this sprint, closely followed by the work on the relational model (11%).   Several stories hovered around the 6-7% mark, in particular the splitting of generated tests from manual tests (6.7%), the far-out thought experiments on org-mode as a carrier format for modeling (6.5% - we clearly got carried away here), and the improvements around check for reference cycles (6.4%). Very much hidden in the list of stories is what we'd consider the "target" story - moving registrar into assets (6.3%) - but it was blocked because we are having some hard-to-debug issues with it, and require the support of the relational model to proceed. At 6% we have the meta-data overrides support, followed by a long tail of smaller stories - all the way from 5.7% creating the modeling reports in tracing to a minuscule 0.1% for upgrading to Clang 9 and GCC 9. The sprint is clearly demonstrating the impact of moving to part-time work, as expected. Finally, an important mention goes to the almost 16% spent in process related activities (backlog grooming, release notes, video editing for demo and coding sessions), down from 19% from the previous sprint. This is rather unexpected given that we've spent a lot of time recording the coding sessions this sprint, and implies they are very low overhead.
+
+![Story Pie Chart](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_19_pie_chart.jpg)
+
+## Roadmap
+
+We've renamed the "Planning" section to roadmap because it more adequately reflects its role: we are not actually forecasting, merely keeping track of outstanding activities and making some very weak correlations between them and a potential end date. The roadmap was clearly affected by the move to part-time, and looks more or less as was last sprint - just projected forwards in time. We also haven't quite figured out how to take into account "part-time" in Task Juggler, so the "estimates" are extremely optimistic. This is something to fix next sprint, hopefully.
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_19_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_19_resource_allocation_graph.png)
+
+# Next Sprint
+
+The main focus next sprint is going to be to wrap things up with the relational model and to use it to diagnose problems when moving elements from generation to assets.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.19_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.19/dogen_1.0.19_amd64-applications.deb)
+- [dogen-1.0.19-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.19/DOGEN-1.0.19-Darwin-x86_64.dmg)
+- [dogen-1.0.19-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.19-Windows-AMD64.msi)
+
+**Note:** The OSX and Linux binaries are not stripped at present and so are larger than they should be. We have [an outstanding story](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped) to address this issue, but sadly CMake does not make this trivial.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+
+Happy Modeling!
+#+END_SRC markdown
+
+- [[https://twitter.com/MarcoCraveiro/status/1197975747614400517][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6541333935140458497][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2019-11-22 Fri 13:59]
+    :LOGBOOK:
+    CLOCK: [2019-11-22 Fri 12:31]--[2019-11-22 Fri 13:59] =>  1:28
+    CLOCK: [2019-11-22 Fri 11:20]--[2019-11-22 Fri 12:08] =>  0:48
+    CLOCK: [2019-11-22 Fri 10:50]--[2019-11-22 Fri 11:05] =>  0:15
+    :END:
+
+Time spent creating the demo and presentation.
+
+Notes:
+
+- it seems we did not copy the previous demo project to the new
+  machine. Create a demo project and put it in GitHub so that we can
+  demo from anywhere. Project: https://github.com/MASD-Project/demo
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2020-01-20 Mon 23:09]
+    :LOGBOOK:
+    CLOCK: [2020-01-19 Sun 09:15]--[2020-01-19 Sun 09:42] =>  0:27
+    CLOCK: [2020-01-09 Thu 18:41]--[2020-01-09 Thu 18:56] =>  0:15
+    CLOCK: [2019-12-13 Fri 17:27]--[2019-12-13 Fri 17:33] =>  0:06
+    CLOCK: [2019-12-13 Fri 09:45]--[2019-12-13 Fri 10:07] =>  0:22
+    CLOCK: [2019-12-04 Wed 08:41]--[2019-12-04 Wed 08:44] =>  0:03
+    CLOCK: [2019-12-03 Tue 20:52]--[2019-12-03 Tue 21:21] =>  0:29
+    CLOCK: [2019-12-03 Tue 20:18]--[2019-12-03 Tue 20:48] =>  0:30
+    CLOCK: [2019-12-03 Tue 00:20]--[2019-12-03 Tue 00:26] =>  0:06
+    CLOCK: [2019-11-29 Fri 11:12]--[2019-11-29 Fri 11:15] =>  0:03
+    CLOCK: [2019-11-29 Fri 11:02]--[2019-11-29 Fri 11:11] =>  0:09
+    CLOCK: [2019-11-29 Fri 10:12]--[2019-11-29 Fri 10:23] =>  0:11
+    CLOCK: [2019-11-25 Mon 18:22]--[2019-11-25 Mon 18:27] =>  0:05
+    CLOCK: [2019-11-25 Mon 17:41]--[2019-11-25 Mon 18:21] =>  0:40
+    CLOCK: [2019-11-22 Fri 14:00]--[2019-11-22 Fri 14:45] =>  0:45
+    CLOCK: [2019-11-18 Mon 08:51]--[2019-11-18 Mon 08:58] =>  0:07
+    CLOCK: [2019-11-18 Mon 08:41]--[2019-11-18 Mon 08:50] =>  0:09
+    CLOCK: [2019-11-18 Mon 08:38]--[2019-11-18 Mon 08:40] =>  0:02
+    CLOCK: [2019-11-18 Mon 08:24]--[2019-11-18 Mon 08:37] =>  0:13
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Fix OSX build errors                                    :story:
+    CLOSED: [2019-11-23 Sat 16:11]
+    :LOGBOOK:
+    CLOCK: [2019-11-22 Fri 11:06]--[2019-11-22 Fri 11:19] =>  0:13
+    CLOCK: [2019-11-22 Fri 10:37]--[2019-11-22 Fri 10:49] =>  0:12
+    :END:
+
+We are seeing yet again some strange OSX build errors:
+
+: CMake Warning at /usr/local/lib/cmake/boost_system-1.71.0/libboost_system-variant-shared.cmake:59 (message):
+:   Target Boost::system already has an imported location
+:   '/usr/local/lib/libboost_system-mt.dylib', which will be overwritten with
+:   '/usr/local/lib/libboost_system.dylib'
+: Call Stack (most recent call first):
+:   /usr/local/lib/cmake/boost_system-1.71.0/boost_system-config.cmake:43 (include)
+:   /tmp/vcpkg-export/scripts/buildsystems/vcpkg.cmake:254 (_find_package)
+:   /usr/local/lib/cmake/Boost-1.71.0/BoostConfig.cmake:117 (find_package)
+:   /usr/local/lib/cmake/Boost-1.71.0/BoostConfig.cmake:182 (boost_find_component)
+:   /tmp/vcpkg-export/scripts/buildsystems/vcpkg.cmake:196 (_find_package)
+:   /usr/local/Cellar/cmake/3.15.5/share/cmake/Modules/FindBoost.cmake:443 (find_package)
+:   /tmp/vcpkg-export/scripts/buildsystems/vcpkg.cmake:196 (_find_package)
+:   CMakeLists.txt:125 (find_package)
+
+For this, we can try to remove the brew version of boost:
+
+: brew uninstall boost --force
+
+Links:
+
+- [[https://formulae.brew.sh/formula/boost][Boost formula]]
+- [[https://superuser.com/questions/1100711/remove-package-installed-by-brew][SO: remove package installed by brew]]
+- [[https://github.com/boostorg/boost_install/issues/13][Support for Boost_USE_MULTITHREADED missing]]
+
+*** COMPLETED Fix broken build due to incorrect postgres library      :story:
+    CLOSED: [2019-11-29 Fri 10:31]
+    :LOGBOOK:
+    CLOCK: [2019-11-29 Fri 10:54]--[2019-11-29 Fri 11:00] =>  0:06
+    CLOCK: [2019-11-29 Fri 10:32]--[2019-11-29 Fri 10:53] =>  0:21
+    CLOCK: [2019-11-29 Fri 10:24]--[2019-11-29 Fri 10:31] =>  0:07
+    CLOCK: [2019-11-29 Fri 09:02]--[2019-11-29 Fri 09:50] =>  1:16
+    CLOCK: [2019-11-27 Wed 23:19]--[2019-11-27 Wed 23:24] =>  0:05
+    CLOCK: [2019-11-25 Mon 23:47]--[2019-11-25 Mon 23:54] =>  0:07
+    CLOCK: [2019-11-25 Mon 23:41]--[2019-11-25 Mon 23:46] =>  0:05
+    CLOCK: [2019-11-25 Mon 22:48]--[2019-11-25 Mon 23:40] =>  0:52
+    :END:
+
+We have several problems with CI at present.
+
+1. We seem to be picking up a stray path to =libpq=:
+
+: Run command: "/usr/bin/cmake" "--build" "." "--config" "Release" "--target" "package" "--" "-j2"
+: ninja: error: '/home/marco/Development/vcpkg/installed/x64-linux/lib/libpq.a', needed by 'stage/bin/dogen.cli', missing and no known rule to make it
+
+It seems we've faced this problem before:
+
+- [[https://github.com/microsoft/vcpkg/issues/8351][Build directory is encoded in exported artefacts potentially causing
+  build failures 8351]]
+
+Perhaps the only solution is to rebuild vcpkg in exactly the same
+location as the export is placed in both AppVyor and travis. For now
+we can maybe disable the relational model in CI. Actually the right
+solution for this is to build using docker. This will be done in a
+separate story. For now we will just disable relational.
+
+2. In addition, there are compilation errors for non-relational setups:
+
+: /Users/travis/build/MASD-Project/dogen/projects/dogen.tracing/src/types/relational_tracer.cpp:119:5: error: C++ requires a type specifier for all declarations
+:     impl(const boost::optional<tracing_configuration>& tcfg,
+:     ^
+: /Users/travis/build/MASD-Project/dogen/projects/dogen.tracing/src/types/relational_tracer.cpp:125:14: error: expected the class name after '~' to name a destructor
+:     virtual ~relational_impl() {}
+:              ^~~~~~~~~~~~~~~
+:              null_impl
+: /Users/travis/build/MASD-Project/dogen/projects/dogen.tracing/src/types/relational_tracer.cpp:149:16: error: allocating an object of abstract class type 'dogen::tracing::(anonymous namespace)::null_impl'
+:     return new null_impl(tcfg, dbcfg);
+:                ^
+: /Users/travis/build/MASD-Project/dogen/projects/dogen.tracing/include/dogen.tracing/types/relational_tracer.hpp:40:18: note: unimplemented pure virtual method 'add_initial_input' in 'null_impl'
+:     virtual void add_initial_input(const std::string& input_id,
+
+3. Similarly, on Windows, we have:
+
+: C:\projects\dogen\projects\dogen.tracing\src\types\relational_tracer.cpp(23): fatal error C1083: Cannot open include file: 'odb/pgsql/database.hxx': No such file or directory [C:\projects\dogen\build\output\msvc\Debug\projects\dogen.tracing\src\dogen.tracing.lib.vcxproj]
+
+4. We now also have:
+
+: ./../../../projects/dogen.variability/src/serialization/registrar_ser.cpp:38:10: fatal error: dogen.relational/serialization/registrar_ser.hpp: No such file or directory
+
+This is because we disabled relational in CTest to fix the problems
+above (point 1). We need to enable it just for nightlies.
+
+*** COMPLETED Fix borked nightly due to serialisation link errors     :story:
+    CLOSED: [2019-12-01 Sun 12:16]
+    :LOGBOOK:
+    CLOCK: [2019-12-01 Sun 12:17]--[2019-12-01 Sun 12:20] =>  0:03
+    CLOCK: [2019-12-01 Sun 11:01]--[2019-12-01 Sun 12:16] =>  1:15
+    :END:
+
+Seems like the nightly is borked again:
+
+: /work/DomainDrivenConsulting/masd/vcpkg/masd/installed/x64-linux/include/boost/serialization/extended_type_info_typeid.hpp:87: undefined reference to `boost::serialization::typeid_system::extended_type_info_typeid_0::extended_type_info_typeid_0(char const*)'
+
+It seems the problem is a linking error with the serialisation
+library.
+
+*** COMPLETED Create a profile called =untested=                      :story:
+    CLOSED: [2019-12-02 Mon 19:57]
+    :LOGBOOK:
+    CLOCK: [2019-12-02 Mon 19:40]--[2019-12-02 Mon 19:57] =>  0:17
+    :END:
+
+We should make it really easy to spot which models have modeling
+elements that we are not testing. We should also add some comments as
+well.
+
+*** COMPLETED Register types for multiple models is misbehaving       :story:
+    CLOSED: [2019-12-03 Tue 20:47]
+
+*Rationale*: this test is now green.
+
+It seems that somehow we're clobbering the type registration of one
+model with another in register types. This is probably because we are
+reusing type id's somehow. This wasn't a problem until now because we
+were not using inheritance in anger but with the sml changes, it is a
+problem as one cannot load dia and sml types off the same registration
+(e.g. as in XML serialisation helper).
+
+One solution for this problem would be to create serialisers which
+hide the machinery of serialisation internally; one should be able to
+just pass in a stream in and get a type out.
+
+Could this be related to the clang-cl failures?
+
+: Running 1 test case...
+: unknown location(0): fatal error: in "boost_model_tests/validate_serialisation": class boost::archive::archive_exception: unregistered void cast class masd::cpp_ref_impl::boost_model::class_derived<-class masd::cpp_ref_impl::boost_model::class_base
+: ..\..\..\..\projects\masd.cpp_ref_impl.test_model_sanitizer\tests\boost_model_tests.cpp(56): last checkpoint: validate_serialisation
+
+*** COMPLETED Setup laptop to work on dogen                           :story:
+    CLOSED: [2019-12-03 Tue 20:49]
+
+We haven't used the laptop for dogen for quite a bit so its behind the
+main machine. Get it in a shape to do development again.
+
+Items missing:
+
+- consolas font. done.
+- dir locals for projects. we've got the build history so we don't
+  need this for now
+- polymode. won't work.
+- build2. done.
+- odb. done
+
+*** COMPLETED Remove =odb_properties= in element properties           :story:
+    CLOSED: [2019-12-03 Tue 20:49]
+    :LOGBOOK:
+    CLOCK: [2019-12-01 Sun 22:06]--[2019-12-01 Sun 22:17] =>  0:11
+    CLOCK: [2019-12-01 Sun 21:44]--[2019-12-01 Sun 22:05] =>  0:21
+    CLOCK: [2019-12-01 Sun 20:35]--[2019-12-01 Sun 21:43] =>  1:08
+    CLOCK: [2019-12-01 Sun 18:53]--[2019-12-01 Sun 19:03] =>  0:10
+    CLOCK: [2019-12-01 Sun 18:40]--[2019-12-01 Sun 18:52] =>  0:12
+    CLOCK: [2019-12-01 Sun 18:01]--[2019-12-01 Sun 18:35] =>  0:34
+    :END:
+
+We moved the ORM support from fabric into assets, but we seem to have
+left behind the processing of ODB properties. This is taking on
+several tasks:
+
+- odb options file: we are generating the "model" for this file,
+  though our modeling of this is not ideal. We have
+  =object_odb_options= still in fabric, when it should really be in
+  assets. Note that the =*_options.odb= files should really be a
+  formatter for the underlying object projected into the facet ODB. We
+  just need to make sure the object ORM contains all of the required
+  details for this. Note that some of the content of this file can
+  only be generated in the =generation= model, because we need access
+  to paths. This means we may have to leave this work to after we have
+  moved locators into =generation=.
+- similarly, we have to deal with =common_odb_options=. This actually
+  requires a new meta-type.
+- we need to find a way to model ORM implementation specific details
+  in assets. These should be made obvious that they are ODB specific
+  (.e.g pragmas, etc).
+- we are processing object templates in ORM transform. This is very
+  strange. The ORM transform executes after the object templates
+  transform. Once that is done, object templates play no further part
+  in object construction. We should just remove this code and see what
+  happens.
+
+*** POSTPONED Allow non-throwing casts for enums                      :story:
+    CLOSED: [2019-11-29 Fri 12:39]
+    :LOGBOOK:
+    CLOCK: [2019-11-29 Fri 11:49]--[2019-11-29 Fri 12:30] =>  0:41
+    :END:
+
+In some cases we want to do a lexical cast of an enum but not actually
+throw if the enum is invalid; instead, we just want the enum mapped to
+invalid (if that is enabled). This should just be a case of adding a
+boolean to the cast templates.
+
+It seems boost now supports this via =try_lexical_convert=. However,
+it seems its non-trivial to convert our use of lexical cast into this
+new approach. The problem is that we did not simply provide an
+=operator<<= for each enum, we overloaded =lexical_cast=. We did this
+because we are already using =operator<<= for the purposes of =io=,
+and that requires a JSON based output which is not suitable for
+casting. Its not clear what the right approach is here.
+
+Notes:
+
+- we could make use of manipulators; perhaps a =masd::json=
+  manipulator could be used to coerce =operator<<= to format into
+  JSON, otherwise we'd get a default string representation.
+
+- [[https://www.boost.org/doc/libs/1_71_0/boost/lexical_cast/try_lexical_convert.hpp][try_lexical_convert.hpp]]
+- [[https://www.boost.org/doc/libs/1_58_0/doc/html/boost_lexical_cast/synopsis.html#boost_lexical_cast.synopsis.try_lexical_convert][try_lexical_convert docs]]
+- [[https://stackoverflow.com/questions/2249711/how-to-use-the-boost-lexical-cast-library-for-just-for-checking-input][How to use the boost lexical_cast library for just for checking
+  input]]
+- [[http://boost.2283326.n4.nabble.com/lexical-cast-A-non-throwing-lexical-cast-Was-5-Observations-My-experience-with-the-boost-libraries-td2671153.html][A non-throwing lexical cast?]]
+- [[https://stackoverflow.com/questions/3157098/whats-the-right-approach-to-return-error-codes-in-c][Whats the right approach to return error codes in C++]]
+
+*** COMPLETED Add type overrides to primitives                        :story:
+    CLOSED: [2019-12-03 Tue 23:22]
+    :LOGBOOK:
+    CLOCK: [2019-12-03 Tue 22:06]--[2019-12-03 Tue 23:22] =>  1:16
+    CLOCK: [2019-12-03 Tue 20:49]--[2019-12-03 Tue 20:52] =>  0:03
+    CLOCK: [2019-12-03 Tue 00:01]--[2019-12-03 Tue 00:19] =>  0:18
+    CLOCK: [2019-12-02 Mon 23:37]--[2019-12-03 Tue 00:00] =>  0:23
+    CLOCK: [2019-12-02 Mon 22:45]--[2019-12-02 Mon 23:36] =>  0:51
+    CLOCK: [2019-12-02 Mon 19:58]--[2019-12-02 Mon 20:18] =>  0:20
+    CLOCK: [2019-12-01 Sun 14:05]--[2019-12-01 Sun 14:15] =>  0:10
+    CLOCK: [2019-12-01 Sun 13:53]--[2019-12-01 Sun 14:04] =>  0:11
+    CLOCK: [2019-12-01 Sun 13:30]--[2019-12-01 Sun 13:52] =>  0:22
+    CLOCK: [2019-12-01 Sun 13:15]--[2019-12-01 Sun 13:29] =>  0:14
+    CLOCK: [2019-12-01 Sun 12:21]--[2019-12-01 Sun 13:14] =>  0:53
+    CLOCK: [2019-11-30 Sat 00:02]--[2019-11-30 Sat 00:27] =>  0:25
+    CLOCK: [2019-11-29 Fri 14:14]--[2019-11-29 Fri 14:54] =>  0:40
+    CLOCK: [2019-11-29 Fri 12:31]--[2019-11-29 Fri 12:55] =>  0:24
+    CLOCK: [2019-11-29 Fri 11:26]--[2019-11-29 Fri 11:48] =>  0:22
+    CLOCK: [2019-11-29 Fri 11:16]--[2019-11-29 Fri 11:25] =>  0:09
+    CLOCK: [2019-11-27 Wed 23:24]--[2019-11-28 Thu 00:13] =>  0:49
+    CLOCK: [2019-11-26 Tue 08:01]--[2019-11-26 Tue 08:45] =>  0:44
+    CLOCK: [2019-11-25 Mon 08:22]--[2019-11-25 Mon 08:43] =>  0:21
+    :END:
+
+It seems ODB expects the type overrides to be declared with the
+primitive itself, not the containing type. In addition, they also
+require mapping when using non-core types. Example:
+
+: #pragma db map sqlite:type("JSON_TEXT") as("TEXT") to("json((?))")
+: #pragma db map pgsql:type("JSONB") as("TEXT") to("to_jsonb((?)::jsonb)") from("from_jsonb((?))")
+:
+: #pragma db value(json) schema("DOGEN")
+:
+: #pragma db member(json::value_) column("") pgsql:type("JSONB")
+
+The mapping must appear before the type overrides.
+
+: #DOGEN masd.orm.type_override=postgresql,JSONB
+: #DOGEN masd.orm.type_override=sqlite,JSON_TEXT
+
+The problem we have at present is that we have hard-coded the pragma
+types to always be of type =db type= and then the type of the
+meta-model element. This worked ok thus far but does not allow for the
+creation of =db map= pragmas. Nothing stops us from copying the type
+override logic from objects, however.
+
+Notes:
+
+- since we are trying to debug the reason why registrar is not coming
+  out, it does not seem to be sensible to create yet more meta-model
+  elements that get expressed as artefacts due to the somewhat
+  circular logic. Instead, we need a tactical hack that allows to
+  progress with the implementation of the relational model and we can
+  then do a strategic fix when we resume moving meta-model elements
+  from fabric. The approach is then to allow mappings as an ORM
+  concept built on top of existing ORM infrastructure.
+
+: #DOGEN masd.orm.type_map=FROM,TO,A,B
+
+- in fact the choice of solution is not entirely tactical, as this
+  will still be useful going forward.
+- we need to ensure type maps are outputted first.
+
+*** COMPLETED Create a string-based tracing backend interface         :story:
+    CLOSED: [2019-12-13 Fri 17:27]
+    :LOGBOOK:
+    CLOCK: [2019-12-13 Fri 15:02]--[2019-12-13 Fri 17:26] =>  2:24
+    CLOCK: [2019-12-13 Fri 10:08]--[2019-12-13 Fri 12:26] =>  2:18
+    CLOCK: [2019-12-04 Wed 08:01]--[2019-12-04 Wed 08:41] =>  0:40
+    :END:
+
+Tasks:
+
+- create the interface
+- change tracer to convert =ioable= to strings.
+- change file tracer, relational tracer to implement the interface.
+
+*** COMPLETED Create a tracing registrar                              :story:
+    CLOSED: [2019-12-13 Fri 17:27]
+    :LOGBOOK:
+    CLOCK: [2019-12-05 Thu 17:25]--[2019-12-05 Thu 17:47] =>  0:22
+    CLOCK: [2019-12-05 Thu 16:57]--[2019-12-05 Thu 17:19] =>  0:22
+    CLOCK: [2019-12-05 Thu 08:41]--[2019-12-05 Thu 08:46] =>  0:05
+    CLOCK: [2019-12-05 Thu 08:19]--[2019-12-05 Thu 08:40] =>  0:21
+    :END:
+
+Having a dynamic backend registrar would solve the issues of having
+lots of macros. We could place the backend itself in the relational
+model, and this way it will only get registered if the model is
+present. However, backends were not really designed to be initialised
+after construction; we expected to have all the configuration
+available on construction. In addition we have a lot of state, which
+needs to be initialised on construction. The main problem is the file
+backend. One possible solution is to use a pimpl which gets created
+via a "initialise backend". However, we then have the issue of having
+two different configuration classes (tracing and database config). A
+solution for this is to supply the entire configuration graph.
+
+Tasks:
+
+- create a backend registrar
+- use pimpl in file backend and relational backend
+- add a "initialise method" in backends which takes configuration.
+- move relational backend into relational model
+- add initialisers for backend.
+
+*** COMPLETED Move member variable name to assets                     :story:
+    CLOSED: [2019-12-13 Fri 17:33]
+    :LOGBOOK:
+    CLOCK: [2019-12-03 Tue 21:22]--[2019-12-03 Tue 21:31] =>  0:09
+    :END:
+
+At present we are obtaining the member variable name deep in the guts
+of the templates, via the assistant's
+=make_member_variable_name=. This means we cannot assemble an ODB
+pragma because we don't have this information. The right solution is
+to generate these in a variety of shapes during assets
+construction. The styles are:
+
+- underscore at the end, or at the start.
+- prefix =m_=.
+- ...
+
+This could get quite complex because these styles are driven in part
+by the language. We need to put a story in the backlog that details
+the "right" solution, and do a quick hack for now that just gives us
+what we have, but at assets level - similar to what we did with names
+and the "dot" and "colon" notations.
+
+*** COMPLETED Create a transform instance ID property                 :story:
+    CLOSED: [2019-12-13 Fri 18:30]
+    :LOGBOOK:
+    CLOCK: [2019-12-13 Fri 18:05]--[2019-12-13 Fri 18:30] =>  0:25
+    CLOCK: [2019-12-13 Fri 17:34]--[2019-12-13 Fri 17:40] =>  0:06
+    :END:
+
+At present we are generating the transform GUIDs inside the metrics
+builder. However, these are more fundamental: they tell us about the
+identity of each transform. As such, transforms should generate the
+GUIDs themselves when they start, and supply them to the tracer.
+
+We should also change the "add initial input" method to a start run
+method and create a matching end run method. The code generator is
+then responsible for supplying the GUID for the run.
+
+Notes:
+
+- for now, we can just add this to the scoped tracers.
+
+*** CANCELLED Make =scoped_tracer= header only                        :story:
+    CLOSED: [2019-12-13 Fri 18:31]
+
+*Rationale*: we've added new methods to this file, so its no longer
+header-only.
+
+At present we are generating the cpp for this file for no reason, use
+the correct profile for header only.
+
+*** COMPLETED Laptop issues                                           :story:
+    CLOSED: [2020-01-17 Fri 11:14]
+    :LOGBOOK:
+    CLOCK: [2019-12-05 Thu 08:00]--[2019-12-05 Thu 08:18] =>  0:18
+    :END:
+
+Time spent sorting out laptop.
+
+*** COMPLETED Do not compute the timestamp at formatting time         :story:
+    CLOSED: [2020-01-18 Sat 22:55]
+    :LOGBOOK:
+    CLOCK: [2020-01-17 Fri 15:01]--[2020-01-17 Fri 16:46] =>  1:45
+    CLOCK: [2020-01-17 Fri 11:51]--[2020-01-17 Fri 11:59] =>  0:08
+    :END:
+
+At present we are recomputing the timestamp for every model element we
+write (=generation_marker_formatter.cpp=):
+
+:         using namespace boost::posix_time;
+:         ptime now(second_clock::local_time());
+:         s << generation_timestamp << to_iso_extended_string(now) << std::endl;
+
+This is not only inefficient but it also means we end up with lots of
+different timestamps. In reality what we want is a "generation time"
+computed at the start of the run, possibly with a user supplied clock,
+which is then used everywhere.
+
+*** COMPLETED Record a SHA1 of loaded injection models                :story:
+    CLOSED: [2020-01-18 Sat 22:54]
+     :LOGBOOK:
+     CLOCK: [2020-01-18 Sat 22:55]--[2020-01-18 Sat 23:04] =>  0:09
+     CLOCK: [2020-01-18 Sat 21:56]--[2020-01-18 Sat 22:54] =>  0:58
+     CLOCK: [2020-01-18 Sat 16:07]--[2020-01-18 Sat 18:11] =>  2:04
+     CLOCK: [2020-01-18 Sat 15:00]--[2020-01-18 Sat 15:42] =>  0:42
+     CLOCK: [2020-01-17 Fri 19:54]--[2020-01-17 Fri 20:02] =>  0:08
+     CLOCK: [2020-01-17 Fri 19:35]--[2020-01-17 Fri 19:53] =>  0:18
+     CLOCK: [2020-01-17 Fri 17:48]--[2020-01-17 Fri 17:59] =>  0:11
+     CLOCK: [2020-01-17 Fri 16:47]--[2020-01-17 Fri 17:47] =>  1:00
+     CLOCK: [2020-01-17 Fri 11:42]--[2020-01-17 Fri 11:50] =>  0:17
+     :END:
+
+ One way to check if a generated model corresponds to the current
+ version of the file is to create a SHA1 key of the model.
+
+ We can use git to validate the SHA1:
+
+ : $ git ls-files -s dogen.variability.dia
+ : 100644 7db05738eb5765affe4590d541dcfe4484619e08 0 dogen.variability.dia
+
+ We should also add the SHA1 to the model references tracing.
+
+ Actually we can't rely on git for this (see links below). Users need
+ to compute the SHA1 themselves.
+
+ Links:
+
+ - [[https://stackoverflow.com/questions/460297/git-finding-the-sha1-of-an-individual-file-in-the-index][Git - finding the SHA1 of an individual file in the index]]
+ - [[https://stackoverflow.com/questions/5290444/why-does-git-hash-object-return-a-different-hash-than-openssl-sha1][Why does git hash-object return a different hash than openssl sha1?]]
+ - [[https://gist.github.com/jhasse/990731][SHA-1 With Boost]]
+ - [[https://stackoverflow.com/questions/28489153/how-to-portably-compute-a-sha1-hash-in-c][How to portably compute a sha1 hash in C++?]]
+
+*** COMPLETED Allow outputting a SHA1 of model in decoration          :story:
+    CLOSED: [2020-01-19 Sun 18:53]
+
+*Rationale*: implemented as part of the SHA1 hash work.
+
+One way to check if a generated model corresponds to the current
+version of the file is to create a SHA1 key of the model. This could
+optionally be outputted somewhere such as the comments for the model
+itself or, less ideally, into each generated file. This could be a
+parameter in decoration. We should also record if the model was
+compressed or uncompressed.
+
+*** COMPLETED Emacs maintenance and exploration work                  :story:
+    CLOSED: [2020-01-19 Sun 09:32]
+
+*Rationale*: these issues have been addressed.
+
+Any time spent improving emacs, exploring new modes, fixing snags,
+etc.
+
+- add support for indent guides. [[https://github.com/DarthFennec/highlight-indent-guides][highlight-indent-guides]], [[https://stackoverflow.com/questions/1587972/how-to-display-indentation-guides-in-emacs/56144459#56144459][SO question]].
+- treemacs issues: when blank type g to refresh.
+- lsp seems to update with every character we type. It would be nice
+  to update on save only.
+
+*** COMPLETED Add relational tracing support                          :story:
+    CLOSED: [2020-01-19 Sun 18:53]
+    :LOGBOOK:
+    CLOCK: [2020-01-19 Sun 17:04]--[2020-01-19 Sun 18:53] =>  1:49
+    CLOCK: [2020-01-19 Sun 13:01]--[2020-01-19 Sun 13:33] =>  0:32
+    CLOCK: [2020-01-17 Fri 10:01]--[2020-01-17 Fri 11:15] =>  1:14
+    CLOCK: [2020-01-13 Mon 18:26]--[2020-01-13 Mon 19:05] =>  0:39
+    CLOCK: [2020-01-09 Thu 18:57]--[2020-01-09 Thu 19:02] =>  0:05
+    CLOCK: [2019-12-22 Sun 20:01]--[2019-12-22 Sun 21:27] =>  1:26
+    CLOCK: [2019-12-21 Sat 11:24]--[2019-12-21 Sat 12:31] =>  1:07
+    CLOCK: [2019-12-16 Mon 17:42]--[2019-12-16 Mon 18:30] =>  0:48
+    CLOCK: [2019-12-14 Sat 22:13]--[2019-12-14 Sat 22:25] =>  0:12
+    CLOCK: [2019-12-14 Sat 21:40]--[2019-12-14 Sat 22:12] =>  0:32
+    CLOCK: [2019-12-14 Sat 19:01]--[2019-12-14 Sat 20:48] =>  1:47
+    CLOCK: [2019-12-14 Sat 16:30]--[2019-12-14 Sat 18:31] =>  2:01
+    CLOCK: [2019-12-14 Sat 15:31]--[2019-12-14 Sat 16:29] =>  0:58
+    CLOCK: [2019-12-14 Sat 14:45]--[2019-12-14 Sat 15:30] =>  0:45
+    CLOCK: [2019-12-13 Fri 22:42]--[2019-12-13 Fri 23:05] =>  0:23
+    CLOCK: [2019-12-13 Fri 20:36]--[2019-12-13 Fri 22:41] =>  2:05
+    CLOCK: [2019-12-13 Fri 18:31]--[2019-12-13 Fri 19:05] =>  0:34
+    CLOCK: [2019-12-05 Thu 00:11]--[2019-12-05 Thu 00:29] =>  0:18
+    CLOCK: [2019-12-05 Thu 00:00]--[2019-12-05 Thu 00:10] =>  0:10
+    CLOCK: [2019-12-04 Wed 23:43]--[2019-12-04 Wed 23:59] =>  0:16
+    CLOCK: [2019-12-04 Wed 23:21]--[2019-12-04 Wed 23:42] =>  0:21
+    CLOCK: [2019-12-04 Wed 21:54]--[2019-12-04 Wed 23:20] =>  1:26
+    CLOCK: [2019-12-04 Wed 21:01]--[2019-12-04 Wed 21:53] =>  0:52
+    CLOCK: [2019-12-04 Wed 18:22]--[2019-12-04 Wed 18:42] =>  0:20
+    CLOCK: [2019-12-04 Wed 18:01]--[2019-12-04 Wed 18:21] =>  0:20
+    CLOCK: [2019-11-30 Sat 18:02]--[2019-11-30 Sat 20:13] =>  2:11
+    CLOCK: [2019-11-27 Wed 23:01]--[2019-11-27 Wed 23:19] =>  0:18
+    CLOCK: [2019-11-25 Mon 08:03]--[2019-11-25 Mon 08:21] =>  0:18
+    CLOCK: [2019-11-24 Sun 21:01]--[2019-11-24 Sun 22:32] =>  1:31
+    CLOCK: [2019-11-24 Sun 16:35]--[2019-11-24 Sun 19:30] =>  2:55
+    CLOCK: [2019-11-23 Sat 18:29]--[2019-11-23 Sat 19:02] =>  0:33
+    CLOCK: [2019-11-23 Sat 17:06]--[2019-11-23 Sat 18:28] =>  1:22
+    :END:
+
+Whenever we bump into a problem we seem to spend a lot of time going
+through the log files and trace files trying to figure out where the
+problem is happening. Have a quick go in trying to implement a
+relational model for tracing to see if we can transfer the bulk of the
+data into a relational format which we can query via SQL.
+
+We've created a basic relational model for tracing. The relational
+part of it seems straightforward (ish); the problem is the integration
+of the tracer with the relational model. At present we rely on the
+fact that all traceable objects have IO enabled; this works because
+the code generator creates the IO facet, which is then used by the
+write method in utility to convert any model type into a
+string. However, we now need to change the approach: we need multiple
+tracing backends:
+
+- file tracer
+- database tracer.
+
+The file tracer is more or less the current tracer. The database
+tracer needs to decompose the objects in existing models into a
+relational representation. In an ideal world, the user would configure
+the tracer to use one of the two backends and the remaining usage
+would be transparent. However, we cannot have an interface for the
+tracer backend that uses template methods because then we'd need
+virtual template functions, it seems.
+
+Another alternative is to make the tracer aware of the model objects
+it is tracing. This is also not ideal because we would create cycles
+in the design.
+
+In effect we need to somehow implement a similar approach to the existing
+tracer: rely on global template functions a-la =operator<<= to
+decompose objects into their relational representations and then
+supply those to the backend. It is not very clear how this would
+work. For now we've postponed this approach as it seems its not going
+to be a quick win.
+
+We should approach this incrementally. Next time we have a bit of
+spare time, we need to generate the model and then create the adapters
+from existing models. Finally we can look at how it will be integrated
+with tracing.
+
+Notes:
+
+- compilation generates an ODB error:
+
+: FATALODB include directories not defined.
+
+- the key difference between northwind and tracing is that we have a
+  namespace. The application of the schema pragma is probably not
+  working due to this. We need to look into the transform to see how
+  that pragma propagates.
+- the problem arises because we are only populating the primitive's
+  properties if there is a top-level pragma. As the schema is not
+  populated for the namespace, there isn't one. It is not clear why
+  one would want to skip properties such as DB member if there isn't a
+  schema, but perhaps this is due to some ODB error. We should
+  probably issue an error or warning if we cannot generate code
+  without a schema name.
+- with regards to the relational model, the problem is that we can't
+  really create a schema for each namespace in a model because schemas
+  are not really like namespaces. The entities in a schema should
+  really be self-contained and not refer to other schemas or else the
+  database will be confusing to use. For example in postgres we will
+  need to set the schema path, etc in order to see the different
+  tables. One possible solution is to set the schema name to the same
+  value for all namespaces (e.g. =dogen=). This would then allow us to
+  have namespaces in C++ but not in the database.
+- it seems foreign keys are not supported at present. We probably need
+  support for this in order to query quickly or else we will have to
+  manually setup indices for each of these joining fields.
+- we need a command line option to choose the tracing backend
+  (e.g. file or database). We also need the database configuration
+  parameters: hostname, port, database, user.
+- we need to refactor tracer as follows:
+  - update the tracer interface to take actual types rather than
+    templates.
+  - create a top-level interface for the notion of a backend.
+  - create two implementations of the backend: file and relational.
+  - move all the file related code to the file backend.
+  - implement adapters for each model to convert them into relational
+    model types.
+  - implement the relational backend.
+- Add relational model to the dogen model tests.
+- add validation to database configuration in configuration validator.
+- consider renaming =add_initial_input= to "start run" or some such
+  name to align with relational model.
+- add option to create the schema: at present we are always creating a
+  new database schema. We should only do it when the user requests
+  it. For extra bonus points, we should look for the exception of
+  "table does not exist" and recommend the user to create the schema.
+- create a log backend that writes to database. Create a really simple
+  heuristic to extract JSON: look for a ={= or =[= on the first N
+  characters. Look for a matching bracket as the end character. If
+  found, extract the content into a JSON field. We can use the [[https://www.boost.org/doc/libs/1_71_0/boost/log/sinks/text_ipc_message_queue_backend.hpp][IPC
+  backend]] as a starting point.
+- move relational tracer and relational logger into relational model.
+- actually the right solution is to create a really simple relational
+  model with JSON content and then create stored procs to extract data
+  from JSON.
+- consider creating transform and run details classes as POCOs. These
+  can be supplied to the transforms. The scoped tracers can be used as
+  helpers to build them.
+- we need some kind of "model tag" that tells us if its a model set,
+  if its a injection model, etc.
+
+Links:
+
+- [[http://www.postgresqlforbeginners.com/2010/12/create-function-basic-anatomy.html][CREATE FUNCTION - basic anatomy]]
+- [[http://www.postgresqlforbeginners.com/2010/12/create-function-return-types.html][CREATE FUNCTION: return types]]
+
+Merged stories:
+
+*Scripts for loading traces into postgres*
+
+- rationale: this story is superseded by having a relational model.
+
+It would be really nice if as part of the tracing generation we also
+generated a set of SQL scripts that:
+
+- created a number of tables
+- copied all of the generated data into the database
+- added a number of utility functions such as get elements in model, etc.
+
+Over time we could build up functionality but to start off with we
+just want something really simple that copies all of the
+files. Interestingly this "looks" like a job for dogen. It would be
+nice to have a meta-model element for this etc.
+
+In the future it would be nice to have a think about the schema so
+that we could do joins etc. For example:
+
+- show me all transforms with element of type X (the state of the
+  element at each transform).
+
+We should also take into account multiple runs. Perhaps a more
+adequate solution is to create a dogen library that has the ORM
+support for this. Once we have proper JSON serialisation we can store
+the objects as JSON serialisable, allowing us to re-run transforms,
+etc.
+
+Notes:
+
+- ensure we upload the file name or at least the coordinates to the
+  transform graph with the data so that we know what it refers to.
+- rename relational database enum to just database
+- rename hostname to just host
+
+*Improved understanding*
+
+Better than uploading a whole load of JSON blobs and then having to do
+a number of really complex queries, is to have a ORM schema that is
+designed to capture the data in the format we're interested in. Then
+we could do very simple queries. What we really care about is
+capturing all attributes of the model as it changes across the
+transformations. We also care about the relationships between
+transformations. We also need a way to uniquely identify elements
+across their entire lifecycle. A simple way would be to create a hash
+of the file name of the model, column and line number. We can then
+associate other IDs to this one such as dia ID, etc.
+
+We need to create a set of adaptors that convert an existing model
+(injection, coding, etc) into the ORM model and then write the ORM
+model into the database. The ORM model does not need as much detail
+and structure as a regular model; for example, names can be flattened
+or linked into IDs (e.g. name table), etc. Whatever makes sense from a
+relational perspective.
+
+It would also be nice to dump the log into the database so that we
+could do simple correlations such as "what was logged between the
+start and end of this transform?"
+
+Interestingly, this would also allow us to compare things between
+runs. The schema should be designed with this in mind.
+
+Links:
+
+- [[https://postgrespro.com/docs/postgresql/10/functions-json][JSON Functions and Operators]]
+- [[https://clarkdave.net/2013/06/what-can-you-do-with-postgresql-and-json/][What can you do with PostgreSQL and JSON?]]
+- [[https://blog.codeship.com/unleash-the-power-of-storing-json-in-postgres/][Unleash the Power of Storing JSON in Postgres]]
+- [[https://stackoverflow.com/questions/59330565/is-there-a-way-to-set-the-max-width-of-a-column-when-displaying-jsonb-results-in][Is there a way to set the max width of a column when displaying JSONB results in psql?]]
+- [[https://www.postgresqltutorial.com/postgresql-json/][PostgreSQL JSON]]
+- [[https://dba.stackexchange.com/questions/151838/postgresql-json-column-to-view][Postgresql json column to view]]
+
+*** POSTPONED Nightly code coverage is not being reported             :story:
+    CLOSED: [2020-01-20 Mon 23:09]
+    :LOGBOOK:
+    CLOCK: [2019-11-23 Sat 16:39]--[2019-11-23 Sat 16:49] =>  0:10
+    CLOCK: [2019-11-23 Sat 16:25]--[2019-11-23 Sat 16:38] =>  0:13
+    :END:
+
+We are running kcov in the nightlies, but we cannot see the results in
+the coverage tool.
+
+*** POSTPONED Move registrar into assets                              :story:
+    CLOSED: [2020-01-20 Mon 23:09]
+    :LOGBOOK:
+    CLOCK: [2020-01-20 Mon 17:45]--[2020-01-20 Mon 18:30] =>  0:45
+    CLOCK: [2020-01-20 Mon 08:07]--[2020-01-20 Mon 08:32] =>  0:25
+    CLOCK: [2019-12-22 Sun 22:04]--[2019-12-22 Sun 22:28] =>  0:24
+    CLOCK: [2019-12-22 Sun 21:28]--[2019-12-22 Sun 22:03] =>  0:35
+    :END:
+
+Move the registrar type into assets, in the quickest way possible.
+
+Notes:
+
+- In order to avoid blocking due to lots of analysis, we need
+  to split this story into three:
+  - first, we need to just move the registrar as is into assets.
+  - a second story is to clean up the existing registrar code to have
+    less templates and possibly address the existing registration
+    bugs. We could also look into calling the registrars for
+    referenced models automatically as part of this work (at present
+    we are doing this manually).
+  - finally, we need some meta-level refactoring to figure out if the
+    pattern can be generalised to include initialisers, etc.
+  In general that should be our approach: try to split out the
+  capturing of patterns into as many steps as possible, to make sure
+  we don't get overwhelmed as we implement things.
+- we need to keep track of all type registrars on referenced models,
+  not on the referenced models themselves. We need to know which
+  models we referenced directly, and then find the registrars for
+  those models.
+- leaves need to know of the registrar. This is so that we can call it
+  in their generated tests. We could use the registrar transform to go
+  and find all leaves and populate their registrar name.
+- current state is that we cannot generate the registrar for some
+  reason.
+- test model with registrar is C++ model. Type is called
+  registrar. Its probably not a good idea to also call it registrar -
+  wouldn't that clash with the existing type?
+- we should have a warning/error: if using boost serialisation with a
+  model that has inheritance, the registrar should be present. Added
+  to warnings story.
+
+** Deprecated
+
+*** CANCELLED Fix issues with nightly build and CI                    :story:
+    CLOSED: [2019-12-03 Tue 20:45]
+
+*Rationale*: story too vague for product backlog.
+
+Time spent fixing build issues with either nightlies and/or CI.
+
+- make space for builds in CDash.
+*** CANCELLED Fix clang-cl broken test                                :story:
+    CLOSED: [2019-12-03 Tue 20:46]
+
+*Rationale*: we do not have model sanitzer any longer.
+
+We have one test failing on clang-cl, ref impl:
+
+: Running 1 test case...
+: unknown location(0): fatal error: in "boost_model_tests/validate_serialisation": class boost::archive::archive_exception: unregistered void cast class masd::cpp_ref_impl::boost_model::class_derived<-class masd::cpp_ref_impl::boost_model::class_base
+: ..\..\..\..\projects\masd.cpp_ref_impl.test_model_sanitizer\tests\boost_model_tests.cpp(56): last checkpoint: validate_serialisation
+:
+: *** 1 failure is detected in the test module "test_model_sanitizer_tests"
+
+It seems that the boost registration is failing on debug. This is very
+strange as it works on MSVC and Linux, release and debug but fails on
+clang-cl release.

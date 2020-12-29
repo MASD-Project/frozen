@@ -1,0 +1,572 @@
+#+title: Sprint Backlog 04
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Perform the exogenous model clean-up in yarn
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-08-30 Wed 22:08]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *39:51* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 39:51   |       |       | 100.0 |
+| Active                                                                      |         | 39:51 |       | 100.0 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:35 |   1.5 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  1:39 |   4.1 |
+| COMPLETED Use shared pointers in all models                                 |         |       |  6:22 |  16.0 |
+| COMPLETED Update repository in yarn.dia to use pointers                     |         |       |  2:50 |   7.1 |
+| COMPLETED Remove support for upsilon                                        |         |       |  1:10 |   2.9 |
+| COMPLETED Add a backwards compatible flag                                   |         |       |  1:27 |   3.6 |
+| COMPLETED Create an exogenous model                                         |         |       | 12:20 |  30.9 |
+| COMPLETED Tailor should rely only on exogenous models                       |         |       |  2:12 |   5.5 |
+| COMPLETED Remove scribble group from intermediate model                     |         |       |  0:39 |   1.6 |
+| COMPLETED Tailor is not handling initialisation correctly                   |         |       |  0:15 |   0.6 |
+| COMPLETED Rename exogenous model to exomodel                                |         |       |  1:01 |   2.6 |
+| COMPLETED Rename intermediate model to endomodel                            |         |       |  1:49 |   4.6 |
+| COMPLETED Fix broken build due to JSON tests                                |         |       |  0:26 |   1.1 |
+| COMPLETED Clean up transforms to match exogenous/endogenous models          |         |       |  1:48 |   4.5 |
+| COMPLETED Add validation to tailor transforms                               |         |       |  0:20 |   0.8 |
+| COMPLETED Rename =meta_type= in JSON                                        |         |       |  3:29 |   8.7 |
+| COMPLETED Rename yarn object types in yarn.dia                              |         |       |  0:20 |   0.8 |
+| COMPLETED Use extension matching for exogenous models                       |         |       |  0:52 |   2.2 |
+| COMPLETED Rename external transform                                         |         |       |  0:17 |   0.7 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-08-01 Tue 21:25]
+    CLOCK: [2017-08-01 Tue 20:50]--[2017-08-01 Tue 21:25] =>  0:35
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.03, "Pavilhão"
+
+#+begin_src markdown
+![Pavilhão Welvitchia Mirabilis](http://cdn2.portalangop.co.ao/angola/pt_pt/files/highlight/2016/9/42/0,cbf98d54-32d3-4634-b996-6dd02337f9ae.jpg)
+_Pavilhão Welvitchia Mirabilis, Moçâmedes, Namibe. (C) Angola Press 2016._
+
+Overview
+=======
+
+We continue with yet another sprint refactoring the core in yarn. Initially, the focus was on moving more code from the C++ and C# kernels into yarn, but a series of deficiencies were found on the way we are processing exogenous models and so we switched focus to fixing those. This work will continue into the next sprint.
+
+As part of this sprint we did manage to move away from using ```std::type_index``` and using instead our own meta-meta-model, which is consistent with our conceptual model and notions of modeling spaces. In addition, we cleaned up usages of the type repository, which greatly simplified the code.
+
+User visible changes
+===============
+There are no user visible changes in this sprint.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/v1/sprint_backlog_03.org).
+
+Next Sprint
+===========
+In the next sprint we'll finish the work on exogenous models and resume the work on moving kernel-agnostic transformations from the kernels into yarn.
+
+Binaries
+======
+You can download binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.03_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.03/dogen_1.0.03_amd64-applications.deb)
+- [dogen-1.0.03-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/1.0.03/dogen-1.0.03-Darwin-x86_64.dmg)
+- [dogen-1.0.03-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-1.0.03-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/887172610487922688][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6292938732865617920/][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-08-30 Wed 22:08]
+    CLOCK: [2017-08-30 Wed 22:00]--[2017-08-30 Wed 22:08] =>  0:08
+    CLOCK: [2017-08-28 Mon 17:01]--[2017-08-28 Mon 17:08] =>  0:07
+    CLOCK: [2017-08-26 Sat 09:00]--[2017-08-26 Sat 09:20] =>  0:20
+    CLOCK: [2017-08-26 Sat 08:51]--[2017-08-26 Sat 08:59] =>  0:08
+    CLOCK: [2017-08-21 Mon 15:16]--[2017-08-21 Mon 15:27] =>  0:11
+    CLOCK: [2017-08-20 Sun 21:21]--[2017-08-20 Sun 21:41] =>  0:20
+    CLOCK: [2017-08-08 Tue 06:41]--[2017-08-08 Tue 06:53] =>  0:12
+    CLOCK: [2017-08-01 Tue 20:43]--[2017-08-01 Tue 20:49] =>  0:06
+    CLOCK: [2017-08-01 Tue 20:35]--[2017-08-01 Tue 20:42] =>  0:07
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Use shared pointers in all models                       :story:
+    CLOSED: [2017-08-04 Fri 14:30]
+    CLOCK: [2017-08-04 Fri 13:58]--[2017-08-04 Fri 14:30] =>  0:32
+    CLOCK: [2017-08-04 Fri 10:12]--[2017-08-04 Fri 13:48] =>  3:36
+    CLOCK: [2017-08-03 Thu 07:36]--[2017-08-03 Thu 08:21] =>  0:45
+    CLOCK: [2017-08-02 Wed 18:05]--[2017-08-02 Wed 18:52] =>  0:47
+    CLOCK: [2017-08-02 Wed 07:41]--[2017-08-02 Wed 08:23] =>  0:42
+
+We need to start using unique pointers in exogenous model, and shared
+pointers in intermediate model. We should transfer the ownership as we
+go along, making the transformers/adapters mutable.
+
+*** COMPLETED Update repository in yarn.dia to use pointers           :story:
+    CLOSED: [2017-08-04 Fri 17:14]
+    CLOCK: [2017-08-04 Fri 17:27]--[2017-08-04 Fri 17:37] =>  0:10
+    CLOCK: [2017-08-04 Fri 17:23]--[2017-08-04 Fri 17:26] =>  0:03
+    CLOCK: [2017-08-04 Fri 17:14]--[2017-08-04 Fri 17:23] =>  0:09
+    CLOCK: [2017-08-04 Fri 14:45]--[2017-08-04 Fri 17:13] =>  2:28
+
+At present we are using a three-way map from dia object (child) to dia
+object (parent) and then from parent to name and then from name to
+element. Once the models have pointers we can simply map dia object
+directly to parent (and module).
+
+- dia id to module name.
+- dia id to parent names
+- model name
+
+Notes:
+
+- due to the way we now record parent and child relationships in the
+  graph, we caused the order of parents to move. Before we used to
+  keep track of all parents for a given child; we now keep track of
+  all children for a given parent. When builder starts accumulating
+  parents for each children, it now does so from the parent's
+  perspective. This seems to have caused the order of the parents to
+  change. However, since we still do things in diagram order,
+  hopefully the order is stable - just different.
+
+Tasks:
+
+- move model out of repository, into builder.
+- rename repository to context.
+- create two maps for modules and parent names in context, delete existing maps.
+- delete selector.
+
+*** COMPLETED Remove support for upsilon                              :story:
+    CLOSED: [2017-08-16 Wed 12:53]
+    CLOCK: [2017-08-08 Tue 06:54]--[2017-08-08 Tue 08:04] =>  1:10
+
+It seems we will no longer be using upsilon, so we should remove it as
+its adding to the maintenance costs. If required in the future we can
+always resurrect it.
+
+This will also hopefully free up some time in the build machine,
+solving the amount of red builds we get due to time outs.
+
+*** COMPLETED Add a backwards compatible flag                         :story:
+    CLOSED: [2017-08-17 Thu 14:37]
+    CLOCK: [2017-08-17 Thu 14:18]--[2017-08-17 Thu 14:37] =>  0:19
+    CLOCK: [2017-08-17 Thu 13:45]--[2017-08-17 Thu 14:03] =>  0:18
+    CLOCK: [2017-08-17 Thu 10:46]--[2017-08-17 Thu 11:07] =>  0:21
+    CLOCK: [2017-08-17 Thu 10:33]--[2017-08-17 Thu 10:45] =>  0:12
+    CLOCK: [2017-08-17 Thu 10:15]--[2017-08-17 Thu 10:32] =>  0:17
+
+Backwards compatibility is a problem; we should be able to ignore
+types that do not exist. This could be achieved by adding a "backwards
+compatibility mode" flag to the command line which tells annotations
+transform to proceed regardless. This way we still get strict checking
+for the common use case, but can override when required. Log can
+suggest this command line option, with a warning.
+
+*** COMPLETED Create an exogenous model                               :story:
+    CLOSED: [2017-08-20 Sun 22:06]
+    CLOCK: [2017-08-20 Sun 21:57]--[2017-08-20 Sun 22:05] =>  0:08
+    CLOCK: [2017-08-20 Sun 21:02]--[2017-08-20 Sun 21:21] =>  0:19
+    CLOCK: [2017-08-20 Sun 10:45]--[2017-08-20 Sun 10:48] =>  0:03
+    CLOCK: [2017-08-20 Sun 10:12]--[2017-08-20 Sun 10:44] =>  0:32
+    CLOCK: [2017-08-18 Fri 16:48]--[2017-08-18 Fri 16:57] =>  0:09
+    CLOCK: [2017-08-18 Fri 15:02]--[2017-08-18 Fri 16:47] =>  1:45
+    CLOCK: [2017-08-18 Fri 13:26]--[2017-08-18 Fri 14:02] =>  0:36
+    CLOCK: [2017-08-18 Fri 11:39]--[2017-08-18 Fri 11:47] =>  0:08
+    CLOCK: [2017-08-18 Fri 10:52]--[2017-08-18 Fri 11:16] =>  0:24
+    CLOCK: [2017-08-17 Thu 23:46]--[2017-08-18 Fri 00:15] =>  0:29
+    CLOCK: [2017-08-17 Thu 20:45]--[2017-08-17 Thu 21:08] =>  0:23
+    CLOCK: [2017-08-17 Thu 17:33]--[2017-08-17 Thu 17:54] =>  0:21
+    CLOCK: [2017-08-17 Thu 16:45]--[2017-08-17 Thu 17:15] =>  0:30
+    CLOCK: [2017-08-17 Thu 09:43]--[2017-08-17 Thu 09:44] =>  0:01
+    CLOCK: [2017-08-16 Wed 22:20]--[2017-08-16 Wed 23:30] =>  1:10
+    CLOCK: [2017-08-16 Wed 20:49]--[2017-08-16 Wed 21:41] =>  0:52
+    CLOCK: [2017-08-16 Wed 12:23]--[2017-08-16 Wed 13:09] =>  0:46
+    CLOCK: [2017-08-06 Sun 21:02]--[2017-08-06 Sun 22:34] =>  1:32
+    CLOCK: [2017-08-06 Sun 11:41]--[2017-08-06 Sun 13:53] =>  2:12
+
+At present we are allowing the frontends to directly create
+intermediate models. However, this doesn't make a lot of sense: there
+are many properties in the intermediate models which should not be
+touched by the frontends. We should have a specific model that has
+only the properties that can be set by the frontends -
+=exogenous_model=. The exogenous model chain is then responsible for
+converting it into an intermediate model.
+
+Tasks:
+
+- create the exogenous model with the required attributes. Add a root
+  module, remove model name. All containers should be lists of a pair
+  of scribble group to concrete element.
+- move annotations transform to exogenous chain. Add a transform to
+  update element names by reading model modules and external modules.
+- drop scribble groups from intermediate model.
+- add an adaptor to convert from exogenous model to intermediate
+  model.
+- use some kind of reference to figure out where to place the
+  documentation of a module. We can't use the IDs any longer. We could
+  simply remember the list iterators. Since we are only pushing back
+  into the list, the iterators should remain valid. However, for this
+  to work we need to add support to iterators in dogen or manually
+  create the context/repository.
+- Refactor yarn.dia, splitting out the model from the repository and
+  renaming repository to context.
+
+Notes:
+
+- we need a completely different annotations transform. In the new
+  world, scribble updating and annotation updating are done in one go
+  by the updater, who has the annotation group as state. The annotation
+  classes need to be updated to take in just one scribble group rather
+  than a map. The updater needs to be a regular element visitor. The
+  transform runs on the exogenous model.
+- repository in yarn.dia must not rely on qualified names for lookups;
+  instead it must have a pointer to the element, which is known to be
+  owned by the model. To make life easier this could be a shared
+  pointer with a custom deleter.
+- if we changed the graph adding a relationship between the note and
+  the package such that the package is always processed after the
+  notes it contains; and if we created a map of child to note,
+  including a special entry for the "root note"; we could then merge
+  the processed objects of the package and the note. This would then
+  result in a consistent interface for the transformer. Actually this
+  must already be occurring since we are updating the documentation of
+  an existing module; however, the order must be in reverse -
+  i.e. first the package, then the note. We should really do the note
+  first then the package. We can simply create a map of ID ->
+  processed object; we then remember the module processed object. When
+  the note appears we look up the module and merge it.
+- we should force json models to have a model module if they want to
+  provide documentation rather than support a documentation key.
+- compute model name in naming transform and copy it across to
+  intermediate model
+
+Steps:
+
+- update scribble group with stereotypes.
+- convert scribble group into annotation group.
+- process element annotation.
+- process attribute annotations, if stateful.
+
+*** COMPLETED Tailor should rely only on exogenous models             :story:
+    CLOSED: [2017-08-21 Mon 11:18]
+    CLOCK: [2017-08-21 Mon 10:23]--[2017-08-21 Mon 11:18] =>  0:55
+    CLOCK: [2017-08-21 Mon 09:59]--[2017-08-21 Mon 10:23] =>  0:24
+    CLOCK: [2017-08-21 Mon 09:23]--[2017-08-21 Mon 09:58] =>  0:35
+    CLOCK: [2017-08-20 Sun 23:25]--[2017-08-20 Sun 23:43] =>  0:18
+
+At present we are transforming an intermediate model into the
+exogenous representation. However, we can probably get away with just
+the exogenous model. Update dehydrator and exogenous interfaces to
+work from just exogenous models.
+
+Notes:
+
+- drop documentation field; we can rely on it being present on the
+  root module. Which reveals a deeper problem: the model should not be
+  annotatable at all, since we have the root module for that. We must
+  have some hackery on the hydrator to read the model annotations and
+  populate the root module. It makes more sense to populate the root
+  module in the JSON.
+
+*** COMPLETED Remove scribble group from intermediate model           :story:
+    CLOSED: [2017-08-21 Mon 11:28]
+    CLOCK: [2017-08-21 Mon 11:29]--[2017-08-21 Mon 11:42] =>  0:13
+    CLOCK: [2017-08-21 Mon 11:19]--[2017-08-21 Mon 11:28] =>  0:09
+    CLOCK: [2017-08-20 Sun 22:06]--[2017-08-20 Sun 22:23] =>  0:17
+
+Now we have an exogenous model we no longer need the scribble group in
+the intermediate model. However, we were making use of it in the
+dehydration for tailor transformations.
+
+*** COMPLETED Tailor is not handling initialisation correctly         :story:
+    CLOSED: [2017-08-21 Mon 11:53]
+    CLOCK: [2017-08-21 Mon 11:38]--[2017-08-21 Mon 11:53] =>  0:15
+
+It seems we forgot to update tailor after the logging changes around
+initialisation:
+
+: [1/1] Tailoring boost_model.
+: [2017-08-18 16:05:05.284950] [0x00007f2329d9f080] [info]    Registrered exogenous transform: yarn.json.exogenous_transform
+: [2017-08-18 16:05:05.284992] [0x00007f2329d9f080] [info]    Registrered exogenous transform: yarn.dia.exogenous_transform
+
+*** COMPLETED Move external module processing into yarn               :story:
+    CLOSED: [2017-08-21 Mon 15:20]
+
+*Rationale*: implemented as part of the exogenous model work.
+
+At present we have a hack in =yarn.dia= whereby we are looking for a
+key =yarn.dia.external_modules= and then using it to populate the
+external module path of all names read on that model, as we traverse
+the graph of dia objects.
+
+The problem is, this functionality is also required on other frontends
+such as JSON. We should use the traditional annotation machinery to
+populate the external modules inside of yarn pre-processing.
+
+One thing to bear in mind is that we need to trash all containers and
+re-insert all elements, because the IDs will change as part of this
+exercise.
+
+*** COMPLETED Add a property for the model modules as an annotation   :story:
+    CLOSED: [2017-08-21 Mon 15:25]
+
+*Rationale*: implemented as part of the exogenous model work.
+
+We should read out the model name as an annotation instead of
+inferring it from the filename on some frontends (Dia) and allowing
+the user to set it internally on others (JSON).
+
+This is not quite as trivial as it may look: we create the model
+module using the model name; this is necessary because we need to read
+its annotations and place it in the right element. Without a model
+name, this becomes a bit tricky.
+
+*Previous Understanding*
+
+#+begin_quote
+*Story*: As a dogen user in a constrained environment, I am forced to
+use file names that are not suitable for a model name so that I need
+to supply an override somewhere else.
+#+end_quote
+
+It would be nice to be able to generate a model with a name other than
+the diagram file. We should have a command line option for this that
+overrides the default diagram name.
+
+This could also be supplied as part of dynamic extensions. The command
+line option is useful when we want to use the same diagram to test
+different aspects of the generation, as we do with the tests. The
+dynamic extensions option is useful when we don't want the file name
+to have the full name of the model.
+
+We now have a use case for this: the dynamic models. See Rename
+dynamic models.
+
+*** COMPLETED Use a consistent approach to model naming               :story:
+    CLOSED: [2017-08-21 Mon 16:48]
+
+*Rationale*: split into individual stories for each rename.
+
+- exogenous model: exomodel; all the models obtained externally.
+- intermediate model: endogenous model, endomodel; all models used internally.
+- model: final model, used for code-generation.
+
+With this we can now have three main chains:
+
+- =exomodel_generation_chain=;
+- =endomodel_generation_chain=;
+- =model_generation_chain=: top-level chain that includes all others.
+
+We should also probably rename the exogenous transforms to
+=exomodel_source=. Actually, according to the literature, its still
+just a transform.
+
+*** COMPLETED Rename exogenous model to exomodel                      :story:
+    CLOSED: [2017-08-21 Mon 17:10]
+    CLOCK: [2017-08-21 Mon 16:51]--[2017-08-21 Mon 17:10] =>  0:19
+    CLOCK: [2017-08-21 Mon 15:28]--[2017-08-21 Mon 16:10] =>  0:42
+
+As per analysis story on renaming, rename all instances of "exogenous
+model" to exomodel.
+
+*** COMPLETED Rename intermediate model to endomodel                  :story:
+    CLOSED: [2017-08-21 Mon 21:37]
+    CLOCK: [2017-08-21 Mon 21:30]--[2017-08-21 Mon 21:37] =>  0:07
+    CLOCK: [2017-08-21 Mon 21:16]--[2017-08-21 Mon 21:29] =>  0:13
+    CLOCK: [2017-08-21 Mon 21:01]--[2017-08-21 Mon 21:15] =>  0:14
+    CLOCK: [2017-08-21 Mon 17:46]--[2017-08-21 Mon 18:27] =>  0:41
+    CLOCK: [2017-08-21 Mon 17:11]--[2017-08-21 Mon 17:45] =>  0:34
+
+As per analysis story on renaming, rename all instances of "exogenous
+model" to exomodel.
+
+*** COMPLETED Fix broken build due to JSON tests                      :story:
+    CLOSED: [2017-08-21 Mon 23:46]
+    CLOCK: [2017-08-21 Mon 23:20]--[2017-08-21 Mon 23:46] =>  0:26
+
+After much faffing around, it seems we inadvertently removed c++
+output from JSON models, resulting in travis builds breaks.
+
+*** COMPLETED Clean up transforms to match exogenous/endogenous models :story:
+    CLOSED: [2017-08-22 Tue 01:42]
+    CLOCK: [2017-08-22 Tue 01:32]--[2017-08-22 Tue 01:42] =>  0:10
+    CLOCK: [2017-08-22 Tue 01:19]--[2017-08-22 Tue 01:31] =>  0:12
+    CLOCK: [2017-08-22 Tue 01:15]--[2017-08-22 Tue 01:18] =>  0:03
+    CLOCK: [2017-08-22 Tue 01:11]--[2017-08-22 Tue 01:14] =>  0:03
+    CLOCK: [2017-08-22 Tue 01:01]--[2017-08-22 Tue 01:10] =>  0:09
+    CLOCK: [2017-08-22 Tue 00:45]--[2017-08-22 Tue 01:00] =>  0:15
+    CLOCK: [2017-08-22 Tue 00:40]--[2017-08-22 Tue 00:44] =>  0:04
+    CLOCK: [2017-08-22 Tue 00:37]--[2017-08-22 Tue 00:39] =>  0:02
+    CLOCK: [2017-08-21 Mon 23:47]--[2017-08-22 Tue 00:37] =>  0:50
+
+Now that we've cleaned up the model terminology, we should line up the
+chains that create these different types of models, such that each
+chain only generates one kind of model and a top-level chain is
+responsible from moving from one model type to another - i.e. avoid
+creating heterogeneous chains with regards to model type.
+
+Tasks:
+
+- rename endomodel transform to =exomodel_to_endomodel_transform=
+- remove endomodel transform from exoendo
+- rename exoendo to exomodel generation chain
+- add =exomodel_to_endomodel_transform= to both initial target and
+  references chains.
+- rename model generation chain to endomodel generation chain
+- remove final model transform from model assembly chain
+- rename final model transform to endomodel to model transform
+- create a model generation chain transform which calls the endomodel
+  generation chain and then processes the result with the endomodel to
+  model transform. Actually, doing this in the code generator
+  suffices.
+
+*** COMPLETED Add validation to tailor transforms                     :story:
+    CLOSED: [2017-08-22 Tue 02:00]
+    CLOCK: [2017-08-22 Tue 02:01]--[2017-08-22 Tue 02:04] =>  0:03
+    CLOCK: [2017-08-22 Tue 01:43]--[2017-08-22 Tue 02:00] =>  0:17
+
+Check that the transforms support "from" and "to" for the user
+requested types.
+
+*** COMPLETED Rename =meta_type= in JSON                              :story:
+    CLOSED: [2017-08-24 Thu 20:18]
+    CLOCK: [2017-08-24 Thu 19:27]--[2017-08-24 Thu 20:18] =>  0:51
+    CLOCK: [2017-08-24 Thu 18:36]--[2017-08-24 Thu 18:46] =>  0:10
+    CLOCK: [2017-08-24 Thu 18:17]--[2017-08-24 Thu 18:25] =>  0:08
+    CLOCK: [2017-08-24 Thu 18:09]--[2017-08-24 Thu 18:16] =>  0:07
+    CLOCK: [2017-08-24 Thu 15:53]--[2017-08-24 Thu 16:05] =>  0:12
+    CLOCK: [2017-08-24 Thu 15:19]--[2017-08-24 Thu 15:52] =>  0:33
+    CLOCK: [2017-08-24 Thu 14:50]--[2017-08-24 Thu 15:18] =>  0:28
+    CLOCK: [2017-08-24 Thu 10:03]--[2017-08-24 Thu 11:03] =>  1:00
+
+Now we have meta-names we should use the same terminology for JSON
+documents.
+
+Notes:
+
+- the meta-name transform must be applied at the exomodel
+  level. Otherwise we are generating exomodels without setting their element
+  meta-names correctly.
+- in addition, we cannot call the entire exomodel generation chain in
+  tailor, because that then pulls in the context generation and so
+  forth. It also applies the annotations and naming transforms which
+  we don't require for tailor. Instead we should just apply the
+  meta-name transform manually. To make life easier we could create a
+  exomodel to exomodel transform chain in yarn and use that in tailor.
+- annoyingly, the exomodel registrar ownership now becomes a bit
+  messy. We have to go to the exomodel generation chain to get the
+  registrar, but we don't really use it for anything else. However,
+  this is no worse than tailor at present.
+- we seem to have a "naming" transform and a "meta-name"
+  transform. They should be named consistently.
+
+*** COMPLETED Rename yarn object types in yarn.dia                    :story:
+    CLOSED: [2017-08-24 Thu 20:39]
+    CLOCK: [2017-08-24 Thu 20:19]--[2017-08-24 Thu 20:39] =>  0:20
+
+These are not really object types. We could name them perhaps element
+types?
+
+*** COMPLETED Use extension matching for exogenous models             :story:
+    CLOSED: [2017-08-25 Fri 09:43]
+    CLOCK: [2017-08-25 Fri 08:51]--[2017-08-25 Fri 09:43] =>  0:52
+
+Now that we no longer support upsilon we can revert to the simplistic
+approach of matching the file extension to find the exogenous model
+transformer.
+
+*** COMPLETED Rename external transform                               :story:
+    CLOSED: [2017-08-25 Fri 10:01]
+    CLOCK: [2017-08-25 Fri 09:44]--[2017-08-25 Fri 10:01] =>  0:17
+
+The name "external transform" was always a quick hack, due to the
+confusion between "exogenous" and "external". We should rename it to
+"dynamic" given that these transforms are not known until run-time
+whereas all other transforms are "static" - known at compile
+time. This also means we can now have dynamic transforms in yarn. Not
+an ideal name, but ever so slightly better than "external transform".
+
+** Deprecated
+*** CANCELLED Map upsilon primitives to intrinsics                    :story:
+    CLOSED: [2017-08-08 Tue 06:51]
+
+*Rationale*: Upsilon is to be removed.
+
+Upsilon allows users to create "strong typedefs" around primitve
+types. We need to unpack these into their intrinsic counterparts and
+them map the intrinsics to native types.
+
+Slight mistake: we mapped the primitive types themselves but in
+reality what needs to be mapped are the fields making references to
+the primitive types. We should just filter out all primitives.
+
+Additional wrinkle: what the end users want is to unpack "real
+primitives" into intrinsics, but "other" primitives should be mapped
+to objects. This can be achieved by hard-coding =Plaform= primitives
+into the mapping layer. However, some non-platform primitives may also
+be candidates too. We need to create a list of these to see how
+widespread the problem is.
+
+Another alternative is to apply hard-coded regexes:
+
+- if the name matches any of the intrinsic names
+
+Finally, the last option may be to have yet another mapping data file
+format that lists the primitives to unbox.
+
+*** CANCELLED Add mapping support between upsilon and LAM             :story:
+    CLOSED: [2017-08-08 Tue 06:51]
+
+*Rationale*: Upsilon is to be removed.
+
+At present we map upsilon directly to a language-specific model
+(C++/C#), which gets code-generated. However, from a tailor
+perspective, this is not ideal; we would end up with N different
+models. Ideally, we should get a LAM representation of the JSON model
+which could then be used to code-generate multiple languages.
+
+This is probably not too hard, given the mapper knows how to convert
+between upsilon and LAM. We just need to finish LAM support and then
+try mapping them and see what breaks. Tailor would have to somehow
+tell yarn to set the output language to LAM.
+
+Notes:
+
+- if output is more than one language, change it to LAM. Otherwise
+  leave it as language specific.
+- we need to inject via meta-data the annotations for the output
+  languages.
+- We only need to perform mapping if input language is upsilon. For
+  all other languages we can leave it as is. But for upsilon, tailor
+  needs to do a full intermediate model workflow.
+- unparsed type needs to be recomputed as part of mapping.
+- we are not adding the LAM mapping to the upsilon id container.
+- we need to add support for "default mappings"
+
+*** CANCELLED Enumerations coming out of Upsilon are empty            :story:
+    CLOSED: [2017-08-08 Tue 06:51]
+
+*Rationale*: Upsilon is to be removed.
+
+We don't seem to be translating the enumerators into yarn
+enumerators.
+
+*** CANCELLED Do not generate upsilon proxy models                    :story:
+    CLOSED: [2017-08-08 Tue 06:51]
+
+*Rationale*: Upsilon is to be removed.
+
+At present we are marking all types in an upsilon config as target. In
+practice, only one of the models is the target.

@@ -1,0 +1,345 @@
+#+title: Sprint Backlog 74
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- get yarn into its final shape, with the work in single element
+  container;
+- make inroads in supporting composite model names;
+- get continuous builds working again.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-11-23 Mon 22:59]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *20:54* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 20:54   |       |      |
+| Active                                                                      |         | 20:54 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:50 |
+| COMPLETED Write the next interesting instalment                             |         |       | 1:05 |
+| COMPLETED SML json hydrator =read_module_path= needs refactoring            |         |       | 1:21 |
+| COMPLETED Generate all yarn names using name factory                        |         |       | 7:25 |
+| COMPLETED Rename yarn's =object=                                            |         |       | 0:14 |
+| COMPLETED Populate model module path                                        |         |       | 0:59 |
+| COMPLETED Update name factory and builder to compute qualified name         |         |       | 0:11 |
+| COMPLETED Remove original model name from location                          |         |       | 4:07 |
+| COMPLETED Rename =in_global_namespace=                                      |         |       | 0:27 |
+| COMPLETED Rename original parents                                           |         |       | 0:19 |
+| COMPLETED Rename all model items traversal                                  |         |       | 0:11 |
+| POSTPONED Help contributor setup a windows environment to build dogen       |         |       | 0:45 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-11-23 Mon 22:59]
+    CLOCK: [2015-11-22 Sun 22:39]--[2015-11-22 Sun 23:21] =>  0:42
+    CLOCK: [2015-11-21 Sat 22:42]--[2015-11-21 Sat 23:05] =>  0:23
+    CLOCK: [2015-11-19 Thu 18:18]--[2015-11-19 Thu 18:47] =>  0:29
+    CLOCK: [2015-11-19 Thu 18:04]--[2015-11-19 Thu 18:17] =>  0:13
+    CLOCK: [2015-11-19 Thu 08:44]--[2015-11-19 Thu 08:53] =>  0:09
+    CLOCK: [2015-11-19 Thu 08:04]--[2015-11-19 Thu 08:29] =>  0:25
+    CLOCK: [2015-11-09 Mon 21:21]--[2015-11-09 Mon 22:50] =>  1:29
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Write the next interesting instalment                   :story:
+    CLOSED: [2015-11-09 Mon 23:56]
+    CLOCK: [2015-11-09 Mon 22:51]--[2015-11-09 Mon 23:56] =>  1:05
+
+We've accumulated plenty of tabs with articles we've read of
+late. Offload them into the next interesting instalment.
+
+*** COMPLETED Remove primitive model handling in yarn dia transformer :story:
+    CLOSED: [2015-11-09 Mon 22:35]
+
+*Rationale*: this was implemented in previous sprint.
+
+We seem to be doing some handling for primitives which is no longer
+required. The handling of current model is also very dodgy. All in
+transformer's update model reference.
+
+Actually this is nothing at all to do with the primitive model but all
+to do with computing the correct name. We need to start using the
+builder here.
+*** COMPLETED Create method to traverse all types when resolving names :story:
+    CLOSED: [2015-11-19 Thu 08:24]
+
+*New Understanding*
+
+We can't use all model items traversal here because we are not
+traversing all types but doing a search across the different elements
+container. However we can do a function that is reused by all.
+
+*Previous Understanding*
+
+Resolver should use all types traversal instead of hand-picked queries
+on the containers. We should do the exact same look-ups for all
+containers:
+
+- unchanged - name as it was original read out.
+- from containing module name, by moving up from the containing module
+  to the root module name (popping the internal module list of the
+  containing module until its empty).
+- from the references names, using external module path only.
+
+*** COMPLETED SML json hydrator =read_module_path= needs refactoring  :story:
+    CLOSED: [2015-11-19 Thu 08:27]
+    CLOCK: [2015-11-11 Wed 21:30]--[2015-11-11 Wed 22:51] =>  1:21
+
+We have a very misleading function =read_module_path= which reads
+modules but also creates modules that do not exist. We need to split
+this into a =read= function without side-effects and a =create=
+function that creates the missing modules.
+
+*** COMPLETED Generate all yarn names using name factory              :story:
+    CLOSED: [2015-11-20 Fri 22:10]
+    CLOCK: [2015-11-20 Fri 21:05]--[2015-11-20 Fri 21:30] =>  0:25
+    CLOCK: [2015-11-20 Fri 12:10]--[2015-11-20 Fri 12:30] =>  0:20
+    CLOCK: [2015-11-19 Thu 22:01]--[2015-11-19 Thu 22:15] =>  0:14
+    CLOCK: [2015-11-17 Tue 22:54]--[2015-11-17 Tue 23:33] =>  0:39
+    CLOCK: [2015-11-17 Tue 22:44]--[2015-11-17 Tue 22:53] =>  0:09
+    CLOCK: [2015-11-17 Tue 21:51]--[2015-11-17 Tue 22:43] =>  0:52
+    CLOCK: [2015-11-17 Tue 21:19]--[2015-11-17 Tue 21:50] =>  0:31
+    CLOCK: [2015-11-16 Mon 20:44]--[2015-11-16 Mon 22:47] =>  2:03
+    CLOCK: [2015-11-11 Wed 21:26]--[2015-11-11 Wed 21:29] =>  0:03
+    CLOCK: [2015-11-10 Tue 23:22]--[2015-11-10 Tue 23:32] =>  0:10
+    CLOCK: [2015-11-10 Tue 23:02]--[2015-11-10 Tue 23:21] =>  0:19
+    CLOCK: [2015-11-10 Tue 21:21]--[2015-11-10 Tue 23:01] =>  1:40
+
+We need to go through the code base and make sure that whenever we
+create a yarn name we do it using the factory rather than hand rolling
+one. This includes:
+
+- yarn main (done)
+- yarn test (done)
+- yarn dia (done)
+- yarn json (done)
+- resolver (done)
+- add in global namespace to primitve JSON model. (done)
+- cpp (done)
+
+*** COMPLETED Rename yarn's =object=                                  :story:
+    CLOSED: [2015-11-20 Fri 22:15]
+    CLOCK: [2015-11-19 Thu 08:35]--[2015-11-19 Thu 08:43] =>  0:08
+    CLOCK: [2015-11-19 Thu 08:29]--[2015-11-19 Thu 08:35] =>  0:06
+
+We start off by trying to follow the DDD naming but that has now been
+changed in favour of more traditional meta-model names. In this sense,
+object is not a good name as it evokes M0 rather than M1 or
+higher. Perhaps =structure=? But structures do not normally have
+methods. We probably should look at non-C-based languages for ideas.
+
+Final word on this:
+
+- object is fine, in keeping with the other names (concept,
+  enumeration, etc). In reality, we need to end this fixation for
+  =class=. We are creating a meta-model language to describe types for
+  a specific purpose.
+- we need to document this rationale in the manual at some point.
+
+**** Thought experiments on prefixing all types with =meta=
+
+Actually, one crazy but possibly correct solution would be to use the
+prefix =meta=. We had decided against it many sprints ago because
+=sml= _was_ a meta-model, so it didn't make a lot of sense to use meta
+everywhere. However, now that =yarn= has grown as a proper code
+generation model - doing a lot more than just provide meta-types - we
+now only have a few types that are meta-types. These are the
+descendents of element:
+
+- =meta_class=: what we call object. This is a class that represents
+  all classes.
+- =meta_concept=: the concept that represents all concepts.
+- ...
+
+and so on. With the prefix =meta_= these names actually tell the truth
+in terms of the responsibilities of these classes. We should also
+rename the =Object= concept accordingly.
+
+Note that the stereotypes remain the same. That is =enumeration= is
+still a stereotype that applies to the current UML class, making it an
+enumeration rather than some kind of meta-enumeration. Same with
+=concept=, etc.
+
+Problem areas:
+
+- =intermediate_meta_model=: name is too big. It was already too big
+  but now its just silly. We need to consider yet another rename,
+  perhaps =raw_meta_model=?
+- =meta_model=: acceptable.
+- =meta_property=: we could continue to call it property but in
+  reality it is not a property just like concept is not a concept, so
+  for consistency purposes it should be renamed too.
+- plurals, variables, etc: it would be annoying to have to start
+  calling the containers =meta_classes= instead of =classes= and so
+  on, but strictly speaking that is the correct name. Same for
+  variables.
+
+In truth by the time we finished applying the prefix =meta= in all
+these places, it has lost all of its meaning. We need to take the
+eCore approach and assume we are in the meta-layer, so there is no
+need for a prefix. The only problem is =object=.
+
+*** COMPLETED Populate model module path                              :story:
+    CLOSED: [2015-11-20 Fri 23:08]
+    CLOCK: [2015-11-20 Fri 22:09]--[2015-11-20 Fri 23:08] =>  0:59
+
+We need to start updating model name.
+
+*** COMPLETED Update name factory and builder to compute qualified name :story:
+    CLOSED: [2015-11-20 Fri 23:21]
+    CLOCK: [2015-11-20 Fri 23:10]--[2015-11-20 Fri 23:21] =>  0:11
+
+We started off by disabling the qualified name to make resolution
+work. We now need to enable it and fix all issues.
+
+*** COMPLETED Remove original model name from location                :story:
+    CLOSED: [2015-11-22 Sun 22:38]
+    CLOCK: [2015-11-22 Sun 22:16]--[2015-11-22 Sun 22:38] =>  0:22
+    CLOCK: [2015-11-22 Sun 22:01]--[2015-11-22 Sun 22:15] =>  0:14
+    CLOCK: [2015-11-21 Sat 23:06]--[2015-11-21 Sat 23:12] =>  0:06
+    CLOCK: [2015-11-21 Sat 22:14]--[2015-11-21 Sat 22:41] =>  0:27
+    CLOCK: [2015-11-21 Sat 21:20]--[2015-11-21 Sat 22:13] =>  0:53
+    CLOCK: [2015-11-21 Sat 21:13]--[2015-11-21 Sat 21:20] =>  0:07
+    CLOCK: [2015-11-21 Sat 20:31]--[2015-11-21 Sat 21:12] =>  0:41
+    CLOCK: [2015-11-20 Fri 23:22]--[2015-11-21 Sat 00:39] =>  1:17
+
+Since the objective of location is to track a point in element space,
+it seems a bit redundant to have original model name there. We should
+move this to the element itself.
+
+The good thing about this is that we can now locate the model even
+when the type was placed in global namespace.
+
+Notes:
+
+- generalisation indexer: problem with leaves location.
+- merger: problems with location.
+
+*** COMPLETED Handle types placed in the global namespace             :story:
+    CLOSED: [2015-11-22 Sun 22:39]
+
+Types such as =int= etc must be handled differently from other
+types. The idea here is that these types are part of a model but
+declared directly into the global namespace. If we model things
+correctly, these types would exist in a point in element space where
+everything but simple name is empty. However we do not do this because
+it would mean that we could not distinguish the origin of such
+types. It is still not clear why this is a requirement.
+
+- if we do not need to remember the origin of a type, we could simply
+  change JSON and dia to allow types to live in global namespace;
+  perhaps a flag in global namespace would trigger everything on that
+  type to be blank (all location fields). This is the right solution
+  as it would then mean resolver would just work and we can now add
+  any type to the global namespace.
+- if we do need to remember the origin, we could manufacture a type
+  name from each reference name, by taking all properties from the
+  reference name (model name, etc). The problem with this is that we
+  can now refer to any type in any model without qualifying it with
+  model name, which is not ideal. So we'd have to have a flag at the
+  element level (something like is in global namespace) to figure out
+  what is valid and what is not.
+
+Actually the solution for this may be to split the "location" model
+name from the "origin" model name. Location is the position of the
+type in element space, and so should be blank. Origin is the name of
+the model it came from, and should exist in the element itself.
+
+*** COMPLETED Rename =in_global_namespace=                            :story:
+    CLOSED: [2015-11-22 Sun 23:50]
+    CLOCK: [2015-11-22 Sun 23:33]--[2015-11-22 Sun 23:50] =>  0:17
+    CLOCK: [2015-11-22 Sun 23:22]--[2015-11-22 Sun 23:32] =>  0:10
+
+We used a C++ keyword by mistake in yarn, should have been global
+module. We should also check where we generate the global module.
+
+*** COMPLETED Rename original parents                                 :story:
+    CLOSED: [2015-11-23 Mon 00:10]
+    CLOCK: [2015-11-22 Sun 23:51]--[2015-11-23 Mon 00:10] =>  0:19
+
+Inheritance follows a tree of some kind. We should use tree
+terminology for this. According to [[https://en.wikipedia.org/wiki/Tree_(graph_theory)][wikipedia]], root parent would be a
+sensible name.
+
+*** COMPLETED Rename all model items traversal                        :story:
+    CLOSED: [2015-11-23 Mon 00:19]
+    CLOCK: [2015-11-23 Mon 00:11]--[2015-11-23 Mon 00:22] =>  0:11
+
+We now know model items are called elements, so this should be an
+element traversal.
+
+*** POSTPONED Help contributor setup a windows environment to build dogen :story:
+    CLOSED: [2015-11-23 Mon 22:59]
+    CLOCK: [2015-11-22 Sun 20:55]--[2015-11-22 Sun 21:40] =>  0:45
+
+We should write down all instructions and use them for a blog post.
+
+Current instructions:
+
+1. Create a new folder =c:\development= with a structure that is
+   something like:
+   - =c:\development\packages= -> top-level directory for all the
+     applications we install such as cmake, git, codelite, etc.
+   - =c:\development\downloads= -> raw packages as downloaded in case we
+     need to install them again.
+   - =c:\development\code= -> place where the code we will work with
+     will live. this includes dogen and boost.
+   - =c:\development\third_party= -> place where the libraries we depend
+     on to build dogen will live when installed. this is the place
+     where we will install boost to (eventually).
+2. download and install gcc, a free c++ compiler:
+http://sourceforge.net/projects/tdm-gcc/files/TDM-GCC%20Installer/tdm-gcc-5.1.0-3.exe/download
+3. download and install latest cmake:
+https://cmake.org/files/v3.4/cmake-3.4.0-win32-x86.exe
+4. download and install code lite, a free IDE: http://downloads.codelite.org/
+5. download latest boost: http://www.boost.org/users/history/version_1_59_0.html
+6. download and install latest git: https://git-scm.com/download/win
+
+** Deprecated
+*** CANCELLED Replace name with id's in yarn                          :story:
+    CLOSED: [2015-11-09 Mon 22:36]
+
+*Rationale*: superseded with the backlog refactoring.
+
+*New Understanding*
+
+This is a new spin on that old chestnut of splitting partial models
+from full models. We probably got enough to do this. The
+
+*Previous Understanding*
+
+We don't really need qname in it's current form for the purposes of
+yarn. We should:
+
+- create a base class for all types in model called element.
+- add a property called id to element. Compute id on the basis of
+  hashing name and location. Change all model containers,
+  relationships etc to use id instead of qname.
+*** CANCELLED Rename types in =yarn= using MOF/eCore terms            :story:
+    CLOSED: [2015-11-19 Thu 08:46]
+
+*Rationale*: We have more or less got to the final form for yarn given
+the use cases. There is no need for further renamings, other than the
+stories we already have open on the topic.
+
+Rename the types in =yarn= to make them a bit more inline with
+MOF/eCore. As much as possible but without going overboard. Ensure we
+do not pick up meta-meta-model concepts by mistake. Rename nested
+qname to something more sensible from MOF/eCore. Review all concept
+names in this light.
+*** CANCELLED Add =operator<= for names                               :story:
+    CLOSED: [2015-11-22 Sun 22:44]
+
+*Rationale*: we will use the element identifier as the key for most
+things so this will no longer be required.
+
+We seem to redefine this all over the place. Create a utility class
+somewhere.

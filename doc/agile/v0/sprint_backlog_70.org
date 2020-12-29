@@ -1,0 +1,1236 @@
+#+title: Sprint Backlog 70
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) spike(p) }
+
+* Mission Statement
+
+- Finish implementing all formatters using the new cpp architecture.
+- Remove legacy cpp architecture.
+- Remove unused features.
+- Start SML refactor.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75
+#+CAPTION: Clock summary at [2015-07-20 Mon 14:56]
+| <75>                                                                        |         |       |      |
+| Headline                                                                    | Time    |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                                | *41:29* |       |      |
+|-----------------------------------------------------------------------------+---------+-------+------|
+| Stories                                                                     | 41:29   |       |      |
+| Active                                                                      |         | 41:29 |      |
+| COMPLETED Sprint and product backlog grooming                               |         |       | 3:39 |
+| COMPLETED Rename top-level registrars to avoid clashes with serialisation   |         |       | 0:10 |
+| COMPLETED Implement serialisation registrar implementation formatter        |         |       | 4:20 |
+| COMPLETED Add boilerplate for cmakelists formatters                         |         |       | 0:52 |
+| COMPLETED Implement include cmakelists formatter                            |         |       | 0:54 |
+| COMPLETED Implement source cmakelists formatter                             |         |       | 0:46 |
+| COMPLETED Implement includer formatter                                      |         |       | 3:35 |
+| COMPLETED Implement serialisation formatter for enumerations                |         |       | 0:47 |
+| COMPLETED Implement odb pragma formatter for enumerations                   |         |       | 0:28 |
+| COMPLETED Generate empty files for non-generatable types                    |         |       | 0:56 |
+| COMPLETED Switch off overrides for legacy formatters                        |         |       | 0:45 |
+| COMPLETED Switch off SML to CPP transformation                              |         |       | 0:07 |
+| COMPLETED Remove knit backends and use backend model instead                |         |       | 1:42 |
+| COMPLETED Managed directories is not correct in new world                   |         |       | 0:06 |
+| COMPLETED Remove unused command line options                                |         |       | 0:58 |
+| COMPLETED Remove unused classes in cpp model                                |         |       | 0:05 |
+| COMPLETED Remove support for empty model name                               |         |       | 0:28 |
+| COMPLETED Remove ability to output to stdout                                |         |       | 0:20 |
+| COMPLETED Remove unused stereotypes and object types                        |         |       | 1:48 |
+| COMPLETED Remove is comparable from SML                                     |         |       | 0:15 |
+| COMPLETED Add forward declarations to visitor                               |         |       | 0:06 |
+| COMPLETED Remove unused properties in CPP model                             |         |       | 0:22 |
+| COMPLETED Remove default values in SML                                      |         |       | 0:15 |
+| COMPLETED Consider removing =number_of_type_arguments= in SML               |         |       | 0:33 |
+| COMPLETED Consider removing =module_types= in SML                           |         |       | 0:11 |
+| COMPLETED Remove unused relationship types in SML                           |         |       | 0:06 |
+| CANCELLED Remove inherited properties in SML                                |         |       | 0:09 |
+| COMPLETED Remove all types traversal from SML                               |         |       | 0:05 |
+| COMPLETED Remove operations in SML                                          |         |       | 0:17 |
+| COMPLETED Remove generation failure exception in knit                       |         |       | 0:13 |
+| COMPLETED Remove opaque parameters from cpp properties                      |         |       | 0:06 |
+| COMPLETED Read Model Driven Software Development book and papers            |         |       | 9:30 |
+| COMPLETED Split a fully formed model from partial models                    |         |       | 0:21 |
+| COMPLETED Define an end to end approach given refactoring stories           |         |       | 3:01 |
+| COMPLETED Setup pgannon to develop dogen site                               |         |       | 1:49 |
+| POSTPONED Add support for pulling dependencies from biicode                 |         |       | 1:24 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2015-07-20 Mon 14:56]
+    CLOCK: [2015-07-17 Fri 07:51]--[2015-07-17 Fri 08:39] =>  0:48
+    CLOCK: [2015-07-15 Wed 19:13]--[2015-07-15 Wed 19:22] =>  0:09
+    CLOCK: [2015-07-15 Wed 18:31]--[2015-07-15 Wed 19:12] =>  0:41
+    CLOCK: [2015-07-15 Wed 15:23]--[2015-07-15 Wed 15:50] =>  0:27
+    CLOCK: [2015-07-12 Sun 00:05]--[2015-07-12 Sun 00:13] =>  0:08
+    CLOCK: [2015-07-11 Sat 23:55]--[2015-07-12 Sun 00:05] =>  0:10
+    CLOCK: [2015-07-10 Fri 23:03]--[2015-07-10 Fri 23:11] =>  0:08
+    CLOCK: [2015-07-10 Fri 15:27]--[2015-07-10 Fri 15:49] =>  0:22
+    CLOCK: [2015-07-09 Thu 21:21]--[2015-07-09 Thu 21:49] =>  0:28
+    CLOCK: [2015-07-07 Tue 23:15]--[2015-07-07 Tue 23:21] =>  0:06
+    CLOCK: [2015-07-06 Mon 15:01]--[2015-07-06 Mon 15:13] =>  0:12
+
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Rename top-level registrars to avoid clashes with serialisation :story:
+    CLOSED: [2015-07-07 Tue 16:11]
+    CLOCK: [2015-07-07 Tue 16:01]--[2015-07-07 Tue 16:11] =>  0:10
+
+Due to the hacks we put in that generate serialisation registrar's
+qnames, we now are no longer able to have domain types called
+=registrar= in the top-level namespace. For now we can just rename
+these and fix it properly later.
+
+*** COMPLETED Implement serialisation registrar implementation formatter :story:
+    CLOSED: [2015-07-07 Tue 16:13]
+    CLOCK: [2015-07-07 Tue 15:51]--[2015-07-07 Tue 16:00] =>  0:09
+    CLOCK: [2015-07-07 Tue 13:31]--[2015-07-07 Tue 15:00] =>  1:29
+    CLOCK: [2015-07-06 Mon 17:30]--[2015-07-06 Mon 17:57] =>  0:27
+    CLOCK: [2015-07-06 Mon 15:14]--[2015-07-06 Mon 17:29] =>  2:15
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Problems:
+
+- references are not handled correctly.
+
+Problems solved:
+
+- includes for leaves are missing. We need to somehow get the include
+  generation to work for registrar and also the aspect settings
+  generation. Lots of hackery required to achieved this.
+- arguments passed in to eos serialisation were hard coded in legacy.
+- no newline at the end of the file.
+- missing includes. Factory not populating includes either.
+- eos check is not yielding expected result.
+
+*** COMPLETED Add boilerplate for cmakelists formatters               :story:
+    CLOSED: [2015-07-07 Tue 17:04]
+    CLOCK: [2015-07-07 Tue 16:12]--[2015-07-07 Tue 17:04] =>  0:52
+
+Add skeletons for interfaces, stitch templates, etc and hook it all
+together with the initialiser.
+
+*** COMPLETED Implement include cmakelists formatter                  :story:
+    CLOSED: [2015-07-07 Tue 17:55]
+    CLOCK: [2015-07-07 Tue 17:05]--[2015-07-07 Tue 17:59] =>  0:54
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+*** COMPLETED Implement source cmakelists formatter                   :story:
+    CLOSED: [2015-07-07 Tue 22:26]
+    CLOCK: [2015-07-07 Tue 21:40]--[2015-07-07 Tue 22:26] =>  0:46
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+*** COMPLETED Implement includer formatter                            :story:
+    CLOSED: [2015-07-08 Wed 16:08]
+    CLOCK: [2015-07-08 Wed 16:09]--[2015-07-08 Wed 16:31] =>  0:22
+    CLOCK: [2015-07-08 Wed 14:29]--[2015-07-08 Wed 16:08] =>  1:39
+    CLOCK: [2015-07-08 Wed 14:03]--[2015-07-08 Wed 14:28] =>  0:25
+    CLOCK: [2015-07-08 Wed 13:39]--[2015-07-08 Wed 14:02] =>  0:23
+    CLOCK: [2015-07-07 Tue 22:28]--[2015-07-07 Tue 23:14] =>  0:46
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+Problems:
+
+- no includes.
+- need to add guard to legacy.
+
+Problems Solved:
+
+- no general settings.
+- missing machinery to hookup includers.
+- generating includers for disabled facets.
+
+*** COMPLETED Implement serialisation formatter for enumerations      :story:
+    CLOSED: [2015-07-08 Wed 17:48]
+    CLOCK: [2015-07-08 Wed 17:34]--[2015-07-08 Wed 17:48] =>  0:14
+    CLOCK: [2015-07-08 Wed 16:57]--[2015-07-08 Wed 17:30] =>  0:33
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+*** COMPLETED Implement odb pragma formatter for enumerations         :story:
+    CLOSED: [2015-07-08 Wed 20:45]
+    CLOCK: [2015-07-08 Wed 20:33]--[2015-07-08 Wed 20:45] =>  0:12
+    CLOCK: [2015-07-08 Wed 17:49]--[2015-07-08 Wed 18:05] =>  0:16
+
+Create the formatter, stitch template and all associated
+machinery. Fix all differences.
+
+*** COMPLETED Generate empty files for non-generatable types          :story:
+    CLOSED: [2015-07-08 Wed 21:43]
+    CLOCK: [2015-07-08 Wed 21:40]--[2015-07-08 Wed 21:43] =>  0:03
+    CLOCK: [2015-07-08 Wed 20:46]--[2015-07-08 Wed 21:39] =>  0:53
+
+At present we are ignoring all types that are non-generatable or
+partially generatable. We are also not generating forward
+declarations.
+
+*** COMPLETED Switch off overrides for legacy formatters              :story:
+    CLOSED: [2015-07-08 Wed 22:06]
+    CLOCK: [2015-07-08 Wed 21:44]--[2015-07-08 Wed 22:05] =>  0:21
+    CLOCK: [2015-07-08 Wed 16:32]--[2015-07-08 Wed 16:56] =>  0:24
+
+We need to switch off the legacy formatters and deal with the fallout.
+
+Problems:
+
+- generating empty file names.
+- not generating empty files for non-generatable types.
+- not generating odb pragmas or serialisation for enumerations.
+
+*** COMPLETED Switch off SML to CPP transformation                    :story:
+    CLOSED: [2015-07-08 Wed 22:14]
+    CLOCK: [2015-07-08 Wed 22:07]--[2015-07-08 Wed 22:14] =>  0:07
+
+Switch the legacy transformation and formatting.
+
+*** COMPLETED Remove knit backends and use backend model instead      :story:
+    CLOSED: [2015-07-09 Thu 21:51]
+    CLOCK: [2015-07-09 Thu 21:50]--[2015-07-09 Thu 21:55] =>  0:05
+    CLOCK: [2015-07-09 Thu 20:56]--[2015-07-09 Thu 21:15] =>  0:09
+    CLOCK: [2015-07-09 Thu 07:36]--[2015-07-09 Thu 08:22] =>  0:46
+    CLOCK: [2015-07-09 Thu 07:22]--[2015-07-09 Thu 07:33] =>  0:11
+    CLOCK: [2015-07-08 Wed 22:32]--[2015-07-08 Wed 22:53] =>  0:21
+
+We need to stop using the knit version of the backends. This will
+probably require fixing the managed directories problem.
+
+*** COMPLETED Managed directories is not correct in new world         :story:
+    CLOSED: [2015-07-10 Fri 09:57]
+    CLOCK: [2015-07-10 Fri 09:51]--[2015-07-10 Fri 09:57] =>  0:06
+
+When generating the config model, we used to get the following initial
+configuration for the housekeeper:
+
+: [ "/home/marco/Development/DomainDrivenConsulting/dogen/projects/config" ]
+
+but now we get:
+
+: [ "/home/marco/Development/DomainDrivenConsulting/dogen/projects/config/include",
+:  "/home/marco/Development/DomainDrivenConsulting/dogen/projects/config/include" ]
+
+*** COMPLETED Remove unused command line options                      :story:
+    CLOSED: [2015-07-10 Fri 10:19]
+    CLOCK: [2015-07-10 Fri 09:57]--[2015-07-10 Fri 10:19] =>  0:22
+    CLOCK: [2015-07-10 Fri 09:15]--[2015-07-10 Fri 09:51] =>  0:36
+
+Now that we mapped a number of command line options to meta-data, we
+should be able to remove them from the config model.
+
+*** COMPLETED Remove unused classes in cpp model                      :story:
+    CLOSED: [2015-07-10 Fri 10:26]
+    CLOCK: [2015-07-10 Fri 10:21]--[2015-07-10 Fri 10:26] =>  0:05
+
+We need to remove all of the old world classes we had in the =cpp=
+model such as content descriptor, project, etc.
+
+*** COMPLETED Remove support for empty model name                     :story:
+    CLOSED: [2015-07-10 Fri 10:57]
+    CLOCK: [2015-07-10 Fri 10:27]--[2015-07-10 Fri 10:55] =>  0:28
+
+One of the features we had originally added but for which we do not
+have any use cases. Ability to have a model with an empty name.
+
+*** COMPLETED Remove ability to output to stdout                      :story:
+    CLOSED: [2015-07-10 Fri 11:16]
+    CLOCK: [2015-07-10 Fri 10:56]--[2015-07-10 Fri 11:16] =>  0:20
+
+One of the features we had originally added but for which we do not
+have any use cases. Ability to output generated code to stdout.
+
+*** COMPLETED Remove unused stereotypes and object types              :story:
+    CLOSED: [2015-07-10 Fri 15:10]
+    CLOCK: [2015-07-10 Fri 13:41]--[2015-07-10 Fri 15:10] =>  1:29
+    CLOCK: [2015-07-10 Fri 11:19]--[2015-07-10 Fri 11:38] =>  0:19
+
+At present we have a large number of stereotypes, but only a few are
+actually in use. Remove all that aren't in use.
+
+*** CANCELLED Remove is final from SML                                :story:
+    CLOSED: [2015-07-10 Fri 15:12]
+
+*Rationale*: This is actually fully coded with the new formatters.
+
+We never did implement comparable properly. Remove all remnants of the
+previous attempt.
+
+*** COMPLETED Remove is comparable from SML                           :story:
+    CLOSED: [2015-07-10 Fri 15:27]
+    CLOCK: [2015-07-10 Fri 15:12]--[2015-07-10 Fri 15:27] =>  0:15
+
+We never did implement comparable properly. Remove all remnants of the
+previous attempt.
+
+*** COMPLETED Add forward declarations to visitor                     :story:
+    CLOSED: [2015-07-10 Fri 17:07]
+    CLOCK: [2015-07-10 Fri 17:01]--[2015-07-10 Fri 17:07] =>  0:06
+
+At present we are suppressing forward declarations for visitor in
+transformer due to legacy compatibility. Remove this and see what
+breaks.
+
+*** COMPLETED Remove unused properties in CPP model                   :story:
+    CLOSED: [2015-07-10 Fri 23:02]
+    CLOCK: [2015-07-10 Fri 22:40]--[2015-07-10 Fri 23:02] =>  0:22
+
+As part of the version clean up, we did not remove all of the C++
+representations of the version related properties. Clean these up and
+any others that are not used by the new world formatters.
+
+*** COMPLETED Remove default values in SML                            :story:
+    CLOSED: [2015-07-11 Sat 21:46]
+    CLOCK: [2015-07-11 Sat 21:31]--[2015-07-11 Sat 21:46] =>  0:15
+
+We seem to have started adding these but its just another case of
+half-baked support. Remove all remnants.
+
+*** COMPLETED Consider removing =number_of_type_arguments= in SML     :story:
+    CLOSED: [2015-07-11 Sat 22:20]
+    CLOCK: [2015-07-11 Sat 21:47]--[2015-07-11 Sat 22:20] =>  0:33
+
+Check to see if this property is used and if not, remove it.
+
+*** COMPLETED Consider removing =module_types= in SML                 :story:
+    CLOSED: [2015-07-11 Sat 22:32]
+    CLOCK: [2015-07-11 Sat 22:21]--[2015-07-11 Sat 22:32] =>  0:11
+
+We need to see if this enum is used for anything sensible, and if not
+remove it.
+
+*** COMPLETED Remove unused relationship types in SML                 :story:
+    CLOSED: [2015-07-11 Sat 22:39]
+    CLOCK: [2015-07-11 Sat 22:33]--[2015-07-11 Sat 22:39] =>  0:06
+
+We seem to have a few relationship types that are no longer required.
+
+*** CANCELLED Remove inherited properties in SML                      :story:
+    CLOSED: [2015-07-11 Sat 22:50]
+    CLOCK: [2015-07-11 Sat 22:41]--[2015-07-11 Sat 22:50] =>  0:09
+
+*Rationale*: the properties are in use by formattables.
+
+It seems there is no user for these at the moment so remove them.
+
+*** COMPLETED Remove all types traversal from SML                     :story:
+    CLOSED: [2015-07-11 Sat 22:58]
+    CLOCK: [2015-07-11 Sat 22:52]--[2015-07-11 Sat 22:57] =>  0:05
+
+This does not appear to be used.
+
+*** COMPLETED Remove operations in SML                                :story:
+    CLOSED: [2015-07-11 Sat 23:17]
+    CLOCK: [2015-07-11 Sat 22:59]--[2015-07-11 Sat 23:16] =>  0:17
+
+We have some half-baked support for operations. Remove it.
+
+*** COMPLETED Remove generation failure exception in knit             :story:
+    CLOSED: [2015-07-11 Sat 23:31]
+    CLOCK: [2015-07-11 Sat 23:18]--[2015-07-11 Sat 23:31] =>  0:13
+
+At present we have two types of exceptions in knit: workflow error and
+generation failure. We should only have one type.
+
+*** COMPLETED Remove opaque parameters from cpp properties            :story:
+    CLOSED: [2015-07-12 Sun 00:19]
+    CLOCK: [2015-07-12 Sun 00:13]--[2015-07-12 Sun 00:19] =>  0:06
+
+Seems like this got missed out on previous tidy-up.
+
+*** COMPLETED Read Model Driven Software Development book and papers  :story:
+    CLOSED: [2015-07-15 Wed 18:11]
+    CLOCK: [2015-07-15 Wed 15:50]--[2015-07-15 Wed 18:11] =>  2:21
+    CLOCK: [2015-07-14 Tue 17:44]--[2015-07-14 Tue 17:45] =>  0:01
+    CLOCK: [2015-07-14 Tue 13:50]--[2015-07-14 Tue 17:44] =>  3:54
+    CLOCK: [2015-07-13 Mon 14:25]--[2015-07-13 Mon 17:17] =>  2:52
+    CLOCK: [2015-07-13 Mon 14:19]--[2015-07-13 Mon 14:25] =>  0:06
+    CLOCK: [2015-07-13 Mon 14:01]--[2015-07-13 Mon 14:17] =>  0:16
+
+Seems like the Model-Driven field already contains a lot of very
+useful definitions in this space. Read mainly the book but also the
+papers and figure out what they can do to help us find a way around
+the domain.
+
+**** Links of books and papers to read
+
+- [[http://www.voelter.de/data/books/mdsd-en.pdf][Model-Driven Software Development]]
+- [[http://researcher.ibm.com/researcher/files/zurich-jku/mdse-08.pdf][Model-Driven Software Engineering]]
+- [[http://people.cs.umass.edu/~brun/pubs/pubs/Edwards11ase.pdf][Isomorphism in Model Tools and Editors]]
+- [[http://met.guc.edu.eg/Repository/Faculty/Publications/371/2009.SCP.pdf][A type-centric framework for specifying heterogeneous, large-scale,
+  component-oriented, architectures]]
+- [[http://gsd.uwaterloo.ca/sites/default/files/2014-Bak-Clafer-Unifying-Class-Feature-Modeling(SOSYM).pdf][Clafer: Unifying Class and Feature Modeling]]
+- [[http://research.microsoft.com/en-us/um/people/pcosta/slides/generativeprogramming.pdf][Generative Programming]]
+- [[http://www.issi.uned.es/doctorado/generative/Bibliografia/TesisCzarnecki.pdf][Principles and Techniques of Software Engineering Based on Automated
+  Configuration and Fragment-Based Component Models]]
+- [[http://essay.utwente.nl/57286/1/scriptie_Overbeek.pdf][Meta Object Facility (MOF): investigation of the state of the art]]
+- [[http://www2.informatik.hu-berlin.de/sam/lehre/MDA-UML/UML-Infra-03-09-15.pdf][UML 2.0 Infrastructure Specification]]
+
+**** Useful terms and definitions from the book
+
+- *Model-based development*: the traditional kind of software
+  development, where developers create UML diagrams to represent the
+  code that they are working or going to work on, and perhaps use some
+  kind of simple tool to automate the generation of skeleton code; but
+  fundamentally, the models are there just as documentation. The idea
+  is to provide a visual representation of what is or will be in code.
+- *MDSD*: Model Driven Software Development. Models do not constitute
+  documentation, but are considered equal to code. Conversion of
+  models to code is automated. Models are blueprints like in CAD.
+  MDSD aims to find domain-specific abstractions and make them
+  accessible through formal modeling. Models can also be understood by
+  domain experts. "Driven" means that models are not peripheral but
+  central to the development process and as artefacts are at the same
+  level as source code. MDSD attempts to FIXME
+- *MDE*: [[https://en.wikipedia.org/wiki/Model-driven_engineering][Model-driven engineering]] is a software development
+  methodology which focuses on creating and exploiting domain models,
+  which are conceptual models of all the topics related to a specific
+  problem. Seems very similar to MDD and MDSD.
+- ADL: [[https://en.wikipedia.org/wiki/Architecture_description_language][Architecture description language]]. A computer language to
+  create a description of a software architecture. In the case of a
+  so-called technical architecture, the architecture must be
+  communicated to software developers; a functional architecture is
+  communicated to various stakeholders and users. Some ADLs that have
+  been developed are: Acme (developed by CMU), AADL (standardized by
+  the SAE), C2 (developed by UCI), Darwin (developed by Imperial
+  College London), and Wright (developed by CMU).
+- *Reverse Engineering*: The generation of UML diagrams or other
+  models from source code. The model has the same level of abstraction
+  as the code.
+- *Forward Engineering*: The generation of source code from high-level
+  models such as UML diagrams.
+- *Roundtripping*: The ability to do both Forward and Reverse
+  Engineering. The concept of being able to make any kind of change to
+  a model as well as to the code generated from that model. The
+  changes always propagate bidirectionally and both artifacts are
+  always consistent.
+- *MDD*: Model-Driven Development. A less precise but common name for
+  MDSD. For all intents and purposes can be thought of as a synonym of
+  MDSD.
+- MDSD is normally incompatible with roundtripping. The model is
+  definitely more abstract than the code generated from it. Thus it is
+  generally impossible to keep the model consistent automatically
+  after a manual change of the generated code. For this reason, manual
+  changes to generated code should be avoided.
+- *MDA*: Model Driven Architecture. Initiative by OMG to standardise
+  concepts around MDSD. Can be thought of as one flavour of
+  MDSD. Designed to fit UML since OMG is also responsible for it. Its
+  primary goal is interoperability between tools and the long-term
+  standardisation of models for popular application
+  domains. Ontologically, MDA is a specialization of MDSD.
+- Three "kinds" of code in an application:
+  - Individual Code: and finally an application-specific part that
+    cannot be generalized.
+  - Generic Code: a generic part that is identical for all future
+    applications
+  - Schematic Repetitive Code: a schematic part that is not identical
+    for all applications, but possesses the same systematics (for
+    example, based on the same design patterns). Also called
+    Infrastructure code: The existence of a software infrastructure
+    also implies the existence of corresponding infra- structure code
+    in the software systems using it. This is source code, which
+    mostly serves to establish the technical coupling between
+    infrastructure and applications to facilitate the development of
+    domain-specific code on top of it. 60% and 70% of modern
+    e-business applications typically consists of infrastructure code.
+- *[[https://en.wikipedia.org/wiki/Profile_(UML)][UML Profile]]*: A profile in the Unified Modeling Language (UML)
+  provides a generic extension mechanism for customizing UML models
+  for particular domains and platforms. Extension mechanisms allow
+  refining standard semantics in strictly additive manner, preventing
+  them from contradicting standard semantics. Profiles are defined
+  using stereotypes, tag definitions, and constraints. A Profile is a
+  collection of such extensions that collectively customize UML for a
+  particular domain (e.g., aerospace, healthcare, financial) or
+  platform (J2EE, .NET). UML models are not per se MDA models. The
+  most important difference between common UML models (for example
+  analysis models) and MDA models is that the meaning (semantics) of
+  MDA models is defined formally. This is guaranteed through the use
+  of a corresponding modeling language which that is typically
+  realised by a UML profile and its associated transformation rules.
+- PIM and PSM: PIM: Platform-Independent Model. Can be done via a UML
+  Profile. PSM: Platform-Specific Model. Can be done via a UML
+  Profile. It is important to note that a PIM and a PSM are relative
+  concepts – relative to the platform
+- transformation: map models to the respective next level, be it
+  further models or source code:
+  - Model-to-model transformation
+  - Model-to-code transformation
+- mapping: the mapping of one mode to another. Transformation is done
+  by means of mapping.
+- *Model*: an abstract representation of a system’s structure,
+  function or behaviour.
+- *Platform*: Anything that can be targeted such as CORBA, C++, etc.
+- *Generative Software Architecture*: all implementation details of
+  the architecture’s definition – that is, all architectural schemata
+  – are incorporated in software form. This requires a domain model of
+  the application as its input, and as output it generates the
+  complete infrastructure code of the application – the very code that
+  otherwise would need to be generated via a tedious copy/paste/modify
+  process.
+- *Protected regions*: also known as protected areas. Syntactically,
+  these are comments in the target language, but are interpreted by
+  the MDSD generator. Each protected region within the generated code
+  possesses a globally unique identifier disguised as a comment, and
+  is thus uniquely linked to a model element.
+- *Domain*: bounded field of interest or knowledge. To internalise and
+  process this knowledge, it is useful to create an ontology of a
+  domain’s concepts.
+- *Subdomains*: describe single parts or aspects of an entire system
+  for which a specialised modeling language is appropriate.
+- *Partition*: A comprehensive system can be broken down into
+  partitions or content increments. In an insurance domain, for
+  example, partitions could be defined for single sections or product
+  types, such as a "life", "vehicle", "liability" and so on.
+- *Abstract Syntax*: specifies what the language’s structure looks
+  like. An abstraction is introduced from such details as the spelling
+  of keywords, etc. The concrete syntax is the realisation of an
+  abstract syntax. Various concrete syntax forms can have a common
+  abstract syntax. Put anther way, the meta-model of a domain can be
+  expressed in different notations. How can the abstract syntax or the
+  meta-model of a domain be specified? Via a meta-model.
+- *MOF*: the meta object facility. specified by OMG.
+- *Static semantics*: property of a language that determines its
+  criteria for well-formedness.
+- *DSL*: Domain-specific language. Makes the key aspects of a domain –
+  but not all of its contents – formally expressable and
+  modelable.Possesses a meta-model, including its static semantics,
+  and a corresponding concrete syntax. The DSL should adopt concepts
+  from the problem space, so that a domain expert will recognize its
+  "domain language".
+- *Formal Models*: needs a DSL, and is thus obviously connected with
+  the respective domain.
+- *Platform*: has the task of supporting the realization of the
+  domain, that is, the transformation of the formal model into
+  something concrete.
+- *transformations*: A model-to-model transformation creates another
+  model. However, this model is typically based on a different
+  metamodel than the source model. A model-to-platform transformation,
+  in contrast, ‘knows’ the platform and generates artefacts (generated
+  artifacts) that are based on the platform.
+- *Platform Idioms*: Idioms that exist within the platform
+  transformation alone and need not be specified in the source model.
+- *Product*: MDSD pursues the goal of creating a software product in
+  part or in whole through one or more transformations. The product
+  can be an entire application or merely a component to be used as a
+  building block elsewhere. Such a product aggregates the platform,
+  generated, and sometimes even non-generated artefacts.
+- *Domain architecture*: The metamodel of a domain, a platform, and
+  the corresponding transformations, including the implemented idioms,
+  are the tools that are needed to make the transition from the model
+  to the product, whether completely or partially automated.
+- *Software System Families*: The set of all products that can be
+  created with a certain domain architecture.
+- *Product line*: set of complementary single products. From a user’s
+  perspective, the products in a product line can constitute
+  alternatives – that is, they be applicable in different but related
+  contexts – or can complement each other content-wise and thus define
+  a suite.
+- *Domain-Driven Design*: not directly related to MDSD. The only
+  connection is that DDD talks about deep domain understanding and the
+  importance of models. MDSD talks about automation. They are
+  complementary technologies.
+- *Software architecture*: describes to a certain level of detail the
+  structure (layering, modularization etc.) and the systematics
+  (patterns, conventions etc.) of a software system.
+- *Component*: is a self-contained piece of software with
+  clearly-defined interfaces and explicitlydeclared context
+  dependencies.
+- *Generate Good-Looking Code – Whenever Possible*: It is unrealistic
+  to assume that developers will never see the generated code. Even if
+  developers don’t have to change generated code, for example by
+  inserting manually-written sections, they will be confronted with it
+  if they debug the generated applications with conventional tools, or
+  if they have to check the generator configuration.
+- *Cartridges*: a cartridge is a ‘piece of generator’ for a certain
+  architectural aspect. ODB etc. Third-party off-the-shelf
+  cartridges. The problem then often becomes how to combine these
+  different cartridges, especially if they have been developed
+  independently and thus use different metamodels – different
+  stereotypes, tagged values, and so on. You certainly don’t want to
+  model things several times merely to be able to use various
+  incompatible cartridges. NOTE: this is the approach we use for ODB.
+- *Explicit Integration of Generated Code and Manual Parts*: this is
+  what dia2code does, but as a one off.
+- *3-tier implementation*: split generated code from manual code via
+  inheritance. We need to explain why we didn't take this approach.
+- *Code-generators*: meta-programs that process specifications (or
+  models) as input parameters, and which generate source code as
+  output. Meta-programs can be run at different times in relation to
+  the generated program: a) Completely independently of the base
+  program – that is, before it. b) During compilation of the base
+  program. c) While the base program runs.
+- Separation/Mixing of Program and Meta-program: a common (or at least
+  integrated) language exists for programming and metaprogramming, and
+  the source code components are not separated, but mixed. This can
+  lead to invocation relationships between the two levels, in
+  principle in both directions. C++ template metaprogramming can fall
+  into this category, as well as Lisp and CLOS. If program and
+  metaprogram are separated, the system’s creation takes place in two
+  distinct phases. The metaprogram is run and creates the base program
+  (or parts of it) as output, then ter- minates. The program does not
+  know that the metaprogram exists 1 . The separation is maintained
+  throughout the (meta-)programming process, including the build
+  process.
+- Separation of code classes. This involves the adaptation of the
+  target architecture in such a way that manually-created code must be
+  written into classes specifically created for this purpose.
+- *Model markings*: In some cases it is necessary to configure the
+  intermediate products manually to control their further
+  transformation stages. The OMG calls such a configuration model
+  markings. Model markings cannot be annotated directly in the PIM,
+  because this would involve the risk of losing platform independence.
+
+**** Notes
+
+- we should define a UML profile in Dia that contains all of the
+  required concepts for Dogen. Perhaps we don't even need
+  meta-data/KVPs. In particular it seems that "tagged values" are
+  already KVPs. There is also "extensions". These are used in
+  conjunction with stereotypes. So for example we could "extend" the
+  UML notion of an attribute with say a new UML meta-class called
+  Key. We would then mark attributes as =<<Key>>=. This would mean
+  they are not regular UML attributes, but instead they are an
+  instance of our extension.
+- we seem to have layers of "abstraction" around generation. The first
+  layer is simply: if I define a class called X, create me a class X
+  in language y. This is Dia2Code. The second is the application of
+  some minimal infrastructural behaviour: create boost serialisation
+  for X, hashing for X, etc. The third is another level up in
+  abstraction: annotating types with "architectural concepts". For
+  example we could have a =RemoteService= stereotype which by default
+  in C++ results in the generation of all boilerplate code required
+  for ASIO. All that is required is to associate commands and queries
+  with the service. This could be achieved by marking a type with some
+  other stereotype - or even better, to define an attribute such as
+  =<<Command>>= or something more meaningful and apply that to a UML
+  attribute. From this we have all the information required to
+  generate the networking code.
+- for ODB it would be nice if we could mark types with generic
+  stereotypes which could be mapped to ODB specific pragmas:
+  =<<PrimaryKey>>= etc. Actually, just =Key=; it is somebody else's
+  job to map it to a foreign or primary key. We could even have some
+  stereotypes which are PSM: =BoostSerialisable=, etc. Such that by
+  default =Serialisable= maps to =BoostSerialisable= in
+  C++. =RelationalEntity=?
+- does UML have a concept of stereotype sets or groups? If it did we
+  could create some such as =DomainEntity=: =Serialisable=,
+  =Printable= etc. =ComparableDomainEntity= and so on; we could create
+  an entire hierarchy of stereotypes. These would then be translated
+  to having facets on and off. These are also "additive": =Visitable=,
+  =DomainEntity= etc could be applied to a single entity. Actually
+  maybe it should just be called =Entity= as domain does not add much
+  value. Or =ValueObject=. We need to create a hierarchy of these.
+- this means that Concepts are very much like all other kinds of
+  stereotypes. It just means that sometimes a stereotype resolves to a
+  hard-coded meaning (=Serialisable=, etc) whereas sometimes it is
+  user defined (e.g. the user created a concept).
+- all backends should be grouped under one name (say quilt) but there
+  is no need to have multiple kinds of backends (at least for
+  now). All the use cases we have can be handled by one kind of
+  backend, with a way to toggle SML transformation. So if a user is
+  making use of LAM (a PIM), we should have the option to either map
+  LAM types to native types or to use LAM "natively". This would mean
+  we need a C++ implementation of LAM, etc. Other LAM like models
+  could be defined.
+- users should be able to add the same kind of mappings to UML
+  stereotypes to facets of their own making. That is, I should be able
+  to create a set of stitch templates, register them against a
+  stereotype and then load up my DLL via a plugin and have knit
+  generate my code. This would mean that you could make DSL
+  extensions. The classic case is when you spot repetitive
+  infrastructural code in your system which is not common to other
+  systems.
+- targeting of platforms: a given stereotype can map to very different
+  implementations depending on the platform the user chooses to
+  target. In addition, the user may choose to target multiple
+  platforms. The name "platform" is not a very good one. For example,
+  lets say the user marks a type as serialisable and there are N
+  different types of serialisation. It would be really nice if we
+  could define the set of target serialisations (e.g. boost, POF,
+  etc).
+- this is actually quite simple. There are meta-concepts: Visitable,
+  Entity, and so on. One of these meta-concepts is
+  Concept. Meta-concepts are _refinable_: thus Entity can refine
+  Serialisable and so on. Meta-concepts can be _modeled_ by one or
+  more implementations: thus Hashable is modeled by Boost Hash,
+  std::hash and so on. There is a mapping between meta-concepts
+  (modeling world) and facets/formatters (implementation). A formatter
+  is (or can be) a model of a meta-concept. Actually, we don't need to
+  call it a meta-concept; its just a meta-class. This is because the
+  translation of a meta-class from meta-model to platform concrete
+  artefact could involve the generation of multiple classes. That is,
+  a single meta-class could be transformed into multiple concrete
+  classes. Conceptually its still the same meta-class.
+- we are creating our own specialisation of MDSD with its own
+  values. We need to define dogen's MDSD infrastructure.
+- how do we intend to allow a restricted form of roundtripping:
+  - abstraction: can only be done when the meta-model is not that far
+    removed from code. Certain aspects cannot be roundtripped. For
+    example, if you need to change a visitor manually, you need to
+    disable generation. Because it is a concept at a higher level of
+    abstraction, it cannot be roundtripped.
+  - tagging the model: we are tagging the model via dynamic to provide
+    additional information that is not at the right level of
+    abstraction.
+  - separation of code classes: only certain classes are
+    roundtrippable (e.g. types). The rest are ignored.
+  - tagging the code: language attributes and other markers will be
+    used to keep track of what was manually generated versus what was
+    automatically generated.
+- *Viewpoint*: interesting word that can be used in the context of
+  facets. One way of using this term is to imagine DDD as a way of
+  defining the Domain Model and then having multiple representations,
+  each being a viewpoint: presentation layer, business layer,
+  persistence.
+
+*** COMPLETED Split a fully formed model from partial models          :story:
+    CLOSED: [2015-07-15 Wed 19:01]
+    CLOCK: [2015-07-13 Mon 17:24]--[2015-07-13 Mon 17:40] =>  0:16
+    CLOCK: [2015-07-13 Mon 17:18]--[2015-07-13 Mon 17:23] =>  0:05
+
+*Rationale*: We don't need to worry about this after the
+=baste=/=yarn= split. Most of these ideas are implemented as part of
+this split.
+
+We should really have two distinct types to represent the model that
+is returned from the dia to sml transformer from the model returned by
+the merger. Potentially this could be called =partial_model=.
+
+In fact we may need to take this a step further and follow the same
+approach as [[https://github.com/avao/Codge/tree/master/Src/Codge.DataModel][Cogen]]: having exactly the same types, but perhaps in a
+separate namespace; one version represents the "connected" model and
+the other the "disconnected" (or intermediate, or partial) model. The
+idea being that on the connected model has references to types rather
+than relaying on qname look-ups. So for example all the relationships
+then become shared pointers to types and so on. The problem with this
+approach is that we then need to have a common base type from where
+all types inherit and this will mean that we will have to visit a lot
+to dispatch types to their leaves.
+
+Actually, this is also the chance to remove all of the qname
+lookups. All relationships should just be boost shared pointers to
+types rather than qnames. There should be no need for lookups at
+all. This is a much better approach than the suggested below. We still
+need qnames and some minor qname lookup (e.g. model is still made
+up of a unordered map of qname to entity) but everyone should be using
+entity pointers rather than qnames. It is not clear what models such
+as CPP should be doing since the pointers are not particularly useful
+there.
+
+This would also be a good opportunity to use something like a pointer
+container for all the pointers and then use either a "dumb pointer" or
+even [[http://stackoverflow.com/questions/13874673/stdreference-wrappert-usage-in-a-container][references]] everywhere. Since we know the container will exist for
+the duration of a run, we can rely on the objects being managed
+elsewhere. This is a better way rather than using shared pointers
+everywhere. Alexandrescu [[https://www.youtube.com/watch?v%3DQq_WaiwzOtI][discusses at length]] the side-effects of using
+shared pointers. Whilst this is probably not a problem for Dogen, we
+want to explore ways of doing the right thing. There is also the
+[[https://vimeo.com/131189627][Josuttis talk]] on the subject.
+
+In addition we will need support for concepts at the package level as
+we need to have concepts with the same names for both partial and full
+types. We should use namespaces to house these types instead of
+postfixes/prefixes because there will be so many similarly named
+types.
+
+Properties will have types of the base type (=type=). We need a nested
+type class. Modules will have types directly. We need a good name for
+these (type references? something that alludes to referring to
+existing types in the model).
+
+Merged with other story:
+
+Once the model has been merged and resolved, all qnames in the model
+all known to resolve to a valid type, model or module. This means we
+could cache in the qname itself a pointer to the object the qname
+resolves into. There are two problems with this approach:
+
+- we do not have a base class that covers types, models and
+  module. one could be created (=modeling_entity=?) with an associated
+  visitor. but then:
+- formatters are not designed to think at the =modeling_entity= level;
+  a formatter that does types may not necessarily be able to do
+  modules or models. Thus we would need to convert from a
+  =modeling_entity= to a type, model or module before we get to the
+  formatter.
+
+However one imagines that a great number of lookups would be avoided
+if this was possible.
+
+Actually we probably should have two different models for this. One
+could be SML as we know it - just renamed - and the other one could be
+the intermediate representation, etc. We could rename SML to DMM -
+Disconnected Meta-Model - and create a new model for the backends to
+use called MM (meta-model). Unconnected meta-model?
+
+Implementation tasks:
+
+- rename all types to have a prefix such as =intermediate_=,
+  e.g. =intermediate_model=, etc. Get all code to work with the new
+  names.
+- create a new model class with just a few properties (leaves, entities, etc).
+- create a base class entity with all the required descendants.
+- remove the type base class for intermediate.
+- make entity visitable.
+- rename the existing workflow to something like model factory; it
+  takes in the intermediate models and generates a "final" model.
+- update cpp code to use this new model.
+
+*** COMPLETED Brainstorming around good names for SML                 :story:
+    CLOSED: [2015-07-15 Wed 18:51]
+
+*Rationale*: we will rename using a sewing specific term.
+
+Originally we intended to rename SML - the Simplified Modeling
+Language - to DDL - the Domain Driven Language. This was because we
+had envisioned that SML was a model of the ideas in Domain Driven
+Design, and not at all a cut down version of UML as the name seems to
+imply. However, its becoming increasingly clear that, whilst we use a
+lot of the Domain Driven Design ideas, we are also morphing them
+considerably. Perhaps a more apt name would be SDML - the Simplified
+Domain Modeling Language?
+
+Or instead we could follow the compiler theme and call it the =ir= or
+intermediate representation, or =im= for intermediate model. Actually
+this is a confusing name because it clashes with the [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/product_backlog.org#split-a-fully-formed-model-from-partial-models][partial model]]
+notions we intend to introduce.
+
+After more thinking on this, and since we now have a =backend= and a
+=frontend=, it is obvious that SML is the =middle_end= since it is the
+middle-end of the code generation process. So it could be the
+Middle-End Model (MEM) or just Middle-End (ME).
+
+However, this is not a very good name for the model as we also do some
+front-end-y things (such as the JSON implementation). =ir= and =im=
+still seem like the more likely candidates. Actually, JSON is not a
+front-end; it is a direct representation of the middle-end into a
+file. The same could also be done in XML. It only becomes a front-end
+if there is an intermediate representation (such as the =dia= model)
+that needs to be transformed into SML.
+
+Another idea: common representation or =cr=. It is what is common to
+all modeled languages. What is not common goes into dynamic. This will
+also make the vision for this model much more focused.
+
+Some more thinking on this: SML is a meta-model, or a model that
+provides a language to talk about programming objects in
+general. There may be other models suitable for formatting; for
+example one may want to take a model of a neuron and represent it in
+[[http://www.neuron.yale.edu/neuron/static/docs/refman/hoc.html][HOC]]. In this case the formatters would bind directly to the neuron
+model rather than SML. So the name of SML must reflect the fact that
+it is a model of programming objects. Object-Oriented Programming
+Language Model?
+
+From MDSD we have data model and composition model. These are
+overloads of how these terms are used in the book, but still.
+
+Another interesting name is "Input Model". Note that SML is a
+Programming Model - because it is very close to the platform models
+instead of providing a DSL.
+
+*** COMPLETED Create a single container of element in model           :story:
+    CLOSED: [2015-07-15 Wed 19:03]
+
+*Rationale*: will be done as part of the =yarn= refactor.
+
+We did an experiment to figure out if it would be more efficient to
+have separate containers of elements in SML's model, the idea being
+that we would avoid using the heap, dispatching etc. We would also
+create code that is more type-safe (e.g. avoid cases where we pass in
+elements but we want a specific descendant only).
+
+However, predictably, the code now has lots of loops across the
+different collections. This pattern is scattered everywhere we use
+SML. In almost all cases this could be handled by a single loop
+without loss of type-safety (e.g. loop and visit where we need
+specific types; just loop where an element suffices). Using the
+traversals (all types traversals, etc) didn't help because we then
+need to create all the associated machinery (overload =operator()=
+etc.) and that is not much different from having a visitor on
+element. We should consider this experiment at an end and just add a
+single container of element in model and deal with the fallout.
+
+Alternatively, we need a "view" over the different containers. In
+truth after the SML workflow has finished executing the model is
+constant. This means we could then use pointers to the objects to
+create a synthetic element container and use this for looping over all
+entities.
+
+In an ideal world, this would be a property of the model:
+e.g. =std::forward_list<entity*>=. However, we do not support pointer
+containers and this is a non-trivial change to the spirit parser so we
+won't be able to do it quickly. The alternative is to generate the
+container from within the backend workflow for now and pass it to each
+workflow. Once we are done with the refactoring we can then replace
+this with a model property.
+
+We need to have a look at all instances of the code where we loop
+across all elements and see if this is a win or not. Also, we can move
+=Element= from a concept to a type (e.g. =element=) and make it the
+base class for all elements. Validator would have to make sure the
+model is not nonsensical (object inheriting from a primitive, etc).
+
+Merged stories:
+
+Consider model as a container of types
+
+At present model is composed of objects, primitives, concepts,
+modules, etc. We could bring together all descendants of types into a
+single container (e.g. types). However, in places we do thinks like
+looking at the primitive container to see if the container has any
+primitive types - these would become slower as we'd now be looking at
+the entire type collection. Need to look at all usages of these
+containers in the code to see if this would be a win or not.
+
+*** COMPLETED Clean up of stereotypes                                 :story:
+    CLOSED: [2015-07-15 Wed 19:04]
+
+*Rationale*: will be done with the =yarn= refactor.
+
+At present we use the dia stereotypes for two things: a) the
+"internal" things like =visitable=, etc and b) concepts, which can be
+thought of as "external" as they are defined by users. It would be
+nice if we could move one or the other to dynamic extensions to make
+things cleaner.
+
+We should probably more =visitable= etc to meta-data; it is nice to
+see what concepts a type uses at a glance.
+
+*** COMPLETED Remove unnecessary properties from model                :story:
+    CLOSED: [2015-07-15 Wed 19:09]
+
+*Rationale*: will be done as part of the =yarn= refactor.
+
+The model should be just dumb container of types. We have a few legacy
+properties left behind from the days where the model was also used in
+the transformation process. Remove all the concepts from the model
+(=Element= etc) and deal with the fall out. Unnecessary properties:
+documentation, containing module, extensions.
+
+We need to keep the name because it is now used to locate the model's
+module.
+
+*** COMPLETED Define an end to end approach given refactoring stories :story:
+    CLOSED: [2015-07-15 Wed 19:11]
+    CLOCK: [2015-07-15 Wed 18:12]--[2015-07-15 Wed 18:30] =>  0:18
+    CLOCK: [2015-07-14 Tue 21:33]--[2015-07-14 Tue 22:23] =>  0:50
+    CLOCK: [2015-07-12 Sun 14:10]--[2015-07-12 Sun 15:00] =>  0:50
+    CLOCK: [2015-07-12 Sun 00:20]--[2015-07-12 Sun 00:57] =>  0:37
+    CLOCK: [2015-07-10 Fri 13:15]--[2015-07-10 Fri 13:41] =>  0:26
+
+We have a number of refactoring stories, all covering different
+aspects of the architecture. We need to combine all of them into a
+unified view. This story focuses on defining the key terms.
+
+Approach for tack:
+
+- note on naming: we are going to use fairly random sewing terms
+  instead of semantic names because we just can't find good
+  names. Some terminology is available [[http://www.threadsmagazine.com/item/15750/sewing-terms-to-know#ixzz3fyGmfXYh][here]].
+- rename SML to baste. *Baste*: temporary long running stitches
+  created by hand or machine to hold fabric in place before the final
+  stitching. baste is the "temporary" model before we get to the
+  "final" representation. Also: "In sewing, to tack or baste is to
+  make quick, temporary stitching intended to be removed.". Actually
+  somehow =tack= sounds less strange.
+- merge frontend with baste. Rename frontend interface to something
+  like model source. Remove the dia frontend class, moving the code
+  into the dia transformer.
+- rename the types in baste to make them a bit more inline with
+  MOF/eCore. As much as possible but without going overboard. Ensure
+  we do not pick up meta-meta-model concepts by mistake. Rename nested
+  qname to something more sensible from MOF/eCore. Review all concept
+  names in this light.
+- remove origin types and generation types, replacing it with just a
+  boolean for is target.
+- consider creating a top-level workflow that unites the frontend
+  workflow with the "merging" workflow. Find good names for all
+  workflows. A good name for the current SML workflow is =assembler=
+  because it assembles a complete model from all the parts.
+- consider creating a "file opener" that takes an input descriptor and
+  returns a stream. This way the source interface can just be an
+  ostream. This probably makes no sense for certain sources like dia
+  though.
+- do not use the debug settings directly in frontend/SML; create a
+  local class. We should not need a dependency in config.
+- add a programming language concept into =tack=. Simple
+  enumeration. Lets call it =grammar= to make it a bit more generic
+  (for XML, etc).
+
+Approach for =yarn=:
+
+- create a new model that is going to be the "main" meta-model. =yarn=
+  seems like a good enough name.
+- concepts are similar to =tack= minus all of the transformation
+  services. For all types, instead of qnames, use pointers. We need a
+  top-level owner of all pointers - perhaps a container of
+  =model_element= or some such name, out of MOF/eCore. This is a boost
+  pointer container. It has elements that are either in the target
+  model or a dependency. All other types are dropped during
+  transformation.
+- we no longer need a model; perhaps the top-level container should be
+  =module= (or =package= after the MOF/eCore rename).
+- create a transformation model from =tack= into =yarn=.
+- add a programming language concept into =tack=. Simple enumeration.
+  Lets call it =grammar= to make it a bit more generic (for XML, etc).
+- define the UML profile for =yarn=. We need to make explicit all of
+  the concepts we have up til now hand-waved over: Entity,
+  Serialisable, etc. Each of these concepts can then map to one or
+  more facets/formatters. We may need "formatter maps". The UML
+  profile will manifest itself as perhaps enumerations in both =tack=
+  and =yarn=. Tidy-up terminology around stereotypes and tags (as per
+  UML definitions). Ideas for the ability to be streamed (as in io
+  streams): printable, debug printable, debug dumpable. C# [[https://msdn.microsoft.com/en-us/library/system.object.tostring(v%3Dvs.110).aspx][ToString]]
+  docs does not shed a lot of light.
+- Note: its annoying to have =qnames= defined in the two models with
+  exactly the same definition.
+
+Approach for =cpp=:
+
+- create a top-level folder called =quilt= and put cpp under it.
+- move all the non-formattable stuff out of formattables into its own
+  namespace. need a good name for it.
+- find a good way to inject cpp specific qnames into the process.
+- implement all transformations in terms of =yarn= rather than
+  =tack=.
+- simplify all the templates removing any indenting related
+  formatting.
+
+*** COMPLETED Setup pgannon to develop dogen site                     :story:
+    CLOSED: [2015-07-20 Mon 14:56]
+    CLOCK: [2015-07-12 Sun 15:01]--[2015-07-12 Sun 16:50] =>  1:49
+
+We need to get pgannon up to speed with all that is required to
+develop a quick project site for dogen.
+
+*** POSTPONED Add support for pulling dependencies from biicode       :story:
+    CLOSED: [2015-07-20 Mon 14:56]
+    CLOCK: [2015-07-16 Thu 13:41]--[2015-07-16 Thu 14:48] =>  1:07
+    CLOCK: [2015-07-16 Thu 12:13]--[2015-07-16 Thu 12:30] =>  0:17
+
+[[https://www.biicode.com/][Biicode]] is a nuget-like repo for c++. We should look into both
+consuming dependencies from it and pushing dogen into it. In addition
+there are associated emblems:
+
+https://github.com/Manu343726/snail
+
+We should also look into [[https://www.biicode.com/biicode-open-source-challenge][the challenge]].
+
+We should push both the C++ libraries as well as the dogen binary.
+
+We should take the least intrusive possible approach to start with, by
+creating a split setup for biicode.
+
+** Deprecated
+*** CANCELLED Add "model types"                                       :story:
+    CLOSED: [2015-07-15 Wed 19:06]
+
+*Rationale*: not quite sure what the meaning of the story will be
+after the =yarn= refactor.
+
+At present we have a number of dynamic extensions that exist purely to
+deal with non-dogen models:
+
+- supported: is the facet supported by the external model
+- file_name: what is the external model naming for files for this
+  facet
+- is_system: is the file name a system include file or not?
+
+In reality, all of this could be avoided if we had a way of
+distinguishing between models that follow dogen conventions and those
+who do not; a "model type" of sorts such as "external" and "dogen" -
+naming needs more thought. With this we could infer the rest: if no
+file name is supplied then a given formatter/facet is not supported;
+if the model is_system then all types are system and so on.
+
+We should also have a flag in field definitions that verify that a
+parameter is only present if the model is a non-dogen model. For
+example, it makes no sense to supply =cpp.type.family= in a dogen
+model but it may make sense to do so in an external model. However,
+this would mean that if a user manually adds a type to a dogen model
+it cannot be extended. Requires a bit of thinking.
+
+This work must be integrated with the [[https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_69.org#thoughts-on-cpp-refactoring][archetype work]].
+
+*** CANCELLED Dia models are not always user models                   :story:
+    CLOSED: [2015-07-15 Wed 19:01]
+
+*Rationale*: after the refactor there will be no user and system
+models, just target and non-target.
+
+At present there is an assumption that all models read in from dia are
+user models. In reality, it is entirely possible to have a system
+model such as LAM (Language Agnostic Model) which is a system
+model. We should tell Dia to SML if the model is a) system or not b)
+expandable or not.
+
+*** CANCELLED Injection framework                                      :epic:
+    CLOSED: [2015-07-09 Thu 21:26]
+
+*Rationale*: We should inject types on a case-by-case basis. At
+present we have covered all use cases in a fairly sensible way.
+
+We need a more generic way of handling system types injection into
+models. This is because there is a number of things that can be
+derived from the existing model types:
+
+- keys
+- diff support
+- reflection
+- cache code
+- etc.
+
+So we need to:
+
+- make injector a composite of injectors that do the real work such as
+  =key_injector=. internally =injector= just delegates the work to
+  these classes.
+- injector decides which internal injectors to use based on options
+  passed in.
+- in the IoC spirit, we should probably create a =injector_interface=.
+
+*** CANCELLED IoC work                                                 :epic:
+    CLOSED: [2015-07-09 Thu 21:28]
+
+*Rationale*: this is a lot of work and does not buy us much. We should
+tackle each IoC requirement at a time.
+
+All stories related to IoC work are tracked here.
+
+*New Understanding*:
+
+in reality, there is really only one place where IoC makes sense: in
+the workflows. It would be great if one could pass in something akin
+to a IoC container into the workflow's constructor and then use the
+container to obtain access to all services via interfaces. Using
+sml::workflow as an example, one could have:
+
+- container_interface which returns grapher_interface,
+  processor_interface, etc.
+- the container could even return references to the these interfaces
+  and own the lifetime of the objects.
+- this would then allow us to provide mock container interface
+  implementations returning mock services.
+
+However:
+
+- it seems like a lot of moving parts just to allow testing the
+  workflow in isolation. this is particularly more so in the case of
+  the workflows we have, which are fairly trivial. perhaps we should
+  consider this approach when dogen is generating the interfaces
+  automatically as this would require a lot of manual work for little
+  gain.
+
+*Old understanding*:
+
+- add workflow_interface to SML.
+- we should be doing a bit more IoC, particularly with inclusion
+  manager, location manager etc. In order to do so we could define
+  interfaces for these classes and provide mocks for the tests. This
+  would make the tests considerably smaller.
+*** CANCELLED Log analysis tool                                       :story:
+    CLOSED: [2015-07-09 Thu 21:35]
+
+*Rationale*: we will incubate these ideas on its own project.
+
+We should create a log analyser tool (=logan=?), as follows:
+
+- separate repo. it could be incubated in dogen to start off with
+  though.
+- use a dogen model to describe the tool's domain. Very simple domain.
+- use the dogen version line to determine the application, the version
+  and the run time. All other entries are foreign-keyed against this
+  entry.
+- use JSON object markers to extract JSON objects from the log line
+  into a postgres JSON field.
+- use ODB to create the database schema.
+- create a simple parser that is hard-coded to the log lines in dogen,
+  with perhaps an addition for threads.
+- when profiling is present, have a way to split profiling information
+  from the rest.
+- create some simple stored procs that compare two runs from a
+  performance perspective.
+- create a stored proc to list all errors and all warnings, with
+  perhaps some lines around it.
+- create a stored proc that does a text search using postgres text
+  search facilities.
+- we need to figure out how splunk decides to start loading the log
+  files (only after roll, incrementally - and if so, how does it keep
+  track, etc).
+
+*** CANCELLED Create a trivial Linux gcc script                       :story:
+    CLOSED: [2015-07-09 Thu 21:35]
+
+*Rationale*: we want to move away from complicated CDash scripts. We
+should stick with what we got for valgrind, and use travis etc for any
+new developments.
+
+The previous attempts to clean up the build environment were too
+elaborate given the available time. We need to go back to basics with
+a trivial script that works for Linux 32-bit and 64-bit with gcc.
+
+*** CANCELLED Create a trivial Linux clang script                     :story:
+    CLOSED: [2015-07-09 Thu 21:35]
+
+*Rationale*: we want to move away from complicated CDash scripts. We
+should stick with what we got for valgrind, and use travis etc for any
+new developments.
+
+We need to be able to build Linux clang 32-bit and 64-bit again.
+*** CANCELLED Handle unnamed models properly                          :story:
+    CLOSED: [2015-07-10 Fri 10:48]
+
+*Rationale*: we do not have a use case for this.
+
+The option disable model name was meant to allow the generation of
+flat models, without any folders or namespaces for the model
+name. However, as a side-effect, this also means the artefacts being
+generated do not have any names. This resulted in the creation of a
+libSTATIC, purely because the next command in the cmake add_library is
+STATIC (e.g. static library). As a quick hack, when an empty model
+name is detected, a model named "unnamed_model" is created.
+
+The correct solution for this is to have a flag (or flags) at the SML
+level which state whether to use the model name for folders, packages,
+etc. The view model generation will then take this into account.
+
+*** CANCELLED All model items traversal should resolve types          :story:
+    CLOSED: [2015-07-10 Fri 15:37]
+
+*Rationale*: This has been fixed.
+
+This traversal was designed for tagger but yet it does not resolve
+=type= into one of the sub-classes, forcing tagger to implement
+visitation to resolve the types. We should improve the traversal.
+
+*** CANCELLED Add tests for tagging of modules, primitves and enumerations :story:
+    CLOSED: [2015-07-10 Fri 15:40]
+
+*Rationale*: story has bit-rotted and doesn't make a lot of sense any
+more.
+
+We've tested abstract objects et al quite a lot but forgotten the
+other aspects of the model.
+
+*** CANCELLED Check concept properties for identity                   :story:
+    CLOSED: [2015-07-10 Fri 15:41]
+
+*Rationale*: identity properties have been removed.
+
+When we added concepts we didn't had a link to the processing of
+identity attributes. This means that if we get a property via modeling
+a concept it is not processed and added to the keys.
+
+Update injector to follow concepts.

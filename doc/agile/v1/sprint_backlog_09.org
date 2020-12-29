@@ -1,0 +1,874 @@
+#+title: Sprint Backlog 09
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Start the planning towards v2: get a good idea of what we think is
+  in and what should be out. Make the product backlog reflect this
+  triage.
+- Address build issues; the build must work reliably and the tests
+  must give us confidence that we did not break the code generator
+  across the entire feature set.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2018-10-15 Mon 10:17]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *71:26* |       |       |   0.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 71:26   |       |       |   0.0 |
+| Active                                                                      |         | 71:26 |       |   0.0 |
+| Edit release notes for previous sprint                                      |         |       |  1:30 |   0.0 |
+| Sprint and product backlog grooming                                         |         |       |  2:54 |   0.0 |
+| Update readme to reflect org move                                           |         |       |  1:58 |   0.0 |
+| Create project for C# test model                                            |         |       |  5:23 |   0.0 |
+| Fix boost path serialisation errors                                         |         |       |  0:47 |   0.0 |
+| Create project for C++ test model                                           |         |       |  6:55 |   0.0 |
+| Update readme with information on reference models                          |         |       |  0:10 |   0.0 |
+| Remove test models from dogen project                                       |         |       |  1:13 |   0.0 |
+| Add commit info to version                                                  |         |       |  0:57 |   0.0 |
+| Investigate adding package management support to dogen                      |         |       | 11:10 |   0.0 |
+| Add vcpkg support to Linux builds                                           |         |       | 13:15 |   0.0 |
+| Add vcpkg support to windows builds                                         |         |       |  9:16 |   0.0 |
+| Resurrect CDash agents                                                      |         |       |  8:11 |   0.0 |
+| Add vcpkg support to osx builds                                             |         |       |  1:13 |   0.0 |
+| Recap of the current situation                                              |         |       |  1:25 |   0.0 |
+| High-level model thoughts                                                   |         |       |  2:20 |   0.0 |
+| Add support for kcov                                                        |         |       |  2:49 |   0.0 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2018-10-02 Tue 17:51]
+    :LOGBOOK:
+    CLOCK: [2018-10-02 Tue 15:30]--[2018-10-02 Tue 17:00] =>  1:30
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.08, "Caminhada"
+
+#+begin_src markdown
+![Caminhada](https://i2.wp.com/cookthebeans.com/wp-content/uploads/2017/03/img_5465.jpg) _Long walk towards a traditional village, Huambo, Angola. [(C) Ana Rocha 2017](https://cookthebeans.com/2017/03/09/benguela-huambo-bie-in-the-route-of-angolas-up-country)_.
+
+# Overview
+
+After a rather long hiatus of some nine months, Dogen development resumes once more. In truth, the break was only related to the open source aspect of the Dogen project; behind the scenes I have been hard at work on my PhD, which has morphed into an attempt to lay the theoretical foundations for all the software engineering that has been done with Dogen. Sadly, I cannot perform that work out in the open until the thesis or papers are published, so it is expected to remain closed for at least another year or two.
+
+On the bright side, after performing an extensive literature review of the field of [Model Driven Engineering](https://en.wikipedia.org/wiki/Model-driven_engineering) - the technical name used in academia for the field Dogen is in - a lot of what we have been trying to do has finally become clear. The down side is that, as a result of all of this theoretical work, very little has changed with regards to the code during this period. As such, this sprint contains only some minor analysis work that was done in parallel, and I am closing it just avoid conflating it with the new work going forward.
+
+The future for Dogen is bright, though. We are now starting the long road towards the very ambitious release that will be Dogen 2.0. The objective is to sync the code to match all of the work done on the theory side. This work as already started; you will not fail to notice that the repository has been moved to the _MASD project_ - Model Assisted Software Development.
+
+User visible changes
+================
+
+There are no user visible changes this sprint.
+
+Next Sprint
+===========
+
+The next few sprints will be extremely active, addressing a number of long standing issues such as moving test models outside of the main repo and concluding ongoing refactorings.
+
+Binaries
+======
+
+Due to the transition of organisations, we did not generate any binaries for this release. As there are no code changes, please use the binaries for the previous release ([v1.0.07](https://github.com/MASD-Project/dogen/releases/tag/v1.0.07)) or build Dogen from source. Source downloads are available at the top.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/948594830267043840][Tweet]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6354361007493775361][LinkedIn]]
+- [[https://gitter.im/DomainDrivenConsulting/dogen][Gitter]]
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-14 Sun 10:42]--[2018-10-14 Sun 10:54] =>  0:12
+    CLOCK: [2018-10-05 Fri 15:28]--[2018-10-05 Fri 15:40] =>  0:12
+    CLOCK: [2018-10-12 Fri 14:56]--[2018-10-12 Fri 14:34] => -0:22
+    CLOCK: [2018-10-05 Fri 10:14]--[2018-10-05 Fri 11:25] =>  1:11
+    CLOCK: [2018-10-05 Fri 09:06]--[2018-10-05 Fri 10:13] =>  1:07
+    CLOCK: [2018-10-04 Thu 17:44]--[2018-10-04 Thu 17:56] =>  0:12
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Update readme to reflect org move                       :story:
+    CLOSED: [2018-10-03 Wed 10:39]
+    :LOGBOOK:
+    CLOCK: [2018-10-03 Wed 10:02]--[2018-10-03 Wed 10:38] =>  0:36
+    CLOCK: [2018-10-03 Wed 09:54]--[2018-10-03 Wed 10:01] =>  0:07
+    CLOCK: [2018-10-03 Wed 09:15]--[2018-10-03 Wed 09:53] =>  0:38
+    CLOCK: [2018-10-02 Tue 17:52]--[2018-10-02 Tue 18:29] =>  0:37
+    :END:
+
+Now that dogen is under MASD, we have a number of links that are
+pointing to the old Domain Driven Consulting org. Update those.
+
+*** COMPLETED Analysis on reducing build times to avoid timeouts      :story:
+    CLOSED: [2018-10-03 Wed 10:40]
+
+Refactoring at the moment is painful because every time we change
+CMakeFiles we end up rebuilding everything. At 2K plus ninja targets,
+it is a long wait. In addition, we have been getting really close to
+the maximum travis time, resulting in lots of manual fiddling to get
+things to work. However, there is one very easy win: split test models
+from production code. This is more than just a quick hack, really:
+
+- we are compiling the test models with every build at present, but
+  since they are not production code, we only really need to validate
+  them whenever they change. That is - for a given OS, compiler, etc -
+  once a test model compiles, links and its tests run, nothing else
+  needs to be said until the test model changes.
+- test models change very infrequently; only when we do a breaking
+  change on Dogen and we rebase.
+- test models by definition do not reference production code (or at
+  least, /should/ not).
+
+As a first step we should try to isolate the two builds (production,
+test models) via variables so that we can create separate
+travis/appveyor builds for them. In the future we should make the
+separation even more explicit, by moving the folder away from the
+production code.
+
+*Previous Understanding*
+
+At present we get random build time violations on travis due to builds
+taking longer than 50 mins. We need to think of ways to reduce the
+build time. Things to try:
+
+- remove all of the hashing etc for the types we don't need to hash.
+- get rid of the warnings for boost.
+
+*** COMPLETED Create project for C# test model                        :story:
+    CLOSED: [2018-10-03 Wed 16:18]
+    :LOGBOOK:
+    CLOCK: [2018-10-04 Thu 13:45]--[2018-10-04 Thu 13:56] =>  0:11
+    CLOCK: [2018-10-04 Thu 08:47]--[2018-10-04 Thu 09:02] =>  0:15
+    CLOCK: [2018-10-04 Thu 08:15]--[2018-10-04 Thu 08:46] =>  0:31
+    CLOCK: [2018-10-03 Wed 15:46]--[2018-10-03 Wed 16:18] =>  0:32
+    CLOCK: [2018-10-03 Wed 15:40]--[2018-10-03 Wed 15:45] =>  0:05
+    CLOCK: [2018-10-03 Wed 12:45]--[2018-10-03 Wed 14:59] =>  2:14
+    CLOCK: [2018-10-03 Wed 10:45]--[2018-10-03 Wed 12:18] =>  2:20
+    CLOCK: [2018-10-03 Wed 10:42]--[2018-10-03 Wed 10:44] =>  0:02
+    :END:
+
+We need to create a separate repo for the C# test model. This also
+means we need to generate the LAM model in two different locations.
+
+*** COMPLETED Fix boost path serialisation errors                     :story:
+    CLOSED: [2018-10-04 Thu 13:11]
+    :LOGBOOK:
+    CLOCK: [2018-10-04 Thu 12:47]--[2018-10-04 Thu 13:11] =>  0:24
+    CLOCK: [2018-10-04 Thu 11:02]--[2018-10-04 Thu 11:25] =>  0:23
+    :END:
+
+When we use boost path outside of dogen, the code fails to compile:
+
+: /home/marco/Development/DomainDrivenConsulting/hedgr/projects/hedgr.personae.comms.llcp_server/src/serialization/options_ser.cpp:27:10: fatal error: dogen.utility/serialization/path.hpp: No such file or directory
+: #include "dogen.utility/serialization/path.hpp"
+
+Dogen has hard-coded the serialisation to its own utilities. We should
+be using a helper instead.
+
+*** COMPLETED Create project for C++ test model                       :story:
+    CLOSED: [2018-10-04 Thu 16:01]
+    :LOGBOOK:
+    CLOCK: [2018-10-04 Thu 16:20]--[2018-10-04 Thu 16:41] =>  0:21
+    CLOCK: [2018-10-04 Thu 13:57]--[2018-10-04 Thu 16:01] =>  2:04
+    CLOCK: [2018-10-04 Thu 13:13]--[2018-10-04 Thu 13:44] =>  0:31
+    CLOCK: [2018-10-04 Thu 09:29]--[2018-10-04 Thu 11:01] =>  1:32
+    CLOCK: [2018-10-04 Thu 09:03]--[2018-10-04 Thu 09:28] =>  0:25
+    CLOCK: [2018-10-03 Wed 16:18]--[2018-10-03 Wed 18:20] =>  2:02
+    :END:
+
+Create a separate repo for the C++ test model.
+
+Notes on testing:
+
+- some tests do not make sense in a reference implementation:
+  - class without a name, package without a name: these are just
+    validation tests so we should do it as a unit test.
+  - disable all kernels: doesn't generate anything. Not sure where it
+    should go.
+  - empty and two empty layers: not even valid any more as we must
+    supply model modules. Can be done as a unit test once defaulting
+    is in place.
+- we have failures on hasing on both OSX and Windows. However, its
+  very difficult to debug these due to the heavy use of templates in
+  tests. We should probably wait until tests become facets and then
+  ensure the boost log message contains a dump of the object state for
+  each test.
+
+Problems to fix:
+
+- at present we have oracle support on ODB. Oracle libs are not
+  distributed with debian. If we do not find oracle we do not compile
+  northwind. This is not ideal. We should remove oracle support from
+  northwind, and install odb support in the build machine (hopefully
+  available as debs).
+- all path and directories is a LAM model. Move the C# part into C#.
+- models are under external module path =dogen::test_models=. Move
+  them to =cpp_ref_impl=.
+- path serialisation depends on dogen utility. Fix code generation so
+  that it doesn't.
+- some models have the postfix "model". Remove it.
+- rename =cpp_model= to =cpp_11=.
+- rename =std_model= to =stl=.
+- we are generating solutions and VC projects but not testing
+  these. We should probably have a separate build on AppVeyor that
+  uses the solutions instead of CMake. However, as we do not have
+  project level support yet, this will be hard to do (e.g. we generate
+  one solution per component).
+- not clear what the seam model does.
+
+Notes:
+
+- remove story about not building all the tests.
+
+*** COMPLETED Add flat directory model to C#                          :story:
+    CLOSED: [2018-10-04 Thu 16:01]
+
+It seems this model is also a LAM model. Add it to C#.
+
+*** COMPLETED Update readme with information on reference models      :story:
+    CLOSED: [2018-10-05 Fri 11:36]
+    :LOGBOOK:
+    CLOCK: [2018-10-05 Fri 11:26]--[2018-10-05 Fri 11:36] =>  0:10
+    :END:
+
+We need to add some minor blurb about MASD and refer to the reference
+implementation.
+
+*** COMPLETED Remove test models from dogen project                   :story:
+    CLOSED: [2018-10-05 Fri 15:27]
+    :LOGBOOK:
+    CLOCK: [2018-10-05 Fri 15:35]--[2018-10-05 Fri 15:41] =>  0:06
+    CLOCK: [2018-10-05 Fri 15:21]--[2018-10-05 Fri 15:27] =>  0:06
+    CLOCK: [2018-10-04 Thu 16:42]--[2018-10-04 Thu 17:43] =>  1:01
+    :END:
+
+Once we have created projects for both C# and C++, we need to delete
+all references to test models:
+
+- delete source code from projects;
+- delete test data sets;
+- remove environment variables (WITH_CSHARP, WITH_CPP etc);
+- comment out generation tests for now (JSON and Dia).
+
+*** COMPLETED Add commit info to version                              :story:
+    CLOSED: [2018-10-12 Fri 15:06]
+    :LOGBOOK:
+    CLOCK: [2018-10-12 Fri 13:58]--[2018-10-12 Fri 14:55] =>  0:57
+    :END:
+
+In the past we had the git commit SHA key on the version. This was
+useful, but caused the build to rebuild every time we committed
+locally. Since we only build the final binaries on tags, there wasn't
+much of a need for this so it was removed. However, we now build again
+on each commit so there is a requirement for it.
+
+To avoid the previous problems we should create some kind of macro
+that only adds the commit if we are building from the build machine;
+otherwise it just stamps something like "developer build". On the
+build machine we should also add a timestamp and if possible the
+travis/appveyor build number.
+
+*** COMPLETED Investigate adding package management support to dogen  :story:
+    CLOSED: [2018-10-12 Fri 15:34]
+    :LOGBOOK:
+    CLOCK: [2018-10-08 Mon 19:33]--[2018-10-08 Mon 19:48] =>  0:15
+    CLOCK: [2018-10-08 Mon 19:12]--[2018-10-08 Mon 19:32] =>  0:20
+    CLOCK: [2018-10-08 Mon 16:27]--[2018-10-08 Mon 18:25] =>  1:58
+    CLOCK: [2018-10-08 Mon 15:55]--[2018-10-08 Mon 16:26] =>  0:31
+    CLOCK: [2018-10-08 Mon 15:30]--[2018-10-08 Mon 15:54] =>  0:24
+    CLOCK: [2018-10-08 Mon 14:53]--[2018-10-08 Mon 15:08] =>  1:01
+    CLOCK: [2018-10-08 Mon 13:12]--[2018-10-08 Mon 14:52] =>  1:40
+    CLOCK: [2018-10-08 Mon 09:10]--[2018-10-08 Mon 12:05] =>  5:42
+    CLOCK: [2018-10-07 Sat 14:10]--[2018-10-07 Sat 17:02] =>  2:52
+    :END:
+
+
+At present we are building our deps manually and adding them to
+dropbox. This has worked ok in the past, but it does have a few
+problems:
+
+- upgrades are a bit of a nightmare; we just have to take a bit of
+  time of when we have to rebuild all deps, across all OSs and try to
+  remember what we did last time.
+- we end up not adding new deps just out of fear. For example, we are
+  not building or testing ODB on the build machine due to this.
+- we have two completely different setups, build machine and
+  development machine. For development machines we can rely on debian
+  testing because the boost packages are recent enough. On the build
+  machine we use our prebuilt binaries.
+
+In the past we have investigated using conan, but there were problems:
+we could never get it to work for all libraries on windows - there
+were subtle problems linking with boost that we couldn't get to the
+bottom of - and we ended up with a very confusing setup were some
+packages on windows are installed via conan but others come from our
+deps. This makes it hard for us to maintain and hard for new users to
+build and use dogen.
+
+The best solution at present appears to be vcpkg. It seems to take the
+ports approach - e.g. instead of supplying binaries, it compiles them
+for you - but it also allows exporting the current state of the
+packages:
+
+./vcpkg export --zip boost-coroutine2
+
+This means we can continue using our current dropbox setup, but rely
+on a vcpkg export instead. It also builds debug and release, and
+integrates seamlessly with CMake, requiring no changes at all to
+CMakeFiles (unlike conan). In addition, we can also use vcpkg for our
+private projects; we can create a copy of the project and add links to
+our private repos. Also, rebuilding is now trivial, and we can easily
+script it (e.g. update && export). This means we can pickup latest
+boost as soon as it is released.
+
+There are some limitations:
+
+- only builds static libaries. OK for now.
+- not all libraries are present. The coverage seems wide enough for
+  now (600 and growing).
+- not all libraries present build on all configurations. See [[https://github.com/Microsoft/vcpkg/issues/3436][this PR]].
+
+The best way of doing this is to actually CI the deps themselves. This
+would work as follows:
+
+- create travis/appveyor builds that build vcpkg, install the deps and
+  export them.
+- copy the export into drop box. See [[https://github.com/andreafabrizi/Dropbox-Uploader][Dropbox-Uploader]]
+- update dogen build path to pickup new dependencies, so its a
+  controlled exercise.
+- we should also have a "manual" setup of vcpkg for users, that builds
+  the packages locally.
+
+The great thing about this approach is that we can simply ocassionally
+do a pull from remote vcpkg projec to get latest, ensure it all builds
+correctly and then update dogen. The whole process is very simple and
+does not require having access to OSX and Windows boxes locally, etc.
+
+This would be fantastic but sadly it does not work out of the box. At
+present the version of XCode available on travis OSX does not compile
+vcpkg out of the box:
+
+: CMake Error at CMakeLists.txt:10 (message):
+:   Building the vcpkg tool requires support for the C++ Filesystem TS.
+:   Apple clang versions 9 and below do not have support for it.
+:   Please install gcc6 or newer from homebrew (brew install gcc6).
+:   If you would like to try anyway, set VCPKG_ALLOW_APPLE_CLANG.
+
+In addition, the linux GCC build also failed, even more misteriously:
+
+: The command "${TRAVIS_BUILD_DIR}/bootstrap-vcpkg.sh" exited with 1.
+
+We'll spin this off as a separate story into the backlog for the
+future; even just building with vcpkg locally its an improvement in
+dependency management.
+
+Links:
+
+- [[https://github.com/Microsoft/vcpkg/issues/4447][Link error LNK2005 when linking against Boost.Test on Windows]]
+
+*** COMPLETED Add vcpkg support to Linux builds                       :story:
+    CLOSED: [2018-10-12 Fri 15:32]
+    :LOGBOOK:
+    CLOCK: [2018-10-10 Wed 17:12]--[2018-10-10 Wed 17:30] =>  0:18
+    CLOCK: [2018-10-10 Wed 15:29]--[2018-10-10 Wed 15:45] =>  0:16
+    CLOCK: [2018-10-10 Wed 14:12]--[2018-10-10 Wed 15:28] =>  1:16
+    CLOCK: [2018-10-10 Wed 09:06]--[2018-10-10 Wed 12:23] =>  3:17
+    CLOCK: [2018-10-09 Tue 20:29]--[2018-10-09 Tue 21:52] =>  1:23
+    CLOCK: [2018-10-09 Tue 19:55]--[2018-10-09 Tue 20:28] =>  0:33
+    CLOCK: [2018-10-09 Tue 17:18]--[2018-10-09 Tue 18:25] =>  1:07
+    CLOCK: [2018-10-09 Tue 16:40]--[2018-10-09 Tue 17:17] =>  0:37
+    CLOCK: [2018-10-09 Tue 14:12]--[2018-10-09 Tue 16:05] =>  1:53
+    CLOCK: [2018-10-09 Tue 13:49]--[2018-10-09 Tue 14:11] =>  0:22
+    CLOCK: [2018-10-09 Tue 10:51]--[2018-10-09 Tue 13:04] =>  2:13
+    :END:
+
+Following on from our investigation, we need to add vcpkg to the linux
+builds (clang and gcc). While we're there, update all the tools to
+latest in preparation to switching to C++ 17. We also need to fix the
+dropbox upload story as it was broken with the GitHub organisation
+changes. While we're there, we should upload releases on all commits
+rather than just on tags.
+
+*** COMPLETED Add vcpkg support to windows builds                     :story:
+    CLOSED: [2018-10-12 Fri 15:34]
+    :LOGBOOK:
+    CLOCK: [2018-10-12 Fri 13:30]--[2018-10-12 Fri 13:58] =>  0:28
+    CLOCK: [2018-10-12 Fri 11:19]--[2018-10-12 Fri 12:21] =>  1:02
+    CLOCK: [2018-10-12 Fri 09:30]--[2018-10-12 Fri 11:18] =>  1:48
+    CLOCK: [2018-10-11 Thu 21:49]--[2018-10-11 Thu 22:20] =>  0:31
+    CLOCK: [2018-10-11 Thu 20:12]--[2018-10-11 Thu 20:27] =>  0:15
+    CLOCK: [2018-10-11 Thu 14:05]--[2018-10-11 Thu 16:05] =>  2:00
+    CLOCK: [2018-10-11 Thu 09:12]--[2018-10-11 Thu 12:24] =>  6:53
+    :END:
+
+Following on from our investigation, we need to add vcpkg to the
+appveyor windows builds (msvc). While we're there, update visual
+studio and all the tools to latest in preparation to switching to
+C++ 17. Also try to add support for =clang-cl= if its easy.
+
+*** COMPLETED Resurrect CDash agents                                  :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-14 Sun 21:14]--[2018-10-14 Sun 22:13] =>  0:59
+    CLOCK: [2018-10-14 Sun 21:01]--[2018-10-14 Sun 21:13] =>  0:12
+    CLOCK: [2018-10-14 Sun 07:33]--[2018-10-14 Sun 07:46] =>  0:13
+    CLOCK: [2018-10-14 Sun 07:08]--[2018-10-14 Sun 07:32] =>  0:24
+    CLOCK: [2018-10-13 Sat 23:12]--[2018-10-13 Sat 23:50] =>  0:38
+    CLOCK: [2018-10-13 Sat 22:47]--[2018-10-13 Sat 23:11] =>  0:24
+    CLOCK: [2018-10-13 Sat 22:30]--[2018-10-13 Sat 22:46] =>  0:16
+    CLOCK: [2018-10-13 Sat 22:20]--[2018-10-13 Sat 22:29] =>  0:09
+    CLOCK: [2018-10-13 Sat 22:05]--[2018-10-13 Sat 22:19] =>  0:14
+    CLOCK: [2018-10-13 Sat 21:54]--[2018-10-13 Sat 22:04] =>  0:10
+    CLOCK: [2018-10-13 Sat 21:40]--[2018-10-13 Sat 21:53] =>  0:13
+    CLOCK: [2018-10-13 Sat 20:41]--[2018-10-13 Sat 21:09] =>  0:28
+    CLOCK: [2018-10-13 Sat 20:30]--[2018-10-13 Sat 20:40] =>  0:10
+    CLOCK: [2018-10-13 Sat 19:28]--[2018-10-13 Sat 19:43] =>  0:15
+    CLOCK: [2018-10-13 Sat 16:54]--[2018-10-13 Sat 17:40] =>  0:46
+    CLOCK: [2018-10-13 Sat 14:44]--[2018-10-13 Sat 16:53] =>  2:09
+    CLOCK: [2018-10-12 Fri 21:46]--[2018-10-12 Fri 22:17] =>  0:31
+    :END:
+
+CDash has bitrotted and is no longer working.
+
+- we need to get the build green on the Windows agent again.
+- we need to get the linux agent up and running again.
+
+Actually, the right thing to do is to connect CDash to travis like
+this project:
+
+- https://github.com/ned14/boost.outcome
+
+We can still have our own agents for the nightlies etc but at least
+this way all travis builds are pushing into CDash.
+
+Command line:
+
+: CMAKE_TOOLCHAIN_FILE=~/Development/DomainDrivenConsulting/masd/vcpkg/master/scripts/buildsystems/vcpkg.cmake ctest --extra-verbose --script ".ctest.cmake,configuration_type=Release,generator=Ninja,compiler=clang6,number_of_jobs=3"
+
+Given we cannot get the project/sub-project setup to work, we probably
+should just create multiple to-level projects:
+
+- MASD Project - Dogen
+- MASD Project - cpp_ref_impl
+
+This would probably give us 20 daily builds as well, whereas the
+sub-project setup seems to have a maximum limit of 10 altogether.
+
+Notes:
+
+- bintray is not overwritting packages on linux but works on windows.
+
+Tickets:
+
+- https://github.com/Kitware/CDash/issues/732
+- https://github.com/Kitware/CDash/issues/733
+
+Links:
+
+- https://github.com/ned14/outcome/blob/develop/.ci.cmake
+- https://my.cdash.org/index.php?project=Boost.Outcome&date=2018-10-12
+- https://public.kitware.com/pipermail/cdash/2010-June/000819.html
+- https://github.com/ned14/quickcpplib/blob/master/cmakelib/QuickCppLibUtils.cmake
+- [[https://gitlab.kitware.com/zackgalbreath/cmake/commit/2cf643d2cba4a819108e0e284cd58cf356378df3][Example of sub-projects]]
+- [[https://github.com/Kitware/CDash/issues/732][GitHub issue with CDash problems]]
+- [[http://webcache.googleusercontent.com/search?q=cache:vEhBG9OAeSAJ:https://blog.kitware.com/cdash-integration-with-github/&hl=en&gl=uk&strip=1&vwsrc=0][CDash integration with GitHub]]
+
+*** POSTPONED Add vcpkg support to osx builds                         :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-13 Sat 18:35]--[2018-10-13 Sat 19:28] =>  0:53
+    CLOCK: [2018-10-13 Sat 17:41]--[2018-10-13 Sat 18:01] =>  0:20
+    :END:
+
+Following on from our investigation, we need to add vcpkg to the
+travis osx builds (clang). While we're there, update all the tools to
+latest in preparation to switching to C++ 17.
+
+*** COMPLETED Recap of the current situation                          :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-05 Fri 15:41]--[2018-10-05 Fri 17:06] =>  1:25
+    :END:
+
+We have started a number of simultaneous refactors and now its very
+hard to understand where we are and where we are going. We need to go
+though the code and ascertain the state of the onion.
+
+Notes:
+
+- the external model refactoring seems to be complete.
+- the modeling model refactoring seems to have been tangled with the
+  formatters refactor. We have moved some but not all properties into
+  the modeling model but then we realised that some of them should
+  really be in the generation model. However, we then hit the usual
+  problem: how do we decorate element with the generation properties?
+  See the discussion in story "Create the =generation= model" for
+  details on why this is non-trivial. At that point we were left with
+  a series of not particularly ideal options:
+  - go forward and create a pair of element and generatable properties
+    and somehow fix all transforms. In a way this is what we had done
+    with the formatters, except that was after all of the transforms
+    had been applied.
+  - create the idea of "opaque properties" in the modeling model and
+    then unpack the opaque properties in the generation transforms.
+  - add the properties directly to the modeling model (to the element,
+    at least) but only populate them in the generation transforms.
+- the problem we are trying to solve seems to fall somewhere in
+  between the decorator pattern and the mixin pattern but its not
+  quite either.
+- this problem started because we wanted to make a clear separation
+  between modeling space and generation space; modeling space is not
+  aware of the archetype expansion. This makes sense to an extent: we
+  do not want to create dependencies between modeling space and
+  formatters (source of the cycles between components). However, we
+  also do not want to have to define all of the meta-model elements
+  again in order to attach the generatable properties.
+
+*** CANCELLED High-level model thoughts                               :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-11 Thu 16:06]--[2018-10-11 Thu 18:26] =>  2:20
+    :END:
+
+Jot down ideas on the separation between the API and the
+implementation in dogen products.
+
+Notes:
+
+- we now have the notion of "distribution channels": UI/UX (wt, qt, gtk
+  mobile, etc), DX (swagger, boost asio, library itself).
+- the product API should not have any dependencies in terms of storage
+  mechanisms; it should have some kind of "model source" interface
+  that can then be implemented in terms of the filesystem, GH repo,
+  postgres database etc.
+- even though it does not make a lot of sense to have a model source
+  as part of the remoting API, for consistency reasons we should still
+  support it. That is, a code generation end point will merely call
+  some internal functions to source the models rather than call
+  another endpoint, and users probably don't really need something
+  that just reads a model and returns the injector version.
+- the distribution channels are a function of the product API.
+
+*** POSTPONED Add support for kcov                                    :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-15 Mon 08:18]--[2018-10-15 Mon 10:17] =>  1:59
+    CLOCK: [2018-10-15 Mon 08:02]--[2018-10-15 Mon 08:17] =>  0:15
+    CLOCK: [2018-10-14 Sun 22:38]--[2018-10-14 Sun 22:50] =>  0:12
+    CLOCK: [2018-10-14 Sun 22:14]--[2018-10-14 Sun 22:37] =>  0:23
+    :END:
+
+Try to see how hard it is to integrate kcov with the current build.
+
+*** POSTPONED Ignore all failing tests                                :story:
+    CLOSED: [2018-10-15 Mon 10:33]
+    :LOGBOOK:
+    CLOCK: [2018-10-15 Mon 10:18]--[2018-10-15 Mon 10:24] =>  0:06
+    :END:
+
+At present we have a number of tests that are commented out but appear
+as failing under cdash. This is very confusing. We need to mark them
+with the ignore macro. We should not waste time fixing the tests as
+they need to be re-written using the diff framework.
+
+** Deprecated
+*** CANCELLED Split dogen testing from core                           :story:
+    CLOSED: [2018-10-05 Fri 15:33]
+
+*Rationale*: this story was cleaned up and split into several stories.
+
+At present we have tests in modeling that perform "code generation";
+that is, regenerate all dogen test models from JSON and Dia. These are
+boost unit tests. Due to this, we have welded the test models with the
+core models, which means that we cannot easily separate repos without
+a lot of hacks. However, if we were to generalise the problem: there
+is no reason why test models should be coupled with the core or
+treated specially; they are just an instance of a project with dogen
+models which can be used to validate dogen. A better approach is to
+move all this work to "system testing", done using the dogen binary
+rather than within unit tests. This would work as follows:
+
+- add a mode in dogen called "validation mode" or diagnostics, etc. In
+  this mode, dogen does not write files to the file system but instead
+  produces a number of "reports":
+  - a list of all validation errors, if any, in GCC format, pointing
+    to the original models.
+  - a set of diff files with all the differences, if any.
+  - a benchmark report.
+  - a top-level report with the project name, its git repo and the git
+    commit.
+- projects that wish to help dogen must have a well-defined target to
+  generate the reports for all models under test.
+- dogen project contains a script with a list of such projects and
+  their git repos. Every time we build dogen core we install the
+  package into the travis VM and run the reports.
+- a environment variable containing the path into which to write the
+  reports must be set before running dogen.
+- a git repo is created with all the reports, and a structure as
+  follows:
+  /repo
+      /branch
+          /dogen_commit
+              /summary for this commit
+              /project_a
+                  /summary for this commit
+                  /diffs
+                  /errors
+                  /benchmark data
+              /project_b
+ ...
+- to avoid clashes, make the branches named after the build,
+  e.g. travis osx etc.
+- git clones are shallow (1 commit)
+- once all reports are generated into the git report repo, the build
+  commits the report. The comment is the dogen commit.
+- a travis build is triggered on the back of the commit. It checks the
+  latest commit. If the report is a pass the build is green, if its a
+  fail the build is red.
+- in an ideal world the system tests build is separate from the dogen
+  core build, and triggered from a bintray upload. However, as we do
+  not know how to do this yet, we can just run the system tests at the
+  end of the dogen build.
+- we should split the reporting work from the build separation. We
+  could have a simple build that just fails if there are any diffs to
+  start off with and worry about reporting later.
+
+With this approach we can have any number of projects contributing to
+validate dogen (including dogen itself). The only slight downside is
+that the models must always be up-to-date (e.g. if the user has
+changed the model but not regenerated, system tests will
+fail). Perhaps we could have different categories of test models:
+mandatory and optional. Mandatory must pass, optional do not
+contribute to the build failing. However, they still show up in the
+report.
+
+Links:
+
+- https://github.com/cubicdaiya/dtl
+
+
+*** CANCELLED Create a build script just for C#                       :story:
+    CLOSED: [2018-10-04 Thu 17:50]
+
+*Rationale*: no longer needed after the split of reference models.
+
+At the moment we are doing C++ and C# on the same build script, making
+it really complex. It would be much easier to have a separate C# build
+script. We should also have a separate install script for C# so we
+don't have to waste time installing packages if we're not going to use
+them.
+
+*** CANCELLED Create a new exoelement chain                           :story:
+    CLOSED: [2018-10-04 Thu 17:54]
+
+*Rationale*: given the amount of churn the refactor stories have had,
+this story is no longer relevant.
+
+We need to create a new exoelement chain that uses the new exoelements
+to bootstrap a endomodel.
+
+*** CANCELLED Start documenting the theoretical aspects of Dogen      :story:
+    CLOSED: [2018-10-05 Fri 10:28]
+
+*Rationale*: this will be taken care of by the thesis.
+
+Up to now we have more or less coded Dogen as we went along; we
+haven't really spent a lot of time worrying about the theory behind
+the work we were carrying out. However, as we reached v1.0, the theory
+took center stage. We cannot proceed to the next phase of the product
+without a firm grasp of the theory. This story is a starting point so
+we can decide on how to break up the work.
+
+*** CANCELLED Sections to add to manual                               :story:
+    CLOSED: [2018-10-05 Fri 10:29]
+
+*Rationale*: this will be taken care of by the thesis.
+
+Random list of things that we need to have in manual:
+
+- Drivers/frontends: The importance of drivers to allow existing
+  frameworks to interoperate; eCore, MSVC, Dia, JSON.  Structural
+  variability at modeling level. Dia frontend: use of colours,
+  validation (checking of stereotypes), "on the impact of layout
+  quality to understanding UML diagrams", this constrains the size of
+  a model.
+- Stitch. Variability regions vs aspects (Oberweis paper "modeling
+  variability in template-based code generators"). Why we need both
+  feature modeling and variability regions / aspects: because features
+  are a high-level concept that is implemented using variability
+  regions. We need to map layers to facets and to our generation
+  model. Dependencies between features and variability regions.
+- External integration and its importance, cartridges. integration
+  with Clang, ODB, XML tool.
+- Agile and MDD: tight integration. Lightweight MDD with agile
+
+*** CANCELLED Use the in-memory interface of LibXml                   :story:
+    CLOSED: [2018-10-05 Fri 10:30]
+
+*Rationale*: we should just drop libxml altogether and use XSD tool.
+
+At present, our C++ wrappers on top of LibXml are using the file based
+interface. We should do in-memory processing of the XML file. Once
+this is in place, we can change the exogenous transformers to use
+strings rather than paths to files.
+
+*** CANCELLED Consider simplifying frontend testing                   :story:
+    CLOSED: [2018-10-05 Fri 11:01]
+
+*Rationale*: this will be resolved with the new diff based tests.
+
+At present we are outputting code for every supported frontend, and
+then checking they are binary identical. This is fine given that we
+only have two frontends. Once we had a visual studio frontend, it may
+make more sense to stop generating code for all frontends and simply
+diff the middle-end to ensure we generate an identical yarn model. We
+can continue to test end to end one of the frontends (dia).
+
+We had command line options available in the past that generated only
+a merged model. We need to look into the backlog for these.
+
+This is a problem specially in light of adding new backends because
+now we are code-generating the cross product of frontends and
+backends.
+
+*** CANCELLED Update dynamic section in manual                        :story:
+    CLOSED: [2018-10-05 Fri 11:08]
+
+*Rationale*: this will be taken care of by the thesis.
+
+We need to talk about the new fields, field templates, etc.
+
+*** CANCELLED Some test models do not build on run all specs          :story:
+    CLOSED: [2018-10-05 Fri 11:09]
+
+*Rationale*: should no longer be a problem after the repo splitting.
+
+For some reason we are not building some of the test models when doing
+a run all specs, in particular:
+
+- exception
+- comments
+
+this may be because we have no specs for them. We need to find a way
+to build them somehow.
+
+Merged stories:
+
+*Add test model sanitizer to test models target*
+
+At present if we build test models we don't seem to build the
+sanitizer.
+
+*** CANCELLED C++ workflow should perform a consistency check         :story:
+    CLOSED: [2018-10-05 Fri 11:11]
+
+*Rationale*: this will no longer be required when we implement proper
+feature model support.
+
+We should ensure that all facets and formatters available in the
+registrar have corresponding field definitions and vice-versa. This
+was originally to be done by some kind of "feature graph" class, but
+since we need to use this data for other purposes, the main workflow
+could take on this responsibility - or we could create some kind of
+"validator" class to which the workflow delegates.
+
+*** CANCELLED Implement module expander test                          :story:
+    CLOSED: [2018-10-05 Fri 11:14]
+
+*Rationale*: code has changed quite a bit since then.
+
+We copied across the code for the module expander test from yarn json
+but didn't actually finished implementing it.
+
+*** CANCELLED Consider using the same API as boost property tree in selector :story:
+    CLOSED: [2018-10-05 Fri 11:14]
+
+*Rationale*: no longer required once we have proper feature support.
+
+At present we have the type of the value in the method names in the
+selector, e.g. =get_text_content=. It would be better to have a =get=
+that takes in a template parameter, e.g. =get<text>=. However, in
+order to do this we need to have some kind of mapping between the
+schema value (=text=) and the raw value (=std::string=). This requires
+some template magic.
+
+Once this is done we can also make the API a bit more like the
+property tree API such as for example returning =boost::optional= for
+the cases where the field may not exist.
+
+We have started introducing =try_select...=. This was preferred to
+=get_optional= because we are not getting an optional but instead
+trying to get.
+
+*** CANCELLED Add dynamic consistency validation                      :story:
+    CLOSED: [2018-10-05 Fri 11:15]
+
+*Rationale*: no longer required once we have proper feature support.
+
+We need to check that the default values supplied for a field are
+consistent with the field's type. This could be done with a
+=validate()= method in workflow.
+
+Actually since we can only create fields from JSON, we should just add
+a check there.
+
+*** CANCELLED Update manual with detailed model descriptions           :epic:
+    CLOSED: [2018-10-05 Fri 11:18]
+
+*Rationale*: this will be taken care of by the thesis.
+
+#+begin_quote
+*Story*: As a dogen developer, I want to read about the architecture
+of the application so that I don't have to spend a lot of time trying
+to understand the source code.
+#+end_quote
+
+We should add CRCs for the main classes, with an explanation of what
+each class does; we should also explain the separation of the
+transformation logic between the core model (e.g. =dia=) and the
+transformation model (e.g. =dia_to_sml=). We should describe what the
+workflow does in each model.
+
+We should only implement this story when all of the major refactoring
+has been done.
+
+*** CANCELLED Add tests for general settings factory                  :story:
+    CLOSED: [2018-10-05 Fri 11:21]
+
+*Rationale*: once these become part of the meta-model, most of these
+won't make any sense.
+
+Some simple tests come to mind:
+
+- empty data files directory results in empty factory;
+- valid data files directory results in non-empty factory;
+- invalid data files directory results in exception;
+- more than one data files directory results in expected load;
+- creating annotation for test model types works as expected.
+- missing fields result in expected exceptions.
+
+*** CANCELLED Add tests for =general_settings_factory=                :story:
+    CLOSED: [2018-10-05 Fri 11:21]
+
+*Rationale*: once these become part of the meta-model, most of these
+won't make any sense.
+
+Tests:
+
+- missing licence
+- missing modeline
+- empty marker
+- different marker for two objects
+- consider moving generate preamble into annotation

@@ -1,0 +1,58 @@
+#+title: Sprint Backlog 23
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 23.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:02]
+
+| Headline     | Time   |
+|--------------+--------|
+| *Total time* | *0:00* |
+#+end:
+
+*** COMPLETED Before throwing write exception to log file             :story:
+    CLOSED: [2012-12-17 Mon 17:15]
+
+We have cases were an exception is thrown and its impossible to figure
+out where. If we logged before throw we'd have all the context.
+
+Implemented by RP.
+
+*** COMPLETED Forward declaration of enumerations is incorrect        :story:
+
+When including forward declarations of enums the following error comes
+up:
+
+: relative_position_types_fwd.hpp:31:12: error: different underlying type in enum ‘enum class creris::rating::relative_position_types’
+
+Seems like the compiler is either declaring the enumeration (rather
+than forward declaring it) or the forward declaration requires an
+underlying type.
+
+MC: According to wikipedia, the default type of a C++-11 enumeration
+is =int=:
+
+http://en.wikipedia.org/wiki/C%2B%2B11#Strongly_typed_enumerations
+
+We need to specify the type when we forward declare.
+
+*** COMPLETED Generate the Dia model from dogen
+
+Now that dogen is functional we should remove all the hand-crafted
+code in the Dia model which could be code generated. We need to have
+support for boost variant for this to work.
+
+*** COMPLETED Remove legacy database code
+
+We still have the old database implementation in dogen, forcing us to
+setup postgres to run tests. It will be superseded by odb so we should
+remove it to make setup easier.
+
+** Deprecated Development Stories

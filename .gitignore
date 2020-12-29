@@ -1,0 +1,49 @@
+# -*- mode: sh; tab-width: 4; indent-tabs-mode: nil -*-
+
+# dia auto save files
+*.autosave
+
+# backup files and emacs source control checkouts
+*~
+
+# windows thumbnails
+Thumbs.db
+
+# OSX system configuration files
+.DS_Store
+
+# CLion files
+.idea
+
+# build directory
+build/output
+
+# .Net ignores
+packages
+*.userprefs
+test-results
+obj
+bin
+*.suo
+TestResult.xml
+
+# coati
+*.coatidb
+*.coatiproject
+poly-stitch.elc
+
+# clangd
+.clangd/
+compile_commands.json
+
+# Task Juggler
+doc/agile/reports
+*.tjp
+
+# emacs
+.dir-locals.el
+
+# org-roam
+org-roam.db
+
+.cache

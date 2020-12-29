@@ -1,0 +1,274 @@
+#+title: Sprint Backlog 86
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- finish implementing class info formatters in terms of yarn types.
+- remove class info and associated infrastructure.
+- start working on remaining formattables.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2016-09-01 Thu 18:18]
+| <75>                                                                        |        |      |      |       |
+| Headline                                                                    | Time   |      |      |     % |
+|-----------------------------------------------------------------------------+--------+------+------+-------|
+| *Total time*                                                                | *9:52* |      |      | 100.0 |
+|-----------------------------------------------------------------------------+--------+------+------+-------|
+| Stories                                                                     | 9:52   |      |      | 100.0 |
+| Active                                                                      |        | 9:52 |      | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |        |      | 3:16 |  33.1 |
+| COMPLETED Implement boost path's serialisation via a helper                 |        |      | 0:40 |   6.8 |
+| COMPLETED Implement serialisation's implementation in terms of =yarn::object= |        |      | 0:32 |   5.4 |
+| COMPLETED Implement odb's header in terms of =yarn::object=                 |        |      | 0:17 |   2.9 |
+| COMPLETED Implement test data's header in terms of =yarn::object=           |        |      | 0:11 |   1.9 |
+| COMPLETED Implement test data's implementation in terms of =yarn::object=   |        |      | 0:14 |   2.4 |
+| COMPLETED Remove all of class info infrastructure                           |        |      | 0:34 |   5.7 |
+| COMPLETED Remove unused helper related properties                           |        |      | 0:32 |   5.4 |
+| COMPLETED Remove support for identity attribute                             |        |      | 0:20 |   3.4 |
+| POSTPONED Add support for bintray                                           |        |      | 1:08 |  11.5 |
+| POSTPONED Consider adding support for inheritance via meta-data             |        |      | 1:37 |  16.4 |
+| POSTPONED Add support for visitor inheritance                               |        |      | 0:31 |   5.2 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2016-09-01 Thu 18:18]
+    CLOCK: [2016-08-07 Sun 15:10]--[2016-08-07 Sun 17:34] =>  2:24
+    CLOCK: [2016-08-02 Tue 16:49]--[2016-08-02 Tue 17:32] =>  0:43
+    CLOCK: [2016-08-01 Mon 19:10]--[2016-08-01 Mon 19:19] =>  0:09
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Implement boost path's serialisation via a helper       :story:
+    CLOSED: [2016-08-01 Mon 20:28]
+    CLOCK: [2016-08-01 Mon 20:21]--[2016-08-01 Mon 20:28] =>  0:07
+    CLOCK: [2016-08-01 Mon 19:47]--[2016-08-01 Mon 20:20] =>  0:33
+
+At present we have hacked the serialisation template with code
+specific to boost path. Replace it with a dynamic helper.
+
+*** COMPLETED Implement serialisation's implementation in terms of =yarn::object= :story:
+    CLOSED: [2016-08-01 Mon 20:34]
+    CLOCK: [2016-08-01 Mon 20:29]--[2016-08-01 Mon 20:34] =>  0:05
+    CLOCK: [2016-08-01 Mon 19:20]--[2016-08-01 Mon 19:47] =>  0:27
+
+Move serialisation class header stitch template from class info to
+yarn object.
+
+Problems:
+
+- we've hacked filesystem path. We need to create a helper for
+  it. This will be the first time we need to generate a helper with
+  templates. There is an [[http://lists.boost.org/Archives/boost/2008/09/142550.php][out-of-tree patch]] for this which we copied
+  into utility; so, alternatively, we could use this but we'd then
+  add a dependency on utility to all models. In the absence of
+  =needle=, this is not ideal.
+
+*** COMPLETED Implement odb's header in terms of =yarn::object=       :story:
+    CLOSED: [2016-08-01 Mon 20:53]
+    CLOCK: [2016-08-01 Mon 20:35]--[2016-08-01 Mon 20:52] =>  0:17
+
+Move odb class header stitch template from class info to yarn object.
+
+*** COMPLETED Implement test data's header in terms of =yarn::object= :story:
+    CLOSED: [2016-08-01 Mon 21:31]
+    CLOCK: [2016-08-01 Mon 21:20]--[2016-08-01 Mon 21:31] =>  0:11
+
+Move test data class header stitch template from class info to yarn
+object.
+
+*** COMPLETED Implement test data's implementation in terms of =yarn::object= :story:
+    CLOSED: [2016-08-01 Mon 21:46]
+    CLOCK: [2016-08-01 Mon 21:32]--[2016-08-01 Mon 21:46] =>  0:14
+
+Move test data class implementation stitch template from class info to
+yarn object.
+
+*** COMPLETED Remove all of class info infrastructure                 :story:
+    CLOSED: [2016-08-01 Mon 22:24]
+    CLOCK: [2016-08-01 Mon 22:14]--[2016-08-01 Mon 22:24] =>  0:10
+    CLOCK: [2016-08-01 Mon 21:59]--[2016-08-01 Mon 22:13] =>  0:14
+    CLOCK: [2016-08-01 Mon 21:54]--[2016-08-01 Mon 21:58] =>  0:04
+    CLOCK: [2016-08-01 Mon 21:47]--[2016-08-01 Mon 21:53] =>  0:06
+
+- remove previous interface, container support, registration;
+- remove class info and associated classes;
+- remove references in transformer;
+- drop the "new" prefix on the interfaces.
+
+*** COMPLETED Remove nested type info                                 :story:
+    CLOSED: [2016-08-01 Mon 22:25]
+
+*Rationale*: Closed as part of other stories.
+
+Once all of the infrastructure is in place, we should not need this
+class any more. Remove code from transformer and remove object types
+and anything else that was used to dispatch based on type.
+
+*** COMPLETED Update assistant to use new helper information          :story:
+    CLOSED: [2016-08-01 Mon 22:26]
+
+*Rationale*: Closed as part of other stories.
+
+Once all the pieces are in place, the assistant can then use the
+element properties to find out which helpers are required for each
+type; call those helpers and populate the file with the generate
+code. We can remove all previous helper support.
+
+*** COMPLETED Update types formatters to use =yarn::object=            :epic:
+    CLOSED: [2016-08-01 Mon 22:26]
+
+*Rationale*: Closed as part of other stories.
+
+Replace class info in types formatters with yarn's object.
+
+*** COMPLETED Remove unused helper related properties                 :story:
+    CLOSED: [2016-08-01 Mon 22:47]
+    CLOCK: [2016-08-01 Mon 22:48]--[2016-08-01 Mon 23:01] =>  0:13
+    CLOCK: [2016-08-01 Mon 22:41]--[2016-08-01 Mon 22:47] =>  0:06
+    CLOCK: [2016-08-01 Mon 22:27]--[2016-08-01 Mon 22:40] =>  0:13
+
+Check to see if we are using the following helper properties:
+
+- =requires_explicit_call=
+- =function_name=
+- string conversion method: in use by assistant.
+- requires dereferencing
+
+If not, remove them.
+
+*** COMPLETED Remove intermediate fields from dynamic                 :story:
+    CLOSED: [2016-08-02 Tue 17:00]
+
+*Rationale*: This was addressed already.
+
+With the previous approach we had fields in dynamic that were
+generated within dogen; we now should only have fields that are set
+from the outside world. Remove all of the fields that are not supposed
+to be settable from the outside world. At present this just file path.
+
+*** COMPLETED Remove support for identity attribute                   :story:
+    CLOSED: [2016-08-05 Fri 07:56]
+    CLOCK: [2016-08-05 Fri 07:55]--[2016-08-05 Fri 07:56] =>  0:01
+    CLOCK: [2016-08-05 Fri 07:36]--[2016-08-05 Fri 07:55] =>  0:19
+
+Seems like when we removed keys, we left this behind. Remove it
+completely and add link to commit on product backlog.
+
+*** POSTPONED Add support for bintray                                 :story:
+    CLOSED: [2016-09-01 Thu 18:18]
+    CLOCK: [2016-08-02 Tue 14:25]--[2016-08-02 Tue 15:33] =>  1:08
+
+There is a new web application that interfaces with GitHub:
+[[https://bintray.com/][bintray]].
+
+- add JSON validation to bintray deployment descriptor.
+
+Notes:
+
+- an account was created [[https://bintray.com/mcraveiro][linked to GitHub]].
+- it supports the uploads of [[https://bintray.com/mcraveiro/deb][debs]].
+- [[https://bintray.com/docs/usermanual/uploads/uploads_howdoiuploadmystufftobintray.html][How Do I Upload My Stuff to Bintray?]]
+- [[https://github.com/tim-janik/beast][Beast]] project [[https://raw.githubusercontent.com/tim-janik/beast/master/README.md][README]] with emblems
+- Beast [[https://github.com/tim-janik/beast/blob/master/.travis.yml][travis.yml]]
+- [[https://github.com/tim-janik/rapicorn/blob/master/citool.sh.][citool.sh]] script from [[https://github.com/tim-janik/rapicorn][Rapicorn]] project and their [[https://raw.githubusercontent.com/tim-janik/rapicorn/master/README.md][README]].
+
+*** POSTPONED Consider adding support for inheritance via meta-data   :story:
+    CLOSED: [2016-09-01 Thu 18:18]
+    CLOCK: [2016-08-09 Tue 22:01]--[2016-08-09 Tue 22:16] =>  0:15
+    CLOCK: [2016-08-05 Fri 07:56]--[2016-08-05 Fri 08:23] =>  0:27
+    CLOCK: [2016-08-04 Thu 22:04]--[2016-08-04 Thu 22:59] =>  0:55
+
+In certain cases it may not be possible to add all inheritance
+relationships in a diagram; this is the case with =formatters= in
+=cpp=. There are just too many classes implementing the
+=formatter_interface= and the diagram would become too messy if we
+added generalisation relationships for them all. This would also be
+the case with inheritance for exceptions.
+
+We got away with it because we are not generating these types, but one
+can imagine having the same problem with generatable types. It would
+be nice if one could add a meta-data parameter to the class to convey
+inheritance information, like so:
+
+: #DOGEN yarn.dia.parent=x.y.z
+
+The notation for the parent as well as the name of the tag need to be
+thought through.
+
+This means we can also inherit across models. See Allow cross model
+inheritance.
+
+gTasks:
+
+- add new fields;
+- add machinery to read in field in yarn's generalisation indexer;
+- add test in trivial inheritance.
+- use fields in quilt.cpp's formatters.
+
+**** Bad Ideas
+
+One very interesting way of doing this is via stereotypes. We could
+extend the meta-model with a stereotype called =TypeReference=. We
+would need support for qualified names as well, so for instance in
+model =a= one could declare a class called =b::c= with =TypeReference=
+and that would tell Dogen that this is not a new declaration of =c=
+but a reference to an existing declaration in model =a=. This would
+also make it clear from a UML perspective that inheritance is being
+used. The class =b::c= in model =a= would be empty.
+
+This is not a very good idea as it will just cause confusion and it
+will require machinery to place the type in the right point in element
+space.
+
+*** POSTPONED Add support for visitor inheritance                     :story:
+    CLOSED: [2016-09-01 Thu 18:18]
+    CLOCK: [2016-08-07 Sun 19:01]--[2016-08-07 Sun 19:32] =>  0:31
+
+We need to detect when we inherit from a visitable type across models
+and generate a "local visitor" for that model.
+
+- add parent of optional name to visitor.
+- when we are injecting the visitor, we need to bucket leaves by model
+  first. Then we need to generate one visitor per bucket.
+- if we inherit from a
+- we need to populate visitable by in this bucketed way as well.
+- all leaves that belong to external models must be placed in the same
+  location on that model. Throw if not.
+- update include generation to take visitor parent into account.
+- update visitor template to detect external visitation and inherit
+  accordingly.
+
+** Deprecated
+
+*** CANCELLED Add tests for cpp's =name_builder=                      :story:
+    CLOSED: [2016-08-02 Tue 17:24]
+
+*Rationale*: Name builder is deprecated. We should do all this work in
+yarn now.
+
+Name builder is responsible for converting a nested qualified name
+into a C++ representation. We need some basic tests around this class
+with different composition scenarios.
+*** CANCELLED System models set meta-type to =invalid=                :story:
+    CLOSED: [2016-08-02 Tue 17:27]
+
+*Rationale*: we don't have a meta-type any longer.
+
+Something is not quite right on the resolution logic.
+*** CANCELLED Rename =dia.comment=                                    :story:
+    CLOSED: [2016-08-04 Thu 22:10]
+
+*Rationale*: This field has been renamed to =yarn.dia.comment=.
+
+This field hasn't got a sensible name. We need to continue thinking
+about the right name for this - as we have already started doing with
+processed comment; =applicable_to_parent_object= is not quite the
+right name but it is moving on the right direction. Once we settle on
+a good name we need to rename all usages of =dia.comment=.

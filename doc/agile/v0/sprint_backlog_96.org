@@ -1,0 +1,931 @@
+#+title: Sprint Backlog 96
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) }
+
+* Mission Statement
+
+- Finish Upsilon support.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2017-01-30 Mon 09:22]
+| <75>                                                                        |         |       |       |       |
+| Headline                                                                    | Time    |       |       |     % |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                                                | *79:09* |       |       | 100.0 |
+|-----------------------------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                                     | 79:09   |       |       | 100.0 |
+| Active                                                                      |         | 79:09 |       | 100.0 |
+| COMPLETED Sprint and product backlog grooming                               |         |       |  4:41 |   5.9 |
+| COMPLETED Edit release notes for previous sprint                            |         |       |  0:35 |   0.7 |
+| COMPLETED Add test in knit to validate upsilon                              |         |       |  0:51 |   1.1 |
+| COMPLETED Create an upsilon yarn frontend                                   |         |       | 10:18 |  13.0 |
+| COMPLETED Fields with collections in upsilon cause errors                   |         |       |  1:20 |   1.7 |
+| COMPLETED Bind language to kernel                                           |         |       |  1:29 |   1.9 |
+| COMPLETED Upsilon can have collections of collections                       |         |       |  1:01 |   1.3 |
+| COMPLETED Upsilon test borked due to no output                              |         |       |  0:21 |   0.4 |
+| COMPLETED Add multi-language support                                        |         |       | 13:28 |  17.0 |
+| COMPLETED Add a type mapper                                                 |         |       |  6:19 |   8.0 |
+| COMPLETED Backslashes in strings cause JSON parsing to fail                 |         |       |  0:49 |   1.0 |
+| COMPLETED Add log-level to command line                                     |         |       |  1:20 |   1.7 |
+| COMPLETED Fix recursive path lookup for upsilon                             |         |       |  1:02 |   1.3 |
+| COMPLETED In JSON hydrator rename simple name to simple                     |         |       |  1:03 |   1.3 |
+| COMPLETED Add tailor support for upsilon                                    |         |       |  0:16 |   0.3 |
+| COMPLETED Add support for pointers to mapper in upsilon                     |         |       |  4:44 |   6.0 |
+| COMPLETED Discuss the current approach with end users                       |         |       |  1:31 |   1.9 |
+| COMPLETED Rename primitives to built-in                                     |         |       |  2:20 |   2.9 |
+| POSTPONED Create a new yarn type for primitives                             |         |       |  9:19 |  11.8 |
+| POSTPONED Add mapping support between upsilon and LAM                       |         |       |  1:56 |   2.4 |
+| POSTPONED Make the Zeta model compilable                                    |         |       |  0:45 |   0.9 |
+| POSTPONED Add support for Language Agnostic Models (LAM)                    |         |       |  6:55 |   8.7 |
+| POSTPONED Map upsilon primitives to intrinsics                              |         |       |  3:04 |   3.9 |
+| POSTPONED Add support for configurable enumerations types                   |         |       |  3:42 |   4.7 |
+#+TBLFM: $5='(org-clock-time% @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-30 Mon 09:02]--[2017-01-30 Mon 09:22] =>  0:20
+    CLOCK: [2017-01-28 Sat 17:17]--[2017-01-28 Sat 17:29] =>  0:12
+    CLOCK: [2017-01-28 Sat 15:30]--[2017-01-28 Sat 15:39] =>  0:09
+    CLOCK: [2017-01-28 Sat 14:31]--[2017-01-28 Sat 15:29] =>  0:58
+    CLOCK: [2017-01-26 Thu 15:16]--[2017-01-26 Thu 15:28] =>  0:12
+    CLOCK: [2017-01-25 Wed 17:17]--[2017-01-25 Wed 17:30] =>  0:13
+    CLOCK: [2017-01-24 Tue 11:42]--[2017-01-24 Tue 12:06] =>  0:24
+    CLOCK: [2017-01-24 Tue 09:15]--[2017-01-24 Tue 09:35] =>  0:20
+    CLOCK: [2017-01-23 Mon 14:18]--[2017-01-23 Mon 14:39] =>  0:21
+    CLOCK: [2017-01-16 Mon 21:02]--[2017-01-16 Mon 21:56] =>  0:54
+    CLOCK: [2017-01-16 Mon 18:02]--[2017-01-16 Mon 18:17] =>  0:15
+    CLOCK: [2017-01-16 Mon 15:47]--[2017-01-16 Mon 15:50] =>  0:03
+    CLOCK: [2017-01-16 Mon 09:27]--[2017-01-16 Mon 09:47] =>  0:20
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2017-01-16 Mon 10:15]
+    CLOCK: [2017-01-16 Mon 11:52]--[2017-01-16 Mon 11:55] =>  0:03
+    CLOCK: [2017-01-16 Mon 11:45]--[2017-01-16 Mon 11:51] =>  0:06
+    CLOCK: [2017-01-16 Mon 09:51]--[2017-01-16 Mon 10:15] =>  0:24
+    CLOCK: [2017-01-16 Mon 09:48]--[2017-01-16 Mon 09:50] =>  0:02
+
+Add github release notes for previous sprint.
+
+Title: Dogen v0.95.0, "Iona"
+
+#+begin_src markdown
+<p align="center">
+  <img src="http://static.panoramio.com/photos/large/820003.jpg">
+<br>
+<figcaption><i>Praia das Miragens, Namibe, Angola. (C) Ivo Cardoso, 2007. Sourced from Panoramio.</i></figcaption>
+</p>
+Overview
+=======
+The bulk of this sprint's work was related to a customer specific feature: support for the upsilon input format. Other smaller tasks were:
+
+- the continued work on the C# frontend, which is now nearing completion. C# support is still considered experimental and the generated code has an unstable API, liable to change without notice.
+- improvements on the Windows build.
+- addition of a benchmarking framework which allows us to measure the impact of new features in code generation time.
+
+User visible changes
+===============
+
+In this sprint, a number of user visible features were added:
+
+- **Improvements to C# including collections**:  it is now possible to use  object based collections. We can now generate most C# code except generic containers.
+- **Packaging on Windows**: packaging support for Windows using WiX is now complete. As with OSX and Linux, Binaries are available from BinTray.
+- **Validation improvements**: with the new validation framework, Dogen detects a lot of errors at code generation time (such as invalid type names, attempt to instantiate abstract types, etc). More validation rules will be added over time.
+
+For more details of the work carried out this sprint, see the [sprint log](https://github.com/DomainDrivenConsulting/dogen/blob/master/doc/agile/sprint_backlog_95.org).
+
+Next Sprint
+========
+The next sprint will continue to focus on C#, particularly the addition of collections.
+
+Binaries
+======
+You can download experimental binaries from [Bintray](https://bintray.com/domaindrivenconsulting/Dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_0.95.0_amd64-applications.deb](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.95.0/dogen_0.95.0_amd64-applications.deb)
+- [dogen-0.95.0-Darwin-x86_64.dmg](https://dl.bintray.com/domaindrivenconsulting/Dogen/0.95.0/dogen-0.95.0-Darwin-x86_64.dmg)
+- [dogen-0.95.0-Windows-AMD64.msi](https://dl.bintray.com/domaindrivenconsulting/Dogen/dogen-0.95.0-Windows-AMD64.msi)
+
+**Note**: They are produced by CI so they may not yet be ready.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+#+end_src
+
+- [[https://twitter.com/MarcoCraveiro/status/820962437465866241][Tweet]]
+
+*** COMPLETED Add test in knit to validate upsilon                    :story:
+    CLOSED: [2017-01-16 Mon 18:01]
+    CLOCK: [2017-01-16 Mon 17:55]--[2017-01-16 Mon 18:01] =>  0:06
+    CLOCK: [2017-01-16 Mon 17:09]--[2017-01-16 Mon 17:54] =>  0:45
+
+At present we are testing the individual (low-level) upsilon workflows
+but not the overall knit workflow for upsilon models. Due to this we
+borked knit for upsilon models without realising it. We need to add a
+test that processes the upsilon model even if it does not (yet)
+generate any code.
+
+Once we fixed a couple of minor errors, the meta-model generated by
+upsilon actually generated C# and C++ code. This is rather puzzling:
+
+- we should only generate those languages for which we have
+  formatters, and we don't have any formatters for upsilon. Somehow
+  this resulted in us using all available formatters.
+- Profile expansion seems to have occurred:
+
+: quilt.cpp.test_data.enabled=true
+
+  etc. We did not set up any meta-data in upsilon (nor can we as the
+  format does not support it).
+
+*** COMPLETED Create an upsilon yarn frontend                         :story:
+    CLOSED: [2017-01-17 Tue 21:08]
+    CLOCK: [2017-01-17 Tue 20:26]--[2017-01-17 Tue 20:34] =>  0:08
+    CLOCK: [2017-01-17 Tue 20:12]--[2017-01-17 Tue 20:25] =>  0:13
+    CLOCK: [2017-01-17 Tue 18:19]--[2017-01-17 Tue 18:55] =>  0:36
+    CLOCK: [2017-01-17 Tue 18:15]--[2017-01-17 Tue 18:18] =>  0:03
+    CLOCK: [2017-01-17 Tue 17:05]--[2017-01-17 Tue 18:14] =>  1:09
+    CLOCK: [2017-01-17 Tue 16:49]--[2017-01-17 Tue 17:04] =>  0:15
+    CLOCK: [2017-01-17 Tue 16:01]--[2017-01-17 Tue 16:48] =>  0:47
+    CLOCK: [2017-01-17 Tue 10:41]--[2017-01-17 Tue 12:01] =>  1:20
+    CLOCK: [2017-01-17 Tue 09:24]--[2017-01-17 Tue 10:40] =>  1:16
+    CLOCK: [2017-01-17 Tue 09:01]--[2017-01-17 Tue 09:23] =>  0:22
+    CLOCK: [2017-01-16 Mon 15:02]--[2017-01-16 Mon 15:46] =>  0:44
+    CLOCK: [2017-01-16 Mon 14:49]--[2017-01-16 Mon 15:01] =>  0:12
+    CLOCK: [2017-01-16 Mon 13:45]--[2017-01-16 Mon 14:48] =>  1:03
+    CLOCK: [2017-01-16 Mon 13:01]--[2017-01-16 Mon 13:44] =>  0:43
+    CLOCK: [2017-01-16 Mon 10:58]--[2017-01-16 Mon 11:44] =>  0:46
+    CLOCK: [2017-01-16 Mon 10:16]--[2017-01-16 Mon 10:57] =>  0:41
+
+Now we can read upsilon models, we need to transform them into yarn
+models. This fairly straightforward as a meta-model
+transformation. There are however a few corner cases:
+
+- we need to inject model value into the yarn model
+- we need to inject a =Collection= type into the yarn model, which has
+  one type parameter.
+- we need to hard-code the model to a given language. At present we do
+  not have proper multi-language workflows. When a model comes out of
+  the frontend it has to either be C++, C# or LAM. To make life easy
+  we can just set it as either C++ or C# for now. Ideally we want to
+  retrieve a LAM model, mappable to C++ and C#. Actually that's not
+  quite right as we do not have the LAM types in the frontend. For now
+  lets just hack it and retrieve it either as C++ or C#. But perhaps
+  the right solution is to create a "upsilon language" which is
+  mappable to LAM/C++/C#. In fact we should just map against LAM, and
+  deduce the mappings for all other languages from there. The "upsilon
+  language" is not generatable, so it must be mapped. Which raises an
+  interesting point: there are two uses of "language": the language in
+  which the model is written and the language in which one wants to
+  output it. Normally they are the same. However, if I supply a LAM
+  model I may want to choose a language. For Dogen/JSON frontends this
+  is simply a meta-data extension. For upsilon we need to piggy-back
+  on the existing language infrastructure.
+- registration with "composite" extensions is not working; boost path
+  only returns the last extension - e.g. =.xml= instead of
+  =.Configuration.xml=.
+- We've created an "extension" method that returns all extensions for
+  a given file name. It wasn't very useful in the end. If needed in
+  the future its under =f83e9152e=.
+
+Problems:
+
+- we assume all languaes are "outputtable". Upsilon and LAM are
+  not. Language is not even a good name for these things either.
+- the pipeline assumes that we will generate only one final model; in
+  the mapping world this is not the case. A user may wish to map a
+  given model into n "outputtable" languages. In this case we need a
+  very different workflow: read each model natively, map them to the
+  outputtable language and then perform the workflow for the
+  outputtable language, possibly loading a different set of system
+  models.
+- we have no way of telling dogen what the output language are. This
+  can be done in the diagram itself for Dia and JSON but not for
+  upsilon. We could add command line arguments for this.
+- we have no way of describing mappings. We can use meta-data for
+  Dia/JSON but not for upsilon.
+- we need an end-to-end test for the upsilon model that includes the
+  translation to c++/c# and code generation.
+
+Upsilon as a language:
+
+- originally we envisioned that upsilon would exist all the way into
+  the meta-model as an intermediate model; we'd then go through
+  mapping to convert it into an outputtable language. However, we have
+  one slight problem: upsilon allows the user to create "string
+  typedefs". This means that many primitives are user primitives (say
+  a =SequenceId= could be an =int= in disguise). With the mapping
+  approach, we need to create a large map, model specific, with all of
+  these primitives. This could be done with the help of scripting
+  (primitives have an intrinsic type that can be mapped to a language
+  type). Alternatively, we could hard-code the mapping such that
+  =yarn.upsilon= would generate a model in an outputtable
+  language. This is easier but not reusable for LAM.
+- actually we could even use tailor to generate the mapping files,
+  given that the upsilon information already has all of the required
+  information.
+
+Tasks:
+
+- add new "upsilon" language which is not generatable; entire yarn
+  workflow should work for upsilon, but then quilt just does nothing.
+- add tailor support so that we can convert upsilon to JSON.
+
+Other problems:
+
+- relative/absolute config paths
+- intrinsics all in lower case
+- comments at the top of XML
+- all types are coming under the main schema rather than the
+  referenced schemas.
+- referencing all system types even for other languages.
+- logging: add field etc names, move to trace
+- how do we determine the target model?
+
+*** COMPLETED Fields with collections in upsilon cause errors         :story:
+    CLOSED: [2017-01-18 Wed 11:59]
+    CLOCK: [2017-01-18 Wed 10:39]--[2017-01-18 Wed 11:59] =>  1:20
+
+It seems that when we refer to a collection on the target model,
+resolution fails.
+
+*** COMPLETED Bind language to kernel                                 :story:
+    CLOSED: [2017-01-18 Wed 14:36]
+    CLOCK: [2017-01-18 Wed 12:38]--[2017-01-18 Wed 13:50] =>  1:12
+    CLOCK: [2017-01-17 Tue 20:55]--[2017-01-17 Tue 21:12] =>  0:17
+
+At present we have the notion of a language at the frontend level but
+this is not really used when determining available kernels. So we
+simply go through all of the enabled kernels and generate them
+all. This is not ideal; we could instead determine what languages the
+kernel supports and only generate if its a supported language. This
+would stop us code-generating a C# model in C++ and vice-versa.
+
+*** COMPLETED Upsilon can have collections of collections             :story:
+    CLOSED: [2017-01-18 Wed 15:56]
+    CLOCK: [2017-01-18 Wed 14:54]--[2017-01-18 Wed 15:55] =>  1:01
+
+Our current translation of Upsilon collections assumes they are always
+containers of compounds. In practice, collections of collections have
+been spotted in the wild and they break because we do not follow the
+collection scrubbing into the type name.
+
+While fixing this bug we hit a disk space issue on the debian box
+which resulted in delays.
+
+*** COMPLETED Upsilon test borked due to no output                    :story:
+    CLOSED: [2017-01-18 Wed 21:01]
+    CLOCK: [2017-01-18 Wed 20:40]--[2017-01-18 Wed 21:01] =>  0:21
+
+Seems like we borked the upsilon test when we introduced the "no
+output" change whereby we don't output if the model's language does
+not match the kernel's.
+
+: 2017-01-18 20:54:38.534005 [INFO] [knit.housekeeper] initial configuration: ignore patterns: [  ] managed directories: [ "/home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/../test_data/TestModel/actual.upsilon/Zeta", "/home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/../test_data/TestModel/actual.upsilon/Zeta" ]
+: 2017-01-18 20:54:38.534027 [ERROR] [utility.filesystem.file] Could not find directory: /home/marco/Development/DomainDrivenConsulting/dogen/build/output/gcc/Release/stage/bin/../test_data/TestModel/actual.upsilon/Zeta
+
+*** COMPLETED Add multi-language support                              :story:
+    CLOSED: [2017-01-23 Mon 14:18]
+    CLOCK: [2017-01-23 Mon 13:05]--[2017-01-23 Mon 14:17] =>  1:12
+    CLOCK: [2017-01-23 Mon 11:46]--[2017-01-23 Mon 11:53] =>  0:07
+    CLOCK: [2017-01-23 Mon 11:44]--[2017-01-23 Mon 11:45] =>  0:01
+    CLOCK: [2017-01-23 Mon 11:16]--[2017-01-23 Mon 11:44] =>  0:28
+    CLOCK: [2017-01-23 Mon 11:04]--[2017-01-23 Mon 11:15] =>  0:11
+    CLOCK: [2017-01-23 Mon 10:39]--[2017-01-23 Mon 11:03] =>  0:24
+    CLOCK: [2017-01-23 Mon 09:12]--[2017-01-23 Mon 10:38] =>  1:26
+    CLOCK: [2017-01-22 Sun 14:31]--[2017-01-22 Sun 15:23] =>  0:52
+    CLOCK: [2017-01-21 Sat 11:32]--[2017-01-21 Sat 12:55] =>  1:23
+    CLOCK: [2017-01-21 Sat 09:47]--[2017-01-21 Sat 10:04] =>  0:17
+    CLOCK: [2017-01-21 Sat 08:15]--[2017-01-21 Sat 09:46] =>  1:31
+    CLOCK: [2017-01-18 Wed 23:24]--[2017-01-18 Wed 23:35] =>  0:11
+    CLOCK: [2017-01-18 Wed 22:54]--[2017-01-18 Wed 23:23] =>  0:29
+    CLOCK: [2017-01-18 Wed 22:41]--[2017-01-18 Wed 22:53] =>  0:12
+    CLOCK: [2017-01-18 Wed 22:26]--[2017-01-18 Wed 22:40] =>  0:14
+    CLOCK: [2017-01-18 Wed 22:20]--[2017-01-18 Wed 22:25] =>  0:05
+    CLOCK: [2017-01-18 Wed 21:22]--[2017-01-18 Wed 22:19] =>  0:57
+    CLOCK: [2017-01-18 Wed 21:04]--[2017-01-18 Wed 21:21] =>  0:17
+    CLOCK: [2017-01-18 Wed 19:01]--[2017-01-18 Wed 19:49] =>  0:48
+    CLOCK: [2017-01-18 Wed 17:15]--[2017-01-18 Wed 17:39] =>  0:24
+    CLOCK: [2017-01-18 Wed 16:14]--[2017-01-18 Wed 17:14] =>  1:00
+    CLOCK: [2017-01-18 Wed 15:56]--[2017-01-18 Wed 16:13] =>  0:17
+    CLOCK: [2017-01-18 Wed 14:29]--[2017-01-18 Wed 14:53] =>  0:24
+    CLOCK: [2017-01-18 Wed 13:58]--[2017-01-18 Wed 14:10] =>  0:12
+    CLOCK: [2017-01-18 Wed 13:51]--[2017-01-18 Wed 13:57] =>  0:06
+
+This story splits the mapping work into two phases: first we just add
+the capability of processing (and grouping) models by language (this
+story). Second we add mapping (on another story).
+
+The objective is to change all APIs (yarn, knit) to deal with more
+than one model, per language. For this we need the intermediate model
+factory to return models bucketed by language and for the model
+factory to process and return them by language too; finally, the main
+workflow can just return a list of models.
+
+In knit we need to process the list of models and send them to quilt
+one at a time.
+
+We should also add a list of output languages to the kernel, which for
+now will always be equal to the input language. It would be nice to
+keep track of all of the different states:
+
+- input language
+- requested output languages
+- actual output language
+
+Assorted Notes:
+
+- add a list of languages to the model, populate them from upsilon.
+- for other models read it from meta-data; if not populated, assume
+  its the same as the input language.
+- at the kernel level, check to see if the language matches the
+  kernel. Each kernel has a hard-coded language.
+- in yarn, once the model is merged checked its input and output
+  languages. If they are different, send the model to the
+  mapper. Actually we need to do this at a higher level in order to
+  cater for multiple output languages.
+- we could change intermediate processing as follows: create a
+  map by language with target and references. Read target in, map it
+  to each output language. Then read each reference and map it to each
+  output language. Then for each language, read and filter all system
+  models.
+- we need to support "mapping to nothing". For example, the LAM will
+  have to have a pointer type, which in C# maps to nothing but in C++
+  can map to shared pointer, etc.
+- add output language fields. If not populated assume input language.
+- validator checks that the output language is valid
+  (e.g. outputtable).
+- upsilon maps the output languages.
+- we have incompatible requirements: all types without a schema are
+  assigned to the current schema; however, types such as model value
+  live in the global namespace. Due to this we cannot resolve them. We
+  need to map model value to something vaguely sensible in c++ or
+  remove it.
+- we seem to be running housekeeping twice, once per language. The
+  problem is, we consider the files of "the other" language as
+  unexpected (for each run we just have visibility of the files of the
+  current language) so the net result is we are deleting
+  everything. We need to somehow supply the language dependent path to
+  the house keeper or do a single run with the combined set of files.
+- we need to detect inheritance in mapper and inject shared pointers.
+- mark target and proxy correctly for upsilon based on the schema.
+
+Tasks:
+
+- create built-ins for all of upsilon's intrinsics. Convert all
+  primitives into these intrinsics.
+
+Merged stories:
+
+*Process models based on language*
+
+At present we are loading up all system models and processing them,
+only to discard them at merging stage. Ideally we want to process only
+if the model language matches.
+
+*Add output languages*
+
+At present we only support the input language associated with the
+model. This has been sufficient because the input and output language
+is always the same. However, with upsilon things change: we need to
+generate multiple languages off of a single upsilon model. In the
+future we will have the same requirement for LAM. We could:
+
+- rename language to input language;
+- add a set of output languages to model; for LAM these would be
+  populated via meta-data.
+- when a model comes out of intermediate, if it has an input language
+  which is not outputtable, we then look at the output languages. All
+  intermediate models must be of the same non-outputtable language. We
+  take all of these models and supply them to the mapper, together
+  with an outputtable language.
+
+*** COMPLETED Add a type mapper                                       :story:
+    CLOSED: [2017-01-23 Mon 14:39]
+    CLOCK: [2017-01-19 Thu 17:34]--[2017-01-19 Thu 17:56] =>  0:22
+    CLOCK: [2017-01-19 Thu 16:19]--[2017-01-19 Thu 17:33] =>  1:14
+    CLOCK: [2017-01-19 Thu 14:37]--[2017-01-19 Thu 16:18] =>  1:41
+    CLOCK: [2017-01-19 Thu 14:15]--[2017-01-19 Thu 14:36] =>  0:21
+    CLOCK: [2017-01-19 Thu 11:45]--[2017-01-19 Thu 12:03] =>  0:18
+    CLOCK: [2017-01-19 Thu 11:23]--[2017-01-19 Thu 11:44] =>  0:21
+    CLOCK: [2017-01-19 Thu 11:03]--[2017-01-19 Thu 11:22] =>  0:19
+    CLOCK: [2017-01-19 Thu 10:01]--[2017-01-19 Thu 10:40] =>  1:07
+    CLOCK: [2017-01-19 Thu 08:23]--[2017-01-19 Thu 09:09] =>  0:46
+    CLOCK: [2017-01-18 Wed 14:10]--[2017-01-18 Wed 14:28] =>  0:18
+
+We need to create a class that receives a map of element id to element
+id. It then goes through every mapped element reference and deletes the
+element reference and replaces it with the corresponding element id.
+
+We then need to extend the resolver to do an element id based
+lookup. The only slight wrinkle in the master plan is that the current
+indices are designed to return a true/false answer to the question of
+"is this ID valid". In this use case we want something different:
+return me the complete name for this ID.
+
+We could make a requirement that mapped types must be resolvable
+directly. This would mean that the mapper could operate on the merged
+model; it could generate its own index of referrable types (but
+crucially, only for those that are mapped) and replace them
+directly. i.e.:
+
+- for every mapped element, find its name in the merged model;
+- for every candidate element, if its id is on the mapped list, swap
+  name with replacement name.
+
+Mapping happens straight after merging. Model factory would now take a
+parameter of language, which it supplies to the mapper. We have an
+additional command line argument of maps (language name +
+".map.json"?). All maps are made against LAM types. The mapper must
+load all maps and cross-reference them so that we can resolve any
+language to any language going via LAM. Two-way look-up? First from
+language to LAM them from LAM to language. If already in LAM then only
+one look-up is required. Mapping must also include removal. Actually
+this requirement is only needed for ModelValue; upsilon could filter
+out any extends of this type, greatly simplifying the mapping logic.
+
+*** COMPLETED Backslashes in strings cause JSON parsing to fail       :story:
+    CLOSED: [2017-01-23 Mon 15:24]
+    CLOCK: [2017-01-23 Mon 15:25]--[2017-01-23 Mon 15:30] =>  0:05
+    CLOCK: [2017-01-23 Mon 14:40]--[2017-01-23 Mon 15:24] =>  0:44
+
+When trying to JQ an upsilon model, JQ failed with an error due to the
+use of un-escaped backslashes. We need to add this to the tidy-up
+string list.
+
+*** COMPLETED Add log-level to command line                           :story:
+    CLOSED: [2017-01-23 Mon 16:41]
+    CLOCK: [2017-01-23 Mon 16:47]--[2017-01-23 Mon 16:52] =>  0:05
+    CLOCK: [2017-01-23 Mon 15:31]--[2017-01-23 Mon 16:46] =>  1:15
+
+We are now increasingly logging at trace levels. We need to allow
+users to supply a more fine-grained log configuration. This could be
+done by simply allowing users to set the log level via a command-line
+flag: =log_level=. It would replace verbose.
+
+Or we could simply add a new flag like =extra-verbose=. We could also
+add =--quiet=. Actually with this we are just proliferating the number
+of command line options and introducing a layer of mapping between
+them and the logging.
+
+*** COMPLETED Fix recursive path lookup for upsilon                   :story:
+    CLOSED: [2017-01-23 Mon 17:56]
+    CLOCK: [2017-01-23 Mon 17:38]--[2017-01-23 Mon 17:56] =>  0:18
+    CLOCK: [2017-01-23 Mon 16:53]--[2017-01-23 Mon 17:37] =>  0:44
+
+It seems we still can't recurse upwards when looking for the
+components of the upsilon model.
+
+We should also look first on the current directory and then make use
+of the relative path.
+
+*** COMPLETED In JSON hydrator rename simple name to simple           :story:
+    CLOSED: [2017-01-23 Mon 21:10]
+    CLOCK: [2017-01-23 Mon 20:10]--[2017-01-23 Mon 21:10] =>  1:00
+    CLOCK: [2017-01-23 Mon 17:57]--[2017-01-23 Mon 18:00] =>  0:03
+
+We are still using =simple_name=. Make this consistent with the yarn
+terminology.
+
+In order to fix this we must also fix the attribute names, which have
+been slightly hacked; we flattened them. We should reuse the same read
+name function as we do for yarn names everywhere else.
+
+We should also update type to be unparsed type to match the yarn
+model.
+
+*** COMPLETED Add tailor support for upsilon                          :story:
+    CLOSED: [2017-01-23 Mon 21:21]
+    CLOCK: [2017-01-23 Mon 21:11]--[2017-01-23 Mon 21:27] =>  0:16
+
+Given an upsilon model, generate the JSON representation.
+
+This was implemented but its not very useful because at present we are
+not performing any mapping.
+
+*** CANCELLED Split generalisation expansion into two-passes          :story:
+    CLOSED: [2017-01-24 Tue 11:48]
+
+At present we are populating all generalisation properties in one
+go. However, mapper now needs to know of abstract elements. We can't
+move the entire generalisation expansion to non-merging because some
+of it relies on merging - but the abstract part doesn't. So we could
+split it into two: first pass and second pass. First pass would be
+part of the intermediate model expansion and second pass of the model
+expansion. Mapping can then rely on "is abstract".
+
+The downside of this approach is that we now can't have explicit
+pointer types. So if a model inherits from another model we won't see
+the generalisation relationship and we have no way to "force" LAM to
+generate a pointer. This is not ideal. A better way is to have an
+explicit LAM pointer type. For upsilon we can put in a hack that
+detects if a class is a parent and so forces a pointer to be emitted.
+
+*** COMPLETED Add defaults for cases where mapping is not bijective   :story:
+    CLOSED: [2017-01-24 Tue 18:41]
+
+Upsilon maps a number of LAM types to "collection". This means that
+when we are mapping between LAM and upsilon, we will have
+non-functional relationships. For example: say =lam::dictionary= and
+=lam::list= will both map to =Collection=. So we will need to have a
+"default" mapping for when trying to convert between upsilon and
+LAM. We can extend the mappings class with a "is default" flag and
+update the JSON files.
+
+*** COMPLETED Add support for pointers to mapper in upsilon           :story:
+    CLOSED: [2017-01-25 Wed 11:50]
+    CLOCK: [2017-01-25 Wed 11:02]--[2017-01-25 Wed 11:50] =>  0:48
+    CLOCK: [2017-01-25 Wed 09:25]--[2017-01-25 Wed 10:16] =>  0:51
+    CLOCK: [2017-01-25 Wed 08:09]--[2017-01-25 Wed 08:50] =>  0:41
+    CLOCK: [2017-01-25 Wed 07:50]--[2017-01-25 Wed 08:08] =>  0:18
+    CLOCK: [2017-01-25 Wed 07:12]--[2017-01-25 Wed 07:27] =>  0:15
+    CLOCK: [2017-01-25 Wed 06:37]--[2017-01-25 Wed 07:03] =>  0:26
+    CLOCK: [2017-01-24 Tue 21:31]--[2017-01-24 Tue 22:56] =>  1:25
+
+We need to detect types which are abstract (if its already populated)
+and ensure we wrap them around a pointer in C++.
+
+This is specifically done only for upsilon. We can rely on the
+populated parents collection in order to determine if a type is
+abstract.
+
+*** COMPLETED Discuss the current approach with end users             :story:
+    CLOSED: [2017-01-25 Wed 17:29]
+    CLOCK: [2017-01-25 Wed 15:30]--[2017-01-25 Wed 17:01] =>  1:31
+
+- demo the current state of Dogen.
+- discuss mapping of primitives by "unboxing" them back into primitive
+  types. Final decision is that for platform primitives we should
+  unbox, for other types we should create objects with an attribute
+  named value and of the type of the primitive.
+
+*** COMPLETED Rename primitives to built-in                           :story:
+    CLOSED: [2017-01-26 Thu 14:42]
+    CLOCK: [2017-01-26 Thu 14:33]--[2017-01-26 Thu 14:42] =>  0:09
+    CLOCK: [2017-01-26 Thu 14:21]--[2017-01-26 Thu 14:32] =>  0:11
+    CLOCK: [2017-01-26 Thu 11:38]--[2017-01-26 Thu 12:03] =>  0:25
+    CLOCK: [2017-01-26 Thu 11:33]--[2017-01-26 Thu 11:37] =>  0:04
+    CLOCK: [2017-01-26 Thu 10:01]--[2017-01-26 Thu 11:32] =>  1:31
+
+We need to reuse the name primitive for something else, so free it up
+by renaming the current =primitive= to =built_in=. We should end up
+with no references at all to this name.
+
+*** COMPLETED Thoughts around multi-kernel support                     :epic:
+    CLOSED: [2017-01-28 Sat 15:29]
+
+*Rationale*: we've already implemented a lot of the multi-kernel
+infrastructure, so we should remove this from backlog.
+
+*More recent ideas on this space*
+
+- it may be possible for simpler languages to have an outputting model
+  that has only formatters and uses yarn directly. For example for C#
+  and Java it is likely we could get away with a simple utility layer.
+- this implies that we may either end up with outputting models that
+  are nothing but just stitch templates.
+- this being the case, we could perhaps have two kernels: the cpp
+  kernel (quilt) which requires lots of hand-crafting to generate the
+  output and this more generic kernel which is just formatters per
+  language (pleat?). Quilt/cpp kernel could also be transformed into a
+  C/cpp/glib kernel, where the services we have at present for C++ are
+  shared between these different languages (they all need includes,
+  etc). Other languages may also have similar requirements (D?).
+
+*Previous notes, slightly bit-rotted*
+
+At present we have hard-coded knit to support a single C++ model,
+cpp. However, in reality the world looks more like this:
+
+- there are "groups of models" that have models that target specific
+  languages. We need to give a name to the "default" model group in
+  dogen. We should choose something from the [[http://en.wikipedia.org/wiki/Glossary_of_sewing_terms][sewing terms]]; for now
+  lets call it =quilt=. =quilt= contains a number of languages such as
+  =cpp=. A user can only generate one model group at a time. Users can
+  generate one or more languages within a group (depending on what the
+  group supports).
+- we should have a top-level folder to house all model groups:
+  =backends=. The existing =backend= model becomes =backends::core=.
+- there may be facilities that are language specific, shared by model
+  groups. These can be housed in language specific folders:
+  =backends::cpp= and so on. For instance, the language specific stuff
+  now in =formatters= should move here.
+
+*** CANCELLED Improve handling of defaulting for enumeration types    :story:
+    CLOSED: [2017-01-28 Sat 17:58]
+
+*Rationale*: this is a premature optimisation. The built-in model is
+tiny, and we should always load it anyway.
+
+At present we check for a built-in market as the default type for
+enumerations, and apply this type to all enumerations that have no
+underlying type. The problem is that if a user creates a type for
+built-in (or if we use =std::string= as a built-in type, say) we still
+require loading the built-in model to locate a default type. We should
+probably only locate this type once we have got the first enumeration
+that needs it.
+
+*** POSTPONED Create a new yarn type for primitives                   :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-28 Sat 17:13]--[2017-01-28 Sat 17:16] =>  0:03
+    CLOCK: [2017-01-28 Sat 16:02]--[2017-01-28 Sat 17:12] =>  1:10
+    CLOCK: [2017-01-27 Fri 13:26]--[2017-01-27 Fri 14:16] =>  0:50
+    CLOCK: [2017-01-27 Fri 12:11]--[2017-01-27 Fri 12:14] =>  0:03
+    CLOCK: [2017-01-27 Fri 11:38]--[2017-01-27 Fri 12:10] =>  0:32
+    CLOCK: [2017-01-27 Fri 11:01]--[2017-01-27 Fri 11:37] =>  0:36
+    CLOCK: [2017-01-27 Fri 10:38]--[2017-01-27 Fri 11:00] =>  0:22
+    CLOCK: [2017-01-27 Fri 09:01]--[2017-01-27 Fri 10:37] =>  1:36
+    CLOCK: [2017-01-26 Thu 22:51]--[2017-01-26 Thu 23:20] =>  0:29
+    CLOCK: [2017-01-26 Thu 22:43]--[2017-01-26 Thu 22:50] =>  0:07
+    CLOCK: [2017-01-26 Thu 22:15]--[2017-01-26 Thu 22:42] =>  0:27
+    CLOCK: [2017-01-26 Thu 18:49]--[2017-01-26 Thu 18:53] =>  0:04
+    CLOCK: [2017-01-26 Thu 18:43]--[2017-01-26 Thu 18:48] =>  0:05
+    CLOCK: [2017-01-26 Thu 18:30]--[2017-01-26 Thu 18:42] =>  0:12
+    CLOCK: [2017-01-26 Thu 18:21]--[2017-01-26 Thu 18:29] =>  0:06
+    CLOCK: [2017-01-26 Thu 18:16]--[2017-01-26 Thu 18:20] =>  0:04
+    CLOCK: [2017-01-26 Thu 17:54]--[2017-01-26 Thu 18:09] =>  0:15
+    CLOCK: [2017-01-26 Thu 16:43]--[2017-01-26 Thu 16:54] =>  0:11
+    CLOCK: [2017-01-26 Thu 16:07]--[2017-01-26 Thu 16:42] =>  0:35
+    CLOCK: [2017-01-26 Thu 15:56]--[2017-01-26 Thu 16:06] =>  0:10
+    CLOCK: [2017-01-26 Thu 15:29]--[2017-01-26 Thu 15:56] =>  0:27
+    CLOCK: [2017-01-26 Thu 15:04]--[2017-01-26 Thu 15:15] =>  0:11
+    CLOCK: [2017-01-26 Thu 14:42]--[2017-01-26 Thu 15:04] =>  0:22
+    CLOCK: [2017-01-26 Thu 09:40]--[2017-01-26 Thu 10:00] =>  0:20
+
+- add a new yarn element: primitive. Add an attribute of type name
+  called =underlying_type=.
+- add an is nullable flag, settable from meta-data. If true, the
+  primitive can be null.
+- add a stereotype for primitive.
+- add a meta-data parameter for the underlying type. Make it the same
+  as for enumerations.
+- add a primitive expander, similar to the enumeration expander in
+  intermediate model expansion. Read the meta-data parameter there.
+- add a property to type: =can_be_primitive_underlier=. Add JSON
+  support for it. Set it to true to all built-ins and for strings.
+- Add validation to ensure the underlier is valid.
+- add formatters for primitive across all facets and languages.
+- add a test model for each language with primitives that test all
+  built-ins and string.
+
+*Previous Understanding*
+
+One extremely useful feature would be to create "aliases" for types
+which could be implemented as strongly-typed aliases where there is
+language support. The gist of the problem is as described in here:
+
+[[http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3515.pdf][Toward Opaque Typedefs for C++1Y]]
+
+This is also similar to the problem space of boost dimensions,
+although their problem is more generic. The gist of it is that one
+should be able to "conceptually" sub-class primitives such as int and
+even types such as string and have the code generator create some
+representation of that type that has the desired properties (including
+a "to underlying" function). These types would not be interchangeable
+with their aliased types. For example, if we define a "book id" as an
+unsigned int, it should not be interchangeable with unsigned
+int. Potentially it should also not have certain int abilities such as
+adding/multiplication and so forth.
+
+Links:
+
+- [[http://www.boost.org/doc/libs/1_37_0/boost/strong_typedef.hpp][Boost Strong Typedef]]
+- [[http://stackoverflow.com/questions/23726038/how-can-i-create-a-new-primitive-type-using-c11-style-strong-typedefs][How can I create a new primitive type using C++11 style strong
+  typedefs?]]
+- [[http://stackoverflow.com/questions/28916627/strong-typedefs][Strong typedefs]]
+- [[http://programmers.stackexchange.com/questions/243154/c-strongly-typed-typedef][C++ strongly typed typedef]]
+- [[http://www.ilikebigbits.com/blog/2014/5/6/type-safe-identifiers-in-c][Type safe handles in C++]]
+3
+Note: the other stories in the backlog about typedefs are just about
+the C++ feature, not this extension to it. Hence we called it "type
+aliasing" to avoid confusion.
+
+The implementation is fairly similar to enumerations:
+
+- add a stereotype for this concept.
+- add a yarn element.
+- add a meta-data parameter for the underlying type. Make it the same
+  as for enumerations. Add validation to ensure the element is always
+  a primitive. Actually, this is fine for enumerations but not for
+  "primitives". We need an additional parameter on each element (can
+  be the underlying element of a primitive?).
+- add formatters.
+
+The first problem is what to call it. Type alias is not a good name
+because an alias implies they are interchangeable; this is what one is
+trying to avoid. One sneaky way out is to call primitives "builtins"
+and call these "primitives". This somewhat reflects the truth in that
+builtins are supposed to be hardware level concepts.
+
+*** POSTPONED Add mapping support between upsilon and LAM             :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-26 Thu 06:57]--[2017-01-26 Thu 07:40] =>  0:43
+    CLOCK: [2017-01-25 Wed 17:59]--[2017-01-25 Wed 18:10] =>  0:11
+    CLOCK: [2017-01-25 Wed 17:39]--[2017-01-25 Wed 17:58] =>  0:19
+    CLOCK: [2017-01-23 Mon 21:28]--[2017-01-23 Mon 22:11] =>  0:43
+
+At present we map upsilon directly to a language-specific model
+(C++/C#), which gets code-generated. However, from a tailor
+perspective, this is not ideal; we would end up with N different
+models. Ideally, we should get a LAM representation of the JSON model
+which could then be used to code-generate multiple languages.
+
+This is probably not too hard, given the mapper knows how to convert
+between upsilon and LAM. We just need to finish LAM support and then
+try mapping them and see what breaks. Tailor would have to somehow
+tell yarn to set the output language to LAM.
+
+Notes:
+
+- if output is more than one language, change it to LAM. Otherwise
+  leave it as language specific.
+- we need to inject via meta-data the annotations for the output
+  languages.
+- We only need to perform mapping if input language is upsilon. For
+  all other languages we can leave it as is. But for upsilon, tailor
+  needs to do a full intermediate model workflow.
+- unparsed type needs to be recomputed as part of mapping.
+- we are not adding the LAM mapping to the upsilon id container.
+- we need to add support for "default mappings"
+
+*** POSTPONED Make the Zeta model compilable                          :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-24 Tue 09:35]--[2017-01-24 Tue 10:20] =>  0:45
+
+We need to work through the list of issues with the Zeta model and get
+it to a compilable state.
+
+*** POSTPONED Add support for Language Agnostic Models (LAM)          :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-24 Tue 18:20]--[2017-01-24 Tue 18:40] =>  0:20
+    CLOCK: [2017-01-24 Tue 17:26]--[2017-01-24 Tue 18:19] =>  0:53
+    CLOCK: [2017-01-24 Tue 13:02]--[2017-01-24 Tue 17:25] =>  4:23
+    CLOCK: [2017-01-24 Tue 11:11]--[2017-01-24 Tue 11:41] =>  0:30
+    CLOCK: [2017-01-24 Tue 10:21]--[2017-01-24 Tue 11:10] =>  0:49
+
+Tasks:
+
+- create the basic LAM types and add mapping for both C# and C++.
+- create a LAM test model which tests that the mapping for all types
+  generates compilable code.
+
+LAM type map:
+
+| Type                            | C++                              | C#                                                | Upsilon              |
+|---------------------------------+----------------------------------+---------------------------------------------------+----------------------|
+| lam::byte                       | unsigned char                    | uchar                                             |                      |
+| lam::character                  | char                             | char                                              |                      |
+| lam::integer8                   | std::int8_t                      | sbyte                                             |                      |
+| lam::integer16                  | std::int16_t                     | System.Int16                                      |                      |
+| lam::integer32                  | std::int32_t                     | System.Int32                                      |                      |
+| lam::integer64                  | std::int64_t                     | System.Int64                                      | Integer64            |
+| lam::integer                    | int                              | int                                               |                      |
+| lam::single_floating            | float                            | float                                             |                      |
+| lam::double_floating            | double                           | double                                            | Double               |
+| lam::boolean                    | bool                             | bool                                              | Boolean              |
+| lam::string                     | std::string                      | string                                            | String, Binary, Guid |
+| lam::date                       | boost::gregorian::date           | System.DateTime                                   | Date                 |
+| lam::time                       | boost::posix_time::time_duration | System.TimeSpan                                   | UtcTime              |
+| lam::date_time                  | boost::posix_time::ptime         | System.DateTime                                   | UtcDateTime          |
+| lam::decimal                    | std::decimal                     | System.Decimal                                    | Decimal              |
+| lam::dynamic_array<T>           | std::vector<T>                   | System.Collections.Generic.List<T>                | Collection           |
+| lam::static_array<T>            | std::array<T>                    | System.Collections.Generic.Array<T>               |                      |
+| lam::unordered_dictionary<K, V> | std::unordered_map<K, V>         | System.Collections.Generic.Dictionary<K, V>       |                      |
+| lam::ordered_dictionary<K, V>   | std::map<K, V>                   | System.Collections.Generic.SortedDictionary<K, V> |                      |
+| lam::unordered_set<K>           | std::unordered_set<K>            | System.Collections.Generic.HashSet<T>             |                      |
+| lam::ordered_set<K>             | std::set<K>                      | System.Collections.Generic.SortedSet<T>           |                      |
+| lam::queue<T>                   | std::queue<T>                    | System.Collections.Generic.Queue<T>               |                      |
+| lam::stack<T>                   | std::stack<T>                    | System.Collections.Generic.Stack<T>               |                      |
+| lam::linked_list<T>             | std::list<T>                     | System.Collections.Generic.LinkedList<T>          |                      |
+| lam::pointer<T>                 | boost::shared_ptr<T>             | <erase>                                           |                      |
+
+*Previous Understanding*
+
+When we start supporting more than one language, one interesting
+feature would be to be able to define a model once and have it
+generated for all supported languages. This would be achieved by
+having a system model (or set of system models) that define all the
+key types in a language agnostic manner. For example:
+
+: lam::string
+: lam::int
+: lam::int16
+
+Each of these types then has a set of meta-data fields that map them
+to a type in a supported language:
+
+: lam:string: cpp.concrete_type_mapping = std::string
+: lam:string: csharp.concrete_type_mapping = string
+
+And so on. We load the user model that makes use of LAM, we generate
+the merged model still with LAM types and then we perform a
+translation for each of the supported and enabled languages: for every
+LAM type, we replace all its references with the corresponding
+concrete type. We need to split the supplied mapping into a QName, use
+the QName to load the system models for that language, look up the
+type and replace it. After the translation no LAM types are left. We
+end up with N yarn merged models where N is the number of supported and
+enabled languages.
+
+Each of these models is then sent down to code generation. This should
+be equivalent to manually generating models per language - we could
+use this as a test.
+
+Once we have LAM, it would be great to be able to exchange data
+between languages. This could be done as follows:
+
+- XML: create a "LAM" XML schema, and a set of formatters that read
+  and write from it. This is kind of like reverse mapping the types
+  back to LAM types when writing the XML.
+- JSON: similar approach to XML, minus the schema.
+- POF: use the coherence libraries to dump the models into POF.
+
+Tasks:
+
+- create the LAM model with a set of basic types.
+- add a set of mapping fields into yarn: =yarn.mapping.csharp=, etc
+  and populate the types with entries for each supported language.
+- create a notion of mapping of intermediate models into
+  languages. The input is the merged intermediate model and the output
+  is N models one per language. We also need a way to associate
+  backends with languages. Each model is sent down to its backend.
+- note that reverse mapping is possible: we should be able to
+  associate a type on a given language with it's lam type. This means
+  that, given a model in say C#, we could reconstruct a yarn lam model
+  (or tell the user about the list of failures to map). This should be
+  logged as a separate story.
+
+Links:
+
+- [[http://stackoverflow.com/questions/741054/mapping-between-stl-c-and-c-sharp-containers][Mapping between stl C++ and C# containers]]
+- [[http://stackoverflow.com/questions/3659044/comparison-of-c-stl-collections-and-c-sharp-collections][Comparison of C++ STL collections and C# collections?]]
+
+*** POSTPONED Map upsilon primitives to intrinsics                    :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-26 Thu 08:42]--[2017-01-26 Thu 09:39] =>  0:57
+    CLOCK: [2017-01-26 Thu 07:39]--[2017-01-26 Thu 07:43] =>  0:04
+    CLOCK: [2017-01-25 Wed 17:30]--[2017-01-25 Wed 17:38] =>  0:08
+    CLOCK: [2017-01-25 Wed 15:01]--[2017-01-25 Wed 15:29] =>  0:28
+    CLOCK: [2017-01-25 Wed 13:24]--[2017-01-25 Wed 14:01] =>  0:37
+    CLOCK: [2017-01-25 Wed 11:54]--[2017-01-25 Wed 12:44] =>  0:50
+
+Upsilon allows users to create "strong typedefs" around primitve
+types. We need to unpack these into their intrinsic counterparts and
+them map the intrinsics to native types.
+
+Slight mistake: we mapped the primitive types themselves but in
+reality what needs to be mapped are the fields making references to
+the primitive types. We should just filter out all primitives.
+
+Additional wrinkle: what the end users want is to unpack "real
+primitives" into intrinsics, but "other" primitives should be mapped
+to objects. This can be achieved by hard-coding =Plaform= primitives
+into the mapping layer. However, some non-platform primitives may also
+be candidates too. We need to create a list of these to see how
+widespread the problem is.
+
+Another alternative is to apply hard-coded regexes:
+
+- if the name matches any of the intrinsic names
+
+Finally, the last option may be to have yet another mapping data file
+format that lists the primitives to unbox.
+
+*** POSTPONED Add support for configurable enumerations types         :story:
+    CLOSED: [2017-01-30 Mon 09:21]
+    CLOCK: [2017-01-28 Sat 20:41]--[2017-01-28 Sat 21:39] =>  0:58
+    CLOCK: [2017-01-28 Sat 19:09]--[2017-01-28 Sat 20:16] =>  1:07
+    CLOCK: [2017-01-28 Sat 18:53]--[2017-01-28 Sat 19:08] =>  0:15
+    CLOCK: [2017-01-28 Sat 17:30]--[2017-01-28 Sat 18:52] =>  1:22
+
+#+begin_quote
+*Story*: As a dogen user, I need to configure the built-in type of my
+enumerations so that I model my domain accurately.
+#+end_quote
+
+We've updated the =builtins= model with a "default enumeration value"
+field. This allows us to dynamically determine which built-in to use
+as the type of enumerations. However:
+
+- we didn't follow it through in the formatters; we are hard-coding
+  this at present in C++. In a cross-language world, we should
+  dynamically detect the default enumeration type. This is not quite
+  as trivial as it seems (what would happen if we loaded multiple
+  programming languages?). Supporting this properly may require adding
+  a programming language to the model.
+- it is not possible to override this from JSON/Dia. We could do this
+  by supplying a type via dynamic extensions.
+
+Tasks:
+
+- add meta-data parameter to enumeration expander
+- add resolver support to resolve name
+- add meta-data flag for using language default type
+
+** Deprecated

@@ -1,0 +1,841 @@
+#+title: Sprint Backlog 29
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Sprint Goals
+
+- Move remaining formattable types to logical and physical models.
+- Merge =text= models.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-12-14 Mon 17:23]
+| <75>                                                      |         |       |       |       |
+| Headline                                                  | Time    |       |       |     % |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                              | *89:40* |       |       | 100.0 |
+|-----------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                                   | 89:40   |       |       | 100.0 |
+| Active                                                    |         | 89:40 |       | 100.0 |
+| edit release notes for previous sprint                    |         |       |  5:04 |   5.7 |
+| Create a demo and presentation for previous sprint        |         |       |  0:28 |   0.5 |
+| Sprint and product backlog grooming                       |         |       |  3:09 |   3.5 |
+| Improvements to template processing in logical model      |         |       |  0:26 |   0.5 |
+| Convert legacy helpers into new style helpers in C++      |         |       |  6:59 |   7.8 |
+| Add C++ helpers to the PMM                                |         |       | 13:36 |  15.2 |
+| Remove unused wale keys in =text.cpp=                     |         |       |  0:34 |   0.6 |
+| Merge =cpp_artefact_transform*= wale templates            |         |       |  0:09 |   0.2 |
+| Fix some problems with c++ visual studio                  |         |       |  0:59 |   1.1 |
+| Add C# helpers to the PMM                                 |         |       |  3:53 |   4.3 |
+| Move assorted formattable properties in C#                |         |       |  4:48 |   5.4 |
+| Orchestration should have an initialiser                  |         |       |  0:09 |   0.2 |
+| Move helpers to =text= model                              |         |       | 21:38 |  24.1 |
+| Add namespaces to "dummy function"                        |         |       |  0:10 |   0.2 |
+| Remove disabled files from project items                  |         |       |  0:30 |   0.6 |
+| Move text transforms in c++ and c# models into text model |         |       | 15:56 |  17.8 |
+| Use MDE terminology in Dia model                          |         |       |  1:47 |   2.0 |
+| Remove JSON models from Dogen                             |         |       |  0:19 |   0.4 |
+| Issues with emacs                                         |         |       |  1:32 |   1.7 |
+| Merge codec models                                        |         |       |  7:34 |   8.4 |
+#+tblfm: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED edit release notes for previous sprint                  :story:
+    CLOSED: [2020-11-06 Fri 14:11]
+    :LOGBOOK:
+    CLOCK: [2020-11-07 Sat 14:00]--[2020-11-07 Sat 14:15] =>  0:15
+    CLOCK: [2020-11-07 Sat 10:41]--[2020-11-07 Sat 11:42] =>  1:01
+    CLOCK: [2020-11-06 Fri 14:40]--[2020-11-06 Fri 14:43] =>  0:03
+    CLOCK: [2020-11-06 Fri 13:02]--[2020-11-06 Fri 14:11] =>  1:09
+    CLOCK: [2020-11-06 Fri 11:01]--[2020-11-06 Fri 12:26] =>  1:25
+    CLOCK: [2020-11-04 Wed 22:01]--[2020-11-04 Wed 22:30] =>  0:29
+    CLOCK: [2020-11-02 Mon 23:00]--[2020-11-02 Mon 23:14] =>  0:14
+    CLOCK: [2020-11-02 Mon 22:22]--[2020-11-02 Mon 22:50] =>  0:28
+    :END:
+
+add github release notes for previous sprint.
+
+release announcements:
+
+- [[https://twitter.com/MarcoCraveiro/status/1324723551795118080][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6730489589905154048/][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+#+begin_src markdown
+![Praia das Miragens](https://upload.wikimedia.org/wikipedia/commons/f/f2/Parabolic_Shelters_%2818861902633%29.jpg?1604306484246)
+_Artesanal market, Praia das Miragens, Moçâmedes, Angola. (C) [2015 David Stanley](https://www.wikiwand.com/pt/Mo%C3%A7%C3%A2medes)_.
+
+# Introduction
+
+Welcome to yet another Dogen release. After a series of hard-fought and seemingly endless sprints, this sprint provided a welcome respite due to its more straightforward nature. Now, this may sound like a funny thing to say, given we had to take what could only be construed as one _massive step sideways_, instead of continuing down the track beaten by the previous _n_ iterations; but the valuable lesson learnt is that, oftentimes, taking the _theoretically longer_ route yields much faster progress than taking the _theoretically shorter_ route. Of course, had we heeded van de Snepscheut, we would have known:
+
+> In theory, there is no difference between theory and practice. But, in practice, there is.
+
+What really matters, and what we keep forgetting, is how things work _in practice_. As we mention many a times in these release notes, the highly rarefied, highly abstract meta-modeling work is not one for which we are cut out, particularly when dealing with very complex and long-running refactorings. Therefore, anything which can bring the abstraction level as close as possible to normal coding is bound to greatly increase productivity, even if it requires adding "temporary code". With this sprint we finally saw the light and designed an architectural bridge between the dark _old world_ - largely hacked and hard-coded - and the bright and shiny _new world_ - completely data driven and code-generated. What is now patently obvious, but wasn't thus far, is that bridging the gap will let us to move quicker because we don't have to carry so much conceptual baggage in our heads every time we are trying to change a single line of code.
+
+Ah, but we are getting ahead of ourselves! This and much more shall be explained in the release notes, so please read on for some exciting news from the front lines of Dogen development.
+
+# User visible changes
+
+This section normally covers stories that affect end users, with the video providing a quick demonstration of the new features, and the sections below describing them in more detail. As there were no user facing features, the video discusses the work on internal features instead.
+
+[![Sprint 1.0.28 Demo](https://img.youtube.com/vi/tLzxPJMPFFI/0.jpg)](https://youtu.be/tLzxPJMPFFI)
+_Video 1: Sprint 28 Demo._
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see [the sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_28.org).
+
+## Significant Internal Stories
+
+The main story this sprint was concerned with removing the infamous ```locator``` from the C++ and C# models. In addition to that, we also had a small number of stories, all gathered around the same theme. So we shall start with the locator story, but provide a bit of context around the overall effort.
+
+### Move C++ locator into physical model
+
+As we explained at length in the previous sprint's [release notes](https://github.com/MASD-Project/dogen/releases/tag/v1.0.27), our most pressing concern is finalising the conceptual model for the LPS (Logical-Physical Space). We have a pretty good grasp of what we think the end destination of the LPS will be, so all we are trying to do at present is to refactor the existing code to make use of those new entities and relationships, replacing all that has been hard-coded. Much of the problems that still remain stem from the "formattables subsystem", so it is perhaps worthwhile giving a quick primer of what formattables were, why they came to be and why we are getting rid of them. For this we need to travel in time, to close to the start of Dogen. In those long forgotten days, long before we had the benefit of knowing about MDE (Model Driven Engineering) and domain concepts such as M2M (Model-to-Model) and M2T (Model-to-Text) transforms, we "invented" our own terminology and approach to converting modeling elements into source code. The classes responsible for generating the code were called ```formatters``` because we saw them as a "formatting engine" that dumped state into a stream; from there, it logically followed that the things we were "formatting" should be called "formattables", well, because we could not think of a better name.
+
+Crucially, we also assumed that the different technical spaces we were targeting had lots of incompatibilities that stopped us from sharing code between them, which meant that we ended up creating separate models for each of the supported technical spaces - _i.e._, ```C++``` and ```C#```, which we now call _major technical spaces_. Each of these ended up with its own formattables namespace. In this world view, there was the belief that we needed to transform models closer to their ultimate technical space representation before we could start generating code. But after doing so, we began to realise that the formattable types were almost identical to their logical and physical counterparts, with a small number of differences.
+
+![Formattables types](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/dogen_formatables_sprint_23.png)
+_Figure 1: Fragment of the formattables namespace, C++ Technical Space, circa [sprint 23](https://github.com/MASD-Project/dogen/releases/tag/v1.0.23)._
+
+What we since learned is that the logical and physical models must be able to represent all of the data required in order to generate source code. Where there are commonalities between technical spaces, we should exploit them, but where there are differences, well, they must still be represented within the logical and physical models; there simply is _nowhere else_ to place them. In other words, there isn't a requirement to keep the logical and physical models _technical space agnostic_, as we long thought was needed; instead, we should aim for a single representation, but also not be afraid of multiple representations where they make more sense. With this began a very long-standing effort to move modeling elements across, one at a time, from ```formattables``` and the long forgotten ```fabric``` namespaces into their final resting place. The work got into motion _circa_ [sprint 18](https://github.com/MASD-Project/dogen/releases/tag/v1.0.18), and ```fabric``` was swiftly dealt with, but ```formattables``` proved more challenging. Finally, ten sprints later, this long running effort came unstuck when we tried to deal with the representation of paths (or "locations") in the new world because it wasn't merely just "moving types around"; the more the refactoring progressed, the more abstract it was becoming. For a flavour of just how abstract things are getting, have a read on Section "Add Relations Between Archetypes in the PMM" in [sprint 26's release notes](https://github.com/MASD-Project/dogen/releases/tag/v1.0.26).
+
+Ultimately, it became clear that we tried to bite more than we could chew. After all, in a completely data driven world, all of the assembly performed in order to generate a path is done by introspecting elements of the logical model, the physical meta-model (PMM) and the physical model (PM). This is _extremely_ abstract work, where all that once were regular programming constructs have now been replaced by a data representation of some kind; and we had no way to validate any of these representations until we reached the final stage of assembling paths together, a sure recipe for failure. We struggled with this on the back-end of the last sprint and the start of this one, but then it suddenly dawned that we could perhaps move one step closer to the end destination without necessarily making the whole journey; going half-way or bridging the gap, if you will. The moment of enlightenment revealed by this sprint was to move the hard-coded concepts in formattables to the new world of transforms and logical/physical entities, _without fully making them data-driven_. Once we did that, we found we had something to validate against that was much more like-for-like, instead of the massive impedance mismatch we are dealing with at present.
+
+So this sprint we moved the majority of types in formattables into their logical or physical locations. As the story title implies, the bulk of the work was connected to moving the ```locator``` class on both C# and C++ formattables. This class had a seemingly straightforward responsibility: to build relative and full paths in the physical domain. However, it was also closely intertwined with the old-world formatters and the generation of dependencies (such as the include directives). It was difficult to unpick all of these different strands that connected the locator to the old world, and encapsulate them all inside of a transform, making use only of data available in the physical meta model and physical model, but once we achieved that all was light.
+
+There were lots of twists and turns, of course, and we did find  some cases that do not fit terribly well the present design. For instance, we had assumed that there was a natural progression in terms of projections, _i.e._:
+
+- from an external representation;
+- to the simplified internal representation in the codec model;
+- to the projection into the logical model;
+- to the projection into the physical model;
+- to, ultimately, the projection into a technical space - _i.e._, code generation.
+
+As it turns out, sometimes we need to peek into the logical model after the projection to the physical model has been performed, which is not quite so linear as we'd want. This may sound slightly confusing, given that the entire point of the LPS is to have a model that combines both the logical _and_ physical dimensions. Indeed, it is so; but what we do not expect is to have to modify the logical dimension _after_ it was constructed and projected into the physical domain. Sadly, this is the case when computing items that require lists of project items such build files. Problems such as this made it for a tricky journey, but we somehow managed to empty out the C++ formattables model to the last few remaining types - the helpers - which we will hopefully mop up next sprint. C# is not lagging far behind, but we decided to tackle them separately now.
+
+### Move stand-alone formattables to physical/logical models
+
+Given that the locator story (above) became a bit of a mammoth - consuming 50% of the total ask - we thought we would separate any formattable types which were not directly related to locator into its own story. As it turns out there were still quite a few, but this story does not really add much to the narrative above given that the objectives were very much the same.
+
+### Create a video series on the formattables refactor
+
+A lot of the work for the formattables refactor was captured in a series of coding videos. I guess you'd have to be a pretty ardent fan of Dogen to find these interesting, especially as it is an 18-part series, but if you are, you can finally binge. Mind you, the recording does not cover the _entirety_ of the formattables work, for reasons we shall explain later; at around 15 hours long, it covers just about 30% of the overall time spent on these stories (~49 hours). _Table 1_ provides an exhaustive list of the videos, with a short description for each one; a link to the playlist itself is available below (_c.f._ _Video 2_).
+
+[![Sprint 1.0.28 Demo](https://img.youtube.com/vi/pMqUzX0PU_I/0.jpg)](https://www.youtube.com/playlist?list=PLwfrwe216gF0NHaErGDeJrtGU8pAoNYlG)
+_Video 2: Playlist "MASD - Dogen Coding: Formatables Refactor"._
+
+With so much taped coding, we ended up penning a few reflections on the process. These are partially a rehashing of what we had already learned (_c.f._ [Sprint 19](https://github.com/MASD-Project/dogen/releases/tag/v1.0.19), section "Recording of coding sessions"), but also contain some new insights. They can be summarised as follows:
+
+- taped coding acts as a motivating factor, for some yet to be explained reason. It's not as if we have viewers or anything, but for some reason the neo-cortex seems to find it easier to get on with work if we think that we are recording. To be fair, we already experienced this with the MDE Papers, which had worked quite well in the past, though we lost the plot there a little bit of late.
+- taped coding is great for thinking through a problem in terms of overall design. In fact, it's great if you try to explain the problem out loud in simple terms to a (largely imaginary) lay audience. You are forced to rethink the problem, and in many cases, it's easier to spot flaws with your reasoning as you start to describe it.
+- taped coding is not ideal if you need to do "proper" programming, at least for me. This is because it's difficult to concentrate on coding if you are also describing what you are doing - or perhaps I just can't really multitask.
+
+In general, we found that it's often good to do a video as we start a new task, describe the approach and get the task started; but as we get going, if we start to notice that progress is slow, we then tend to finish the video where we are and complete the task offline. The next video then recaps what was done, and begins a new task. Presumably this is not ideal for an audience that wants to experience the reality of development, but we haven't found a way to do this without degrading productivity to unacceptable levels.
+
+|Video|Description|
+|--------|-------------|
+|[Part 1](https://youtu.be/CPugL2Qmj0c)|In this part we explain the rationale for the work and break it into small, self-contained stories.|
+|[Part 2](https://youtu.be/4UW8HNPYdm0)|In this part we read the project path properties from configuration.|
+|[Part 3](https://youtu.be/YN6i3fmZaVo)|In this part we attempt to tackle the locator directly, only to find out that there are other types which need to be cleaned up first before we can proceed.|
+|[Part 4](https://youtu.be/MlgeBEThR0Y)|In this part we finish the locator source code changes, only to find out that there are test failures. These then result in an investigation that takes us deep into the tracing subsystem.|
+|[Part 5](https://youtu.be/S533ja8Uvqc)|In this part we finally manage to get the legacy locator to work off of the new meta-model properties, and all tests to go green.|
+|[Part 6](https://youtu.be/4pouLW4oLCw)|Yet more work on formattables locator.|
+|[Part 7](https://youtu.be/nhmLWBKuTCE)|In this part we try to understand why the new transform is generating different paths from the old transform and fix a few of these cases.|
+|[Part 8](https://youtu.be/_-zBX6JBX74)|In this part we continue investigating incorrect paths being produced by the new paths transform.|
+|[part 9](https://youtu.be/3Jy02qjjSkQ)|In this part we finally replace the old way of computing the full path with the new (but still hacked) transform.|
+|[Part 10](https://youtu.be/S7U3VhkDQ8E)|In this part we start to tackle the handling of inclusion directives.|
+|[Part 11](https://youtu.be/9Y15-nbIddg)|In this video we try to implement the legacy dependencies transform, but bump into numerous problems.|
+|[Part 12](https://youtu.be/1GaWU6o5_vs)|More work in the inclusion dependencies transform.|
+|[Part 13](https://youtu.be/3kWLjk_PhIQ)|In this part we finish copying across all functions from the types facet into the legacy inclusion dependencies transform.|
+|[Part 14](https://youtu.be/BIdkYHBcnwk)|In this part we start looking at the two remaining transforms in formatables.|
+|[Part 15](https://youtu.be/KoRl8OL0GZY)|In this video we first review the changes that were done offline to remove the C++ locator and then start to tackle the stand-alone formatable types in the C++ model.|
+|[Part 16](https://youtu.be/h-kXGcTUcac)|In this part we start to tackle the streaming properties, only to find out it's not quite as trivial as we thought.|
+|[Part 17](https://youtu.be/QSDSa_AtD5M)|In this video we recap the work done on the streaming properties, and perform the refactor of the C++ standard.|
+|[Part 18](https://youtu.be/NH60Pi85HTQ)|In this video we tackle the C++ aspect properties.|
+
+_Table 1: Individual videos on the playlist for the formattables refactor._
+
+### Assorted smaller stories
+
+Before we decided on the approach narrated above, we tried to continue to get the data-driven approach done. That resulted in a number of small stories that progressed the approach, but didn't get us very far:
+
+- **Directory names and postfixes are PMM properties**: Work done to model directory names and file name postfixes correctly in the PMM. This was a very small clean-up effort, that sadly can only be validated when we start assembly paths properly within the PMM.
+- **Move ```enabled``` and ```overwrite``` into ```enablement_properties```**: another very small tidy-up effort that improved the modeling around enablement related properties.
+- **Tracing of orchestration chains is incorrect** : whilst trying to debug a problem, we noticed that the tracing information was incorrect. This is mainly related to chains being reported as transforms and transforms using incorrect names due to copy-and-pasting errors.
+- **Add full and relative path processing to PM**: we progressed this ever-so-slightly but we bumped into many problems so we ended up postponing this story for the next sprint.
+- **Create a factory transform for parts and archetype kinds**: as with the previous story, we gave up on this one.
+- **Analysis on a formatables refactor**: this was the analysis story that revealed the inadequacies of the present attempt of diving straight into a data-driven approach from the existing formattables code.
+
+### Presentation for APA
+
+We were invited by the Association of Angolan Programmers (Associação dos Programadores Angolanos) to do a presentation regarding research. It is somewhat tangential to Dogen, in that we do not get into a lot of details with the code itself but it may still be of interest. However, the presentation is in Portuguese. A special shout out and thanks goes to Filipe Mulonde (twitter: [@filipe_mulonde](https://twitter.com/filipe_mulonde)) and Alexandre Juca (twitter: [@alexjucadev](https://twitter.com/alexjucadev)) for inviting me, organising the event and for their work in APA in general.
+
+[![Sprint 1.0.28 Demo](https://img.youtube.com/vi/yKfAhkYtQYM/0.jpg)](https://youtu.be/yKfAhkYtQYM)
+_Video 3: Talk: "Pesquisa científica em Ciência da Computação" (Research in Computer Science)._
+
+## Resourcing
+
+Sadly, we did not improve our lot this sprint with regards to proper resource attribution. We created one massive story, the locator work, at 50%, and a smattering of smaller stories which are not very representative of the effort. In reality we should have created a number of much smaller stories around the locator work, which is really more of an epic than a story. However, we only realised the magnitude of the task when we were already well into it. At that point,  we did split out the other formattable story, at 10% of the ask, but it was a bit too little too late to make amends. At any rate, 61% of the sprint was taken with this formattables effort, and around 18% or so went on the data-driven effort; on the whole, we spent close to 81% on coding tasks, which is pretty decent, particularly if we take into account our "media" commitments. These had a total cost of 8.1%, with the lion's share (6.1%) going towards the presentation for APA. Release notes (5.5%) and backlog grooming (4.7%) were not particularly expensive, which is always good to hear. However, what was not particularly brilliant was our utilisation rate, dwindling to 35% with a total of 42 elapsed days for this sprint. This was largely a function of busy work and personal life. Still, it was a massive increase over the previous sprint's 20%, so we are at least going on the right direction.
+
+![Sprint 28 stories](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_28_pie_chart.jpg)
+_Figure 2_: Cost of stories for sprint 28.
+
+## Roadmap
+
+We actually made some changes to the roadmap this time round, instead of just forwarding all of the items by one sprint as we customarily do. It does see that we have five clear themes to work on at present so we made these into entries in the road map and assigned a sprint each. This is probably far too optimistic, but nonetheless the entire point of the roadmap is to give us a general direction of travel rather than oracular predictions on how long things will take - which we already know too well is a futile effort. What is not quite so cheerful is that the roadmap is already pointing out to March 2021 as the earliest, most optimistic date for completion, which is not reassuring.
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_28_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_28_resource_allocation_graph.png)
+
+# Binaries
+
+You can download binaries from either [Bintray](https://bintray.com/masd-project/main/dogen/1.0.28) or GitHub, as per Table 1. All binaries are 64-bit. For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available in [zip](https://github.com/MASD-Project/dogen/archive/v1.0.28.zip) or [tar.gz](https://github.com/MASD-Project/dogen/archive/v1.0.28.tar.gz) format.
+
+| Operative System | Format | BinTray | GitHub |
+|----------|-------|-----|--------|
+|Linux Debian/Ubuntu | Deb | [dogen_1.0.28_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.28/dogen_1.0.28_amd64-applications.deb) | [dogen_1.0.28_amd64-applications.deb](https://github.com/MASD-Project/dogen/releases/download/v1.0.28/dogen_1.0.28_amd64-applications.deb) |
+|OSX | DMG | [DOGEN-1.0.28-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.28/DOGEN-1.0.28-Darwin-x86_64.dmg) | [DOGEN-1.0.28-Darwin-x86_64.dmg](https://github.com/MASD-Project/dogen/releases/download/v1.0.28/DOGEN-1.0.28-Darwin-x86_64.dmg)|
+|Windows | MSI | [DOGEN-1.0.28-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.28-Windows-AMD64.msi) | [DOGEN-1.0.28-Windows-AMD64.msi](https://github.com/MASD-Project/dogen/releases/download/v1.0.28/DOGEN-1.0.28-Windows-AMD64.msi) |
+
+_Table 2: Binary packages for Dogen._
+
+**Note:** The OSX and Linux binaries are not stripped at present and so are larger than they should be. We have [an outstanding story](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped) to address this issue, but sadly CMake does not make this a trivial undertaking.
+
+# Next Sprint
+
+The goals for the next sprint are:
+
+- to finish formattables refactor;
+- to start implement path and dependencies via PMM.
+
+That's all for this release. Happy Modeling!
+#+end_src
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2020-11-06 Fri 14:40]
+    :LOGBOOK:
+    CLOCK: [2020-11-06 Fri 14:12]--[2020-11-06 Fri 14:40] =>  0:28
+    :END:
+
+Time spent creating the demo and presentation.
+
+**** Presentation
+
+***** Dogen v1.0.28, "Praia das Miragens"
+
+    Marco Craveiro
+    Domain Driven Development
+    Released on 2nd November 2020
+
+***** Move C++ locator into physical model
+***** Move stand-alone formattables to physical/logical models
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2020-12-14 Mon 18:16]
+    :LOGBOOK:
+    CLOCK: [2020-12-12 Sat 14:25]--[2020-12-12 Sat 14:44] =>  0:19
+    CLOCK: [2020-12-11 Fri 20:15]--[2020-12-11 Fri 20:28] =>  0:13
+    CLOCK: [2020-12-04 Fri 17:06]--[2020-12-04 Fri 17:12] =>  0:06
+    CLOCK: [2020-12-04 Fri 16:00]--[2020-12-04 Fri 16:10] =>  0:10
+    CLOCK: [2020-12-03 Thu 18:42]--[2020-12-03 Thu 18:52] =>  0:10
+    CLOCK: [2020-11-30 Mon 19:01]--[2020-11-30 Mon 19:20] =>  0:19
+    CLOCK: [2020-11-25 Wed 22:08]--[2020-11-25 Wed 22:15] =>  0:07
+    CLOCK: [2020-11-25 Wed 21:52]--[2020-11-25 Wed 22:07] =>  0:15
+    CLOCK: [2020-11-14 Sat 19:45]--[2020-11-14 Sat 19:46] =>  0:01
+    CLOCK: [2020-11-07 Sat 14:15]--[2020-11-07 Sat 15:06] =>  0:51
+    CLOCK: [2020-11-07 Sat 08:49]--[2020-11-07 Sat 09:08] =>  0:19
+    CLOCK: [2020-11-06 Fri 14:43]--[2020-11-06 Fri 14:53] =>  0:10
+    CLOCK: [2020-11-02 Mon 22:50]--[2020-11-02 Mon 22:59] =>  0:09
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Move C# locator into physical model                     :story:
+    CLOSED: [2020-11-07 Sat 14:38]
+
+*Rationale*: completed in the previous sprint.
+
+As per C++ model.
+
+*** COMPLETED Move inclusion into physical model                      :story:
+    CLOSED: [2020-11-07 Sat 14:40]
+
+*Rationale*: completed in the previous sprint. We did it the legacy
+way but we should create a new story for the "new world" way.
+
+- try to use artefacts to store dependencies.
+
+*** COMPLETED Move assorted c++ and c# properties into meta-model properties :story:
+    CLOSED: [2020-11-07 Sat 14:41]
+
+*Rationale*: completed in the previous sprint.
+
+List of properties to move:
+
+- =aspect_properties=
+- =test_data_properties=
+- =streaming_properties=
+- =cpp_standards=
+- =build_files_expander=: requires updating logical model with the
+  properties, and then creating transforms.
+- =assistant_properties=
+- =attribute_properties=
+
+Create a transform to read these properties or add it to the existing
+meta-model properties transform.
+
+*** COMPLETED Move directive group generation to physical model       :story:
+    CLOSED: [2020-11-07 Sat 14:41]
+
+*Rationale*: completed in the previous sprint. We did it the legacy
+way but we should create a new story for the "new world" way.
+
+- handle header guards as well.
+- consider renaming this to relative paths.
+- consider the role of parts in the directive groups.
+
+*** COMPLETED Improvements to template processing in logical model    :story:
+    CLOSED: [2020-11-08 Sun 12:26]
+    :LOGBOOK:
+    CLOCK: [2020-11-08 Sun 12:00]--[2020-11-08 Sun 12:26] =>  0:26
+    :END:
+
+At present we resolve wale template contents in a transform:
+=logic_less_templates_population_transform= and then render both wale
+and stitch templates in another: =archetype_rendering_transform=. We
+need to merge these transforms and drop the archetype prefix.
+
+Notes:
+
+- drop the prefix on =archetype_text_templating=.
+- drop relations in =archetype_text_templating= and see what
+  breaks. Actually these are needed to model the template relations,
+  which we have not yet completed.
+
+*** COMPLETED Convert legacy helpers into new style helpers in C++    :story:
+    CLOSED: [2020-11-13 Fri 21:39]
+    :LOGBOOK:
+    CLOCK: [2020-11-13 Fri 21:21]--[2020-11-13 Fri 21:39] =>  0:18
+    CLOCK: [2020-11-13 Fri 16:58]--[2020-11-13 Fri 18:06] =>  1:08
+    CLOCK: [2020-11-13 Fri 15:51]--[2020-11-13 Fri 16:58] =>  1:07
+    CLOCK: [2020-11-13 Fri 14:02]--[2020-11-13 Fri 14:58] =>  0:56
+    CLOCK: [2020-11-13 Fri 11:01]--[2020-11-13 Fri 12:19] =>  1:18
+    CLOCK: [2020-11-13 Fri 09:15]--[2020-11-13 Fri 10:33] =>  1:38
+    CLOCK: [2020-11-10 Tue 20:46]--[2020-11-10 Tue 21:10] =>  0:24
+    CLOCK: [2020-11-09 Mon 20:30]--[2020-11-09 Mon 21:00] =>  0:30
+    :END:
+
+Create meta-model elements for the helpers, and update the templates.
+
+Notes:
+
+- inserter helper does not follow the existing patterns. We nee to
+  check if we can skip it initially because it may not affect the
+  changes needed for the helper expander via PMM. After some analysis
+  it seems like the right thing to do is to copy the contents of the
+  stitch expansion into a manually created file. This is because the
+  inserter is a special case (inside of an already special case of the
+  helpers) and it would require a lot of meta-model infrastructure to
+  cater for this one case. Also, it is going to be deprecated and it
+  has not changed in a long time.
+- C# needs to be done on after we done all of the formattable types so
+  we should do it as a separate story.
+
+*** COMPLETED Add C++ helpers to the PMM                              :story:
+    CLOSED: [2020-11-14 Sat 19:44]
+    :LOGBOOK:
+    CLOCK: [2020-11-14 Sat 18:31]--[2020-11-14 Sat 19:44] =>  1:13
+    CLOCK: [2020-11-14 Sat 17:16]--[2020-11-14 Sat 18:10] =>  0:54
+    CLOCK: [2020-11-14 Sat 15:15]--[2020-11-14 Sat 16:41] =>  1:26
+    CLOCK: [2020-11-14 Sat 11:35]--[2020-11-14 Sat 13:23] =>  1:48
+    CLOCK: [2020-11-13 Fri 21:40]--[2020-11-13 Fri 21:47] =>  0:07
+    CLOCK: [2020-11-08 Sun 16:19]--[2020-11-08 Sun 17:57] =>  1:38
+    CLOCK: [2020-11-08 Sun 15:55]--[2020-11-08 Sun 16:18] =>  0:23
+    CLOCK: [2020-11-08 Sun 12:26]--[2020-11-08 Sun 13:24] =>  0:58
+    CLOCK: [2020-11-08 Sun 11:12]--[2020-11-08 Sun 11:59] =>  0:47
+    CLOCK: [2020-11-07 Sat 22:34]--[2020-11-07 Sat 22:44] =>  0:10
+    CLOCK: [2020-11-07 Sat 22:22]--[2020-11-07 Sat 22:33] =>  0:11
+    CLOCK: [2020-11-07 Sat 21:14]--[2020-11-07 Sat 22:11] =>  0:57
+    CLOCK: [2020-11-07 Sat 15:47]--[2020-11-07 Sat 18:25] =>  2:38
+    CLOCK: [2020-11-07 Sat 15:20]--[2020-11-07 Sat 15:46] =>  0:26
+    :END:
+
+Although temporarily, we need to add a representation of helpers on
+the PMM. These must be sufficient to cater for the current use cases
+in formattables.
+
+Notes:
+
+- we need an archetype for the helper with the meta-model elements
+  populated via variability.
+- create a PMM type to model the properties in the helper
+  interface. Create archetype for helpers; we need transform and
+  factory. Add a helper family to facet mapping.
+- move reducer to the orchestration model. Do it in both LPS and
+  logical model. Remove reducer from formattables.
+- add helpers to PMM. Need four archetypes (factory and transform,
+  header and implementation). Add logical transform using PMM to
+  generate helper properties. Remove helper expander.
+- once we finish integrating template, mark them as non generatable:
+
+:     // FIXME: for now we still need these as generatable.
+
+- no includes have been added.
+- relation status is not being populated. Need to add meta-data.
+- cpp has a dummy function for transform. Need to update rendering
+  transform. We need to use a template method or supply the element
+  pointer to get access to the decorations.
+- create a helper transform in logical model based on PMM. We are
+  probably not building the PMM correctly for helpers at present.
+
+Merged stories:
+
+*Move c++ helper related classes to logical model*
+
+Classes to move:
+
+- =helper_descriptor=
+
+*Move helpers to text and physical models*
+
+- move helper properties to text model.
+- move helpers as text transforms to text model. Refactor them to use
+  the new text model transform interface.
+
+*** COMPLETED Remove unused wale keys in =text.cpp=                   :story:
+    CLOSED: [2020-11-15 Sun 08:24]
+    :LOGBOOK:
+    CLOCK: [2020-11-15 Sun 07:40]--[2020-11-15 Sun 08:14] =>  0:34
+    :END:
+
+We have a number of legacy keys still laying around:
+
+- =masd.wale.kvp.meta_element=
+- =masd.wale.kvp.locator_function=
+- =masd.wale.kvp.class.inclusion_support_type=
+
+*** COMPLETED Merge =cpp_artefact_transform*= wale templates          :story:
+    CLOSED: [2020-11-15 Sun 08:24]
+    :LOGBOOK:
+    CLOCK: [2020-11-15 Sun 08:15]--[2020-11-15 Sun 08:24] =>  0:09
+    :END:
+
+These three wale templates now look identical so we should just have
+one. We should also rename them after archetypes.
+
+Notes:
+
+- we should also only require a single wale key:
+
+#+begin_src mustache
+const physical::entities::archetype& {{class.simple_name}}::static_archetype() {
+    static auto r({{archetype.simple_name}}_factory::make());
+    return r;
+}
+#+end_src
+
+*** COMPLETED Fix some problems with c++ visual studio                :story:
+    CLOSED: [2020-11-20 Fri 12:46]
+    :LOGBOOK:
+    CLOCK: [2020-11-20 Fri 12:44]--[2020-11-20 Fri 12:46] =>  0:02
+    CLOCK: [2020-11-20 Fri 11:46]--[2020-11-20 Fri 12:43] =>  0:57
+    :END:
+
+Problems:
+
+- bug: project items are not populated at present for C++:
+
+: ctx.model().project_items())
+
+- we are using =Compile= instead of =ClCompile= for c++:
+
+: <#+
+:    for (const auto& f : ctx.model().project_items())
+: #>
+:    <Compile Include="<#= f #>" />
+
+  Should really be:
+
+: <ClCompile Include="Scenario_CloudFontOverview.xaml.cpp">
+
+- header files should be in the file as well:
+
+: <ClInclude Include="SampleConfiguration.h" />
+
+*** COMPLETED Add C# helpers to the PMM                               :story:
+    CLOSED: [2020-11-20 Fri 15:03]
+    :LOGBOOK:
+    CLOCK: [2020-11-20 Fri 12:47]--[2020-11-20 Fri 12:50] =>  0:03
+    CLOCK: [2020-11-20 Fri 09:30]--[2020-11-20 Fri 11:10] =>  1:40
+    CLOCK: [2020-11-15 Sun 22:05]--[2020-11-15 Sun 22:34] =>  0:29
+    CLOCK: [2020-11-15 Sun 21:40]--[2020-11-15 Sun 22:04] =>  0:24
+    CLOCK: [2020-11-15 Sun 21:28]--[2020-11-15 Sun 21:35] =>  0:07
+    CLOCK: [2020-11-15 Sun 20:54]--[2020-11-15 Sun 21:08] =>  0:14
+    CLOCK: [2020-11-15 Sun 19:35]--[2020-11-15 Sun 20:14] =>  0:59
+    CLOCK: [2020-11-15 Sun 18:59]--[2020-11-15 Sun 19:12] =>  0:13
+    CLOCK: [2020-11-15 Sun 10:20]--[2020-11-15 Sun 10:24] =>  0:04
+    :END:
+
+Notes:
+
+- merge c++ and c# helpers.
+- when we enable logical model based helpers they don't come out.
+
+*** COMPLETED Move assorted formattable properties in C#              :story:
+    CLOSED: [2020-11-20 Fri 15:03]
+    :LOGBOOK:
+    CLOCK: [2020-11-20 Fri 14:02]--[2020-11-20 Fri 15:03] =>  1:01
+    CLOCK: [2020-11-15 Sun 18:35]--[2020-11-15 Sun 18:59] =>  0:24
+    CLOCK: [2020-11-15 Sun 15:14]--[2020-11-15 Sun 15:55] =>  0:41
+    CLOCK: [2020-11-15 Sun 14:32]--[2020-11-15 Sun 14:40] =>  0:08
+    CLOCK: [2020-11-15 Sun 10:24]--[2020-11-15 Sun 12:58] =>  2:34
+    :END:
+
+We have a number of types lying around formattables in C# that need to
+be moved to their correct logical and physical destination.
+
+*** COMPLETED Remove formatables namespace in C++                     :story:
+    CLOSED: [2020-11-20 Fri 15:03]
+
+When all types have been moved, we can delete the formatables types
+and namespace.
+
+Notes:
+
+- at present we cannot get rid of reducer because we are still relying
+  on having all types around for helpers in C#. Due to this we cannot
+  remove the rest of the types in C++ formatables until we got the C#
+  model at the same level. However, if we just get the helpers moved
+  across in C# that may be enough to unblock c++.
+
+*** COMPLETED Orchestration should have an initialiser                :story:
+    CLOSED: [2020-12-04 Fri 11:54]
+    :LOGBOOK:
+    CLOCK: [2020-12-04 Fri 11:45]--[2020-12-04 Fri 11:54] =>  0:09
+    :END:
+
+At present we are executing all initialisers from within orchestration
+tests and from within CLI. In reality, since orchestration is joining
+all the dots, it should have a top-level initialiser that sets
+everything up. It should then be called by the CLI initialiser and the
+tests initialiser, which has additional stuff to initialise.
+
+*** COMPLETED Move helpers to =text= model                            :story:
+    CLOSED: [2020-12-05 Sat 18:40]
+    :LOGBOOK:
+    CLOCK: [2020-12-05 Sat 17:42]--[2020-12-05 Sat 18:40] =>  0:58
+    CLOCK: [2020-12-05 Sat 16:39]--[2020-12-05 Sat 17:01] =>  0:22
+    CLOCK: [2020-12-05 Sat 15:03]--[2020-12-05 Sat 15:11] =>  0:08
+    CLOCK: [2020-12-05 Sat 14:31]--[2020-12-05 Sat 15:03] =>  0:32
+    CLOCK: [2020-12-05 Sat 11:30]--[2020-12-05 Sat 13:22] =>  1:52
+    CLOCK: [2020-12-04 Fri 17:13]--[2020-12-04 Fri 17:54] =>  0:41
+    CLOCK: [2020-12-04 Fri 16:11]--[2020-12-04 Fri 17:06] =>  1:02
+    CLOCK: [2020-12-04 Fri 11:55]--[2020-12-04 Fri 12:10] =>  0:15
+    CLOCK: [2020-12-04 Fri 09:01]--[2020-12-04 Fri 11:45] =>  2:44
+    CLOCK: [2020-12-03 Thu 18:52]--[2020-12-03 Thu 19:53] =>  1:01
+    CLOCK: [2020-12-03 Thu 17:15]--[2020-12-03 Thu 17:21] =>  0:06
+    CLOCK: [2020-12-03 Thu 16:16]--[2020-12-03 Thu 17:14] =>  0:58
+    CLOCK: [2020-12-03 Thu 15:55]--[2020-12-03 Thu 16:09] =>  0:14
+    CLOCK: [2020-12-03 Thu 14:02]--[2020-12-03 Thu 15:01] =>  0:59
+    CLOCK: [2020-12-03 Thu 10:59]--[2020-12-03 Thu 12:15] =>  1:16
+    CLOCK: [2020-12-03 Thu 10:45]--[2020-12-03 Thu 10:58] =>  0:13
+    CLOCK: [2020-11-30 Mon 13:42]--[2020-11-30 Mon 15:20] =>  1:38
+    CLOCK: [2020-11-30 Mon 10:50]--[2020-11-30 Mon 12:16] =>  1:26
+    CLOCK: [2020-11-22 Sun 16:09]--[2020-11-22 Sun 17:04] =>  0:55
+    CLOCK: [2020-11-22 Sun 14:39]--[2020-11-22 Sun 15:35] =>  0:56
+    CLOCK: [2020-11-22 Sun 10:40]--[2020-11-22 Sun 12:11] =>  1:31
+    CLOCK: [2020-11-20 Fri 17:50]--[2020-11-20 Fri 18:18] =>  0:28
+    CLOCK: [2020-11-20 Fri 17:35]--[2020-11-20 Fri 17:40] =>  0:05
+    CLOCK: [2020-11-20 Fri 16:09]--[2020-11-20 Fri 17:34] =>  1:25
+    :END:
+
+Implement these two types in terms of logical or physical types, and
+move them to =text= model.
+
+Notes:
+
+- we need to add all properties used by the assistant back into the
+  text context.
+- at the moment we have a cycle between assistant and helper
+  interface. The problem is that the helpers need the assistant and
+  the assistant also needs the helpers. Also we cannot create the
+  assistant outside of the M2Ts and supply it instead of context
+  because the assistant is bound to an element. Finally we cannot move
+  the context to text and have it carry an entire text model; that is
+  just one hack too far. Besides we could not code-generate the
+  context if we do that. So the only alternative is to unpack all
+  properties in the model used by the assistant and add those to the
+  text context. The problem is that we already have the notion of a
+  "global" context in text that is populated ahead of time; this
+  clashes with this notion of a "local"context. However, this all begs
+  the question: what is the purpose of the "global" context in M2T /
+  text? we don't really do much other than to setup things for the
+  M2Ts to run.
+- actually the right solution is to break the cycle so that we can add
+  helpers without having to deal with the assistant. This is fairly
+  simple: there is only one public method in the assistant that uses
+  helpers. We could create an helper for that.
+- alternatively we can look at what methods the helpers use from the
+  assistant and see if we can make an ABC to implement those. List of
+  methods:
+  - =make_scoped_namespace_formatter=
+  - =ast.stream()=
+  - =ast.streaming_for_type(containee, "*v")=
+  - =a.is_streaming_enabled=
+  - =is_io_enabled=
+- pretty much all state can be supplied either on a "helper context"
+  or directly (e.g. =stream()= needs to be by reference).
+- so the steps then are:
+  - create an ABC for the helpers in text. Reimplement all helper
+    functionality in the ABC. Supply all arguments as either part of
+    context or directly. Make all helpers use that ABC and remove the
+    local helper interfaces.
+  - add properties to text context that the assistant needs, remove
+    uses of model in assistant. Make all transforms use text context.
+  - create assistants in text's backends. These are copies of the
+    existing assistants. Make all M2Ts use those assistants. Remove
+    old assistants.
+  - add a common M2T interface. Add repository and registrar to text.
+- we can replace =is_enabled= with a method that returns any
+  additional facets that the helper requires. The assistant can then
+  check if those facets are enabled.
+- add registrar and make assistant use the helper chain. Finally use
+  the helper chain directly from within the M2T. Remove from context
+  and repository.
+- copy all helpers to text model.
+
+Merged stories:
+
+*Create a common formatter interface*
+
+Once all language specific properties have been moved into their
+rightful places, we should be able to define a formatter interface
+that is suitable for both c++ and c# in generation. We should then
+also be able to move all of the registration code into generation. We
+then need to look at all containers of formatters etc to see what
+should be done at generation level.
+
+Once we have a common formatter interface, we can add the formatters
+themselves to the =element_artefacts= tuple. Then we can just iterate
+through the tuples and call the formatter instead having to do
+look-ups.
+
+Also, at this point we can then update the physical elements generated
+code to generate the transform code for backend and facet
+(e.g. delegation and aggregation of the result).
+
+*Move =model_to_text_transform= to =text= model*
+
+This type has now been cleaned up and should be the same for C++ and
+C# so should be moved to the common model.
+
+*** COMPLETED Add namespaces to "dummy function"                      :story:
+    CLOSED: [2020-12-05 Sat 18:51]
+    :LOGBOOK:
+    CLOCK: [2020-12-05 Sat 18:41]--[2020-12-05 Sat 18:51] =>  0:10
+    :END:
+
+At present we generate a "dummy function" for empty files by using
+just the class name. However, if we have two classes in two namespaces
+with the same name, we get warnings on Windows MSVC:
+
+: implementation_transform.cpp.obj : warning LNK4006: "void __cdecl implementation_transform(void)" (?implementation_transform@@YAXXZ) already defined in implementation_transform.cpp.obj; second definition ignored [C:\projects\dogen\build\output\msvc\Release\projects\dogen.text\src\dogen.text.lib.vcxproj]
+
+A quick fix is just to use the qualified name for the element.
+
+*** COMPLETED Remove disabled files from project items                :story:
+    CLOSED: [2020-12-07 Mon 14:33]
+    :LOGBOOK:
+    CLOCK: [2020-12-07 Mon 14:10]--[2020-12-07 Mon 14:40] =>  0:30
+    :END:
+
+We have resolved an outstanding issue whereby C# elements did not
+respect enablement, which resulted in the (correct) removal of
+files. However, the project items list does not reflect this,
+resulting in errors:
+
+: "C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpRefImpl.sln" (default target) (1) ->
+: "C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpModel\CSharpRefImpl.CSharpModel.csproj" (default target) (2) ->
+: (CoreCompile target) ->
+:  CSC : error CS2001: Source file 'C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpModel\Dumpers\HandcraftedDumper.cs' could not be found. [C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpModel\CSharpRefImpl.CSharpModel.csproj]
+:  CSC : error CS2001: Source file 'C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpModel\SequenceGenerators\HandcraftedSequenceGenerator.cs' could not be found. [C:\projects\csharp-ref-impl\Src\CSharpRefImpl.CSharpModel\CSharpRefImpl.CSharpModel.csproj]
+
+We need to check enablement when we add project items.
+
+*** COMPLETED Move text transforms in c++ and c# models into text model :story:
+    CLOSED: [2020-12-11 Fri 19:04]
+    :LOGBOOK:
+    CLOCK: [2020-12-11 Fri 18:12]--[2020-12-11 Fri 19:04] =>  0:52
+    CLOCK: [2020-12-11 Fri 15:11]--[2020-12-11 Fri 18:12] =>  3:01
+    CLOCK: [2020-12-11 Fri 10:01]--[2020-12-11 Fri 12:20] =>  2:19
+    CLOCK: [2020-12-07 Mon 20:15]--[2020-12-07 Mon 21:11] =>  0:56
+    CLOCK: [2020-12-07 Mon 17:52]--[2020-12-07 Mon 18:45] =>  0:53
+    CLOCK: [2020-12-07 Mon 14:56]--[2020-12-07 Mon 16:01] =>  1:05
+    CLOCK: [2020-12-07 Mon 10:30]--[2020-12-07 Mon 12:15] =>  1:45
+    CLOCK: [2020-12-06 Sun 14:07]--[2020-12-06 Sun 16:27] =>  2:20
+    CLOCK: [2020-12-06 Sun 12:52]--[2020-12-06 Sun 13:41] =>  0:49
+    CLOCK: [2020-12-06 Sun 10:01]--[2020-12-06 Sun 11:16] =>  1:15
+    CLOCK: [2020-11-20 Fri 15:27]--[2020-11-20 Fri 16:08] =>  0:41
+    :END:
+
+- rename namespaces to fit the hierarchy of LPS.
+- we must move the context first in order to move the M2T
+  interface. For this we need to split out the LPS model from the
+  context and then reuse the existing context. We need to update all
+  templates to take in the model and supply it to the assistant.
+- at present both the TS-specific chain and the workflow in both TS's
+  are almost identical. We can probably get away with a single chain
+  for all TS's.
+- we need to have a top-level text_transform registrar, repository etc
+  and then get the TS specific code to use those.
+- update all initialisers to use the registrar form the M2T chain;
+  update workflows to use it as well; delete all registrars and
+  repositories in TS-specific models.
+- move assistant to text as a formatter helper.
+- remove all uses of traits in formatters.
+- use common exception for transforms in text.
+
+Merged stories:
+
+*Merge C++ and C# model into =m2t=*
+
+Once we remove all of formatables and helpers from each technical
+space and once we remove all of the transforms in =m2t= that don't
+really belong there, we can probably merge all of these models into
+one. We would then have a =transforms= namespace, with sub-namespaces
+per language. Each of the namespaces is declared as a backend.
+
+*** COMPLETED Use MDE terminology in Dia model                        :story:
+    CLOSED: [2020-12-12 Sat 17:26]
+    :LOGBOOK:
+    CLOCK: [2020-12-12 Sat 15:14]--[2020-12-12 Sat 17:01] =>  1:47
+    :END:
+
+The dia model should have the usual structure of transforms, entities,
+etc.
+
+*** POSTPONED Remove JSON models from Dogen                           :story:
+    CLOSED: [2020-12-13 Sun 18:55]
+    :LOGBOOK:
+    CLOCK: [2020-11-14 Sat 18:11]--[2020-11-14 Sat 18:30] =>  0:19
+    :END:
+
+The JSON code is no longer strategic and will be removed in the
+future. For now we are paying the cost of maintaining the JSON models
+in Dogen, and this cost has increased with helpers work. We need to
+remove the tests for the JSON models in Dogen as well as the models.
+
+Notes:
+
+- removed the JSON tests. We don't need to keep the Dogen models
+  updated in json any longer.
+
+*** COMPLETED Issues with emacs                                       :story:
+    CLOSED: [2020-12-13 Sun 18:55]
+    :LOGBOOK:
+    CLOCK: [2020-11-30 Mon 17:02]--[2020-11-30 Mon 18:12] =>  1:10
+    CLOCK: [2020-11-20 Fri 15:04]--[2020-11-20 Fri 15:26] =>  0:22
+    :END:
+
+- gnus crashes on startup.
+- upgrade to emacs 27, try to sort out issues with theme.
+
+*** COMPLETED Merge codec models                                      :story:
+    CLOSED: [2020-12-13 Sun 18:55]
+    :LOGBOOK:
+    CLOCK: [2020-12-13 Sun 17:01]--[2020-12-13 Sun 18:55] =>  1:54
+    CLOCK: [2020-12-13 Sun 16:07]--[2020-12-13 Sun 16:47] =>  0:40
+    CLOCK: [2020-12-13 Sun 15:29]--[2020-12-13 Sun 16:07] =>  0:38
+    CLOCK: [2020-12-13 Sun 12:26]--[2020-12-13 Sun 13:34] =>  1:08
+    CLOCK: [2020-12-13 Sun 10:58]--[2020-12-13 Sun 12:26] =>  1:28
+    CLOCK: [2020-12-12 Sat 17:02]--[2020-12-12 Sat 18:20] =>  1:18
+    CLOCK: [2020-12-12 Sat 14:45]--[2020-12-12 Sat 15:13] =>  0:28
+    :END:
+
+*Rationale*: task not quite completed but remaining work is very
+specific to the codec dia model, so might as well raise a story for
+that next sprint.
+
+We should take the same approach as we did with text and merge all of
+the codec models. We can use different namespaces for each codec type,
+and use standard MDE terminology.
+
+We should also remove the dynamic registration for codecs and just
+call them directly.
+
+Notes:
+
+- add comments and object to codec model.
+- create projectors that transform dia to object.
+- add the comment factory as part of the projection.
+- the simple name in the codec model is actually qualified. We need to
+  ensure its populated correctly on load for dia and JSON codecs, and
+  then make sure we use the qualified name when projecting elements
+  into the logical model.
+- something is not quite right with the way simple names are being
+  used for profiles; when we stop qualifying the simple name we can't
+  find profiles' parents any longer. In addition, we must be using
+  attributes' qualified names somewhere where we should have been
+  using simple names.
+
+** Deprecated
+*** CANCELLED Colouring script should be included as part of package  :story:
+    CLOSED: [2020-11-07 Sat 15:03]
+
+*Rationale*: we won't be needing this once we move away from Dia.
+
+Users should be able to make use of script as well. We need a tools
+folder in share.
+
+*** CANCELLED Consider generating the colour script                   :story:
+    CLOSED: [2020-11-07 Sat 15:04]
+
+*Rationale*: we won't be needing this once we move away from Dia.
+
+At present we have to manually update the colour script every time we
+add a new modeling element. In an ideal world, we should associate the
+colour with the modeling element and/or profile as part of the model
+itself. Dogen could then generate the script. Even more ideal would be
+if the script could include the "package" version of the script -
+e.g. run the MASD script first then run the local one. This requires a
+little bit of thinking because the script would be generated from the
+profiles and the profiles model is not expressed as code.
+
+A simpler version of this is to just go through the dia palette models
+and associate stereotypes with colours. Then use it to build the
+script. The user supplies one or more models as input. It would be a
+new "command" in dogen.
+
+Actually we should just create a meta-element for the colouring
+script. It is populated by looking at the static properties of each
+meta-element (once they are modeled correctly). If there are themes,
+we should make it a function that takes in an argument with the theme
+name. Note also that we should take into account user-defined
+colouring schemes. This is mainly associated with profiles. For this
+we just need to have a colour property in the profile and use it in
+exactly the same fashion as we do for meta-elements. For good measure,
+once we start distributing the colouring script with dogen, we can
+simply call the main script from the user script.
+
+Links:
+
+- [[https://seaborn.pydata.org/tutorial/color_palettes.html][seaborn: Choosing color palettes]]
+- [[https://seaborn.pydata.org/installing.html][seaborn: Installing and getting started]]
+- [[https://stackoverflow.com/questions/38249454/extract-rgb-or-6-digit-code-from-seaborn-palette][SO: Extract RGB or 6 digit code from Seaborn palette]]
+
+*** CANCELLED Replace =formatting_error= with =transformation_error=  :story:
+    CLOSED: [2020-11-20 Fri 15:03]
+
+*Rationale*: Deleted class.
+
+Now that we moved from formatters to M2T transforms, we should stop
+throwing =formatting_error= and start throwing
+=transformation_error=. This needs to be done for both C# and C++ text
+models.

@@ -1,0 +1,427 @@
+#+title: Sprint Backlog 44
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: ANALYSIS IMPLEMENTATION TESTING | COMPLETED CANCELLED
+#+tags: story(s) epic(e) task(t) note(n) spike(p)
+
+* Stories
+
+This file contains all stories that were closed during sprint 44.
+
+The *Mission Statement* for this sprint is to tidy-up the =cpp= model,
+and by implication, the =cpp_formatters= model. We want to end up with
+a small number of top-level classes providing what each formatter
+needs, and modeling much of the meta-data as first class types. We
+also want to make use of all the services provided by the =formatters=
+model.
+
+** Development Stories Implemented
+
+#+begin: clocktable :maxlevel 3 :scope subtree
+Clock summary at [2014-05-27 Tue 13:06]
+
+| Headline                                                             | Time    |       |      |
+|----------------------------------------------------------------------+---------+-------+------|
+| *Total time*                                                         | *18:05* |       |      |
+|----------------------------------------------------------------------+---------+-------+------|
+| Development Stories Implemented                                      |         | 18:05 |      |
+| COMPLETED Sprint and product backlog grooming                        |         |       | 2:16 |
+| COMPLETED Updates to the manual and readme files                     |         |       | 0:34 |
+| COMPLETED Create a road map for the work ahead                       |         |       | 0:31 |
+| COMPLETED Add common properties to C++ entity                        |         |       | 1:23 |
+| COMPLETED When on clang 3.4 enable code coverage flags               |         |       | 2:11 |
+| COMPLETED Design and implement the formatter model workflow          |         |       | 6:12 |
+| COMPLETED Change c++ model entity to inherit from formatter's entity |         |       | 0:18 |
+| COMPLETED Add all data required by types formatter to C++ entity     |         |       | 2:31 |
+| COMPLETED Create a list of tags and define their structure           |         |       | 1:01 |
+| COMPLETED Reduce nightly build times                                 |         |       | 0:19 |
+| CANCELLED Clean up the tags according to the list defined            |         |       | 0:49 |
+#+end:
+
+*** COMPLETED Sprint and product backlog grooming                       :task:
+    CLOSED: [2014-02-18 Tue 07:59]
+    CLOCK: [2014-02-18 Tue 07:52]--[2014-02-18 Tue 08:01] =>  0:09
+    CLOCK: [2014-02-09 Sun 18:32]--[2014-02-09 Sun 18:37] =>  0:05
+    CLOCK: [2014-02-08 Sat 20:30]--[2014-02-08 Sat 20:38] =>  0:08
+    CLOCK: [2014-02-07 Fri 08:45]--[2014-02-07 Fri 08:50] =>  0:05
+    CLOCK: [2014-02-07 Fri 07:52]--[2014-02-07 Fri 08:39] =>  0:47
+    CLOCK: [2014-02-06 Thu 22:53]--[2014-02-06 Thu 23:05] =>  0:12
+    CLOCK: [2014-02-05 Wed 17:55]--[2014-02-05 Wed 17:58] =>  0:03
+    CLOCK: [2014-02-05 Wed 08:25]--[2014-02-05 Wed 08:42] =>  0:17
+    CLOCK: [2014-02-05 Wed 08:25]--[2014-02-05 Wed 08:34] =>  0:09
+    CLOCK: [2014-02-04 Tue 08:04]--[2014-02-04 Tue 08:25] =>  0:21
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Updates to the manual and readme files                   :task:
+    CLOSED: [2014-02-18 Tue 07:59]
+    CLOCK: [2014-02-09 Sun 19:20]--[2014-02-09 Sun 19:28] =>  0:08
+    CLOCK: [2014-02-09 Sun 18:44]--[2014-02-09 Sun 18:57] =>  0:13
+    CLOCK: [2014-02-08 Sat 20:38]--[2014-02-08 Sat 20:51] =>  0:21
+
+Use build downtime to update the manual and / or readme file.
+
+*** COMPLETED Create a road map for the work ahead                    :story:
+    CLOSED: [2014-02-04 Tue 18:29]
+    CLOCK: [2014-02-04 Tue 18:08]--[2014-02-04 Tue 18:29] =>  0:21
+    CLOCK: [2014-02-04 Tue 08:27]--[2014-02-04 Tue 08:37] =>  0:10
+
+One interesting idea has occurred to me: why not combine agile with
+waterfall? Well, agile with Gantt to be precise. Whilst we know that
+agile deliberately avoids any kind of long term prediction, we also
+have a need to know how far we are from an "end-state" and what steps
+are still missing to get there. It is therefore useful to have a Gantt
+chart which is an extrapolation of the current state and is there just
+to give you a vague idea of the road ahead. It is the blue skies view
+of the world.
+
+The key point is, if we are to have something demoable by next FOSDEM
+we need some idea of what features are coming in when to ensure we
+have enough of the key stories done by next February.
+
+*** COMPLETED Add common properties to C++ entity                     :story:
+    CLOSED: [2014-02-07 Fri 08:19]
+    CLOCK: [2014-02-06 Thu 07:51]--[2014-02-06 Thu 08:44] =>  0:53
+    CLOCK: [2014-02-05 Wed 18:13]--[2014-02-05 Wed 18:30] =>  0:17
+    CLOCK: [2014-02-05 Wed 18:00]--[2014-02-05 Wed 18:13] =>  0:13
+
+*New understanding*:
+
+- concepts are required as we use them in enumerator etc. They can be
+  refactored a bit though;
+- add namespaces to entity.
+
+*Old understanding*:
+
+We don't really need concepts in the C++ model - move these properties
+directly to entity. We should also add annotation to entity.
+
+*** COMPLETED When on clang 3.4 enable code coverage flags            :story:
+    CLOSED: [2014-02-08 Sat 20:30]
+    CLOCK: [2014-02-08 Sat 00:20]--[2014-02-08 Sat 01:37] =>  1:17
+    CLOCK: [2014-02-07 Fri 18:50]--[2014-02-07 Fri 18:51] =>  0:01
+    CLOCK: [2014-02-05 Wed 07:51]--[2014-02-05 Wed 08:14] =>  0:23
+    CLOCK: [2014-02-04 Tue 22:00]--[2014-02-04 Tue 22:30] =>  0:30
+
+We implemented the flags as per this post:
+
+[[http://clang-developers.42468.n3.nabble.com/Code-coverage-on-clang-td4033066.html][Code coverage on clang]]
+
+However we need to wait for a version of clang that supports them.
+Code is commented out in =projects/CMakeLists.txt=.
+
+- Passes locally now, if it fails we'll reopen the story.
+
+*** COMPLETED Design and implement the formatter model workflow       :story:
+    CLOSED: [2014-02-08 Sat 20:30]
+
+We need to think about how to abstract the generic aspects of
+formatting and add them into the formatters model so that all other
+concrete models can make use of it.
+
+**** COMPLETED Design the new classes and their collaborations         :task:
+     CLOSED: [2014-02-07 Fri 08:03]
+     CLOCK: [2014-02-07 Fri 08:39]--[2014-02-07 Fri 08:45] =>  0:06
+     CLOCK: [2014-02-06 Thu 21:45]--[2014-02-06 Thu 22:51] =>  1:06
+     CLOCK: [2014-02-05 Wed 08:17]--[2014-02-05 Wed 08:23] =>  0:06
+     CLOCK: [2014-02-04 Tue 18:29]--[2014-02-04 Tue 18:38] =>  0:09
+
+- *formatters model*
+
+What we really need is to capture the generic requirements of all
+formatters in the formatters model, and then implement the C++ types
+and formatters in terms of this. These are:
+
+- ability to register using a static function;
+- ability to format using only the view model type;
+- ability to add formatters (statically or on-the-fly) without
+  requiring code changes.
+
+All of this can be implemented by adding a few types to the
+=formatters= model.
+
+- *C++ Model*
+
+In reality, the whole notion of =source_file= is flawed. Formatters
+drive the existence of source files; only they know things such as:
+
+- file name
+- header guards
+- formatter specific includes
+- includes
+
+A base class should own the remaining state (in formatters):
+
+- annotation
+
+In addition it also needs a copy of the meta-data from SML which is
+common to all types. Then we need to sub-class it with the types just
+like we have at present: class, etc.
+
+The formatter needs a few changes:
+
+- a method to determine if it is enabled or not;
+- it must receive the paths to the include and source directories on
+  construction;
+- its format method should be based on a concrete entity.
+
+Coupled with a static factory, this means we now do not need to know
+what formatters there are in the system; all we need is a container to
+store formatters according to the C++ type they format. They register
+themselves into that container (or at least some kind of static
+factory method).
+
+- *Stitch*
+
+When time comes to re-implement all formatters in terms of stitch text
+templates, we will have to break down the formatters such that they
+are responsible for only one type (e.g. =class_info= or =enum_info=
+etc.). This is because the text template must be kept as simple as
+possible to be maintainable as we won't have any flymake support. The
+current refactoring means that we will have to have some casting at
+the top of the stitch template used to instantiate the text
+template: we need to cast a formatters entity into the concrete entity
+for the model we're instantiating the text template. This type has to
+be passed in to stitch.
+
+**** COMPLETED Create skeleton for classes                             :task:
+     CLOSED: [2014-02-06 Thu 22:52]
+     CLOCK: [2014-02-06 Thu 18:08]--[2014-02-06 Thu 18:46] =>  0:38
+
+Add main classes to diagram according to design above and make sure
+they hang together to provide a complete solution.
+
+**** COMPLETED Implement the workflow and add tests                    :task:
+     CLOSED: [2014-02-08 Sat 20:30]
+     CLOCK: [2014-02-08 Sat 20:12]--[2014-02-08 Sat 20:30] =>  0:18
+     CLOCK: [2014-02-08 Sat 19:13]--[2014-02-08 Sat 20:12] =>  0:59
+     CLOCK: [2014-02-08 Sat 17:01]--[2014-02-08 Sat 19:13] =>  2:12
+     CLOCK: [2014-02-07 Fri 18:52]--[2014-02-07 Fri 19:30] =>  0:38
+
+We need to code up the formatter's model workflow, and add tests to
+make sure the registration of file formatters and transformers
+actually does the right thing.
+
+*** COMPLETED Change c++ model entity to inherit from formatter's entity :story:
+    CLOSED: [2014-02-08 Sat 21:55]
+    CLOCK: [2014-02-08 Sat 21:37]--[2014-02-08 Sat 21:55] =>  0:18
+
+We need to maintain the visitor structure intact, but at the same
+time, we need to make the C++ entity inherit from the base entity in
+the formatters model.
+
+*** COMPLETED Add all data required by types formatter to C++ entity  :story:
+    CLOSED: [2014-02-09 Sun 17:51]
+    CLOCK: [2014-02-09 Sun 17:45]--[2014-02-09 Sun 17:51] =>  0:06
+    CLOCK: [2014-02-09 Sun 01:12]--[2014-02-09 Sun 01:23] =>  0:11
+    CLOCK: [2014-02-09 Sun 00:14]--[2014-02-09 Sun 01:12] =>  0:58
+    CLOCK: [2014-02-08 Sat 21:55]--[2014-02-08 Sat 23:11] =>  1:16
+
+*New understanding*:
+
+Create "property sheets" (can't think of a better name, so it'll have
+to do for now) that contain all the "type-ified" meta-data. We need
+one general one in the formatters model that will be common to all
+concrete formatters model and then a specialised one that will contain
+C++-specific fields. The property sheet is the result of flattening
+the meta-data property tree, as seen for the perspective of a file.
+
+*Old understanding*:
+
+We need to ensure the C++ entities contain all the data required by
+the formatters. We can start with the types formatter:
+
+- constructor parameters;
+- ...
+
+*** COMPLETED Create a list of tags and define their structure        :story:
+    CLOSED: [2014-02-09 Sun 01:12]
+    CLOCK: [2014-02-08 Sat 23:11]--[2014-02-09 Sun 00:12] =>  1:01
+
+*General notes*:
+
+- split tags into =core= and =features=.
+- =core= is well defined: these are switches that solve deficiencies
+  in dia (comment, final) or limitations of UML (inheritance across
+  models).
+- =features= is a top-level container. =cpp= is a feature. All the
+  properties at the =cpp= level get intercepted in the C++ model
+  (during transformation) and will be expressed as types. The file and
+  facet properties that are generic (see below) are intercepted and
+  translated by C++; the remaining ones are left untouched and can be
+  accessed by the file formatters.
+
+*Tags*:
+
+The following are core tags:
+
+- /dogen.core.comment/: read by dia processor. Supplements the lack
+  of comments in some dia elements such as the model itself and
+  packages. Only valid in text boxes; only valid on one text box per
+  scope.
+- /dogen.core.is_final/: bool; makes the current class final or
+  not final.
+- /dogen.core.identity_attribute/: string; name of the attribute
+  to be used as a key for the entity. can be repeated to make up a
+  composite key.
+
+The following are "general", that is, applicable to any of the nodes
+in /features.FEATURE.FACET.FILE/; they can exist at each of these
+levels, with a the precedence of bottom to top (FILE takes precedence
+over FACET which takes precedence over FEATURE).
+
+- /generate_preamble/: bool
+- /copyright/: string; can be repeated for multiple holders.
+- /licence/: string; valid licence name.
+- /modeline_group/: string; valid modeline group name.
+- /code_generation_marker.add_date_time/: bool
+- /code_generation_marker.add_warning/: bool
+- /code_generation_marker.message/: string
+- /enabled/: bool
+
+Examples:
+
+: dogen.features.copyright Copyright (C) 2012 Foo Bar <foo.bar@example.com>
+: dogen.features.cpp.copyright Copyright (C) 2012 Foo Bar <foo.bar@example.com>
+
+The following are only applicable at the feature level, to any
+feature:
+
+- /directory_name/
+
+Examples:
+
+: dogen.features.cpp.enabled true
+
+The following are only applicable at the facet level, to any facet:
+
+- /directory_name/
+- /postfix/
+
+Examples:
+
+: dogen.features.cpp.std_hash.directory_name hash
+
+The following are only applicable at the file level, to any file:
+
+- /overwrite/
+- /file_name/
+- /extension/
+
+Examples:
+
+: dogen.features.cpp.types.main_header.file_name some_type
+
+*** COMPLETED Reduce nightly build times                              :spike:
+    CLOSED: [2014-02-18 Tue 07:59]
+    CLOCK: [2014-02-11 Tue 19:40]--[2014-02-11 Tue 19:59] =>  0:19
+
+It seems that the reason why euler has been failing of late is the
+excessive time the nightly is taking to complete. It also seems we can
+enable parallel running of tests in CTest, which we are not doing at
+present. See [[http://www.cmake.org/pipermail/cmake-commits/2010-January/008269.html][this example]].
+
+*** CANCELLED Clean up the tags according to the list defined         :story:
+    CLOSED: [2014-02-18 Tue 08:00]
+    CLOCK: [2014-02-09 Sun 18:06]--[2014-02-09 Sun 18:15] =>  0:09
+
+We have created a new tag structure; implement it.
+
+**** CANCELLED Replace =#DOGEN= with =dogen.=                          :task:
+     CLOSED: [2014-02-09 Sun 18:28]
+     CLOCK: [2014-02-09 Sun 18:15]--[2014-02-09 Sun 18:28] =>  0:13
+
+*Rationale*:
+
+- Actually, this is dia specific.
+- =dogen.= would be easily confused with real comments.
+- If we use =#dogen.= to ensure the name is unique, then /all/
+  supported formats (e.g. JSON) will also have to have names with that
+  prefix.
+- Also, in JSON, there is no need for =dogen= at all (what else would
+  we be carrying?).
+
+This stays at it is.
+
+*Old Understanding*:
+
+At present we are relying on a marker to detect tags in comments:
+=#DOGEN=:
+
+: #DOGEN COMMENT=true
+
+However, we can just use the tag name for both purposes:
+
+: dogen.core.comment=true
+
+Update all affected models.
+
+**** IMPLEMENTATION Move dia tags into =dia_to_sml= model              :task:
+     CLOCK: [2014-02-09 Sun 18:59]--[2014-02-09 Sun 19:20] =>  0:21
+     CLOCK: [2014-02-09 Sun 18:38]--[2014-02-09 Sun 18:44] =>  0:06
+
+Each model will own its own tags. Move the tags used only by Dia to
+SML into this model. Update the manual with these tags.
+
+**** Remove C++ knowledge from SML tagger                              :task:
+
+We should just:
+
+- copy the features tags according to very simple heuristics;
+- for the moment, convert settings into tags. In the future, we will
+  deprecate all the formatter related settings - they must be done via
+  the tags.
+
+**** Implement a meta-data tranformer in SML to C++                   :story:
+
+We should do the appropriate defaulting when a tag is not found.
+
+** Deprecated Development Stories
+*** Use lowercase for all meta-data keys                              :story:
+
+*Rationale*: Fixed with other tag related changes.
+
+We have a number of legacy meta-data keys which are in uppercase and
+need to be in lowercase. They may also need to be renamed to follow
+the "namespacing" structure. Example:
+
+: #DOGEN IDENTITY_ATTRIBUTE=true
+
+This should really be:
+
+: #DOGEN identity_attribute=true
+
+*** Remove =content_descriptor=                                       :story:
+
+*Rationale*: this story is too generic to be useful, it will be
+tackled on a formatter by formatter basis.
+
+We need a way to drive the formatter generation from the formatter
+itself rather than from the transformation process. The first step to
+get there is to remove content descriptors.
+
+*** Make use of the indenting stream in =cpp_formatters=              :story:
+
+*Rationale*: this story is too generic to be useful, it will be
+tackled on a formatter by formatter basis.
+
+Replace indenter with the new indenting stream.
+
+*** Make use of the boilerplate formatter in =cpp_formatters=         :story:
+
+*Rationale*: this story is too generic to be useful, it will be
+tackled on a formatter by formatter basis.
+
+Update all file formatters to use the boilerplate formatter.
+
+Consider creating a simple workflow in =formatters= that gets used by
+the cpp_formatters workflow (or passed in). The job of this workflow
+is to setup infrastructure common to all formatters such as loading
+licences, modelines, etc.
+
+*** Update =cpp= model with properties from tags                      :story:
+
+*Rationale*: this story is too generic to be useful, it will be
+tackled on a formatter by formatter basis.
+
+Read properties from the meta-data and represent them inside of the
+=cpp= model.

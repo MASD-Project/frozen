@@ -1,0 +1,1554 @@
+#+title: Sprint Backlog 21
+#+options: date:nil toc:nil author:nil num:nil
+#+todo: STARTED | COMPLETED CANCELLED POSTPONED
+#+tags: { story(s) epic(e) spike(p) }
+
+* Mission Statement
+
+- Finish moving more elements into the assets meta-model.
+
+* Stories
+
+** Active
+
+#+begin: clocktable :maxlevel 3 :scope subtree :indent nil :emphasize nil :scope file :narrow 75 :formula %
+#+CAPTION: Clock summary at [2020-02-18 Tue 00:12]
+| <75>                                                  |         |       |       |       |
+| Headline                                              | Time    |       |       |     % |
+|-------------------------------------------------------+---------+-------+-------+-------|
+| *Total time*                                          | *80:02* |       |       | 100.0 |
+|-------------------------------------------------------+---------+-------+-------+-------|
+| Stories                                               | 80:02   |       |       | 100.0 |
+| Active                                                |         | 80:02 |       | 100.0 |
+| Edit release notes for previous sprint                |         |       |  7:01 |   8.8 |
+| Create a demo and presentation for previous sprint    |         |       |  1:49 |   2.3 |
+| Sprint and product backlog grooming                   |         |       |  4:00 |   5.0 |
+| Create new playlist for assets work                   |         |       |  2:19 |   2.9 |
+| Create the final video on the relational model series |         |       |  0:30 |   0.6 |
+| Move registrar into assets                            |         |       |  5:34 |   7.0 |
+| Fix error in asserter tests                           |         |       |  0:38 |   0.8 |
+| Add injection details to all models                   |         |       |  0:25 |   0.5 |
+| Fix nightly error in registrar                        |         |       |  0:33 |   0.7 |
+| Nightly code coverage is not being reported           |         |       |  0:25 |   0.5 |
+| Move visual studio fabric types into assets           |         |       | 18:34 |  23.2 |
+| Create metamodel elements for =entry_point=           |         |       |  7:18 |   9.1 |
+| Remove support for element extensions                 |         |       |  0:44 |   0.9 |
+| Move =object_odb_options= into assets                 |         |       |  6:43 |   8.4 |
+| Move common ODB options into assets                   |         |       |  4:34 |   5.7 |
+| Move msbuild and cmakelists into assets               |         |       | 10:12 |  12.7 |
+| Move assembly info and assistant into assets          |         |       |  1:35 |   2.0 |
+| Remove injected element names validation              |         |       |  0:09 |   0.2 |
+| Consider moving more configuration to profiles        |         |       |  1:35 |   2.0 |
+| Fixes to setup                                        |         |       |  1:05 |   1.4 |
+| Cannot see source file in coveralls                   |         |       |  0:16 |   0.3 |
+| Integration of archetypes into assets                 |         |       |  2:41 |   3.4 |
+| Investigate borked nightly build                      |         |       |  0:38 |   0.8 |
+| Define a combined logical-physical space              |         |       |  0:44 |   0.9 |
+#+TBLFM: $5='(org-clock-time%-mod @3$2 $2..$4);%.1f
+#+end:
+
+*** COMPLETED Edit release notes for previous sprint                  :story:
+    CLOSED: [2020-01-24 Fri 12:58]
+    :LOGBOOK:
+    CLOCK: [2020-01-24 Fri 16:00]--[2020-01-24 Fri 16:12] =>  0:12
+    CLOCK: [2020-01-24 Fri 12:01]--[2020-01-24 Fri 12:58] =>  0:57
+    CLOCK: [2020-01-23 Thu 00:43]--[2020-01-23 Thu 00:49] =>  0:06
+    CLOCK: [2020-01-23 Thu 00:38]--[2020-01-23 Thu 00:42] =>  0:04
+    CLOCK: [2020-01-22 Wed 22:42]--[2020-01-23 Thu 00:37] =>  1:55
+    CLOCK: [2020-01-22 Wed 18:30]--[2020-01-22 Wed 19:16] =>  0:46
+    CLOCK: [2020-01-22 Wed 08:02]--[2020-01-22 Wed 09:03] =>  1:01
+    CLOCK: [2020-01-21 Tue 20:41]--[2020-01-21 Tue 22:09] =>  1:28
+    CLOCK: [2020-01-20 Mon 22:55]--[2020-01-20 Mon 23:27] =>  0:32
+    :END:
+
+Add github release notes for previous sprint.
+
+Title: Dogen v1.0.20, "Oasis do Arco"
+
+#+BEGIN_SRC markdown
+**DRAFT: release notes are still being worked on**
+
+![Oasis do Arco](https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Mini_oasis_in_the_namibe_desert%2C_Angola.JPG/800px-Mini_oasis_in_the_namibe_desert%2C_Angola.JPG)
+_Arco Oasis, Namibe, Moçamedes, Angola. (C) 2011 [Paulo César Santos](https://commons.wikimedia.org/wiki/File:Mini_oasis_in_the_namibe_desert,_Angola.JPG)_
+
+# Introduction
+
+New year, new Dogen sprint! At around two months of elapsed time for 83 hours worth of commitment, this was yet another long, drawn-out affair, and the festive period most certainly did not help matters. Having said that, the sprint was reasonably focused on the mission at hand: making the relational model _just about_ usable. In doing so, it provided its fair share of highs and lows, and taught a great deal of lessons - more than we ever wished for. Ah, the joys, the joys. But, onwards we march!
+
+# User visible changes
+
+This section covers stories that affect end users, with the video providing a quick demonstration of the new features, and the sections below describing them in more detail. There were only a few small features this sprint, and there are no breaking changes.
+
+[![Sprint 1.0.20 Demo](https://img.youtube.com/vi/TkYQTW_jAGk/0.jpg)](https://youtu.be/TkYQTW_jAGk)
+_Video 1: Sprint 20 Demo._
+
+## Add ODB type overrides to primitives
+
+ORM type overrides had not been used in anger until the relational model was introduced (see below), and, as a result, we did not notice any problems with its implementation. Because the relational model makes heavy use of JSONB, we quickly spotted an issue when declaring type overrides inline with the column (_i.e._, at the attribute level):
+
+```
+#DOGEN masd.orm.type_override=postgresql,JSONB
+```
+
+According to the [ODB manual](https://www.codesynthesis.com/products/odb/doc/manual.xhtml#14.8), this incantation is not sufficient to cope with conversion functions and other more complex uses. And so, with this sprint, type mapping was updated to take advantage of ODB's flexibility. You can now define type mappings at the element level:
+
+```
+#DOGEN masd.orm.type_override=postgresql,JSONB
+#DOGEN masd.orm.type_mapping=postgresql,JSONB,TEXT,to_jsonb((?)::jsonb),from_jsonb((?))
+#DOGEN masd.orm.type_mapping=sqlite,JSON_TEXT,TEXT,json((?))
+```
+
+You can then make use of it at attribute level, as previously. An even better scenario is to define a ```masd::primitive``` for the type, which takes care of it for you, and generates code like so:
+
+```
+#pragma db member(json::value_) column("") pgsql:type("JSONB")
+```
+
+For example uses of JSONB, please look at the discussion on the relational model in section _Significant Internal Stories_ below.
+
+## Allow outputting the model's SHA1 hash in decoration
+
+The decoration marker has been expanded to allow recording the SHA1 hash of the target model. This is intended as a simple way to keep track of which model was used to generate the source code. In order to switch it on, simply add ```add_origin_sha1_hash``` to the generation marker:
+
+![Decoration marker](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/decoration_sha1_hash_example.png)
+_Figure 1: Sample decoration marker, obtained from the C++ Reference Model._
+
+The generated code will then contain the SHA1 hash:
+
+```c++
+/* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * This is a code-generated file.
+ *
+ * Model SHA1 hash: be42bdb7f246ad4040f17dbcc953222492e1a3bf
+ * WARNING: do not edit this file manually.
+ * Generated by MASD Dogen v1.0.21
+```
+
+Sadly the SHA1 hash does not match the [git hash](https://stackoverflow.com/questions/5290444/why-does-git-hash-object-return-a-different-hash-than-openssl-sha1); however, one can easily use ```sha1sum``` to compute the hash manually:
+
+```
+$ sha1sum cpp_ref_impl.lam_model.dia
+be42bdb7f246ad4040f17dbcc953222492e1a3bf  cpp_ref_impl.lam_model.dia
+```
+
+Before we move on, there are a couple of points worthy of note with regards to this feature. First and foremost, please heed the following warning:
+
+> :warning: : **Important**: Remember that SHA1 hashes in Dogen **are NOT a security measure**; they exist **only** for informational purposes.
+
+Secondly, as we mentioned in the past, features such as these (_e.g._ date/time, Dogen version, SHA1 hash, _etc._) should be used with caution since they may cause unnecessary changes to generated code and thus trigger expensive rebuilds. As such, we recommend that careful consideration is given before enabling it.
+
+## Improvements in generation timestamps
+
+For the longest time, Dogen has allowed users to stamp each file it generates with a _generation timestamp_. This is enabled via the parameter ```add_date_time```, which is part of the  generation marker meta-element; for an example of this meta-element see [the screenshot above](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/decoration_sha1_hash_example.png), where it is disabled.
+
+When enabled, a typical output looks like so:
+
+```c++
+/* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * This is a code-generated file.
+ *
+ * Generation timestamp: 2020-01-22T08:29:41
+ * WARNING: do not edit this file manually.
+ * Generated by MASD Dogen v1.0.21
+ *
+```
+
+In this sprint we did some minor improvements around the sourcing of this timestamp. Previously, we obtained it individually for each and every generated file, resulting in a (possibly) moving timestamp across a model generation. With this release, the timestamp for a given activity - _e.g._ conversion, generation, _etc._ - is now obtained once upfront and reused by all those who require it. Not only is this approach more performant but it yields a better outcome because users are not particularly interested in the precise second _any given file_ was generated, but care more about knowing when _a given model_ was generated.
+
+In addition, we decided to allow users to control this timestamp externally. The main rationale for this was unit testing, where having a moving timestamp with each test run was just asking for trouble. While we were at it, we also deemed sensible to allow users to override this timestamp, if, for whatever reason, they need to. Now, lest you start to think we are enabling "tampering", we repeat the previous warning:
+
+> :warning: **Important**: Remember that generation timestamps in Dogen **are NOT a security measure**; they exist **only** for informational purposes.
+
+With that disclaimer firmly in hand, lets see how one can override the generation timestamp. A new command line argument was introduced:
+
+```
+Processing:
+<SNIP>
+  --activity-timestamp arg       Override the NOW value used for the activity
+                                 timestamp. Format: %Y-%m-%dT%H:%M:%S
+```
+
+For instance, to change the generation timestamp of the example above, one could set it to ```--activity-timestamp 2020-02-01T01:01:01```, obtaining the following output:
+
+```c++
+/* -*- mode: c++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*-
+ *
+ * This is a code-generated file.
+ *
+ * Generation timestamp: 2020-02-01T01:01:01
+ * WARNING: do not edit this file manually.
+ * Generated by MASD Dogen v1.0.21
+```
+
+Clearly, this is more of a troubleshooting feature than anything else, but it may prove to be useful.
+
+# Development Matters
+
+In this section we cover topics that are mainly of interest if you follow Dogen development, such as details on internal stories that consumed significant resources, important events, etc. As usual, for all the gory details of the work carried out this sprint, see the [sprint log](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_20.org).
+
+## Milestones
+
+The 9999th commit was made to Dogen this sprint.
+
+![100th release](https://github.com/MASD-Project/dogen/raw/master/doc/blog/images/milestones_9999_commits.png)
+_Figure 2: GitHub repo at the 9999th commit._
+
+## Significant Internal Stories
+
+The sprint was mostly dominated by one internal story, which this section describes in detail.
+
+### Add relational tracing support
+
+This sprint brought to a close work on the relational model. It was the culmination of a multi-sprint effort that required some significant changes to the core of Dogen - particularly to the tracing subsystem, as well as to ORM. The hard-core Dogen fan may be interested in a series of videos which captured the design and development of this feature:
+
+[![MASD - Dogen Coding: Relational Model for Tracing - Part 1](https://img.youtube.com/vi/re36Sr1u0Iw/0.jpg)](https://www.youtube.com/watch?v=re36Sr1u0Iw&list=PLwfrwe216gF3EzrrvwNFivnLSZ2l8X9k6&index=2)
+_Video 2: Playlist "MASD - Dogen Coding: Relational Model for Tracing"._
+
+The (rather long) series of videos will hopefully reach its "climax" next sprint, but (spoiler alert) its "TL; DR" is that it is now possible to dump all information produced by a Dogen run into a relational database. This includes both tracing data as well as all logging, at the user-chosen log level. It is important to note that a full run in this manner is slow: dumping all of Dogen's models (18, at the present count) can take the best part of an hour. Interestingly, the majority of the cost comes from dumping the log at debug level. A dump with just tracing information takes less than 10 minutes, making it reasonably useful. Regardless of the wait, once the data is in the database, the full power of SQL and Postgres can be harnessed.
+
+Implementation-wise, we decided to take path of least resistance and create a small number of tables, code-generated by Dogen and [ODB](https://www.codesynthesis.com/products/odb/):
+
+```
+musseque=> \dt
+            List of relations
+ Schema |      Name       | Type  | Owner
+--------+-----------------+-------+-------
+ DOGEN  | LOG_EVENT       | table | build
+ DOGEN  | RUN_EVENT       | table | build
+ DOGEN  | TRANSFORM_EVENT | table | build
+(3 rows)
+```
+
+Models and other complex data types stored in JSONB fields, _e.g._:
+
+```
+musseque=> \dS "RUN_EVENT"
+                            Table "DOGEN.RUN_EVENT"
+     Column     |            Type             | Collation | Nullable | Default
+----------------+-----------------------------+-----------+----------+---------
+ TIMESTAMP      | timestamp without time zone |           |          |
+ RUN_ID         | text                        |           | not null |
+ EVENT_TYPE     | integer                     |           | not null |
+ VERSION        | text                        |           | not null |
+ PAYLOAD        | jsonb                       |           | not null |
+ ACTIVITY       | text                        |           | not null |
+ LOGGING_IMPACT | text                        |           | not null |
+ TRACING_IMPACT | text                        |           | not null |
+Indexes:
+    "RUN_EVENT_pkey" PRIMARY KEY, btree ("RUN_ID", "EVENT_TYPE")
+```
+
+Though by no means trivial, this approach required fewer changes to Dogen itself, pushing instead the complexity to the queries over the generated dataset. This seemed like a worthwhile trade-off at the time, because normalising a Dogen model in code was a non-trivial exercise. Nonetheless, as we sooon find out, writing queries with complex JSON documents and multiple rows is not an entirely trivial exercise either. As an example, the following query returns objects in a Dia diagram:
+
+```sql
+create or replace function classes_in_diagram(in p_transform_instance_id text)
+    returns table("ID" text, "NAME" text)
+as $$
+    select "ID", substring(attrs."ATTRIBUTES"->'values'->0->'data'->>'value', 2,
+            length(attrs."ATTRIBUTES"->'values'->0->'data'->>'value') - 2
+        ) "NAME"
+    from (
+        select
+            objects."OBJECT"->>'id' "ID",
+            objects."OBJECT"->>'type' "TYPE",
+            jsonb_array_elements(objects."OBJECT"->'attributes') "ATTRIBUTES"
+            from (
+                select * from dia_objects_in_diagram(p_transform_instance_id)
+            ) as objects
+     ) as attrs
+     where
+         attrs."ATTRIBUTES"->>'name' like 'name' and "TYPE" like 'UML - Class';
+$$ language 'sql';
+```
+
+This function can be used as follows:
+
+```
+=> select * from dia_objects_names_and_stereotypes('8ce7069e-6261-4f9f-b701-814bed17cafb');
+ ID  |    NAME     |        STEREOTYPES
+-----+-------------+----------------------------
+ O1  | cpp         | masd::decoration::modeline
+ O2  | cs          | masd::decoration::modeline
+ O3  | cmake       | masd::decoration::modeline
+ O4  | odb         | masd::decoration::modeline
+ O5  | xml         | masd::decoration::modeline
+ O7  | xml         | masd::decoration::modeline
+ O8  | odb         | masd::decoration::modeline
+ O9  | cmake       | masd::decoration::modeline
+ O10 | cs          | masd::decoration::modeline
+ O11 | cpp         | masd::decoration::modeline
+ O13 | apache_v2_0 | masd::decoration::licence
+ O14 | bsl_v1_0    | masd::decoration::licence
+ O15 | gpl_v2      | masd::decoration::licence
+ O16 | gpl_v3      | masd::decoration::licence
+ O17 | proprietary | masd::decoration::licence
+ O18 | sln         | masd::decoration::modeline
+ O19 | sln         | masd::decoration::modeline
+````
+A library of assorted functions was assembled this way (see [functions.sql](https://github.com/MASD-Project/dogen/blob/master/projects/dogen.relational/sql/functions.sql)), and proved useful enough to track the problem at hand which was to figure out why the [new meta-element registrar](https://github.com/MASD-Project/dogen/blob/master/doc/agile/v1/sprint_backlog_20.org#move-registrar-into-assets) was not being generated. In addition, the expectation is that, over time, more and more powerful queries will be written, allowing us to better exploit the available information. However, it must be said that the complexity of writing JSONB queries is much higher than anticipated, and as such, the feature is not quite as useful as we envisioned. With a bit of luck, next sprint we shall produce a blog post narrating in more detail the saga and its somewhat surprising conclusions.
+
+## Resourcing
+
+Now that we have moved to part-time sprints, looking only at the overall commitment makes less sense; after all, by definition, one is guaranteed to have around 80 hours of work on a sprint. Whilst pondering on this matter, another interesting measure popped up on our radars: the _utilisation rate_ - though, perhaps, not yet its final name. The utilisation rate is computed as the number of days on a full time sprint (_e.g._, 14) divided by the total number of days elapsed since the previous sprint. The utilisation rate measures how "expensive" a day of work is in terms of elapsed days. A high utilisation rate is good, and a low one is bad; on a good sprint we are aiming for close to 50%. In this particular sprint our utilisation rate was around 23%. Since the previous sprint involved a long stretch where we were not doing any work at all, we do not have any comparative figures, but we'll keep tracking this number from now on and hopefully it will became a useful indicator.In terms of our more traditional measurements, the sprint was rather well behaved, as the chart demonstrates:
+
+![Story Pie Chart](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_20_pie_chart.jpg)
+_Figure 3: Cost of stories for sprint 20._
+
+Some 45% of the total committed time was taken by the relational model and related activities; and even diversions such as the SHA1 hashes (6.8%) and improvements on generation timestamps (2.3%) were actually byproducts of this work. In terms of process, this was an expensive sprint: whilst the demo was cheap (3%), the release notes were very expensive (13.7%) and so was backlog grooming (5.7%), resulting on an overall figure of 22.4% for process - one of the most costly sprints in this department. Part of this is related to the amount of "uncoordinated" work that had been carried out previously and which was difficult to describe in a manner suitable for the release notes  (remember that demo and release notes describe the work of the _previous sprint_, _e.g. sprint 19 in this case). All and all, for a part time sprint, it was a rather successful one, though we are clearly aiming for a higher utilisation rate for the next one.
+
+## Roadmap
+
+We still haven't quite managed to get the roadmap to work for us, but it seems to provide some kind of visual indication of just how long the road ahead is so we're keeping it for now. However, for it to became truly useful in our current process it requires some more tuning. Perhaps some time spent learning [task juggler](http://taskjuggler.org/) is in order...
+
+![Project Plan](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_20_project_plan.png)
+
+![Resource Allocation Graph](https://github.com/MASD-Project/dogen/raw/master/doc/agile/v1/sprint_20_resource_allocation_graph.png)
+
+# Next Sprint
+
+Now that the relational model is out of the way, the focus on meta-model entities and the fabric clean-up is resumed once more. We are hoping to get one or two of these entities out of the way by sprint end.
+
+# Binaries
+
+You can download binaries from [Bintray](https://bintray.com/masd-project/main/dogen) for OSX, Linux and Windows (all 64-bit):
+
+- [dogen_1.0.20_amd64-applications.deb](https://dl.bintray.com/masd-project/main/1.0.20/dogen_1.0.20_amd64-applications.deb)
+- [dogen-1.0.20-Darwin-x86_64.dmg](https://dl.bintray.com/masd-project/main/1.0.20/DOGEN-1.0.20-Darwin-x86_64.dmg)
+- [dogen-1.0.20-Windows-AMD64.msi](https://dl.bintray.com/masd-project/main/DOGEN-1.0.20-Windows-AMD64.msi)
+
+**Note:** The OSX and Linux binaries are not stripped at present and so are larger than they should be. We have [an outstanding story](https://github.com/MASD-Project/dogen/blob/master/doc/agile/product_backlog.org#linux-and-osx-binaries-are-not-stripped) to address this issue, but sadly CMake does not make this trivial.
+
+For all other architectures and/or operative systems, you will need to build Dogen from source. Source downloads are available below.
+
+Happy Modeling!
+#+END_SRC markdown
+
+- [[https://twitter.com/MarcoCraveiro/status/1220738254158344196][twitter]]
+- [[https://www.linkedin.com/feed/update/urn:li:activity:6626505954353569792/][linkedin]]
+- [[https://gitter.im/MASD-Project/Lobby][Gitter]]
+
+*** COMPLETED Create a demo and presentation for previous sprint      :story:
+    CLOSED: [2020-01-24 Fri 15:28]
+    :LOGBOOK:
+    CLOCK: [2020-01-25 Sat 14:40]--[2020-01-25 Sat 14:55] =>  0:15
+    CLOCK: [2020-01-24 Fri 14:20]--[2020-01-24 Fri 15:28] =>  1:08
+    CLOCK: [2020-01-24 Fri 12:59]--[2020-01-24 Fri 13:25] =>  0:26
+    :END:
+
+Time spent creating the demo and presentation. Use the demo project:
+
+- https://github.com/MASD-Project/demo
+
+Actually since the features are quite trivial, we can demonstrate them
+using the Dogen test models.
+
+*** COMPLETED Sprint and product backlog grooming                     :story:
+    CLOSED: [2020-02-18 Tue 18:13]
+    :LOGBOOK:
+    CLOCK: [2020-02-16 Sun 23:31]--[2020-02-16 Sun 23:38] =>  0:07
+    CLOCK: [2020-02-15 Sat 23:44]--[2020-02-15 Sat 23:51] =>  0:07
+    CLOCK: [2020-02-15 Sat 16:29]--[2020-02-15 Sat 16:37] =>  0:08
+    CLOCK: [2020-02-12 Wed 22:42]--[2020-02-12 Wed 22:51] =>  0:09
+    CLOCK: [2020-02-07 Fri 14:02]--[2020-02-07 Fri 14:45] =>  0:43
+    CLOCK: [2020-02-07 Fri 09:15]--[2020-02-07 Fri 09:37] =>  0:22
+    CLOCK: [2020-02-05 Wed 08:00]--[2020-02-05 Wed 08:04] =>  0:05
+    CLOCK: [2020-02-02 Sun 16:31]--[2020-02-02 Sun 16:43] =>  0:12
+    CLOCK: [2020-01-31 Fri 16:23]--[2020-01-31 Fri 16:34] =>  0:11
+    CLOCK: [2020-01-31 Fri 08:42]--[2020-01-31 Fri 09:02] =>  0:20
+    CLOCK: [2020-01-29 Wed 08:35]--[2020-01-29 Wed 08:48] =>  0:13
+    CLOCK: [2020-01-29 Wed 08:13]--[2020-01-29 Wed 08:34] =>  0:21
+    CLOCK: [2020-01-28 Tue 21:41]--[2020-01-28 Tue 21:45] =>  0:04
+    CLOCK: [2020-01-28 Tue 21:18]--[2020-01-28 Tue 21:40] =>  0:22
+    CLOCK: [2020-01-27 Mon 22:47]--[2020-01-27 Mon 23:02] =>  0:15
+    CLOCK: [2020-01-27 Mon 17:42]--[2020-01-27 Mon 17:49] =>  0:07
+    CLOCK: [2020-01-25 Sat 23:41]--[2020-01-25 Sat 23:56] =>  0:15
+    :END:
+
+Updates to sprint and product backlog.
+
+*** COMPLETED Create new playlist for assets work                     :story:
+    CLOSED: [2020-02-15 Sat 16:37]
+    :LOGBOOK:
+    CLOCK: [2020-02-04 Tue 22:53]--[2020-02-04 Tue 23:15] =>  0:22
+    CLOCK: [2020-02-02 Sun 22:10]--[2020-02-02 Sun 22:19] =>  0:09
+    CLOCK: [2020-02-02 Sun 20:36]--[2020-02-02 Sun 21:02] =>  0:26
+    CLOCK: [2020-01-31 Fri 17:22]--[2020-01-31 Fri 17:34] =>  0:12
+    CLOCK: [2020-01-31 Fri 16:35]--[2020-01-31 Fri 16:39] =>  0:04
+    CLOCK: [2020-01-31 Fri 10:24]--[2020-01-31 Fri 10:58] =>  0:34
+    CLOCK: [2020-01-31 Fri 09:03]--[2020-01-31 Fri 09:35] =>  0:32
+    :END:
+
+Create a series of videos describing the refactoring of fabric into
+assets.
+
+- [[https://www.youtube.com/playlist?list=PLwfrwe216gF2pmF54Re9lgWIuafh0_ksz][MASD - Dogen Coding: Visual Studio Component Refactor]]
+
+*** COMPLETED Create the final video on the relational model series   :story:
+    CLOSED: [2020-01-24 Fri 15:59]
+    :LOGBOOK:
+    CLOCK: [2020-01-24 Fri 15:29]--[2020-01-24 Fri 15:59] =>  0:30
+    :END:
+
+Do a video summarising the work on the relational model.
+
+*** COMPLETED Move registrar into assets                              :story:
+    CLOSED: [2020-01-26 Sun 22:40]
+    :LOGBOOK:
+    CLOCK: [2020-01-27 Mon 23:03]--[2020-01-27 Mon 23:21] =>  0:18
+    CLOCK: [2020-01-27 Mon 18:09]--[2020-01-27 Mon 18:22] =>  0:13
+    CLOCK: [2020-01-26 Sun 21:45]--[2020-01-26 Sun 22:40] =>  0:55
+    CLOCK: [2020-01-26 Sun 13:21]--[2020-01-26 Sun 13:36] =>  0:15
+    CLOCK: [2020-01-26 Sun 12:35]--[2020-01-26 Sun 12:46] =>  0:11
+    CLOCK: [2020-01-26 Sun 10:02]--[2020-01-26 Sun 10:48] =>  0:46
+    CLOCK: [2020-01-25 Sat 23:27]--[2020-01-25 Sat 23:40] =>  0:13
+    CLOCK: [2020-01-25 Sat 22:06]--[2020-01-25 Sat 23:26] =>  1:20
+    CLOCK: [2020-01-25 Sat 14:55]--[2020-01-25 Sat 16:18] =>  1:23
+    :END:
+
+Move the registrar type into assets, in the quickest way possible.
+
+Notes:
+
+- In order to avoid blocking due to lots of analysis, we need
+  to split this story into three:
+  - first, we need to just move the registrar as is into assets.
+  - a second story is to clean up the existing registrar code to have
+    less templates and possibly address the existing registration
+    bugs. We could also look into calling the registrars for
+    referenced models automatically as part of this work (at present
+    we are doing this manually).
+  - finally, we need some meta-level refactoring to figure out if the
+    pattern can be generalised to include initialisers, etc.
+  In general that should be our approach: try to split out the
+  capturing of patterns into as many steps as possible, to make sure
+  we don't get overwhelmed as we implement things.
+- we need to keep track of all type registrars on referenced models,
+  not on the referenced models themselves. We need to know which
+  models we referenced directly, and then find the registrars for
+  those models.
+- leaves need to know of the registrar. This is so that we can call it
+  in their generated tests. We could use the registrar transform to go
+  and find all leaves and populate their registrar name. This can be
+  added as a property in the generalisation object template.
+- current state is that we cannot generate the registrar for some
+  reason.
+- test model with registrar is C++ model. Type is called
+  registrar. Its probably not a good idea to also call it registrar -
+  wouldn't that clash with the existing type?
+- we should have a warning/error: if using boost serialisation with a
+  model that has inheritance, the registrar should be present. Added
+  to warnings story.
+- we started by trying to make type registrars available only to leaf
+  types. However, this does not work:
+  - all other members of the inheritance graph also need to know of
+    their type registrar, else their tests will fail.
+  - types which are composed of types which are in an inheritance
+    relationship (directly or through further composition) also need
+    to know of the model's type registrar. To know which types would
+    require a DAG of the model.
+  A slightly easier solution, which we had used before, is to make all
+  objects aware of the registrar regardless. This is only needed for
+  generated tests anyhow and the complexity of getting this right
+  makes the right solution too expensive. However, by the time we get
+  to the type registrar transform we have already merged the model, so
+  now we have the issue of determining which type registrar belongs to
+  which models. We could check =model_modules= of each object.
+- we have an inconsistency: the name of the method is =register_types=
+  but we can call instances of the =type_registrar= meta-type anything
+  we like. It would make more sense to create a class with the name of
+  the instance and then call a static method in that class. However,
+  we did some hackery with templates which may not work with this
+  approach. An alternative is to keep the function as is but use the
+  type name to name the function. This is not entirely clean but its
+  also not entirely wrong conceptually.
+- registrar has a set of model dependencies. Its not clear that we
+  still need those. Check to see if deleting it causes any errors.
+
+*** COMPLETED Fix error in asserter tests                             :story:
+    CLOSED: [2020-01-27 Mon 17:58]
+    :LOGBOOK:
+    CLOCK: [2020-01-27 Mon 17:50]--[2020-01-27 Mon 17:58] =>  0:08
+    CLOCK: [2020-01-26 Sun 23:06]--[2020-01-26 Sun 23:36] =>  0:30
+    :END:
+
+At present we cannot run the utility tests twice.
+
+*** COMPLETED Add injection details to all models                     :story:
+    CLOSED: [2020-01-28 Tue 00:00]
+    :LOGBOOK:
+    CLOCK: [2020-01-17 Fri 11:16]--[2020-01-17 Fri 11:41] =>  0:25
+    :END:
+
+*Rationale*: completed in previous sprint via SHA1 hashes.
+
+At present we have no way to connect a given element to its origin in
+an extraction model. This is a particular problem in the relation
+model because we want to be able to join columns from different models
+(e.g. get this object across all representations). We need to record:
+
+- dia ID.
+- file name: or maybe hash of the filename? or of path? or even better
+  the SHA1 of the model? This would enable us to know exactly if a
+  given dia file in its current state
+- line, column.
+
+However our current parsers (XML, JSON) will not make it easy to record
+the line and column so this needs to be deferred.
+
+*** COMPLETED Configuration classes with traits                       :story:
+    CLOSED: [2020-01-28 Tue 21:30]
+
+*Rationale*: this story was implemented as part of the feature bundle
+work.
+
+There are several aspects related to configuration:
+
+- the c++ class itself
+- the fields with names and types for annotations. These are
+  static-like functions that will inject the field definition into the
+  annotation repository via initialisers / Boost.DI. We could have a
+  top-level class that includes all of these classes and takes in the
+  annotation repository and asks each of them to register. The class
+  is code-generated by looking for each class in the model. e.g. a
+  registrar but for the
+  meta-data. =masd::configuration_registrar=. Top-level, one per
+  model. has a list of names marked as config or config factory.
+- the "factory" class which reads the fields to create the c++
+  class. In effect the factory class should contain both the fields,
+  registration etc. as well as the reading the C++ from
+  meta-data. Users can then create two related types:
+  =masd::configuration= and =masd::configuration_factory=, with the
+  factory pointing to the configuration. The configuration must
+  contain the mappings to annotation types. Actually the configuration
+  should provide the static method for registration so that we may
+  register fields even without a factory. This is useful for cases
+  such as enablement where we use templates and may not instantiate
+  the class directly. Or if we could fuse the factory with the class,
+  that would make life even easier. Classes should also have
+  associated "field documentation". We should be able to call a method
+  in annotations and produce all of the field documentation.
+- the transform which uses the factory to populate meta-model
+  elements.
+
+When we start code-generating the first tree, we should allow users to
+enter the type name and other field related parameters as
+configuration on the meta-element.
+
+*** COMPLETED Fix broken tests for clang-cl on release                :story:
+    CLOSED: [2020-01-28 Tue 21:32]
+
+*Rationale*: these tests just started passing magically last sprint.
+
+We have a number of failing tests, without any output:
+
+- dogen.assets.tests:
+  - attributes_transform_tests/model_with_object_template_that_inhertis_missing_object_template_throws
+  - attributes_transform_tests/model_with_object_that_instantiates_missing_object_template_throws
+  - attributes_transform_tests/model_with_object_that_instantiates_object_template_with_missing_parent_throws
+  - object_templates_transform_tests/model_with_object_template_that_parents_missing_object_template_throws
+  - object_templates_transform_tests/model_with_object_that_models_missing_object_template_throws
+  - object_templates_transform_tests/model_with_object_with_missing_parent_throws
+  - pre_assembly_validator_tests/type_with_inconsistent_key_value_pair_throws
+  - pre_assembly_validator_tests/type_with_incorrect_model_name_throws
+  - resolver_tests/object_with_missing_attribute_type_throws
+  - resolver_tests/object_with_missing_third_degree_parent_in_different_models_throws
+  - resolver_tests/object_with_third_degree_parent_missing_within_single_model_throws
+  - stereotypes_transform_tests/visitable_object_with_no_leaves_throws
+- dogen.injection.dia.tests
+  - grapher_tests/adding_object_after_graph_has_been_generated_throws
+  - grapher_tests/generating_after_graph_has_been_generated_throws
+  - grapher_tests/generating_graph_with_first_degree_cycle_throws
+  - grapher_tests/querying_state_before_generating_throws
+  - hydrator_tests/missing_elements_model_throws
+- dogen.templating.tests
+  - stitch_formatter_tests/line_with_unmapped_variable_throws
+  - stitch_parser_tests/end_control_block_with_additional_characters_throws
+  - stitch_parser_tests/expression_in_expression_throws
+  - stitch_parser_tests/invalid_directive_throws
+  - stitch_parser_tests/invalid_inline_control_blocks_throw
+  - stitch_parser_tests/multiline_expression_block_throws
+  - stitch_parser_tests/standard_control_block_with_text_block_in_the_same_line_throws
+  - stitch_parser_tests/start_standard_control_block_marker_prefixed_by_additional_characters_throws
+  - stitch_parser_tests/stray_end_expression_block_throws
+  - stitch_parser_tests/text_block_with_standard_control_block_in_the_same_line_throws
+  - stitch_parser_tests/two_end_control_block_markers_in_a_row_throws
+  - stitch_parser_tests/two_start_standard_control_blocks_in_a_row_throws
+  - stitch_parser_tests/untermined_expression_block_throws
+- dogen.utility.tests:
+  - asserter_tests/assert_file_throws_for_non_existent_files
+  - file_tests/find_files_throws_when_argument_is_a_file
+  - file_tests/find_files_throws_when_directory_does_not_exist
+  - file_tests/read_file_content_throws_when_reading_non_existent_file
+  - resolver_tests/validating_resolver_throws_for_non_existent_paths
+  - splitter_tests/parsing_string_with_mixed_scope_operators_throws
+  - utility_tests/exception_shall_be_usable_as_a_boost_exception
+  - utility_tests/exception_shall_be_usable_as_a_standard_exception
+  - utility_tests/exericise_exception_derived_classes
+  - xml_tests/text_reader_reads_boolean_values_correctly
+
+Notes:
+
+- try disabling XML logs to see if we can get any additional output on
+  the console.
+
+*** COMPLETED Fix nightly error in registrar                          :story:
+    CLOSED: [2020-01-29 Wed 22:42]
+    :LOGBOOK:
+    CLOCK: [2020-01-27 Mon 17:59]--[2020-01-27 Mon 18:08] =>  0:09
+    CLOCK: [2020-01-26 Sun 22:41]--[2020-01-26 Sun 23:05] =>  0:24
+    :END:
+
+We are not using the fully qualified name of the registrar when
+calling referenced models.
+
+Notes:
+
+- we need to supply registrar on models like injection and extraction
+  because we are making use of variability.
+
+*** COMPLETED Nightly code coverage is not being reported             :story:
+    CLOSED: [2020-01-31 Fri 11:52]
+    :LOGBOOK:
+    CLOCK: [2020-01-28 Tue 20:54]--[2020-01-28 Tue 21:12] =>  0:18
+    CLOCK: [2020-01-27 Mon 23:52]--[2020-01-27 Mon 23:59] =>  0:07
+    :END:
+
+We are running kcov in the nightlies, but we cannot see the results in
+the coverage tool. Problems:
+
+- pointing to the wrong kcov path.
+- not supplying API key.
+
+*** COMPLETED Add support for qualified class names in dia            :story:
+    CLOSED: [2020-01-31 Fri 14:00]
+
+*Rationale*: internal namespaces are created as expected.
+
+Note: test this feature as we implemented something similar.
+
+#+begin_quote
+*Story*: As a dogen user, I don't want to have to define packages in
+certain cases.
+#+end_quote
+
+It has become apparent that creating large packages in dia and placing
+all classes in a large package is cumbersome:
+
+- there are issues with the large package implementation in dia,
+  making copying and pasting a dark art; its not very obvious how one
+  copies into a package (e.g. populating the child node id correctly).
+- models do not always have a neat division between packages; in
+  dogen, where packages would be useful, there are all sorts of
+  connections (e.g. inheritance, association) between the package and
+  the model "package" or other packages. Thus is very difficult to
+  produce a representative diagram.
+
+A solution to this problem would be to support qualified names in
+class names; these would be interpreted as being part of the current
+model. One would still have to define a large package, but it could be
+empty, or contain only the types which only have connections inside
+the package, plus comments for the package, etc.
+
+*** COMPLETED Move visual studio fabric types into assets             :story:
+    CLOSED: [2020-02-04 Tue 22:44]
+    :LOGBOOK:
+    CLOCK: [2020-02-04 Tue 20:32]--[2020-02-04 Tue 22:44] =>  2:12
+    CLOCK: [2020-02-03 Mon 23:10]--[2020-02-03 Mon 23:56] =>  0:46
+    CLOCK: [2020-02-02 Sun 21:16]--[2020-02-02 Sun 22:09] =>  0:53
+    CLOCK: [2020-02-02 Sun 21:03]--[2020-02-02 Sun 21:16] =>  0:13
+    CLOCK: [2020-02-02 Sun 18:51]--[2020-02-02 Sun 19:03] =>  0:12
+    CLOCK: [2020-02-02 Sun 17:59]--[2020-02-02 Sun 18:50] =>  0:51
+    CLOCK: [2020-02-01 Sat 20:38]--[2020-02-01 Sat 20:52] =>  0:14
+    CLOCK: [2020-02-01 Sat 19:35]--[2020-02-01 Sat 20:38] =>  1:03
+    CLOCK: [2020-02-01 Sat 18:12]--[2020-02-01 Sat 19:34] =>  1:22
+    CLOCK: [2020-02-01 Sat 14:52]--[2020-02-01 Sat 16:25] =>  1:33
+    CLOCK: [2020-01-31 Fri 20:01]--[2020-01-31 Fri 21:26] =>  1:25
+    CLOCK: [2020-01-31 Fri 18:55]--[2020-01-31 Fri 19:40] =>  0:45
+    CLOCK: [2020-01-31 Fri 17:35]--[2020-01-31 Fri 17:40] =>  0:05
+    CLOCK: [2020-01-31 Fri 16:46]--[2020-01-31 Fri 17:22] =>  0:36
+    CLOCK: [2020-01-31 Fri 15:19]--[2020-01-31 Fri 16:22] =>  1:03
+    CLOCK: [2020-01-31 Fri 13:51]--[2020-01-31 Fri 15:02] =>  1:27
+    CLOCK: [2020-01-31 Fri 10:02]--[2020-01-31 Fri 10:23] =>  0:21
+    CLOCK: [2020-01-31 Fri 09:55]--[2020-01-31 Fri 10:02] =>  0:07
+    CLOCK: [2020-01-31 Fri 09:36]--[2020-01-31 Fri 09:40] =>  0:25
+    CLOCK: [2020-01-31 Fri 09:35]--[2020-01-31 Fri 09:36] =>  0:01
+    CLOCK: [2020-01-29 Wed 23:24]--[2020-01-30 Thu 00:30] =>  1:06
+    CLOCK: [2020-01-29 Wed 22:36]--[2020-01-29 Wed 22:45] =>  0:09
+    CLOCK: [2020-01-29 Wed 18:13]--[2020-01-29 Wed 19:00] =>  0:47
+    CLOCK: [2020-01-29 Wed 08:49]--[2020-01-29 Wed 09:00] =>  0:11
+    CLOCK: [2020-01-28 Tue 21:46]--[2020-01-28 Tue 22:35] =>  0:49
+    CLOCK: [2020-01-27 Mon 23:22]--[2020-01-27 Mon 23:51] =>  0:29
+    CLOCK: [2020-01-27 Mon 18:23]--[2020-01-27 Mon 18:29] =>  0:06
+    :END:
+
+We need to do this for both C# and C++. We should create a namespace
+for build infrastructure.
+
+Notes:
+
+- do we need visual studio configuration? Can't seem to find any uses
+  for it. Actually we needed it in the past because we were reading
+  meta-data from the model itself. With meta-types, this is no longer
+  required. We just need to update the adaptor to look for the new
+  meta-type and copy across the properties accordingly.
+- we cannot create two distinct meta-model elements if they then
+  generate two files with the same filename and different extensions,
+  e.g.: =cpp_ref_impl.cpp_model.vcxproj=,
+  =cpp_ref_impl.cpp_model-vc.sln=. Instead, we need to have a single
+  meta-model element with two facets.
+- the problem we have is that we are trying to model different
+  concepts using the same meta-model elements:
+
+  1. visual studio projects and solutions for a single component.
+  2. visual studio solutions for a product.
+
+  These are actually distinct meta-elements with different data
+  requirements. In the case of visual studio solutions for products,
+  we need to know of all component models in a product; and this
+  meta-element can only be used in product models. In the case of
+  component-level visual studio solutions, then we have all the
+  information within the component. Something similar will also occur
+  with CMakeFiles.
+- an interesting question is raised: should we have a single
+  meta-model element for different kinds of build files? e.g. CMake
+  and Visual Studio. Whilst it appears they are modeling the same
+  things, what actually determines this is how much "overlap" there is
+  between them in terms of data members. That is, two files are
+  associated to the same meta-element if they can be produced by
+  roughly by one meta-model element.
+- remove types that are not "special" from decomposer to avoid
+  confusion.
+- the name flag =is_simple_name_internal= doesn't quite work as we
+  expected. The problem is that we normally ignore both external
+  modules and model modules when creating paths. This means that the
+  quickest solution may just be to name the file after the model and
+  worry about this issue later. Except, of course, we then would end
+  up with the same name for two asset elements. What we really need is
+  a flag to give the physical name after the containing modules (model
+  and internal), ignoring simple name. We have a similar situation for
+  the folders under include, where the model modules are used, e.g.:
+  =dogen.generation.csharp=. This is a bit of a more general idea, and
+  we've already started to think about it with "model segments",
+  though it was never properly fleshed out. This is clearly a complex
+  problem.
+- the right thing to do for now is to hack it by any means, so we can
+  move on, and tackle this problem properly later when we develop a
+  proper physical model and meta-model. For now we can simply hack the
+  templates to produce *exactly* the desired name (e.g. use model
+  modules as simple name with extension).
+
+**** How to add new meta-model elements
+
+1. create the namespace and type in assets model.
+2. add enumerations for the meta-type in assets in =static_stereotypes=.
+3. add processing of new stereotype to =stereotypes_helper= in assets.
+4. add processing of new meta-type in =adapter= in engine, and also in
+   =injection_model_to_assets_model_transform=.
+5. add any meta-type specific transforms to assets.
+6. add meta-type to =elements_traversal.hpp=.
+7. =meta_naming_transform=, =meta_name_factory=.
+8. add type to =merge_transform=.
+9. Add formatters in the =generation.cpp= and/or =generation.csharp=
+   models.
+
+*** CANCELLED Replace detection of model name with new flag           :story:
+    CLOSED: [2020-02-05 Wed 08:03]
+
+*Rationale*: this approach will not work. We need a solution related
+to the physical model. We will revisit this after the location clean
+up.
+
+In the past we tried to detect if a name referred to the model, and if
+so, to ignore the simple name. This avoids names such as =a::b::b=,
+creating instead =a::b=. For example, in name flattener we have
+=detect_model_name=. There are others such as name builder etc with
+possibly similar behaviours.
+
+However, we recently created a new flag:
+=is_simple_name_internal=. This was added for meta-types with the same
+name as the model, but its use solves this issue. We need to remove
+all hacks around this and use the flag consistently.
+
+The problem is that at present we use the model module as a simple
+name, such that a model name is, for example:
+
+- model modules: dogen
+- simple name: cli
+
+Whereas for a type, we have:
+
+- model modules: dogen.cli
+
+*** COMPLETED Create metamodel elements for =entry_point=             :story:
+    CLOSED: [2020-02-07 Fri 11:29]
+    :LOGBOOK:
+    CLOCK: [2020-02-09 Sun 08:49]--[2020-02-09 Sun 09:09] =>  0:20
+    CLOCK: [2020-02-08 Sat 20:20]--[2020-02-08 Sat 23:05] =>  2:45
+    CLOCK: [2020-02-08 Sat 20:11]--[2020-02-08 Sat 20:19] =>  0:08
+    CLOCK: [2020-02-07 Fri 09:38]--[2020-02-07 Fri 11:29] =>  1:51
+    CLOCK: [2020-02-06 Thu 21:30]--[2020-02-06 Thu 22:22] =>  0:52
+    CLOCK: [2020-02-05 Wed 17:44]--[2020-02-05 Wed 18:28] =>  0:44
+    CLOCK: [2020-02-05 Wed 08:05]--[2020-02-05 Wed 08:43] =>  0:38
+    :END:
+
+These have been incorrectly added as configurations and/or fabric
+types. This should be looked at after merging the fabric types.
+
+Originally this story covered =interface= as well, but we never did
+model it in fabric so it can be ignored for now.
+
+Notes:
+
+- we need support for decoration so that licence etc come through.
+- there is some kind of binding issue: meta-type is correctly
+  populated, meta-name is right and so is origin type but no file is
+  coming out.
+- do not overload traversal in assets to generation model transform.
+
+*** COMPLETED Entry point is confusing when used only for tests       :story:
+    CLOSED: [2020-02-08 Sat 23:08]
+
+*Rationale*: addressed when we had to add the types facet to entry
+point and associated profiles.
+
+At present we use the entry point element purely to generate the main
+for unit tests. However, we need it to be on every model:
+
+- for the reference implementation its needed because we generate
+  tests and commit them to git;
+- for dogen models, we generate tests on the nightly and these would
+  fail to run if there was no main.
+
+However, for a normal developer if you look at a model and see an
+entry point, it won't be entirely obvious for what purpose it is being
+used. We need a way to signal that. It can be simply by creating a
+profile that enables testing. We may already have something like this.
+
+*** COMPLETED Remove support for element extensions                   :story:
+    CLOSED: [2020-02-09 Sun 20:52]
+    :LOGBOOK:
+    CLOCK: [2020-02-09 Sun 20:28]--[2020-02-09 Sun 20:51] =>  0:23
+    CLOCK: [2020-02-09 Sun 19:50]--[2020-02-09 Sun 20:01] =>  0:11
+    CLOCK: [2020-02-04 Tue 22:54]--[2020-02-04 Tue 22:56] =>  0:02
+    CLOCK: [2020-02-04 Tue 22:45]--[2020-02-04 Tue 22:53] =>  0:08
+    :END:
+
+We are not using element extensions any longer since we added the
+forward declaration meta-type (we believe), so in theory all of the
+machinery dealing with element extensions can be deleted.
+
+This includes the formatter master segments.
+
+Actually this is not true, we are using it in
+=odb_options_factory=. We need to make this a proper facet instead of
+this hack.
+
+Notes:
+
+- See enablement:
+
+: FIXME: check this when element extension is removed.
+
+Merged stories:
+
+*Element extensions considered harmful*
+
+When we implemented forward declarations we created them as "element
+extensions"; that is, some kind of hack where we'd have two model
+elements stuck together (the main model element and its "extension",
+the forward declaration). In reality, they are just projections of the
+same model element. We need to handle them just as we handle class
+header / implementation. We just need to use the formatter specific
+postfix to distinguish between files.
+
+The problem with this approach, of course, is that we now need to
+create many formatters (per element type). A possible solution is to
+factor them out into a formatting helper function that they call. We
+still need all of the common machinery to formatters
+though. Nevertheless, this is a price worth paying in order to keep
+the meta-model simple (e.g. none of the hacks we introduced for
+element extensions).
+
+Notes:
+
+- add forward declaration formatters for each type. Create common
+  formatting function.
+- remove forward declaration element in fabric.
+- remove element extensions across the code base. Actually this is not
+  possible at present as it is used by ODB options. We need to first
+  move them into assets before this can be done.
+
+Merged stories:
+
+*Remove element segmentation*
+
+We need to remove the idea of forward declarations being handled as
+"element segmentation". They should just be different facets of the
+same elements. There is another story for this which should be merged
+with this one.
+
+*Move element segmentation into yarn*
+
+We've added the notion that an element can be composed of other
+elements in quilt, in order to handle forward declarations. However,
+with a little bit of effort we can generalise it into yarn. It would
+be useful for other things such as inner classes. We don't need to
+actually implement inner classes right now but we should make sure the
+moving of this feature into yarn is compatible with it.
+
+Notes:
+
+- seems like we have two use cases: a) we need all elements, master
+  and extensions and we don't really care about which is which. b) we
+  only want masters. However, we must be able to access the same
+  element properties from either the master or the extension. Having
+  said all that, it seems we don't really need all of the element
+  properties for both - forward declarations probably only need:
+  decoration and artefact properties.
+- we don't seem to use the map in formattables model anywhere, other
+  than to find master/extension elements.
+- Yarn model could have two simple list containers (masters and
+  all). Or maybe we don't even need this to start off with, we can
+  just iterate and skip extensions where required.
+- so in conclusion, we to move decoration, enablement and dependencies
+  into yarn (basically decoration and artefact properties) first and
+  then see where segmentation ends.
+
+Tasks:
+
+- add a concept for element extensions: =Extensible=. Contains a list
+  of element pointers.
+- populate it with the extensions.
+- change enablement to merge all element properties of extensible
+  elements.
+
+*** COMPLETED Move =object_odb_options= into assets                   :story:
+    CLOSED: [2020-02-09 Sun 20:53]
+    :LOGBOOK:
+    CLOCK: [2020-02-09 Sun 18:58]--[2020-02-09 Sun 19:49] =>  0:51
+    CLOCK: [2020-02-09 Sun 17:45]--[2020-02-09 Sun 18:26] =>  0:41
+    CLOCK: [2020-02-09 Sun 15:45]--[2020-02-09 Sun 17:29] =>  1:44
+    CLOCK: [2020-02-09 Sun 13:31]--[2020-02-09 Sun 14:33] =>  1:02
+    CLOCK: [2020-02-09 Sun 13:15]--[2020-02-09 Sun 13:22] =>  0:07
+    CLOCK: [2020-02-08 Sat 23:18]--[2020-02-08 Sat 23:37] =>  0:19
+    CLOCK: [2020-02-08 Sat 23:06]--[2020-02-08 Sat 23:17] =>  0:11
+    CLOCK: [2020-02-07 Fri 14:54]--[2020-02-07 Fri 16:35] =>  1:41
+    CLOCK: [2020-02-07 Fri 14:46]--[2020-02-07 Fri 14:53] =>  0:07
+    :END:
+
+For now simply create a property within the ORM types with this data,
+and create templates for each element type to generate them. These
+will be identical for each required meta-element.
+
+This is actually not quite a trivial thing to do. For the first time,
+we have the issue of having a single assets element which spans more
+than one technical space. This probably means we will have problems
+with the decoration formatting. The problem is that the decoration is
+computed in the generation transforms; it assumes the technical space
+of the model or that the modeling element has an
+=intrinsic_technical_space=. This is supplied manually when the
+element is constructed, and is mainly an artefact of fabric
+elements. Most other elements do not require this and instead use the
+model technical space.
+
+Now that we support fabric elements directly inside of assets, we need
+to be able to ask all archetypes for their technical spaces, just like
+we ask for the archetype locations. However this is really hard to do
+at present because we still need the generation and the archetypes
+refactoring. We need a quick hack that enables us to have multiple
+decorations per element. We can:
+
+- create a map of decoration to technical space.
+- update the decoration transform to use the model technical space (or
+  the intrinsic technical space, whilst fabric is still alive) except
+  for certain cases.
+- the exceptional cases are:
+   a) the types that have been ported across from fabric which need
+      it;
+   b) the types with orm properties.
+- in these cases we generate more than one decoration. Formatter then
+  has to pick up the appropriate decoration given its technical space.
+- need to create a story for associating a technical space with an
+  archetype properly.
+
+Another problem: at present we are determining if ORM support is on by
+looking at the stereotypes. This then results in a number of "empty"
+files with just comments stating the files are empty. This is not
+ideal. However, a proper fix for this would be quite tricky as we need
+to take into account element state in order to determine
+enablement. For now we should just take the exact same approach as we
+did for ODB pragmas.
+
+*** COMPLETED Move common ODB options into assets                     :story:
+    CLOSED: [2020-02-12 Wed 18:53]
+    :LOGBOOK:
+    CLOCK: [2020-02-12 Wed 18:13]--[2020-02-12 Wed 18:53] =>  0:40
+    CLOCK: [2020-02-12 Wed 18:10]--[2020-02-12 Wed 18:12] =>  0:02
+    CLOCK: [2020-02-12 Wed 08:00]--[2020-02-12 Wed 08:45] =>  0:45
+    CLOCK: [2020-02-11 Tue 21:41]--[2020-02-11 Tue 22:26] =>  0:45
+    CLOCK: [2020-02-10 Mon 23:34]--[2020-02-10 Mon 23:40] =>  0:06
+    CLOCK: [2020-02-10 Mon 22:53]--[2020-02-10 Mon 23:33] =>  0:40
+    CLOCK: [2020-02-10 Mon 17:55]--[2020-02-10 Mon 18:48] =>  0:53
+    CLOCK: [2020-02-10 Mon 08:01]--[2020-02-10 Mon 08:44] =>  0:43
+    :END:
+
+Copy the type across, create required formatters and associated
+infrastructure and delete the fabric types.
+
+Notes:
+
+- for extra points, we should try to move the ODB expanders into
+  assets. This is also for ODB options. We could create a single ODB
+  transform for this.
+- odb options should point to common odb options name rather than
+  hard-coding it.
+- common odb options are used in the ODB targets generation.
+- the generation of odb options file names is at present very
+  convoluted. We are adding a postfix of =options= and an extension of
+  =odb= manually. We could instead rely on the facet prefix, but
+  because that is already =odb=, we cannot change it to options. The
+  logical thing would be to change the extension to =.options= and the
+  postfix to =odb= so that we can reuse the existing
+  infrastructure. We can leave this work for when we refactor locator.
+
+*** COMPLETED Move msbuild and cmakelists into assets                 :story:
+    CLOSED: [2020-02-15 Sat 21:57]
+    :LOGBOOK:
+    CLOCK: [2020-02-16 Sun 12:12]--[2020-02-16 Sun 12:34] =>  0:22
+    CLOCK: [2020-02-15 Sat 21:01]--[2020-02-15 Sat 21:56] =>  0:55
+    CLOCK: [2020-02-15 Sat 19:46]--[2020-02-15 Sat 20:20] =>  0:34
+    CLOCK: [2020-02-15 Sat 19:00]--[2020-02-15 Sat 19:45] =>  0:45
+    CLOCK: [2020-02-15 Sat 18:33]--[2020-02-15 Sat 18:38] =>  0:05
+    CLOCK: [2020-02-15 Sat 18:22]--[2020-02-15 Sat 18:32] =>  0:10
+    CLOCK: [2020-02-15 Sat 18:04]--[2020-02-15 Sat 18:21] =>  0:17
+    CLOCK: [2020-02-15 Sat 17:16]--[2020-02-15 Sat 18:03] =>  0:47
+    CLOCK: [2020-02-15 Sat 16:37]--[2020-02-15 Sat 17:15] =>  0:38
+    CLOCK: [2020-02-14 Fri 19:40]--[2020-02-14 Fri 19:52] =>  0:12
+    CLOCK: [2020-02-14 Fri 19:53]--[2020-02-14 Fri 20:05] =>  0:12
+    CLOCK: [2020-02-14 Fri 14:22]--[2020-02-14 Fri 16:55] =>  2:33
+    CLOCK: [2020-02-14 Fri 11:58]--[2020-02-14 Fri 12:18] =>  0:20
+    CLOCK: [2020-02-14 Fri 09:51]--[2020-02-14 Fri 11:41] =>  2:07
+    CLOCK: [2020-02-12 Wed 23:40]--[2020-02-13 Thu 00:10] =>  0:30
+    CLOCK: [2020-02-12 Wed 18:54]--[2020-02-12 Wed 18:56] =>  0:02
+    :END:
+
+Move the build targets related types from fabric into assets.
+
+Notes:
+
+- drop =build= in visual studio stereotypes. Done.
+
+*** COMPLETED Move assembly info and assistant into assets            :story:
+    CLOSED: [2020-02-15 Sat 23:33]
+    :LOGBOOK:
+    CLOCK: [2020-02-15 Sat 23:00]--[2020-02-15 Sat 23:33] =>  0:33
+    CLOCK: [2020-02-15 Sat 21:57]--[2020-02-15 Sat 22:59] =>  1:02
+    :END:
+
+We need to move the C# fabric types into assets.
+
+*** COMPLETED Remove injected element names validation                :story:
+    CLOSED: [2020-02-15 Sat 23:43]
+    :LOGBOOK:
+    CLOCK: [2020-02-15 Sat 23:34]--[2020-02-15 Sat 23:43] =>  0:09
+    :END:
+
+When we had fabric, we split name validation into "regular" types and
+"injected" types. With the removal of fabric, this is no longer
+applicable so remove this logic.
+
+*** COMPLETED Consider moving more configuration to profiles          :story:
+    CLOSED: [2020-02-16 Sun 23:30]
+    :LOGBOOK:
+    CLOCK: [2020-02-16 Sun 23:07]--[2020-02-16 Sun 23:30] =>  0:23
+    CLOCK: [2020-02-16 Sun 21:54]--[2020-02-16 Sun 23:06] =>  1:12
+    :END:
+
+At present we have a number of "model specific" configuration options
+which are really not that model specific:
+
+: #DOGEN masd.injection.input_technical_space=cpp
+: #DOGEN masd.extraction.ignore_files_matching_regex=.*/CMakeLists.txt
+: #DOGEN masd.extraction.ignore_files_matching_regex=.*/test/.*
+: #DOGEN masd.extraction.ignore_files_matching_regex=.*/tests/.*
+: #DOGEN masd.extraction.delete_extra_files=true
+: #DOGEN masd.extraction.delete_empty_directories=true
+: #DOGEN masd.extraction.force_write=false
+: #DOGEN masd.generation.cpp.enabled=true
+: #DOGEN masd.generation.csharp.enabled=false
+: #DOGEN masd.generation.cpp.standard=c++-17
+
+Most of these options are common to all models, particularly in
+Dogen. We should try to move them into profiles and see what happens.
+
+We cannot move =ignore_files_matching_regex= due to a bug in merging
+logic (story raised).
+
+*** COMPLETED Fixes to setup                                          :story:
+    CLOSED: [2020-02-16 Sun 23:36]
+    :LOGBOOK:
+    CLOCK: [2020-01-31 Fri 11:38]--[2020-01-31 Fri 11:51] =>  0:13
+    CLOCK: [2020-01-31 Fri 10:59]--[2020-01-31 Fri 11:37] =>  0:38
+    CLOCK: [2020-01-31 Fri 09:41]--[2020-01-31 Fri 09:55] =>  0:15
+    :END:
+
+Time spent fixing setup issues:
+
+- fixes to emacs
+- dist-upgrade PC to latest.
+
+*** POSTPONED Cannot see source file in coveralls                     :story:
+    CLOSED: [2020-02-16 Sun 23:36]
+     :LOGBOOK:
+     CLOCK: [2020-01-31 Fri 15:03]--[2020-01-31 Fri 15:19] =>  0:16
+     :END:
+
+ At present the path of source files in coveralls is incorrect:
+
+ : /cpp_ref_impl.boost_model/src/types/class_a.cpp
+
+ : SOURCE NOT AVAILABLE
+ : The file "cpp_ref_impl.boost_model/src/types/class_a.cpp" isn't available on github. Either it's been removed, or the repo root directory needs to be updated.
+
+ We have the same problem in codecove, only there is worse because we
+ also can't see the fake commit we did.
+
+*** POSTPONED Integration of archetypes into assets                   :story:
+    CLOSED: [2020-02-16 Sun 23:36]
+    :LOGBOOK:
+    CLOCK: [2020-02-03 Mon 17:46]--[2020-02-03 Mon 18:32] =>  0:46
+    CLOCK: [2020-02-03 Mon 08:00]--[2020-02-03 Mon 08:42] =>  0:42
+    CLOCK: [2020-02-02 Sun 17:54]--[2020-02-02 Sun 17:58] =>  0:04
+    CLOCK: [2020-02-02 Sun 16:44]--[2020-02-02 Sun 17:53] =>  1:09
+    :END:
+
+Up to recently, there was a belief that the archetypes model was
+distinct from the assets model. The idea was that the projection of
+assets into archetype space could be done without knowledge of the
+things we are projecting. However, that is demonstrably false: n order
+to project we need a name. That name contains a location. The location
+is a point on a one-dimensional asset space.
+
+In reality, what we always had is:
+
+- a first dimension within assets space: "modeling dimension",
+  "logical dimension"? It has an associated location.
+- a second dimension within assets space: "physical dimension", with
+  an associated location. Actually we cannot call it physical because
+  physical is understood to mean the filesystem.
+
+So it is that concepts such as archetype, facet and technical space
+are all part of assets - they just happen to be part of the
+two-dimensional projection. Generation is in effect a collection of
+model to text transforms that adapts the two-dimensional element
+representation into the extraction meta-model. Formatters are model to
+text transforms which bind to locations in the physical dimension.
+
+In this view of the world, we have meta-model elements to declare
+archetypes, with their associated physical locations. This then
+results in the injection of these meta-elements. Formatters bind to
+these locations.
+
+However, note that formatters provide dependencies. This is because
+these are implementation dependent. This means we still need some
+transforms to occur at the generation level. However, all of the
+dependencies which are modeling related should happen within
+assets. Only those which are formatter specific should happen in
+generation. The problem though is that at present we deem all
+dependencies to be formatter specific and each formatter explicitly
+names its dependencies against which facets. It does make sense for
+these to be together.
+
+Perhaps what we are trying to say is that there are 3 distinct
+concepts:
+
+- modeling locations;
+- logical locations;
+- physical locations.
+
+The first two are within the domain of assets. The last one is in the
+domain of generation and extraction. Assets should make the required
+data structures available, but it is the job of generation to populate
+this information. Thus directory themes, locator, etc are all
+generation concepts.
+
+One could, with a hint of humour, call the "logical dimension" the
+meta-physical dimension. This is because it provides the meta-concepts
+for the physical dimension.
+
+A backend provides a translation into a representation considered
+valid according to the rules of a technical space. A backend can be
+the primary or secondary backend for a technical space. A component
+can only have a primary backend, and any number of secondary
+backends. Artefacts produced by a backend must have a unique physical
+location. In LAM mode, the component is split into multiple
+components, each with their own primary technical space.
+
+*** COMPLETED Investigate borked nightly build                        :story:
+    CLOSED: [2020-02-16 Sun 23:36]
+    :LOGBOOK:
+    CLOCK: [2020-02-16 Sun 10:25]--[2020-02-16 Sun 10:36] =>  0:11
+    CLOCK: [2020-02-15 Sat 16:01]--[2020-02-15 Sat 16:28] =>  0:27
+    :END:
+
+We have a broken build but no particular reason for it:
+
+- https://my.cdash.org/viewTest.php?onlyfailed&buildid=1774915
+
+It seems we were not deleting the pristine directory, causing it to
+become out of sync. It also seems like we have a git clone inside a
+git clone in dogen, but its not clear how this came to be. We need to
+recheck this on tomorrow's nightly.
+
+*** POSTPONED Define a combined logical-physical space                :story:
+    CLOSED: [2020-02-16 Sun 23:37]
+    :LOGBOOK:
+    CLOCK: [2020-02-16 Sun 06:08]--[2020-02-16 Sun 06:52] =>  0:44
+    :END:
+
+It now seems that we have been searching for a meta-model that
+combines both aspects of logical modeling as well as physical
+modeling. Facets, archetypes etc are all parts of the physical
+dimension of this space. We need to find all stories on this topic and
+organise them to see if we can come up with a consistent system of
+meaning.
+
+Notes:
+
+- archetypes must support a notion of "kind". This is so we can have
+  public include headers, private include headers and implementation
+  files. This "kind" affects the topology of the physical dimension.
+- the locator is a function that takes points in the logical-physical
+  space and maps them to filesystem locations. It uses properties of
+  those meta-model elements to configure the mapping.
+
+** Deprecated
+*** CANCELLED Move fabric types into coding                            :epic:
+    CLOSED: [2020-01-28 Tue 21:19]
+
+*Rationale*: this story is just too vague to be of practical use. We
+are creating stories focused on the individual types that need to be
+moved.
+
+Fabric types need to be tidied up and moved into coding as regular
+meta-model elements. We need to try to make them as technical space
+agnostic as possible.
+
+*Previous understanding*
+
+Move fabric types into generation.
+
+- copy across the fabric types from cpp and csharp into generation.
+- update formatters to use the types from generation.
+- delete them from original models.
+
+At present we are always generating the fabric types via the injctor
+and then asking the user to disable them as required via the
+enablement settings. This is very silly. The approach should now be
+that we look for elements with the correct stereotypes,
+e.g. =masd::cmakelists= and so forth and use those to generate these
+elements. This must be done as part of the work to move fabric types
+into the metamodel. We should also take this opportunity to merge
+common types between C# and C++, if any exist.
+
+Notes:
+
+- this will also address the naming of types such as registrar.
+- we need to remove all top-level knobs that are controlling the
+  enablement of meta-types such as visual studio, etc. In addition, at
+  present when we enable say ODB we automatically get ODB options,
+  etc. In this world, we would need to create the element in the
+  model. This is a bit confusing because users won't know this is a
+  requirement. Perhaps we need to have a combination of implicit and
+  explicit types?
+
+*** CANCELLED Make explicit all implicit modeling elements            :story:
+    CLOSED: [2020-01-28 Tue 21:20]
+
+*Rationale*: this story is just too vague to be of practical use. We
+are creating stories focused on the individual types that need to be
+moved.
+
+At present we have a number of modeling elements that can be
+configured (enabled/disabled) but do not have a representation within
+a model. Example:
+
+- cmake
+- visual studio
+- odb
+- etc.
+
+This means we cannot associate any configuration with these elements
+such as licences, modelines etc. This is one reason why there are
+hacks to hard-code the modeline of CMake files. A better way is to
+force users to create a modeling element (with the appropriate
+meta-model stereotype, e.g. =masd::visual_studio::project=) and then
+have them configured via named configurations. This means that for
+each archetype we must have a distinct modeling element. It also means
+that some modeling elements are language specific, but the metamodel
+will merge them all into one space. We should also have them inherit
+from common base classes where possible.
+
+Note: not all meta-model elements will be available on all technical
+spaces. We need a way to make sure they are compatible. Perhaps the
+element could have a list of compatible TSs.
+
+This approach follows the unwritten rule of "no black box injection of
+modeling elements". We should formalise this rule somewhat and explain
+the rationale for it.
+
+Note that the handling of =invalid= in enumeration also falls under
+this remit. At present we are injecting the invalid enumerator
+transparently via meta-data switches. This is not a good idea. Users
+should instead have some kind of "enumeration template" from which
+they can inherit which will give them the required enumerators. We
+should not do anything special for invalid.
+
+Merged Stories:
+
+*Consider allowing renaming of "internal" types*
+
+Users may want to change the =_visitor= postfix for visitors or the
+boost serialisation registrar name. This could be achieved via
+meta-data.
+
+*Consider renaming registrar in boost serialisation*
+
+At present we have a registrar formatter that does the boost
+serialisation work. However, the name =registrar= is a bit too
+generic; we may for example add formatters for static registrars. We
+should rename this formatter to something more meaningful. Also the
+name registrar is already well understood to mean static registrar.
+
+This is a big problem now that we cannot add a type with the name
+registrar to the main model as it clashes with the serialisation
+registrar.
+
+We could simply name it serialisation registrar or some such name that
+is very unlikely to clash. We should then have a validation rule that
+stops users from defining types with that name.
+
+We need to go through all of the renamed registrars and fix them.
+
+Another option is to allow users to supply a name via meta-data to
+avoid name clashes. We could error when the user has defined a type.
+
+Actually, since the clash is only internal - the names we are
+generating on the fly are clashing with the user defined names - we
+should probably have a "postfix" that can be added in case of
+clashes. The generated code will not cause problems, its just the
+formattables pipeline.
+
+*Allow renaming of visitor*                                         :story:*
+
+At present the visitor is named by dogen. There is nothing stopping us
+from allowing users to rename it via meta-data. We don't have a use
+case yet.
+
+*Handcrafted support for fabric types*
+
+At present we can either disable fabric types or enable them
+(CMakeLists, etc). However, there is a third common use case: to
+handcraft them. To do this we normally disable them and then add the
+file to the ignore list:
+
+:  --ignore-files-matching-regex .*/CMakeLists.txt)
+
+One could conceive of some meta-data support that would make this
+process a tad easier and more generic:
+
+: quilt.cpp.cmakelists.stereotypes=handcrafted
+
+Then hopefully the existing pipeline would take over and we'd generate
+the files for the first time but then let the user overwrite it. This
+would also be applicable to all fabric types (registrar, etc) but we'd
+have to manually read each stereotype on each factory.
+
+Merged stories:
+
+*Make visitor an explicit type*
+
+Instead of automatically generating visitors via the visitable
+stereotype, we should:
+
+- create a new stereotype =masd::visitor=. It triggers the creation of
+  the visitor meta-model element.
+- visitor must have a target via meta-data. This points to the element
+  to visit.
+
+We need to make sure we don't break cross model visitation with this change.
+
+*** CANCELLED Registrar in serialisation generated unnecessarily      :story:
+    CLOSED: [2020-01-28 Tue 21:26]
+
+*Rationale*: no longer needed now that we have an explicit meta-model
+element.
+
+ Registrar coming out even when there is no inheritance.
+
+*** CANCELLED Registrar in serialisation is not stable sorted         :story:
+    CLOSED: [2020-01-28 Tue 21:26]
+
+*Rationale*: hasn't happened in a long while. Story can be reactivated
+as required.
+
+We seem to have a traffic light diff on =registrar_ser.cpp=:
+
+: -    dogen::config::register_types(ar);
+:      dogen::quilt::cpp::register_types(ar);
+:      dogen::yarn::register_types(ar);
+: +    dogen::config::register_types(ar);
+
+This is probably a lack of a stable sort in model dependencies.
+
+*** CANCELLED Improve registrar testing                               :story:
+    CLOSED: [2020-01-28 Tue 21:27]
+
+*Rationale*: dogen models are also test models and they have these
+complicated scenarios already.
+
+We need a proper registrar test, with three models and types that
+require registration on all. We need to create a type with a base
+pointer in each model and ensure the generated tests are executing the
+registration code.
+*** CANCELLED Move the build-file entities from fabric into assets    :story:
+    CLOSED: [2020-01-29 Wed 18:44]
+
+*Rationale*: this story is just too vague to be of practical use. We
+are creating stories focused on the individual types that need to be
+moved.
+
+We have a number of entities in fabric that are related to build files
+and should be moved together. The only problem is that we will need
+locator in generation in order to move these entities - or we need to
+update the existing expanders in =generation.cpp= to point to these
+new meta-elements. This may be the best bet so that we can break this
+work into discrete parts.
+*** CANCELLED Investigate helper generation in formattables           :story:
+    CLOSED: [2020-02-02 Sun 16:45]
+
+*Rationale*: once we move to PDMs, helpers will be manually crafted so
+we will remove all of this code.
+
+We seem to be generating an helper for every node of every name tree,
+regardless of whether the name needs a helper or not. Intuitively, we
+should check the family and the streaming settings; if both of these
+are empty then there should not be a need for a helper. But maybe
+there is more to it.
+*** CANCELLED Add validation for helper families                      :story:
+    CLOSED: [2020-02-10 Mon 08:26]
+
+*Rationale*: this will no longer be required once we move to a
+"needle" based implementation of helpers.
+
+At present we are checking that the name tree has the expected number
+of type arguments:
+
+:    const auto children(t.children());
+:    if (children.size() != 1) {
+:        BOOST_LOG_SEV(lg, error) << invalid_smart_pointer;
+:        BOOST_THROW_EXCEPTION(formatting_error(invalid_smart_pointer));
+:    }
+:    smart_pointer_helper_stitch(fa, t);
+
+In the future with dynamic helpers we will remove these checks. In
+order to implement them we need to declare the type families up front
+in a JSON file, with a name and number of type arguments. When
+constructing the type helpers, we can check the name tree to make sure
+the number of type arguments is correct.
+
+This can be done as a helper setting (number of type arguments?).
+
+Actually this is a core yarn property. So:
+
+- add number of type arguments to object;
+- read this as a dynamic field;
+- during validation, check that all name trees that instantiate this
+  object have the expected number of type arguments.
+- in order to cope with cases such as variant we also need some kind
+  of enum, e.g. type parameterisation: none, variable, fixed. if
+  fixed, then number of type parameters must be non-zero.
+*** CANCELLED Fabric generates forward decls with no path             :story:
+    CLOSED: [2020-02-15 Sat 23:45]
+
+*Rationale*: Fabric has been removed and file path generation code is
+going to change a lot with the generation refactor.
+
+The following looks strange:
+
+: 2019-03-06 17:30:20.074618 [DEBUG] [quit.cpp.formatters.workflow] Procesing element: <dogen><hello_world><transformation_error>
+: 2019-03-06 17:30:20.074627 [DEBUG] [quit.cpp.formatters.workflow] Meta name: <dogen><generation><cpp><fabric><forward_declarations>
+: 2019-03-06 17:30:20.074636 [DEBUG] [quit.cpp.formatters.workflow] Using the stock formatter: masd.extraction.cpp.serialization.forward_declarations
+: 2019-03-06 17:30:20.074647 [DEBUG] [generation.cpp.formatters.assistant] Processing element: <dogen><hello_world><transformation_error> for archetype: masd.extraction.cpp.serialization.forward_declarations
+: 2019-03-06 17:30:20.074659 [DEBUG] [quit.cpp.formatters.workflow] Formatted artefact. Path: ""
+
+This could help explain the problems we're having with empty
+artefacts. This should be fixed with the new approach to forward
+declarations.
+
+Another related problem is that we are not setting the path when
+creating stitch templates for the first time in the stitch formatter.
+
+We should add checks for empty path and see what breaks, now that we
+are using the new implementation of forward declarations.
+
+*** CANCELLED Duplicate elements in model                             :story:
+    CLOSED: [2020-02-15 Sat 23:47]
+
+*Rationale*: Fabric has been removed. We just need to make sure we
+have validation code looking for duplicates.
+
+Whilst running queries on postgres against a model dumped in tracing,
+we found evidence of duplicate elements. Query:
+
+: select jsonb_pretty(
+:           jsonb_array_elements(
+:           jsonb_array_elements(data)->'elements')->'data'->'__parent_0__'->'name'->'qualified'->'dot'
+:       )
+: from traces;
+
+Snippet of results after =sort | uniq -c=
+
+:      1  "masd.dogen.generation.csharp"
+:      1  "masd.dogen.generation.csharp.all"
+:      1  "masd.dogen.generation.csharp.CMakeLists"
+:      1  "masd.dogen.generation.csharp.entry_point"
+:      1  "masd.dogen.generation.csharp.fabric"
+:      2  "masd.dogen.generation.csharp.fabric.assembly_info"
+:      2  "masd.dogen.generation.csharp.fabric.assembly_info_factory"
+:      2  "masd.dogen.generation.csharp.fabric.assistant"
+:      2  "masd.dogen.generation.csharp.fabric.assistant_factory"
+:      2  "masd.dogen.generation.csharp.fabric.decoration_expander"
+:      2  "masd.dogen.generation.csharp.fabric.dynamic_transform"
+:      2  "masd.dogen.generation.csharp.fabric.element_visitor"
+:      2  "masd.dogen.generation.csharp.fabric.initializer"
+:      2  "masd.dogen.generation.csharp.fabric.injector"
+:      2  "masd.dogen.generation.csharp.fabric.meta_name_factory"
+:      2  "masd.dogen.generation.csharp.fabric.traits"
+:      2  "masd.dogen.generation.csharp.fabric.visual_studio_configuration"
+:      2  "masd.dogen.generation.csharp.fabric.visual_studio_factory"
+
+We need to investigate the generation pipeline to understand where
+this is coming from.
+
+*** CANCELLED Distinguish between meta-types that require canonical archetypes :story:
+    CLOSED: [2020-02-15 Sat 23:48]
+
+*Rationale*: with the removal of fabric types, this story no longer
+applies. Also, we will refactor canonical archetypes as part of the
+generation clean up.
+
+At present it is not possible to know which meta-types require
+canonical archetypes and which don't. In the validation we said:
+
+:         * We must have one canonical formatter per type per facet.
+:         * FIXME: this check is broken at the moment because this is
+:         * only applicable to yarn types, not fabric types. It is also
+:         * not applicable to forward declarations. We need some
+:         * additional information from yarn to be able to figure out
+:         * which types must have a canonical archetype.
+
+We should have some kind of flag in yarn to distinguish. This still
+requires a bit of thinking.
