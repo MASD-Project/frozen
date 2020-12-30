@@ -17,28 +17,39 @@
 Assorted utilities used by Dogen.
 
 * exception                                                          :module:
-** invalid_enum_value                                               :element:
+  :PROPERTIES:
+  :custom_id: O0
+  :END:
+** invalid enum value                                               :element:
    :PROPERTIES:
+   :custom_id: O2
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** utility_exception                                                :element:
+** utility exception                                                :element:
    :PROPERTIES:
+   :custom_id: O3
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 * filesystem                                                         :module:
+  :PROPERTIES:
+  :custom_id: O4
+  :END:
 ** file                                                             :element:
    :PROPERTIES:
+   :custom_id: O5
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** file_not_found                                                   :element:
+** file not found                                                   :element:
    :PROPERTIES:
+   :custom_id: O6
    :masd.codec.stereotypes: masd::exception
    :END:
 
 File was not found.
 
-** io_error                                                         :element:
+** io error                                                         :element:
    :PROPERTIES:
+   :custom_id: O7
    :masd.codec.stereotypes: masd::exception
    :END:
 
@@ -46,97 +57,129 @@ An error occurred whilst performing an IO operation.
 
 ** path                                                             :element:
    :PROPERTIES:
+   :custom_id: O8
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * hash                                                               :module:
+  :PROPERTIES:
+  :custom_id: O9
+  :END:
 ** combine                                                          :element:
    :PROPERTIES:
+   :custom_id: O10
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** list_hash                                                        :element:
+** list hash                                                        :element:
    :PROPERTIES:
+   :custom_id: O11
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** sha1_hasher                                                      :element:
+** sha1 hasher                                                      :element:
    :PROPERTIES:
+   :custom_id: O90
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * io                                                                 :module:
-** array_io                                                         :element:
+  :PROPERTIES:
+  :custom_id: O12
+  :END:
+** array io                                                         :element:
    :PROPERTIES:
+   :custom_id: O13
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** forward_list_io                                                  :element:
+** forward list io                                                  :element:
    :PROPERTIES:
+   :custom_id: O14
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** jsonify_io                                                       :element:
+** jsonify io                                                       :element:
    :PROPERTIES:
+   :custom_id: O15
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** list_io                                                          :element:
+** list io                                                          :element:
    :PROPERTIES:
+   :custom_id: O16
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** map_io                                                           :element:
+** map io                                                           :element:
    :PROPERTIES:
+   :custom_id: O17
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** memory_io                                                        :element:
+** memory io                                                        :element:
    :PROPERTIES:
+   :custom_id: O18
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** optional_io                                                      :element:
+** optional io                                                      :element:
    :PROPERTIES:
+   :custom_id: O19
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** pair_io                                                          :element:
+** pair io                                                          :element:
    :PROPERTIES:
+   :custom_id: O20
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** set_io                                                           :element:
+** set io                                                           :element:
    :PROPERTIES:
+   :custom_id: O21
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** shared_ptr_io                                                    :element:
+** shared ptr io                                                    :element:
    :PROPERTIES:
+   :custom_id: O22
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** typeindex_io                                                     :element:
+** typeindex io                                                     :element:
    :PROPERTIES:
+   :custom_id: O23
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** unordered_map_io                                                 :element:
+** unordered map io                                                 :element:
    :PROPERTIES:
+   :custom_id: O24
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** unordered_set_io                                                 :element:
+** unordered set io                                                 :element:
    :PROPERTIES:
+   :custom_id: O25
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** vector_io                                                        :element:
+** vector io                                                        :element:
    :PROPERTIES:
+   :custom_id: O26
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 * log                                                                :module:
+  :PROPERTIES:
+  :custom_id: O27
+  :END:
 ** logger                                                           :element:
    :PROPERTIES:
+   :custom_id: O28
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** lifecycle_manager                                                :element:
+** lifecycle manager                                                :element:
    :PROPERTIES:
+   :custom_id: O29
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** scoped_lifecycle_manager                                         :element:
+** scoped lifecycle manager                                         :element:
    :PROPERTIES:
+   :custom_id: O30
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** severity_level                                                   :element:
+** severity level                                                   :element:
    :PROPERTIES:
+   :custom_id: O31
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** logging_configuration                                            :element:
+** logging configuration                                            :element:
    :PROPERTIES:
+   :custom_id: O64
    :masd.codec.stereotypes: masd::fluent
    :END:
 
@@ -158,182 +201,237 @@ Name of the file to log into.
 
 If empty, file logging is disabled.
 
-*** output_to_console                                             :attribute:
+*** output to console                                             :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
 
 If true, dumps the log into the console.
 
-*** output_directory                                              :attribute:
+*** output directory                                              :attribute:
     :PROPERTIES:
     :masd.codec.type: boost::filesystem::path
     :END:
 
 Directory in which to place the output.
 
-** invalid_logging_configuration                                    :element:
+** invalid logging configuration                                    :element:
    :PROPERTIES:
+   :custom_id: O67
    :masd.cpp.types.class_forward_declarations.enabled: false
    :masd.codec.stereotypes: masd::exception
    :END:
 
 The values supplied for the logging configuration are not valid.
 
-** logging_configuration_validator                                  :element:
+** logging configuration validator                                  :element:
    :PROPERTIES:
+   :custom_id: O68
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * serialization                                                      :module:
-** archive_types                                                    :element:
+  :PROPERTIES:
+  :custom_id: O32
+  :END:
+** archive types                                                    :element:
    :PROPERTIES:
+   :custom_id: O33
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** xml_helper                                                       :element:
+** xml helper                                                       :element:
    :PROPERTIES:
+   :custom_id: O34
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 ** path                                                             :element:
    :PROPERTIES:
+   :custom_id: O35
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 * string                                                             :module:
+  :PROPERTIES:
+  :custom_id: O36
+  :END:
 ** splitter                                                         :element:
    :PROPERTIES:
+   :custom_id: O37
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 ** differ                                                           :element:
    :PROPERTIES:
+   :custom_id: O89
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * test                                                               :module:
+  :PROPERTIES:
+  :custom_id: O38
+  :END:
 ** asserter                                                         :element:
    :PROPERTIES:
+   :custom_id: O39
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** bytewise_file_asserter                                           :element:
+** bytewise file asserter                                           :element:
    :PROPERTIES:
+   :custom_id: O40
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** file_asserter                                                    :element:
+** file asserter                                                    :element:
    :PROPERTIES:
+   :custom_id: O41
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 ** logging                                                          :element:
    :PROPERTIES:
+   :custom_id: O42
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** xml_serialization_helper                                         :element:
+** xml serialization helper                                         :element:
    :PROPERTIES:
+   :custom_id: O43
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** exception_checkers                                               :element:
+** exception checkers                                               :element:
    :PROPERTIES:
+   :custom_id: O44
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 ** fixture                                                          :element:
    :PROPERTIES:
+   :custom_id: O45
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 ** macros                                                           :element:
    :PROPERTIES:
+   :custom_id: O46
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-* test_data                                                          :module:
-** filesystem_tests                                                 :element:
+* test data                                                          :module:
+  :PROPERTIES:
+  :custom_id: O47
+  :END:
+** filesystem tests                                                 :element:
    :PROPERTIES:
+   :custom_id: O48
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** generate_container                                               :element:
+** generate container                                               :element:
    :PROPERTIES:
+   :custom_id: O49
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 ** generator                                                        :element:
    :PROPERTIES:
+   :custom_id: O50
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
 ** northwind                                                        :element:
    :PROPERTIES:
+   :custom_id: O51
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 ** resolver                                                         :element:
    :PROPERTIES:
+   :custom_id: O52
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 ** sequence                                                         :element:
    :PROPERTIES:
+   :custom_id: O53
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** tds_test_good                                                    :element:
+** tds test good                                                    :element:
    :PROPERTIES:
+   :custom_id: O54
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** test_data                                                        :element:
+** test data                                                        :element:
    :PROPERTIES:
+   :custom_id: O55
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** validating_resolver                                              :element:
+** validating resolver                                              :element:
    :PROPERTIES:
+   :custom_id: O56
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** xml_reader                                                       :element:
+** xml reader                                                       :element:
    :PROPERTIES:
+   :custom_id: O57
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** dogen_product                                                    :element:
+** dogen product                                                    :element:
    :PROPERTIES:
+   :custom_id: O73
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** cpp_ref_impl_product                                             :element:
+** cpp ref impl product                                             :element:
    :PROPERTIES:
+   :custom_id: O74
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** csharp_ref_impl_product                                          :element:
+** csharp ref impl product                                          :element:
    :PROPERTIES:
+   :custom_id: O75
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** test_data_exception                                              :element:
+** test data exception                                              :element:
    :PROPERTIES:
+   :custom_id: O76
    :masd.codec.stereotypes: masd::exception
    :END:
 
 An error occurred whilst obtaining the test data.
 
 * xml                                                                :module:
+  :PROPERTIES:
+  :custom_id: O58
+  :END:
 ** exception                                                        :element:
    :PROPERTIES:
+   :custom_id: O59
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** node_types                                                       :element:
+** node types                                                       :element:
    :PROPERTIES:
+   :custom_id: O60
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** node_types_io                                                    :element:
+** node types io                                                    :element:
    :PROPERTIES:
+   :custom_id: O61
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** text_reader                                                      :element:
+** text reader                                                      :element:
    :PROPERTIES:
+   :custom_id: O62
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** text_reader_io                                                   :element:
+** text reader io                                                   :element:
    :PROPERTIES:
+   :custom_id: O63
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * environment                                                        :module:
-** environment_exception                                            :element:
+  :PROPERTIES:
+  :custom_id: O77
+  :END:
+** environment exception                                            :element:
    :PROPERTIES:
+   :custom_id: O78
    :masd.codec.stereotypes: masd::exception
    :END:
 
 There was an error reading an environment variable.
 
-** variable_reader                                                  :element:
+** variable reader                                                  :element:
    :PROPERTIES:
+   :custom_id: O79
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * formatters                                                         :module:
   :PROPERTIES:
+  :custom_id: O82
   :masd.codec.dia.comment: true
   :END:
 
@@ -341,79 +439,88 @@ Contains all of the formatting primitives
 that are not associated with any particular
 model.
 
-** formatting_error                                                 :element:
+** formatting error                                                 :element:
    :PROPERTIES:
+   :custom_id: O83
    :masd.codec.stereotypes: masd::exception
    :END:
 
 An error has occurred while formatting.
 
-** quote_type                                                       :element:
+** quote type                                                       :element:
    :PROPERTIES:
+   :custom_id: O84
    :masd.codec.stereotypes: masd::enumeration
    :END:
 
 Types of quotes that can be used in streaming.
 
-*** single_quote                                                  :attribute:
-*** double_quote                                                  :attribute:
-** spacing_type                                                     :element:
+*** single quote                                                  :attribute:
+*** double quote                                                  :attribute:
+** spacing type                                                     :element:
    :PROPERTIES:
+   :custom_id: O85
    :masd.codec.stereotypes: masd::enumeration
    :END:
-*** no_space                                                      :attribute:
-*** left_space                                                    :attribute:
-*** right_space                                                   :attribute:
-*** left_and_right_space                                          :attribute:
-** utility_formatter                                                :element:
+*** no space                                                      :attribute:
+*** left space                                                    :attribute:
+*** right space                                                   :attribute:
+*** left and right space                                          :attribute:
+** utility formatter                                                :element:
    :PROPERTIES:
+   :custom_id: O86
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** indent_filter                                                    :element:
+** indent filter                                                    :element:
    :PROPERTIES:
+   :custom_id: O93
    :masd.codec.stereotypes: dogen::handcrafted::typeable::header_only
    :END:
-** comment_style                                                    :element:
+** comment style                                                    :element:
    :PROPERTIES:
+   :custom_id: O96
    :masd.codec.stereotypes: masd::enumeration
    :END:
 
 Supported styles of comments.
 
-*** c_style                                                       :attribute:
+*** c style                                                       :attribute:
 
 Original C programming language style.
 
-*** cpp_style                                                     :attribute:
+*** cpp style                                                     :attribute:
 
 One line, C++ style.
 
-*** csharp_style                                                  :attribute:
+*** csharp style                                                  :attribute:
 
 C# programming language style.
 
-*** shell_style                                                   :attribute:
+*** shell style                                                   :attribute:
 
 UNIX shell scripting comments.
 
-*** sql_style                                                     :attribute:
+*** sql style                                                     :attribute:
 
 Comments start with a double-dash.
 
-*** xml_style                                                     :attribute:
+*** xml style                                                     :attribute:
 
 Comments using XML syntax.
 
-** comment_formatter                                                :element:
+** comment formatter                                                :element:
    :PROPERTIES:
+   :custom_id: O97
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** sequence_formatter                                               :element:
+** sequence formatter                                               :element:
    :PROPERTIES:
+   :custom_id: O99
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** infix_configuration                                              :element:
+** infix configuration                                              :element:
    :PROPERTIES:
+   :custom_id: O100
    :masd.codec.stereotypes: masd::fluent
    :END:
 
@@ -427,14 +534,14 @@ Configuration to use for a given infix in sequence formatter.
 Applicable only to the first element of a sequence, if the sequence has more
 than one element.
 
-*** not_first                                                     :attribute:
+*** not first                                                     :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
 
 Applicable to all elements other than the first.
 
-*** not_last                                                      :attribute:
+*** not last                                                      :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -450,9 +557,11 @@ Only applicable to the last element of a sequence.
 
 * main                                                              :element:
   :PROPERTIES:
+  :custom_id: O91
   :masd.codec.stereotypes: masd::entry_point, dogen::untypable
   :END:
 * CMakeLists                                                        :element:
   :PROPERTIES:
+  :custom_id: O92
   :masd.codec.stereotypes: masd::build::cmakelists, dogen::handcrafted::cmake
   :END:

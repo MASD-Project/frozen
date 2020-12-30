@@ -47,24 +47,30 @@ In general, codecs use file extensions to determine the type of the
 codec.
 
 * transforms                                                         :module:
-** model_production_chain                                           :element:
+  :PROPERTIES:
+  :custom_id: O0
+  :END:
+** model production chain                                           :element:
    :PROPERTIES:
+   :custom_id: O2
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** model_to_model_chain                                             :element:
+** model to model chain                                             :element:
    :PROPERTIES:
+   :custom_id: O3
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 ** context                                                          :element:
    :PROPERTIES:
+   :custom_id: O13
    :masd.cpp.types.class_forward_declarations.enabled: true
    :masd.codec.stereotypes: dogen::typeable, dogen::pretty_printable
    :END:
-*** data_directories                                              :attribute:
+*** data directories                                              :attribute:
     :PROPERTIES:
     :masd.codec.type: std::vector<boost::filesystem::path>
     :END:
-*** feature_model                                                 :attribute:
+*** feature model                                                 :attribute:
     :PROPERTIES:
     :masd.codec.type: boost::shared_ptr<variability::entities::feature_model>
     :END:
@@ -72,91 +78,110 @@ codec.
     :PROPERTIES:
     :masd.codec.type: boost::shared_ptr<tracing::tracer>
     :END:
-*** compatibility_mode                                            :attribute:
+*** compatibility mode                                            :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** variability_overrides                                         :attribute:
+*** variability overrides                                         :attribute:
     :PROPERTIES:
     :masd.codec.type: std::vector<std::string>
     :END:
 
 Raw set of variability overrides.
 
-** transformation_error                                             :element:
+** transformation error                                             :element:
    :PROPERTIES:
+   :custom_id: O14
    :masd.codec.stereotypes: masd::exception
    :END:
-** model_set_production_chain                                       :element:
+** model set production chain                                       :element:
    :PROPERTIES:
+   :custom_id: O19
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** input_technical_space_transform                                  :element:
+** input technical space transform                                  :element:
    :PROPERTIES:
+   :custom_id: O20
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** references_transform                                             :element:
+** references transform                                             :element:
    :PROPERTIES:
+   :custom_id: O21
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** configuration_transform                                          :element:
+** configuration transform                                          :element:
    :PROPERTIES:
+   :custom_id: O40
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** reference_graph_data_transform                                   :element:
+** reference graph data transform                                   :element:
    :PROPERTIES:
+   :custom_id: O53
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** tagged_values_overrides_transform                                :element:
+** tagged values overrides transform                                :element:
    :PROPERTIES:
+   :custom_id: O55
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** provenance_transform                                             :element:
+** provenance transform                                             :element:
    :PROPERTIES:
+   :custom_id: O58
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** file_to_artefact_transform                                       :element:
+** file to artefact transform                                       :element:
    :PROPERTIES:
+   :custom_id: O73
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** json_artefact_to_model_transform                                 :element:
+** json artefact to model transform                                 :element:
    :PROPERTIES:
+   :custom_id: O74
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** model_to_json_artefact_transform                                 :element:
+** model to json artefact transform                                 :element:
    :PROPERTIES:
+   :custom_id: O75
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** dia_artefact_to_model_transform                                  :element:
+** dia artefact to model transform                                  :element:
    :PROPERTIES:
+   :custom_id: O76
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** org_artefact_to_model_transform                                  :element:
+** org artefact to model transform                                  :element:
    :PROPERTIES:
+   :custom_id: O77
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** model_to_org_artefact_transform                                  :element:
+** model to org artefact transform                                  :element:
    :PROPERTIES:
+   :custom_id: O78
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** artefact_to_file_transform                                       :element:
+** artefact to file transform                                       :element:
    :PROPERTIES:
+   :custom_id: O79
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** artefact_to_model_chain                                          :element:
+** artefact to model chain                                          :element:
    :PROPERTIES:
+   :custom_id: O80
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** model_to_artefact_chain                                          :element:
+** model to artefact chain                                          :element:
    :PROPERTIES:
+   :custom_id: O88
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** meta_data_transform                                              :element:
+** meta data transform                                              :element:
    :PROPERTIES:
+   :custom_id: O96
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
 * entities                                                           :module:
   :PROPERTIES:
+  :custom_id: O4
   :masd.codec.dia.comment: true
   :END:
 
@@ -167,6 +192,7 @@ Not all codecs will make use of all entities.
 
 ** model                                                            :element:
    :PROPERTIES:
+   :custom_id: O5
    :masd.codec.stereotypes: Element
    :END:
 
@@ -176,7 +202,7 @@ Represents an external model.
     :PROPERTIES:
     :masd.codec.type: std::list<element>
     :END:
-*** input_technical_space                                         :attribute:
+*** input technical space                                         :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -187,7 +213,7 @@ Technical space to which the model belongs, within the codec space.
     :PROPERTIES:
     :masd.codec.type: std::list<std::string>
     :END:
-*** processed_variability_overrides                               :attribute:
+*** processed variability overrides                               :attribute:
     :PROPERTIES:
     :masd.codec.type: std::unordered_set<std::string>
     :END:
@@ -196,6 +222,7 @@ All the variability overrides that were processed by this model.
 
 ** element                                                          :element:
    :PROPERTIES:
+   :custom_id: O6
    :masd.codec.stereotypes: Element
    :END:
 
@@ -209,7 +236,7 @@ Represents an element from an external model.
     :PROPERTIES:
     :masd.codec.type: std::list<attribute>
     :END:
-*** fallback_element_type                                         :attribute:
+*** fallback element type                                         :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -217,31 +244,31 @@ Represents an element from an external model.
 Stereotype conveying element type, to be used when none is provided with the
 main stereotypes.
 
-*** can_be_primitive_underlier                                    :attribute:
+*** can be primitive underlier                                    :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** in_global_module                                              :attribute:
+*** in global module                                              :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** can_be_enumeration_underlier                                  :attribute:
+*** can be enumeration underlier                                  :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** is_default_enumeration_type                                   :attribute:
+*** is default enumeration type                                   :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** is_associative_container                                      :attribute:
+*** is associative container                                      :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** is_floating_point                                             :attribute:
+*** is floating point                                             :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
-*** containing_element_id                                         :attribute:
+*** containing element id                                         :attribute:
     :PROPERTIES:
     :masd.codec.type: identification::entities::codec_id
     :END:
@@ -250,6 +277,7 @@ ID of the containing element, if any.
 
 ** attribute                                                        :element:
    :PROPERTIES:
+   :custom_id: O7
    :masd.codec.stereotypes: Element
    :END:
 *** type                                                          :attribute:
@@ -263,7 +291,10 @@ ID of the containing element, if any.
 
 Default value for this attribute, if any.
 
-** model_set                                                        :element:
+** model set                                                        :element:
+   :PROPERTIES:
+   :custom_id: O15
+   :END:
 *** target                                                        :attribute:
     :PROPERTIES:
     :masd.codec.type: model
@@ -272,7 +303,7 @@ Default value for this attribute, if any.
     :PROPERTIES:
     :masd.codec.type: std::list<model>
     :END:
-*** reference_graph_data                                          :attribute:
+*** reference graph data                                          :attribute:
     :PROPERTIES:
     :masd.codec.type: reference_graph_data
     :END:
@@ -281,17 +312,19 @@ Stores the data required to build a graph of references for a model set.
 
 ** Taggable                                                         :element:
    :PROPERTIES:
+   :custom_id: O8
    :masd.codec.stereotypes: masd::object_template
    :END:
 
 Ability to contain tagged values.
 
-*** tagged_values                                                 :attribute:
+*** tagged values                                                 :attribute:
     :PROPERTIES:
     :masd.codec.type: std::list<identification::entities::tagged_value>
     :END:
 ** Stereotypable                                                    :element:
    :PROPERTIES:
+   :custom_id: O9
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -303,6 +336,7 @@ Ability to have stereotypes.
     :END:
 ** Documentable                                                     :element:
    :PROPERTIES:
+   :custom_id: O10
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -320,6 +354,7 @@ of the technical space in question, e.g. Doxygen for C++, JavaDoc for Java, etc.
 
 ** Nameable                                                         :element:
    :PROPERTIES:
+   :custom_id: O11
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -334,6 +369,7 @@ Name of the codec element.
 
 ** Configurable                                                     :element:
    :PROPERTIES:
+   :custom_id: O38
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -348,6 +384,7 @@ Configuration for this element.
 
 ** DeterminableOrigin                                               :element:
    :PROPERTIES:
+   :custom_id: O56
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -362,12 +399,13 @@ Provenance details of this codec element.
 
 ** TaggableOverridable                                              :element:
    :PROPERTIES:
+   :custom_id: O64
    :masd.codec.stereotypes: masd::object_template
    :END:
 
 Ability to contain tagged values.
 
-*** tagged_values_overrides                                       :attribute:
+*** tagged values overrides                                       :attribute:
     :PROPERTIES:
     :masd.codec.type: std::list<identification::entities::tagged_value>
     :END:
@@ -376,6 +414,7 @@ Meta-data sourced externally that can be used to override meta-data in model.
 
 ** Commentable                                                      :element:
    :PROPERTIES:
+   :custom_id: O67
    :masd.codec.stereotypes: masd::object_template
    :END:
 
@@ -390,13 +429,17 @@ Properties associated with the codec comment.
 
 ** Element                                                          :element:
    :PROPERTIES:
+   :custom_id: O28
    :masd.codec.parent: entities::Taggable, entities::Stereotypable, entities::Documentable, entities::Nameable, entities::Configurable, entities::DeterminableOrigin, entities::TaggableOverridable, entities::Commentable
    :masd.codec.stereotypes: masd::object_template
    :END:
 
 Consolidates a number of related object templates.
 
-** reference_graph_data                                             :element:
+** reference graph data                                             :element:
+   :PROPERTIES:
+   :custom_id: O51
+   :END:
 
 Contains all the data required to build the graph of references.
 
@@ -408,7 +451,7 @@ Contains all the data required to build the graph of references.
 Has the name of the target model, which is the entry point to the references
 graph.
 
-*** edges_per_model                                               :attribute:
+*** edges per model                                               :attribute:
     :PROPERTIES:
     :masd.codec.type: std::unordered_map<std::string, std::list<std::string>>
     :END:
@@ -417,19 +460,20 @@ Contains the list of referenced models for a particular model name.
 
 ** comment                                                          :element:
    :PROPERTIES:
+   :custom_id: O63
    :masd.codec.stereotypes: Documentable, Taggable
    :END:
 
 Represents a comment block as read out from the codec representation.
 
-*** applies_to_container                                          :attribute:
+*** applies to container                                          :attribute:
     :PROPERTIES:
     :masd.codec.type: bool
     :END:
 
 Content of the field as it belonged to the containing object.
 
-*** original_content                                              :attribute:
+*** original content                                              :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -438,6 +482,7 @@ Content, as read from the codec representation.
 
 ** object                                                           :element:
    :PROPERTIES:
+   :custom_id: O66
    :masd.codec.stereotypes: Commentable
    :END:
 
@@ -457,7 +502,7 @@ Original ID available in the codec representation, if any.
 
 Original name in codec representation. May be qualified or simple; its nature is codec dependent.
 
-*** object_type                                                   :attribute:
+*** object type                                                   :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -471,7 +516,7 @@ Native codec representation for the object type. Its interpretation is codec dep
 
 Original steoreotypes assigned to the object, if any.
 
-*** container_id                                                  :attribute:
+*** container id                                                  :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -493,6 +538,9 @@ Connections this object may have with other objects, if any.
 All attributes associated with this object.
 
 ** artefact                                                         :element:
+   :PROPERTIES:
+   :custom_id: O72
+   :END:
 *** path                                                          :attribute:
     :PROPERTIES:
     :masd.codec.type: boost::filesystem::path
@@ -500,7 +548,7 @@ All attributes associated with this object.
 
 Path to the file representing this artefact, if any.
 
-*** codec_name                                                    :attribute:
+*** codec name                                                    :attribute:
     :PROPERTIES:
     :masd.codec.type: std::string
     :END:
@@ -517,20 +565,27 @@ Contents of the artefact.
 
 #+end_src
 * helpers                                                            :module:
-** references_resolver                                              :element:
+  :PROPERTIES:
+  :custom_id: O17
+  :END:
+** references resolver                                              :element:
    :PROPERTIES:
+   :custom_id: O18
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** reference_resolution_exception                                   :element:
+** reference resolution exception                                   :element:
    :PROPERTIES:
+   :custom_id: O26
    :masd.codec.stereotypes: masd::exception
    :END:
-** references_validator                                             :element:
+** references validator                                             :element:
    :PROPERTIES:
+   :custom_id: O48
    :masd.codec.stereotypes: dogen::handcrafted::typeable
    :END:
-** reference_validation_error                                       :element:
+** reference validation error                                       :element:
    :PROPERTIES:
+   :custom_id: O49
    :masd.codec.stereotypes: masd::exception
    :END:
 
@@ -538,14 +593,16 @@ A cycle was detected in the references graph.
 
 * features                                                           :module:
   :PROPERTIES:
+  :custom_id: O42
   :masd.codec.dia.comment: true
   :END:
 
 Defines all of the features and feature groups used by
 the codec model.
 
-** input_technical_space                                            :element:
+** input technical space                                            :element:
    :PROPERTIES:
+   :custom_id: O43
    :masd.variability.default_binding_point: global
    :masd.variability.key_prefix: masd.codec
    :masd.codec.stereotypes: masd::variability::feature_bundle
@@ -553,7 +610,7 @@ the codec model.
 
 Feature bundle for the input technical space.
 
-*** input_technical_space                                         :attribute:
+*** input technical space                                         :attribute:
     :PROPERTIES:
     :masd.codec.type: masd::variability::text
     :masd.codec.value: "agnostic"
@@ -563,6 +620,7 @@ Input technical space for this model.
 
 ** reference                                                        :element:
    :PROPERTIES:
+   :custom_id: O45
    :masd.variability.default_binding_point: global
    :masd.variability.key_prefix: masd.codec
    :masd.codec.stereotypes: masd::variability::feature_bundle
@@ -580,10 +638,12 @@ Imports an external model.
 
 ** initializer                                                      :element:
    :PROPERTIES:
+   :custom_id: O46
    :masd.codec.stereotypes: masd::variability::initializer
    :END:
 ** uml                                                              :element:
    :PROPERTIES:
+   :custom_id: O47
    :masd.variability.default_binding_point: any
    :masd.variability.generate_static_configuration: false
    :masd.variability.key_prefix: masd.codec
@@ -601,8 +661,9 @@ If true, the UML comment is linked to the containing package.
 
 If the containing package is the model itself, it is linked to the model's module.
 
-** meta_data                                                        :element:
+** meta data                                                        :element:
    :PROPERTIES:
+   :custom_id: O95
    :masd.variability.default_binding_point: any
    :masd.variability.key_prefix: masd.codec
    :masd.codec.stereotypes: masd::variability::feature_bundle
@@ -642,45 +703,48 @@ Value associated with this attribute.
 
 Parent associated with this element.
 
-*** can_be_primitive_underlier                                    :attribute:
+*** can be primitive underlier                                    :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
-*** in_global_module                                              :attribute:
+*** in global module                                              :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
-*** can_be_enumeration_underlier                                  :attribute:
+*** can be enumeration underlier                                  :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
-*** is_default_enumeration_type                                   :attribute:
+*** is default enumeration type                                   :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
-*** is_associative_container                                      :attribute:
+*** is associative container                                      :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
-*** is_floating_point                                             :attribute:
+*** is floating point                                             :attribute:
     :PROPERTIES:
     :masd.variability.is_optional: true
     :masd.codec.type: masd::variability::boolean
     :END:
 * registrar                                                         :element:
   :PROPERTIES:
+  :custom_id: O60
   :masd.codec.stereotypes: masd::serialization::type_registrar
   :END:
 * main                                                              :element:
   :PROPERTIES:
+  :custom_id: O61
   :masd.codec.stereotypes: masd::entry_point, dogen::untypable
   :END:
 * CMakeLists                                                        :element:
   :PROPERTIES:
+  :custom_id: O62
   :masd.codec.stereotypes: masd::build::cmakelists, dogen::handcrafted::cmake
   :END:
